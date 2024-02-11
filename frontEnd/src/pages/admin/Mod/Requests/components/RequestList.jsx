@@ -21,6 +21,7 @@ const RequestList = () => {
       return null
     }
   }
+  //console.log(list)
 
   useEffect(()=>{
     getReqList()
@@ -133,11 +134,13 @@ const RequestList = () => {
     return filteredData.map((elem, index) => {
       return(
         <div key={index}>
-          <div className="flex flex-row bg-[#17394C] w-[70rem] h-[3rem] space-x-[2rem] justify-between rounded-xl">
-            <div className="self-center text-white ml-[1rem] text-[1.3rem]">
+          <div className="flex flex-row bg-[#17394C] w-[70rem] h-[3rem] space-x-[2rem] rounded-xl items-center px-[1rem] justify-between">
+          
+            <div className="flex flex-row items-center text-white text-[1.3rem]">
+              <div className={`${!elem.haveBeenEmailed ? "bg-green-700" : "bg-red-700"} h-[1rem] w-[1rem] rounded-full mr-[1rem]`}></div>
               {elem.Email}
             </div>
-            <div className="self-center flex flex-row space-x-[1.5rem] pr-[1.5rem] text-[1rem]">
+            <div className="flex flex-row space-x-[1.5rem] pr-[1.5rem] text-[1rem] ">
               <button className="  bg-[#F9D62B] w-[5rem] rounded-xl py-[0.2rem]">View</button>
               <button onClick={() => sendToArchive(index)} className="  bg-[#F9D62B] w-[5rem] rounded-xl py-[0.2rem]">Approve</button>
               <button className="  bg-[#F9D62B] w-[5rem] rounded-xl py-[0.2rem]">Delete</button>

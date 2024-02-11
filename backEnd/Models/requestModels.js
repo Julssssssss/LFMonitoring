@@ -14,6 +14,10 @@ const reqSchema = new schema({
     Email:{
         type: String, 
         required: true
+    },
+    haveBeenEmailed:{
+        type: Boolean,
+        required: true
     }
 })
 const reqModelo = mongoose.model("Request", reqSchema)
