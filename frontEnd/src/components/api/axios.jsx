@@ -338,7 +338,46 @@ axiosGetReqList.interceptors.response.use(
     }
 );
 
-//admin privielege
+//send email
+const axiosSendEmail = axios.create({
+    baseURL: `${baseUrl}/priv/sendEmail`,
+    headers:{
+        'authorization': `Bearer ${accessToken}`
+    }
+});
+
+axiosSendEmail.interceptors.response.use(
+    response => response,
+    error => {
+        const originalRequest = error.config;
+        try
+            {    if (error.response.status === 403 && !originalRequest._retry) {
+                    originalRequest._retry = true;
+                    return axiosReFetchToken.post()
+                        .then(response => {
+                            const newAccessToken = response.data.accessToken;
+                            const temp = JSON.stringify(newAccessToken)
+                            localStorage.setItem('accessToken', temp);
+                            originalRequest.headers['authorization'] = `Bearer ${newAccessToken}`;
+                            return axiosSendEmail(originalRequest);
+                        });
+                }
+                else if (error.response.status === 401) {
+                    window.location.href = `${import.meta.env.VITE_CLIENT_URL}/401`;
+                    
+                    return Promise.resolve(); // Returning a resolved promise to stop further processing
+                }
+            } 
+            catch (e){
+                console.log(e)
+                logout()
+                return Promise.resolve()
+            }
+
+        return Promise.reject(error);
+    }
+);
 
 
-export { axiosGetReqList, axiosFetchToken, axiosFetchItems, axiosReFetchToken, axiosSendItem, axiosSendUpdate, axiosUpdateImage, axiosUnclaimedItems, axiosDeleteItem, axiosFetchAdminData};
+
+export { axiosGetReqList, axiosFetchToken, axiosFetchItems, axiosReFetchToken, axiosSendItem, axiosSendUpdate, axiosUpdateImage, axiosUnclaimedItems, axiosDeleteItem, axiosFetchAdminData, axiosSendEmail};

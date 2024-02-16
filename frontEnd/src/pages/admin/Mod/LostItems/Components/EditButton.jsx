@@ -176,10 +176,11 @@ const EditButton = ({ Info }) => {
   if (loading) {
     return <UploadingScreen />;
   }
+  const enableDeleteButton = true
 
   const displayPic = () => {
     return item && item.url ? (
-      <ItemsCarousel item={item.url} imageUrl={imageUrl} handleDelete={handleDelete} handleDeleteLink={handleDeleteLink} />
+      <ItemsCarousel item={item.url} imageUrl={imageUrl} handleDelete={handleDelete} handleDeleteLink={handleDeleteLink} enableDeleteButton={enableDeleteButton}/>
     ) : null;
   };
 
@@ -259,46 +260,50 @@ const EditButton = ({ Info }) => {
             <div className="h-[17rem] w-[17rem] border-[0.3rem] border-[#F9D62B] rounded-xl p-[0.1rem] flex flex-col justify-center">
               {displayPic()}
             </div>
+            
             <input
-              type="file"
-              className="text-white text-[1rem]"
-              accept="image/*"
-              multiple
-              onChange={(e) => {
-                const selectedFiles = e.target.files;
+            type="file"
+            className="text-white text-[1rem]"
+            accept="image/*"
+            multiple
+            onChange={(e) => {
+              const selectedFiles = e.target.files;
 
-                const newImageUrls = [];
-                const newFiles = [];
+              if (selectedFiles.length > 2) {
+                alert('Please add or upload no more than 2 images.');
+                return;
+              }
 
-                const processFile = (file, index) => {
-                  const reader = new FileReader();
+              const newImageUrls = [];
+              const newFiles = [];
 
-                  reader.onloadend = () => {
-                    newImageUrls.push(reader.result);
+              const processFile = (file, index) => {
+                const reader = new FileReader();
 
-                    if (
-                      newImageUrls.length === selectedFiles.length &&
-                      newFiles.length === selectedFiles.length
-                    ) {
-                      setFiles((prevFiles) =>
-                        prevFiles ? [...prevFiles, ...newFiles] : newFiles
-                      );
-                      setImageUrl((prevUrls) => [
-                        ...prevUrls,
-                        ...newImageUrls,
-                      ]);
-                    }
-                  };
+                reader.onloadend = () => {
+                  // Add the new URL to the array
+                  newImageUrls.push(reader.result);
 
-                  reader.readAsDataURL(file);
+                  // If all files are processed, update the state with the new arrays
+                  if (newImageUrls.length === selectedFiles.length && newFiles.length === selectedFiles.length) {
+                    setFiles((prevFiles) => prevFiles ? [...prevFiles, ...newFiles] : newFiles);
+                    setImageUrl((prevUrls) => [...prevUrls, ...newImageUrls]);
+                  }
                 };
 
-                for (const file of selectedFiles) {
+                reader.readAsDataURL(file);
+              };
+
+              for (const file of selectedFiles) {
+                if (file.type === 'image/jpeg' || file.type === 'image/png') {
                   newFiles.push(file);
                   processFile(file, newFiles.length - 1);
+                } else {
+                  alert('Only JPEG, PNG, and JPG file types are allowed.');
                 }
-              }}
-            />
+              }
+            }}
+          />
 
             <div className="flex flex-col items-center space-y-[1rem] text-white">
               <input

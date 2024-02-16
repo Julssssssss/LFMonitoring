@@ -78,7 +78,7 @@ router.post("/request", verifyToken, async(req, res)=>{
             itemId: _id,
             nameItem: nameItem,
             Email: Email, 
-            haveBeenEmailed: false
+            haveBeenEmailed: false,
         })
         await newReq.save()
         return res.sendStatus(200);

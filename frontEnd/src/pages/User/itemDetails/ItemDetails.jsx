@@ -13,9 +13,6 @@ const ItemDetails = () => {
   const [userClicked, setuserClicked] = useState(false);
   const [cooldownActive, setCooldownActive] = useState(false)
   
-  //for another modal
-  //const [confirm, setConfirm] = useState(false);
-  
   const handleYesAction = () => {
     setuserClicked(true); // Set the userClicked state to true
 

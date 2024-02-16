@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { axiosGetReqList, axiosReFetchToken } from "../../../../../components/api/axios";
-import axios from 'axios'
+import ItemsCarousel from "../../../MainComponents/ItemsCarousel";
+import { getData } from "../../../MainComponents/getData";
+
+import SendButton from "./SendButton";
+import Approve from "./Approve";
 
 const RequestList = () => {
 
@@ -9,78 +13,63 @@ const RequestList = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredData, setFilteredData] = useState([]);
-  
+
+
+  const [items, setItems] = useState('')
+  const [desc, setDesc] = useState('')
+  const [name, setName] = useState('')
+  const [found, setFound] = useState('');
+  const [image, setImage] = useState([])
+  const [datePosted, setDatePosted] = useState('')
+  const [postedby, setPostedBy] = useState('')
+  const [surrenderedBy, setSurrenderedBy] = useState('')
+  const [requestBy, setRequestBy] = useState('')
+  const [emailContent, setEmailContent] = useState('');
+  const [subject, setSubject] = useState('');
+  const [index, setIndex] = useState('');
+
+
   const getReqList = async() => {
     try{
       const res = await axiosGetReqList.post()
+      const temp = await getData();
+      setItems(temp.items); 
       setList(res.data.reqList)
       setFilteredData(res.data.reqList)
+      
     }
     catch(err){
       console.log(err)
       return null
     }
   }
-  //console.log(list)
+ 
 
   useEffect(()=>{
     getReqList()
   }, [])
 
-  const accessToken = localStorage.getItem('accessToken')
+  const viewItem = async (elem, items) => {
+    try {
+      
+      // Find the item with the matching itemId
+      const selectedItem = items.find(item => item._id === elem.itemId);
+    
+      setName(selectedItem.nameItem);
+      setDesc(selectedItem.desc);
+      setFound(selectedItem.found);
+      setImage(selectedItem.url);
+      setRequestBy(elem.Email);
+      setDatePosted(selectedItem.datePosted);
+      setPostedBy(selectedItem.postedBy);
+      setSurrenderedBy(selectedItem.surrenderedBy);
+      setIndex(elem._id)
+      console.log('henlo', index)
+    } catch (error) {
+      console.error("Error getting items", error);
+    }
+  };
   
-  //send transaction to be archived
-  const sendToArchive = async(index)=>{
-    console.log('hello', index)
-    try{
-      await axios.post(`${import.meta.env.VITE_API_URL}/priv/ArchivingTrans`,
-        {Request : list[index]}, 
-        {
-          headers:{
-            'Authorization': `Bearer ${accessToken}`
-          }
-        }
-      )
-      .then(response => {console.log(response)})
-      if(response.data == "success"){
-        alert("Successfully Archived!")
-      }
-    }
-    catch(err){console.log(err)}
-  }
-
-  //403 catcher
-  axios.interceptors.response.use(
-    response => response,
-    error => {
-      const originalRequest = error.config;
-      try{    
-          if (error.response.status === 403 && !originalRequest._retry) {
-            originalRequest._retry = true;
-            return axiosReFetchToken.post()
-                .then(response => {
-                    const newAccessToken = response.data.accessToken;
-                    const temp = JSON.stringify(newAccessToken)
-                    localStorage.setItem('accessToken', temp);
-                    originalRequest.headers['authorization'] = `Bearer ${newAccessToken}`;
-                    return axios(originalRequest);
-                });
-            }
-            else if (error.response.status === 401) {
-              window.location.href = `${import.meta.env.VITE_CLIENT_URL}/401`;
-              return Promise.resolve(); // Returning a resolved promise to stop further processing
-            }
-        } 
-        catch (e){
-            console.log(e)
-            logout()
-            return Promise.resolve()
-        }
-
-      return Promise.reject(error);
-    }
-  );
-
   const sort = (val)=>{
     if(val.length === 0){
       setFilteredData(list);
@@ -92,7 +81,6 @@ const RequestList = () => {
       setFilteredData(filtered);
     }
   }
-
   const handleInputChange = (e) => {
     sort(e.target.value)
     setSearchQuery(e.target.value);
@@ -134,15 +122,14 @@ const RequestList = () => {
     return filteredData.map((elem, index) => {
       return(
         <div key={index}>
-          <div className="flex flex-row bg-[#17394C] w-[70rem] h-[3rem] space-x-[2rem] rounded-xl items-center px-[1rem] justify-between">
-          
-            <div className="flex flex-row items-center text-white text-[1.3rem]">
-              <div className={`${!elem.haveBeenEmailed ? "bg-green-700" : "bg-red-700"} h-[1rem] w-[1rem] rounded-full mr-[1rem]`}></div>
+          <div className="flex flex-col border-b-2 border-white bg-[#17394C] w-full h-[4.5rem] space-x-[2rem] rounded-xl p-1">
+            <div className="flex flex-row justify-between items-center text-white ml-[1rem] text-[1.3rem]">
               {elem.Email}
+              <div className={`${elem.haveBeenEmailed ? "bg-green-700" : "bg-red-700"} h-[1rem] w-[1rem] rounded-full mr-[1rem]`}></div>
             </div>
-            <div className="flex flex-row space-x-[1.5rem] pr-[1.5rem] text-[1rem] ">
-              <button className="  bg-[#F9D62B] w-[5rem] rounded-xl py-[0.2rem]">View</button>
-              <button onClick={() => sendToArchive(index)} className="  bg-[#F9D62B] w-[5rem] rounded-xl py-[0.2rem]">Approve</button>
+            <div className="self-center flex flex-row space-x-[1.5rem] pr-[1.5rem] text-[1rem]">
+              <button onClick={() => viewItem(elem, items)} className="bg-[#F9D62B] w-[5rem] rounded-xl py-[0.2rem]">View</button>
+              <Approve RequestItem = {elem} index={index} list={list} Item = {items} onClick={viewItem} />
               <button className="  bg-[#F9D62B] w-[5rem] rounded-xl py-[0.2rem]">Delete</button>
             </div>
           </div>
@@ -151,39 +138,88 @@ const RequestList = () => {
     );
   }
 
+    const enableDeleteButton = false
+    const displayPic = () => {
+      return <ItemsCarousel item={image} enableDeleteButton={enableDeleteButton}/>
+  };
+
   return (
     <>
-      <div className="flex flex-row justify-between ml-[3rem] mr-[3rem] mt-[2rem] text-white whitespace-nowrap">
+      <div className="flex flex-row justify-between mx-[3rem] mt-[2rem] text-white whitespace-nowrap">
         <div className='text-[2.5rem]'>REQUEST</div>   
          {searchBar()}
       </div>
-      <div className="self-center flex flex-col h-full justify-center items-center text-black text-[1rem] w-[76rem] rounded-[2rem] bg-[#134083] p-[2rem] space-x-[1rem]">
-          <div className="w-[70rem] h-[20rem] overflow-y-auto">
+      <div className="self-center space-x-[1rem] h-full flex flex-row h-full text-black text-[1rem] w-[76rem] rounded-[2rem] bg-[#134083] p-[1rem]">
+          <div className=" w-[70rem] h-full overflow-y-auto space-y-[1rem]">
             {requestFormat()}
           </div>
-          <div className="flex flex-col w-full h-[30rem] p-[1.5rem] bg-white rounded-xl border-[#F9D62B] border-[0.5rem] space-y-[1rem]">
-            <div className="flex flex-row justify-between">
-              <div>Username</div>
-              {/* Calendar */}
-              <input
+          <div className="flex flex-col w-[90rem] h-full p-[1.5rem] bg-white rounded-xl border-[#F9D62B] border-[0.5rem] space-y-[0.5rem]">
+            <div className="flex flex-row">
+              <div className="flex w-auto h-[2rem] items-center font-semibold"> Requested by: {requestBy}</div>
+            </div>
+              <div className="flex flex-col space-y-[1rem] h-full whitespace-nowrap">
+                <div className="flex flex-row justify-between text-[1rem]">
+                  <div className="flex flex-col w-[20rem] p-[0.5rem] text-[1rem]">
+                    <div className="flex flex-col h-auto items-start space-y-[0.7rem] leading-[0.9] whitespace-normal">
+                    <div className="flex items-center space-x-[2.5rem]">
+                      <div className="w-24">Name of item:</div>
+                      <div>{name}</div>
+                    </div>
+                    <div className="flex items-center space-x-[2.5rem]">
+                      <div className="w-24">Description:</div>
+                      <div>{desc}</div>
+                    </div>
+                    <div className="flex items-center space-x-[2.5rem]">
+                      <div className="w-24">Found at:</div>
+                      <div>{found}</div>
+                    </div>
+                    <div className="flex items-center space-x-[2.5rem]">
+                      <div className="w-24">Surrendered by:</div>
+                      <div>{surrenderedBy}</div>
+                    </div>
+                    <div className="flex items-center space-x-[2.5rem]">
+                      <div className="w-24">Posted by:</div>
+                      <div>{postedby}</div>
+                    </div>
+                    <div className="flex items-center space-x-[3.1rem]">
+                      <div className="w-24">Date posted:</div>
+                      <div>{datePosted}</div>
+                    </div>
+                    
+                  </div>
+                </div>
+                <div className="h-[16.5rem] w-[15rem] py-2 border-[0.3rem] border-[#F9D62B] rounded-xl flex flex-col">
+                  {displayPic()}
+                </div>
+          </div>
+               {/* Calendar */}
+               <input
                 type="date"
-                className="w-[15rem] border-[0.2rem] border-[#F9D62B] rounded-xl"
-                value={date} // Make sure value is always defined
+                className="w-[15rem] border-[0.2rem] h-[4rem] border-[#F9D62B] rounded-xl"
+                value={date} 
                 onChange={handleDateChange}
                 disabled={isWeekend(date)} // Disable the input on weekends
               />
+               <input 
+                type="text"
+                id="subject"  
+                placeholder="Subject" 
+                className="border-[0.2rem] border-[#F9D62B] h-[2.5rem] w-full text-[1.5rem] p-[1rem]"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+              /> 
+               <textarea 
+                id="letter" 
+                rows={4} 
+                placeholder="" 
+                className="border-[0.2rem] border-[#F9D62B] h-full w-full text-[1.5rem] p-[1rem]"
+                value={emailContent}
+                onChange={(e) => setEmailContent(e.target.value)}
+              /> 
             </div>
-            <div className="flex flex-row">
-              <div className="text-center border-[0.2rem] border-[#F9D62B] h-[20rem] w-full text-[1.5rem] mr-[1.5rem]">
-                Item description
+              <div className="flex justify-center">
+                <SendButton subject={subject} emailContent={emailContent} requestBy={requestBy} index= {index}/>
               </div>
-              <input placeholder="" className="border-[0.2rem] border-[#F9D62B] h-[20rem] w-full text-[1.5rem]"/>
-               
-            </div>
-            <button className="bg-[#F9D62B] self-center w-[20rem] h-[3rem] text-[1.5rem] rounded-full"
-            >
-              SEND
-            </button>
           </div>
       
       </div>
