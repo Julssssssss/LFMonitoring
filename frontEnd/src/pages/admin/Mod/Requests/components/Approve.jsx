@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { axiosReFetchToken } from "../../../../../components/api/axios";
 import axios from 'axios'
 
 
@@ -19,11 +20,13 @@ const Approve = ({ RequestItem, Item, index, list }) => {
   };
 
   const accessToken = localStorage.getItem('accessToken')
-  const selectedItem = Item === RequestItem.itemId ? Item : null;
+
+  const selectedItem = Item.find((item) => item._id === RequestItem.itemId);
+
   const sendToArchive = async()=>{
    
     try{
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/priv/ArchivingTrans`,
+      await axios.post(`${import.meta.env.VITE_API_URL}/priv/ArchivingTrans`,
         {Request : lists[index]}, 
         {
           headers:{
@@ -31,16 +34,50 @@ const Approve = ({ RequestItem, Item, index, list }) => {
           }
         }
       )
-      console.log(response.data)
-      if(response.data == "success"){
+      .then(res=>{
+        console.log(res.data)
+        if(res.data == "success"){
         alert("Successfully Archived!")
         window.location.reload();
         closePopup()
-       
       }
+      })
+      
     }
     catch(err){console.log(err)}
   }
+
+   //403 catcher
+   axios.interceptors.response.use(
+    response => response,
+    error => {
+      const originalRequest = error.config;
+      try{    
+          if (error.response.status === 403 && !originalRequest._retry) {
+            originalRequest._retry = true;
+            return axiosReFetchToken.post()
+                .then(response => {
+                    const newAccessToken = response.data.accessToken;
+                    const temp = JSON.stringify(newAccessToken)
+                    localStorage.setItem('accessToken', temp);
+                    originalRequest.headers['authorization'] = `Bearer ${newAccessToken}`;
+                    return axios(originalRequest);
+                });
+            }
+            else if (error.response.status === 401) {
+              window.location.href = `${import.meta.env.VITE_CLIENT_URL}/401`;
+              return Promise.resolve(); // Returning a resolved promise to stop further processing
+            }
+        } 
+        catch (e){
+            console.log(e)
+            logout()
+            return Promise.resolve()
+        }
+
+      return Promise.reject(error);
+    }
+  );
 
   return (
     <>

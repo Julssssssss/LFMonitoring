@@ -78,7 +78,7 @@ const ItemList = () => {
     return filteredData.map((item, index) => {
       return(
         <div key={index}>
-          <div className="flex flex-row bg-[#17394C] w-full h-auto space-x-[2rem] rounded-xl mb-[1rem]">
+          <div className="flex flex-row items-center p-1 border-b-2 border-white bg-[#17394C] w-full h-auto space-x-[2rem] rounded-xl mb-[1rem]">
             <div className="text-white whitespace-nowrap ml-[1rem] text-[1.5rem]">
               <div>{item.nameItem}</div>
             </div>
@@ -98,11 +98,11 @@ const ItemList = () => {
   
   return (
     <>
-      <div className="flex flex-row justify-between ml-[3rem] mr-[3rem] mt-[2rem] text-white whitespace-nowrap">
+      <div className="flex flex-row justify-between mt-[2rem] text-white whitespace-nowrap">
         <div className='text-[2.5rem]'>LOST ITEMS</div>   
          {searchBar()}
       </div>
-      <div className="pr-[2rem] bg-[#134083] w-[74rem] h-full rounded-[2rem] flex flex-col space-x-[2rem] self-center">
+      <div className="bg-[#134083] w-full h-full rounded-[2rem] flex flex-col space-x-[2rem] space-y-[1rem] self-center p-[1rem]">
         <div className="flex flex-row-reverse mt-[1.5rem] h-[4rem]">
           <AddItem  />
         </div>

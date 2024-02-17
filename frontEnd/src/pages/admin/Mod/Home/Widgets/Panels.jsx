@@ -5,8 +5,8 @@ const Panels = () => {
   return (
     <>
     {/*panel 1 */}
-    <div className="flex flex-col text-white items-center space-y-[2rem] h-screen w-full px-[3rem]">
-      <div className="flex flex-row space-x-[1.5rem] text-white text-[2rem]">
+    <div className="flex flex-col text-white items-center space-y-[2rem] h-full w-full px-[3rem]">
+      <div className="flex flex-row space-x-[1.5rem] w-full text-white text-[2rem]">
         <div className="bg-[#134083] h-[15rem] w-[24rem] rounded-[2rem] pl-[1rem]">
           USERS
         </div>
