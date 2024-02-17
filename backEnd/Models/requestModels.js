@@ -22,4 +22,3 @@ const reqSchema = new schema({
 })
 const reqModelo = mongoose.model("Request", reqSchema)
 module.exports = reqModelo
-

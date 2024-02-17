@@ -3,6 +3,7 @@ import { axiosSendItem } from '../../../components/api/axios';
 import UploadingScreen from '../../404/UploadingScreen';
 import ItemsCarousel from './ItemsCarousel';
 
+
 const Modal = ({ isOpen, children }) => {
   if (!isOpen) return null;
 
@@ -40,7 +41,6 @@ const AddItem = () => {
 
   const uploadSuccess = () => {
     alert('Uploaded');
-    console.log('hello', files);
     window.location.reload();
   };
 
@@ -112,7 +112,7 @@ const AddItem = () => {
     }
   };
   
- 
+  const enableDeleteButton = true
   
     const displayPic = () => {
       if (imageUrl.length === 0) {
@@ -128,7 +128,7 @@ const AddItem = () => {
         setImageUrl(newImageUrl);
       };
   // send niya ung imageUrl sa ItemCarousel
-      return <ItemsCarousel imageUrl={imageUrl} handleDelete={handleDelete} />;
+      return <ItemsCarousel imageUrl={imageUrl} handleDelete={handleDelete} enableDeleteButton={enableDeleteButton}/>;
     };
    
   const openModal = () => setModalOpen(true);
@@ -211,6 +211,11 @@ const AddItem = () => {
             onChange={(e) => {
               const selectedFiles = e.target.files;
 
+              if (selectedFiles.length > 2) {
+                alert('Please add or upload no more than 2 images.');
+                return;
+              }
+
               const newImageUrls = [];
               const newFiles = [];
 
@@ -232,11 +237,16 @@ const AddItem = () => {
               };
 
               for (const file of selectedFiles) {
-                newFiles.push(file);
-                processFile(file, newFiles.length - 1);
+                if (file.type === 'image/jpeg' || file.type === 'image/png') {
+                  newFiles.push(file);
+                  processFile(file, newFiles.length - 1);
+                } else {
+                  alert('Only JPEG, PNG, and JPG file types are allowed.');
+                }
               }
             }}
           />
+
 
           <div className="flex flex-col items-center space-y-[1rem] text-white">
             <input

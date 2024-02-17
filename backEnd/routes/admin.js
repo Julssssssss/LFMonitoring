@@ -134,7 +134,6 @@ router.post('/setRoles', adminOnlyToken, async(req, res, next) => {
 });
 
 
-
 // for add item button 
 router.post('/sendItem', verifyToken, upload.array('image'), async (req, res) => {
   try {
@@ -356,16 +355,19 @@ const transporter = nodemailer.createTransport({
 
 router.post('/sendEmail', verifyToken, async(req, res, next)=>{
   try{
-
+    const {id} = req.body
+    console.log('eme' ,id)
+    const {to, subject, text} = req.body;
     const info = await transporter.sendMail({
       from: process.env.SERVER_ACC_EMAIL,
-      to: 'Jagillo@rtu.edu.ph',
-      subject: 'Hello from Nodemailer',
-      text: 'This is a test email sent from Nodemailer jakollambo.',
+      to: to,
+      subject: subject,
+      text: text,
     });
   
     console.log("Message sent: %s", info.messageId);
-
+    await reqModels.findByIdAndUpdate(id, { haveBeenEmailed: true });
+    res.status(200).json('success');
   }
   catch(err){
     console.log(err)

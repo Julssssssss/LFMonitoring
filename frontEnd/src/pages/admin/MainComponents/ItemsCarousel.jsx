@@ -1,51 +1,40 @@
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 
-const ItemsCarousel = ({ imageUrl, item, handleDelete, handleDeleteLink }) => {
-  console.log('imageUrl:', imageUrl);
-  console.log('item:', item);
-
+const ItemsCarousel = ({ imageUrl, item, handleDelete, handleDeleteLink, enableDeleteButton }) => {
+ 
   const handleDeleteClick = (index, isItem) => {
-    if (isItem) {
-      handleDeleteLink(index);
+    if (enableDeleteButton) {
+      if (isItem) {
+        handleDeleteLink(index);
+      } else {
+        handleDelete(index);
+      }
     } else {
-      handleDelete(index);
+      alert('Cannot modify. Delete button disabled.');
     }
   };
 
-  // If imageUrl is blank or empty, set it to null
-  const processedImageUrl = imageUrl && imageUrl.length > 0 ? imageUrl : null;
+  // Combine imageUrl and item into a single array
+  const images = imageUrl ? [...imageUrl] : [];
+  if (item && Array.isArray(item)) {
+    images.push(...item);
+  }
 
   return (
     <>
-      {processedImageUrl && processedImageUrl.length > 0 && (
+      {images.length > 0 && (
         <Carousel showStatus={false} showThumbs={false}>
-          {/* Render images from processedImageUrl */}
-          {processedImageUrl.map((url, index) => (
+          {/* Render images from images array */}
+          {images.map((url, index) => (
             <div key={index}>
               <img className='object-contain w-[25rem] h-[15rem]' src={url} alt={`product-${index}`} />
+              {/* Call handleDeleteClick with appropriate arguments */}
               <button
                 type="button"
                 className="text-white text-[1rem] bg-red-500 rounded-full absolute top-2 right-7"
-                onClick={() => handleDeleteClick(index, false)}
-              >
-                X
-              </button>
-            </div>
-          ))}
-        </Carousel>
-      )}
+                onClick={() => handleDeleteClick(index, index >= (imageUrl ? imageUrl.length : 0))}
 
-      {/* Check if item is defined and an array before mapping */}
-      {item && Array.isArray(item) && item.length > 0 && (
-        <Carousel showStatus={false} showThumbs={false}>
-          {item.map((url, index) => (
-            <div key={index}>
-              <img className='object-contain w-[25rem] h-[15rem]' src={url} alt={`product-${index}`} />
-              <button
-                type="button"
-                className="text-white text-[1rem] bg-red-500 rounded-full absolute top-2 right-7"
-                onClick={() => handleDeleteClick(index, true)}
               >
                 X
               </button>
