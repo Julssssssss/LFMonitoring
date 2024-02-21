@@ -29,7 +29,7 @@ const ItemDetails = () => {
  
   const sendReq = async()=>{
     try{
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/prot/request`,
+      await axios.post(`${import.meta.env.VITE_API_URL}/prot/request`,
         {itemId : data._id}, 
         {
           headers:{
@@ -37,14 +37,12 @@ const ItemDetails = () => {
           }
         }
       )
-    }
-    catch(err){console.log(err)}
-    finally{
-      setTimeout(()=>{
+      .then(setTimeout(()=>{
         setCooldownActive(false)
         //console.log('hello')
-      },5000)
-    } //para kahit mag fail request mapindot nya na agad uli
+      },5000))
+    }
+    catch(err){console.log(err)}
   } 
 
   //catch errors

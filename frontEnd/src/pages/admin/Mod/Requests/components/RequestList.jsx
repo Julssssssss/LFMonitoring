@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { axiosGetReqList, axiosReFetchToken } from "../../../../../components/api/axios";
+import { axiosGetReqList} from "../../../../../components/api/axios";
 import ItemsCarousel from "../../../MainComponents/ItemsCarousel";
 import { getData } from "../../../MainComponents/getData";
+import DeleteReq from "./DeleteReq";
 
 import SendButton from "./SendButton";
 import Approve from "./Approve";
@@ -25,6 +26,7 @@ const RequestList = () => {
   const [emailContent, setEmailContent] = useState('');
   const [subject, setSubject] = useState('');
   const [index, setIndex] = useState('');
+  const [showEmailTT, setShowEmailTT] = useState(false);
 
 
   const getReqList = async() => {
@@ -106,19 +108,28 @@ const RequestList = () => {
           <div className="flex flex-col border-b-2 border-white bg-[#17394C] w-full h-[4.5rem] space-x-[2rem] rounded-xl p-1">
             <div className="flex flex-row justify-between items-center text-white ml-[1rem] text-[1.3rem]">
               {elem.Email}
-              <div className={`${elem.haveBeenEmailed ? "bg-green-700" : "bg-red-700"} h-[1rem] w-[1rem] rounded-full mr-[1rem]`}></div>
+              <div className={`${elem.haveBeenEmailed ? "bg-green-700" : "bg-red-700"} h-[1rem] w-[1rem] rounded-full mr-[1rem]`}
+                onMouseEnter={()=>{setShowEmailTT(true)}}
+                onMouseLeave={()=>{setShowEmailTT(false)}}
+              >
+              {showEmailTT && (
+                <span className="absolute bg-gray-800 p-2 text-[1rem] text-white"
+                >
+                  {elem.haveBeenEmailed ? "user Emailed" : "user haven't Emailed"}
+                </span>
+              )}
+              </div>
             </div>
             <div className="items-center justify-center flex flex-row space-x-[1.5rem] pr-[1.5rem] text-[1rem]">
               <button onClick={() => viewItem(elem, items)} className="bg-[#F9D62B] w-[5rem] rounded-xl py-[0.2rem]">View</button>
               <Approve RequestItem = {elem} index={index} list={list} Item = {items} onClick={viewItem} />
-              <button className="  bg-[#F9D62B] w-[5rem] rounded-xl py-[0.2rem]">Delete</button>
+              <DeleteReq reqData={elem}/>
             </div>
           </div>
         </div>
       )}
     );
   }
-
     const enableDeleteButton = false
     const displayPic = () => {
       return <ItemsCarousel item={image} enableDeleteButton={enableDeleteButton}/>

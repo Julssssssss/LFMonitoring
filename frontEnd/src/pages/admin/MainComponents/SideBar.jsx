@@ -8,27 +8,35 @@ const Sidebar = () => {
         { to: '/Admin/Privilege', name: 'ADMIN', label: 'User Management', svg: (<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 21C4 17.4735 6.60771 14.5561 10 14.0709M19.8726 15.2038C19.8044 15.2079 19.7357 15.21 19.6667 15.21C18.6422 15.21 17.7077 14.7524 17 14C16.2923 14.7524 15.3578 15.2099 14.3333 15.2099C14.2643 15.2099 14.1956 15.2078 14.1274 15.2037C14.0442 15.5853 14 15.9855 14 16.3979C14 18.6121 15.2748 20.4725 17 21C18.7252 20.4725 20 18.6121 20 16.3979C20 15.9855 19.9558 15.5853 19.8726 15.2038ZM15 7C15 9.20914 13.2091 11 11 11C8.79086 11 7 9.20914 7 7C7 4.79086 8.79086 3 11 3C13.2091 3 15 4.79086 15 7Z" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>) }
     ];
 
-    return (
-        <div className="flex flex-col h-screen w-[7.5rem] border-r-[0.5rem] border-[#134083] rounded-r-[5rem] space-y-[2rem] bg-[#0D1832] items-center overflow-x-hidden">
-            <img className="w-[4.5rem] h-[4.5rem] m-[2rem] mt-[4rem]" src={'https://iieecsc.files.wordpress.com/2021/09/rizal_technological_university-1.png'} />
+    const role = localStorage.getItem('role')
+    if(role !== 'admin'){
+        buttons.pop()
+        //console.log(buttons)
+    }
 
-            {buttons.map((nav, index) => (
-                <div key={index} className="group relative m-12 flex justify-center">
-                    <Link to={nav.to}>
-                        <button className='w-[2.5rem] h-[2.5rem] relative'>
-                            <span className="whitespace-nowrap absolute top-[calc(-3rem)] left-[calc(50%)] transform translate-x-[-50%] scale-0 rounded bg-gray-800 p-2 text-[2rem] text-white flex z-50 group-hover:scale-50">{nav.name}</span>
-                            {nav.svg}
-                        </button>
-                    </Link>
-                </div>
-            ))}
-            <Link to={'/admin/HlpDocs'} className="absolute bottom-[4rem]">
-                <button className="w-[2.5rem] h-[2.5rem] group relative flex justify-center">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#ffffff" strokeWidth="2"></path> <path d="M10.5 8.67709C10.8665 8.26188 11.4027 8 12 8C13.1046 8 14 8.89543 14 10C14 10.9337 13.3601 11.718 12.4949 11.9383C12.2273 12.0064 12 12.2239 12 12.5V12.5V13" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> <path d="M12 16H12.01" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>
-                    <span className="whitespace-nowrap absolute top-[calc(-3rem)] left-[calc(50%)] transform translate-x-[-50%] scale-0 rounded bg-gray-800 p-2 text-[2rem] text-white flex z-50 group-hover:scale-50">SUPPORT/HELP</span>
-                </button>
-            </Link>
-        </div>
+  return (
+        <>
+            <div className="flex flex-col h-screen w-[7.5rem] border-r-[0.5rem] border-[#134083] rounded-r-[5rem] space-y-[2rem] bg-[#0D1832] items-center overflow-x-hidden">
+                <img className="w-[4.5rem] h-[4.5rem] m-[2rem] mt-[4rem]" src={'https://iieecsc.files.wordpress.com/2021/09/rizal_technological_university-1.png'} />
+
+                {buttons.map((nav, index) => (
+                    <div key={index} className="group relative m-12 flex justify-center">
+                        <Link to={nav.to}>
+                            <button className='w-[2.5rem] h-[2.5rem] relative'>
+                                <span className="whitespace-nowrap absolute top-[calc(-3rem)] left-[calc(50%)] transform translate-x-[-50%] scale-0 rounded bg-gray-800 p-2 text-[2rem] text-white flex z-50 group-hover:scale-50">{nav.name}</span>
+                                {nav.svg}
+                            </button>
+                        </Link>
+                    </div>
+                ))}
+                <Link to={'/admin/HlpDocs'} className="absolute bottom-[4rem]">
+                    <button className="w-[2.5rem] h-[2.5rem] group relative flex justify-center">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#ffffff" strokeWidth="2"></path> <path d="M10.5 8.67709C10.8665 8.26188 11.4027 8 12 8C13.1046 8 14 8.89543 14 10C14 10.9337 13.3601 11.718 12.4949 11.9383C12.2273 12.0064 12 12.2239 12 12.5V12.5V13" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> <path d="M12 16H12.01" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>
+                        <span className="whitespace-nowrap absolute top-[calc(-3rem)] left-[calc(50%)] transform translate-x-[-50%] scale-0 rounded bg-gray-800 p-2 text-[2rem] text-white flex z-50 group-hover:scale-50">SUPPORT/HELP</span>
+                    </button>
+                </Link>
+            </div>
+        </>
     );
 };
 
