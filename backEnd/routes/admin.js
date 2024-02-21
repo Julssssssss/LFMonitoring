@@ -317,17 +317,19 @@ router.post('/ArchivingTrans', verifyToken, async(req, res, next)=>{
         "claimedBy": Email,
         "dateClaimed": currentDate,
       })
+
       await archData.save() 
+      .then(async()=>{
+          await itemModels.findByIdAndDelete({'_id': _id})
+
+          const requestDel = await reqModels.findByIdAndDelete({'_id': transacID})
+          if(requestDel === null){
+            res.status(404).json({error: 'data not found'})
+          }
+          else{res.status(200).json('success')}
+        }
+      )
       //NOTE: TANGALIN LANG TO PAG READY NA ISAVE WALA PA KASI YUNG postedBy DATA AND TINATAMAD AKO MAGDELETE
-
-      await itemModels.findByIdAndDelete({'_id': _id})
-
-      const requestDel = await reqModels.findByIdAndDelete({'_id': transacID})
-      if(requestDel === null){
-        res.status(404).json({error: 'data not found'})
-      }
-
-      res.status(200).json('success')
     }
 
   }
@@ -373,6 +375,35 @@ router.post('/sendEmail', verifyToken, async(req, res, next)=>{
     console.log(err)
     res.sendStatus(500)
   }
+})
+
+router.post('/delReq', verifyToken, async(req, res, next)=>{
+  try{
+    //console.log(req.body)
+    const {_id} = req.body
+    //console.log(_id)
+
+    await reqModels.findById(_id)
+    .then(async()=>{
+      await reqModels.findByIdAndDelete(_id)
+        .then(()=>{
+          res.status(200).json('success')
+        })
+        .catch(err=>{
+          console.log(err) 
+          res.sendStatus(500)
+        })
+    })
+    .catch(err=>{
+      console.log(err) 
+      res.sendStatus(404)
+    })
+  }
+  catch(err){
+    console.log(err) 
+    res.sendStatus(500)
+  }
+
 })
 
 module.exports = router;
