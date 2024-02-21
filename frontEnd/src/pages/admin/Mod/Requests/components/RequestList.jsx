@@ -26,7 +26,6 @@ const RequestList = () => {
   const [emailContent, setEmailContent] = useState('');
   const [subject, setSubject] = useState('');
   const [index, setIndex] = useState('');
-  const [showEmailTT, setShowEmailTT] = useState(false);
 
 
   const getReqList = async() => {
@@ -108,16 +107,12 @@ const RequestList = () => {
           <div className="flex flex-col border-b-2 border-white bg-[#17394C] w-full h-[4.5rem] space-x-[2rem] rounded-xl p-1">
             <div className="flex flex-row justify-between items-center text-white ml-[1rem] text-[1.3rem]">
               {elem.Email}
-              <div className={`${elem.haveBeenEmailed ? "bg-green-700" : "bg-red-700"} h-[1rem] w-[1rem] rounded-full mr-[1rem]`}
-                onMouseEnter={()=>{setShowEmailTT(true)}}
-                onMouseLeave={()=>{setShowEmailTT(false)}}
+              <div className={`${elem.haveBeenEmailed ? "bg-green-700" : "bg-red-700"} group h-[1rem] w-[1rem] rounded-full mr-[1rem]`}
               >
-              {showEmailTT && (
-                <span className="absolute bg-gray-800 p-2 text-[1rem] text-white"
+                <span className="absolute left-[31rem] scale-0 bg-gray-800 p-2 text-[2rem] text-white group-hover:scale-50"
                 >
                   {elem.haveBeenEmailed ? "user Emailed" : "user haven't Emailed"}
                 </span>
-              )}
               </div>
             </div>
             <div className="items-center justify-center flex flex-row space-x-[1.5rem] pr-[1.5rem] text-[1rem]">
