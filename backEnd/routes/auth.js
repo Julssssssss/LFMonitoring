@@ -86,17 +86,22 @@ router.get("/google", passport.authenticate("google", ["email", "profile"]))
 router.get("/logout", (req, res)=>{
     const cookies =req.cookies
     const refreshToken = cookies.jwt
+    req.logout((err)=>{
+        if (err) {
+            console.error("Error logging out:", err);
+            return res.status(500).send("Error logging out");
+        }
+    });
     deleteRefTokenDb(refreshToken)
         .then(()=>{ 
             for (const cookieName in cookies) {
                 res.clearCookie(cookieName);
               }
-            req.logout();
             req.session = null            
             res.redirect(process.env.CLIENT_URL)
         })
         .catch((err) => {
-            console.error(err);
+            console.error(`error deleting token in database`, err);
             res.sendStatus(500); // Return an appropriate status code in case of error
         });
 })

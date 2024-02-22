@@ -16,7 +16,7 @@ const authRoute = require("./routes/auth")
 const adminRoute = require("./routes/admin")
 
 //session para sa google oauth
-const session = require("cookie-session")
+const session = require("express-session")
 
 //for cookie req
 const cookieParser = require('cookie-parser')
@@ -49,10 +49,9 @@ mongoose.connect(`${connectionString}test`)
 
 //use session
 app.use(session({
-    name: 'session',
-    keys: [process.env.SESSION_SECRET],
-    // Cookie expiration date
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    secret: `${process.env.SESSION_SECRET}`,
+    resave: false,
+    saveUninitialized: false
 }))    
     
 app.use(passport.initialize())
