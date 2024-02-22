@@ -31,7 +31,7 @@ const jwt =require('jsonwebtoken')
 //to whitelist urls
 const corsOptions =
     {
-        origin:"http://localhost:4000",
+        origin: `${process.env.FRONT_END_URL}`,
         methods: "GET,POST,PUT,DELETE",
         credentials: true,
     }
