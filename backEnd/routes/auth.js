@@ -61,7 +61,7 @@ router.get("/login/success", (req, res)=>{
     catch(error){
         res.status(403).json({
             error: true,
-            message:"Not Authorized"
+            message:"Not Authorized", error
         })
     }
 })
