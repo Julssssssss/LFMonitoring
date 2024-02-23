@@ -63,6 +63,10 @@ app.use("/prot", protRoute)
 
 app.use("/priv", adminRoute)
 
+app.use("/", (req,res)=>{
+    res.status(200).json("successfully running")
+})
+
 app.use((req, res)=>{
     //if you made a mistake on typing the url
     res.status(404).send(`<h1>WRONG URL!</h1>`)
