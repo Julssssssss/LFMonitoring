@@ -43,7 +43,7 @@ router.post('/refreshToken', async(req, res)=>{
 })
 
 router.get("/login/success", (req, res)=>{
-    if(req.user){
+    try{
         const {accessToken, refreshToken, role, TAC} = req.user
         req.session = null
         
@@ -58,7 +58,7 @@ router.get("/login/success", (req, res)=>{
             TAC : TAC
         })
     }
-    else{
+    catch(error){
         res.status(403).json({
             error: true,
             message:"Not Authorized"
