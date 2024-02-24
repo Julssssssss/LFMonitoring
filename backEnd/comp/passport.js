@@ -6,6 +6,7 @@ passport.serializeUser((user, done)=>{
     done(null, user)
 })
 passport.deserializeUser((user, done)=>{
+    console.log(user)
     done(null, user)
 })
 
