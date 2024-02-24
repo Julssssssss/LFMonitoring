@@ -2,7 +2,6 @@ const express = require('express') //npm i express cors
 const cors = require('cors')
 const app = express(); //to use express
 const port = 3000;
-const bodyParser = require('body-parser');
 require('dotenv').config()
 
 const protRoute = require('./routes/protected')
@@ -20,6 +19,9 @@ const session = require("express-session")
 
 //for cookie req
 const cookieParser = require('cookie-parser')
+
+//for body  parser
+const bodyParser = require('body-parser');
 
 //mongoose db
 const mongoose = require('mongoose')
