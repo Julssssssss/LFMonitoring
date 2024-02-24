@@ -44,7 +44,10 @@ router.post('/refreshToken', async(req, res)=>{
 
 router.get("/login/success", async(req, res)=>{
     try{
-        const {accessToken, refreshToken, role, TAC} = await req.user
+        const user = await req.user
+        const {accessToken, refreshToken, role, TAC} = user
+        //req.session = null
+        console.log(req.user)
         
         //req.session = null
         //send as http only para hindi maaccess through javascript
