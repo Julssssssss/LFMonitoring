@@ -3,10 +3,10 @@ const passport =require('passport')
 const findOrCreateUser = require('./findOrCreateUser')
 
 passport.serializeUser((user, done)=>{
-    done(err, user)
+    done(null, user)
 })
 passport.deserializeUser((user, done)=>{
-    done(err, user)
+    done(null, user)
 })
 
 passport.use(
