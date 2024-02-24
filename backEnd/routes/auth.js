@@ -1,6 +1,7 @@
 const router =require("express").Router()
 const passport = require("passport")
 const jwt = require('jsonwebtoken')
+const passport = require('./passport');
 const jwtRefreshToken = require('../Models/refreshTokenModels')
 
 //TODO: check and fix this
@@ -44,19 +45,19 @@ router.post('/refreshToken', async(req, res)=>{
 
 router.get("/login/success", async(req, res)=>{
     try{
-        const {accessToken, refreshToken, role, TAC} = await req.user
+       // const {accessToken, refreshToken, role, TAC} = await req.user
         
         req.session = null
         //send as http only para hindi maaccess through javascript
-        res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24 * 60 *60 * 1000 })
+       // res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24 * 60 *60 * 1000 })
             
         res.status(200).json({
             error:false,
             message:"Success",
             mema: req.user,
-            accessToken: accessToken,
+           /* accessToken: accessToken,
             role : role, 
-            TAC : TAC,
+            TAC : TAC,*/
         })
     }catch(err){
         res.status(403).json({
