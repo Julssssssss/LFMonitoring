@@ -44,31 +44,32 @@ router.post('/refreshToken', async(req, res)=>{
 
 router.get("/login/success", async(req, res)=>{
     try{
-        const user = await req.user
-        const {accessToken, refreshToken, role, TAC} = user
-        //req.session = null
-        console.log(req.user)
+        // Check if req.user is populated
+        if (!req.user) {
+            throw new Error("User not authenticated");
+        }
         
-        //req.session = null
-        //send as http only para hindi maaccess through javascript
-        res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24 * 60 *60 * 1000 })
-            console.log('here', req.user)
-            console.log('hello', req.session)
-            
+        // If req.user is populated, extract necessary data
+        const { accessToken, refreshToken, role, TAC } = req.user;
+
+        // Set cookie with refresh token
+        res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+
+        // Send response with user data
         res.status(200).json({
-            mema: req.user,
-            error:false,
-            message:"Success",
+            error: false,
+            message: "Success",
             accessToken: accessToken,
-            role : role, 
-            TAC : TAC,
-        })
-    }catch(err){
+            role: role,
+            TAC: TAC
+        });
+    } catch (error) {
+        // If an error occurs, send 403 response
         res.status(403).json({
             error: true,
-            message:"Not Authorized",
-            errorMSG: err.message,
-        })
+            message: "Not Authorized",
+            errorMSG: error.message
+        });
     }
 })
 
