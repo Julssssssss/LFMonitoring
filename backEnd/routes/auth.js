@@ -42,8 +42,9 @@ router.post('/refreshToken', async(req, res)=>{
     })
 })
 
-router.get("/login/success", (req, res)=>{
-    try{
+router.get("/login/success", async(req, res)=>{
+    await req.user
+    .then((result)=>{
         const {accessToken, refreshToken, role, TAC} = req.user
         req.session = null
         
@@ -57,13 +58,14 @@ router.get("/login/success", (req, res)=>{
             role : role, 
             TAC : TAC
         })
-    }
-    catch(error){
+    })
+    .catch(err=>{
         res.status(403).json({
             error: true,
-            message:"Not Authorized"
+            message:"Not Authorized",
+            errorMSG: err
         })
-    }
+    })
 })
 
 router.get("/login/failed", (req, res)=>{
