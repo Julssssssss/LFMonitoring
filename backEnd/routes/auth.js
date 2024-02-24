@@ -43,9 +43,8 @@ router.post('/refreshToken', async(req, res)=>{
 })
 
 router.get("/login/success", async(req, res)=>{
-    await req.user
-    .then((result)=>{
-        const {accessToken, refreshToken, role, TAC} = req.user
+    try{
+        const {accessToken, refreshToken, role, TAC} = await req.user
         req.session = null
         
         //send as http only para hindi maaccess through javascript
@@ -58,14 +57,14 @@ router.get("/login/success", async(req, res)=>{
             role : role, 
             TAC : TAC
         })
-    })
-    .catch(err=>{
+    }
+    catch(err){
         res.status(403).json({
             error: true,
             message:"Not Authorized",
-            errorMSG: err
+            errorMSG: err.message
         })
-    })
+    }
 })
 
 router.get("/login/failed", (req, res)=>{
