@@ -18,12 +18,9 @@ passport.use(
             scope:["email", "profile"],
         },
         function (accessToken, refreshToken, profile, done){
-            console.log(profile)
             const {sub, name, picture, email} = profile._json
             const user = {sub, name, picture, email}
-            console.log('here', user)
-            //findOrCreateUser(user, done);
-            return done(null, user);
+            findOrCreateUser(user, done);
         }
     )
 )
