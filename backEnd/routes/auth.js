@@ -49,7 +49,7 @@ router.get("/login/success", async(req, res)=>{
         console.log('mcdo', user)
         
         // If req.user is populated, extract necessary data
-        const { accessToken, refreshToken, role, TAC } = user;
+        //const { accessToken, refreshToken, role, TAC } = user;
 
         // Set cookie with refresh token
         res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
