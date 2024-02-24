@@ -26,9 +26,10 @@ axiosFetchToken.interceptors.response.use(
         try{
             if (error.response.status === 403 && !originalRequest._retry){
                 originalRequest._retry = true;
-                const retryResponse = await axiosFetchToken.get()
-                originalRequest._retry = false;
-                return retryResponse;
+                await axiosFetchToken.get()
+                .then(result=>{
+                    return result
+                })
             }
 
         }
