@@ -42,10 +42,11 @@ router.post('/refreshToken', async(req, res)=>{
     })
 })
 
-router.get("/login/success", async(req, res)=>{
+router.post("/login/success", async(req, res)=>{
     const user = await req.user
     try{
         console.log('mcdo', user)
+        console.log('jabe', req.session)
         
         const { accessToken, refreshToken, role, TAC } = user;
 
@@ -83,10 +84,6 @@ router.get("/google/callback",
         successRedirect: `${process.env.CLIENT_URL}`,
         failureRedirect: `/login/failed`,
 
-    },(req, res)=>{
-        console.log(req.session)
-        console.log(req.login)
-        //req.session.user = req.user;
     })
 )
 router.get("/google", passport.authenticate("google", ["email", "profile"]))
