@@ -45,11 +45,10 @@ router.post('/refreshToken', async(req, res)=>{
 router.get("/login/success", async(req, res)=>{
     const user = await req.user
     try{
-        console.log(req.user)
         console.log('mcdo', user)
+        console.log(req.session)
         
-        // If req.user is populated, extract necessary data
-        //const { accessToken, refreshToken, role, TAC } = user;
+        const { accessToken, refreshToken, role, TAC } = user;
 
         // Set cookie with refresh token
         res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
@@ -58,11 +57,9 @@ router.get("/login/success", async(req, res)=>{
         res.status(200).json({
             error: false,
             message: "Success",
-            mema: req.user,
-            memamamo: user
-            /*accessToken: accessToken,
+            accessToken: accessToken,
             role: role,
-            TAC: TAC */
+            TAC: TAC 
         });
     } catch (error) {
         // If an error occurs, send 403 response
