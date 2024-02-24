@@ -7,21 +7,33 @@ const reqModel = require("../Models/requestModels")
 const UserModel = require('../Models/userModels')
 
 //to verify token 
-const verifyToken = (req, res, next) => {
-    const authHeader = req.headers['authorization']
-    const token = authHeader.split(' ')[1]
-    if(token === 'null' ) {return res.sendStatus(401)}
-    jwt.verify(token, process.env.JWT_ACCESS_SECRET, (err, user)=>{
-        if(err) return res.sendStatus(403)
-        const {picture, TAC} = user
-        req.user = {
-            "user": user,
-            "picture": picture,
-            "TAC": true
-        }
-        next()
-    })
-};
+const verifyToken = async (req, res, next) => {
+    try {
+      const authHeader = req.headers['authorization'];
+      const token = authHeader && authHeader.split(' ')[1];
+      if (!token || token === 'null') {
+        return res.sendStatus(401);
+      }
+  
+      const user = await jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+      const { Role, picture } = user;
+  
+      if (Role !== 'admin' && Role !== 'mod') {
+        return res.sendStatus(401);
+      }
+  
+      req.user = {
+        user: user,
+        picture: picture
+      };
+  
+      next();
+    } catch (error) {
+      console.error('Token verification error:', error);
+      return res.sendStatus(403);
+    }
+  };
+  
 
 router.put("/TACagreement", verifyToken, async(req, res)=>{
     try{
