@@ -19,6 +19,25 @@ const axiosFetchToken = axios.create({
     baseURL: `${baseUrl}/auth/login/success`
 });
 
+axiosFetchToken.interceptors.response.use(
+    response => response,
+    async error => {
+        const originalRequest = error.config;
+        try{
+            if (error.response.status === 403 && !originalRequest._retry){
+                originalRequest._retry = true;
+                const retryResponse = await axiosFetchToken.get()
+                originalRequest._retry = false;
+                return retryResponse;
+            }
+
+        }
+        catch(err){
+            console.log(err)
+        }
+    }
+);
+
 //post kasi eto na mga need mo pakita token e
 const axiosFetchItems = axios.create({
     baseURL: `${baseUrl}/prot/data`,
