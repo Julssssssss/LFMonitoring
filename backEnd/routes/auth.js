@@ -42,9 +42,9 @@ router.post('/refreshToken', async(req, res)=>{
     })
 })
 
-router.get("/login/success", (req, res)=>{
-    if(req.user){
-        const {accessToken, refreshToken, role, TAC} = req.user
+router.get("/login/success", async(req, res)=>{
+    try{
+        const {accessToken, refreshToken, role, TAC} = await req.user
         req.session = null
         
         //send as http only para hindi maaccess through javascript
@@ -58,10 +58,11 @@ router.get("/login/success", (req, res)=>{
             TAC : TAC
         })
     }
-    else{
+    catch(err){
         res.status(403).json({
             error: true,
-            message:"Not Authorized"
+            message:"Not Authorized",
+            errorMSG: err.message
         })
     }
 })
@@ -86,17 +87,22 @@ router.get("/google", passport.authenticate("google", ["email", "profile"]))
 router.get("/logout", (req, res)=>{
     const cookies =req.cookies
     const refreshToken = cookies.jwt
+    req.logout((err)=>{
+        if (err) {
+            console.error("Error logging out:", err);
+            return res.status(500).send("Error logging out");
+        }
+    });
     deleteRefTokenDb(refreshToken)
         .then(()=>{ 
             for (const cookieName in cookies) {
                 res.clearCookie(cookieName);
               }
-            req.logout();
             req.session = null            
             res.redirect(process.env.CLIENT_URL)
         })
         .catch((err) => {
-            console.error(err);
+            console.error(`error deleting token in database`, err);
             res.sendStatus(500); // Return an appropriate status code in case of error
         });
 })
