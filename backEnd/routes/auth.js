@@ -55,7 +55,6 @@ router.get("/login/success", async(req, res)=>{
             accessToken: accessToken,
             role : role, 
             TAC : TAC,
-            headers: req.headers,
         })
     }
     catch(err){
@@ -64,7 +63,6 @@ router.get("/login/success", async(req, res)=>{
             message:"Not Authorized",
             accessToken: accessToken,
             errorMSG: err.message,
-            headers: req.headers,
         })
     }
 })
