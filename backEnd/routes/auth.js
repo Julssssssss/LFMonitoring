@@ -51,7 +51,7 @@ router.get("/login/success", async(req, res)=>{
         const { accessToken, refreshToken, role, TAC } = user;
 
         // Set cookie with refresh token
-        res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+        res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, sameSite: 'None', secure: true });
 
         // Send response with user data
         res.status(200).json({
@@ -84,6 +84,8 @@ router.get("/google/callback",
         successRedirect: `${process.env.CLIENT_URL}`,
         failureRedirect: `/login/failed`,
 
+    },(req, res)=>{
+        req.session.user = req.user;
     })
 )
 router.get("/google", passport.authenticate("google", ["email", "profile"]))
