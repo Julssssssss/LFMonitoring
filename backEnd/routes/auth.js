@@ -45,27 +45,26 @@ router.post('/refreshToken', async(req, res)=>{
 router.get("/login/success", async(req, res)=>{
     try{
         const {accessToken, refreshToken, role, TAC} = await req.user
-        req.session = null
         
+        //req.session = null
         //send as http only para hindi maaccess through javascript
         res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24 * 60 *60 * 1000 })
-
+            console.log('here', req.user)
+            console.log('hello', req.session)
+            
         res.status(200).json({
+            mema: req.user,
             error:false,
             message:"Success",
             accessToken: accessToken,
             role : role, 
             TAC : TAC,
-            headers: req.headers,
         })
-    }
-    catch(err){
+    }catch(err){
         res.status(403).json({
             error: true,
             message:"Not Authorized",
-            accessToken: accessToken,
             errorMSG: err.message,
-            headers: req.headers,
         })
     }
 })
