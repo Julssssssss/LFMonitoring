@@ -38,7 +38,7 @@ const findOrCreateUser = async (profile, done) => {
   
       if (user) {
         const token = createToken(user, profile)
-        console.log(token)
+        console.log('findorcreate', token)
         return done(null, token);
       } else {
         // If user doesn't exist, create a new user
@@ -54,7 +54,7 @@ const findOrCreateUser = async (profile, done) => {
 
         const newUser = true
         const token = createToken(user, profile)
-        console.log(token)
+        console.log('findorcreate', token)
         return done(null, token);
       }
     } catch (error) {

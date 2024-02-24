@@ -43,9 +43,9 @@ router.post('/refreshToken', async(req, res)=>{
 })
 
 router.get("/login/success", async(req, res)=>{
-    const user = await req.user
     try{
-        console.log('mcdo', user)
+        const user = await req.user
+        console.log('after awaiting', user)
         console.log('jabe', req.session)
         
         const { accessToken, refreshToken, role, TAC } = user;
