@@ -43,9 +43,9 @@ router.post('/refreshToken', async(req, res)=>{
 })
 
 router.get("/login/success", async(req, res)=>{
+    const user = await req.user
     try{
         console.log(req.user)
-        const user = await req.user
         console.log('mcdo', user)
         
         // If req.user is populated, extract necessary data
