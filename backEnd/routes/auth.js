@@ -58,6 +58,8 @@ router.get("/login/success", async(req, res)=>{
         res.status(200).json({
             error: false,
             message: "Success",
+            mema: req.user,
+            memamamo: user
             /*accessToken: accessToken,
             role: role,
             TAC: TAC */
