@@ -7,9 +7,9 @@ passport.serializeUser((user, done)=>{
     //console.log('userID', user.id)
     done(null, user.id)
 })
-passport.deserializeUser((user, done)=>{
+passport.deserializeUser((id, done)=>{
     console.log('deserialize', user)
-    done(null, user.id)
+    done(null, id)
 })
 
 passport.use(
