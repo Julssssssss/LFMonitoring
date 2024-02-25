@@ -18,7 +18,7 @@ const createToken = (user, profile)=>{
     const data = {_id, Name, Email, Role, TAC, picture}
     // If user exists, return the user
     //wag kalimutan palitan 60s
-    const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET, {expiresIn: '10s'})
+    const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET, {expiresIn: '120s'})
     const refreshToken = jwt.sign(data, process.env.JWT_REFRESH_SECRET, {expiresIn: '1hr'})
     addRefreshToken(refreshToken, Email)
     const token = {
@@ -53,7 +53,7 @@ const findOrCreateUser = async (profile, done) => {
         });
         await user.save();
 
-        const newUser = true
+        //const newUser = true
         const token = createToken(user, profile)
         //console.log('findorcreate', token)
         return done(null, token);
