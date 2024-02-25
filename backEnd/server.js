@@ -34,15 +34,13 @@ const connectionString = process.env.MONGO_CONNECTION_STRING
 app.use(session({
     secret: `${process.env.SESSION_SECRET}`,
     resave: false,
-    saveUninitialized: false,
-    sameSite: false
+    saveUninitialized: false
 }))
 
 app.use(passport.initialize())
 app.use(passport.session())
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(cookieParser())    
 
 //to whitelist urls

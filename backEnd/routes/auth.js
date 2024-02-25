@@ -37,22 +37,20 @@ router.post('/refreshToken', async(req, res)=>{
         }
         const {_id, Name, Email, Role, TAC, picture}=user
         const data = {_id, Name, Email,TAC, Role, picture}
-        const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET, {expiresIn: '10s'})
+        const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET, {expiresIn: '120s'})
         res.json({ accessToken: accessToken})
     })
 })
 
 router.get("/login/success", async(req, res)=>{
     try{
-        const user = await req.user
-        console.log('after awaiting', user)
-        console.log('jabe', req.session)
         
-        const { accessToken, refreshToken, role, TAC } = user;
+        const { accessToken, refreshToken, role, TAC } = req.user;
 
         // Set cookie with refresh token
         res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true });
- 
+        console.log('jabe', req.session)
+
         // Send response with user data
         res.status(200).json({
             error: false,
