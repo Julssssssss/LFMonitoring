@@ -45,10 +45,6 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 
 app.use(cookieParser())
 
-mongoose.connect(`${connectionString}test`)
-    .then((result)=>app.listen(port,()=> console.log(`running in port ${port}`))) //run the port in 3000
-    .catch(err=>{console.log(err)})
-
 //use session
 app.use(session({
     secret: `${process.env.SESSION_SECRET}`,
@@ -64,6 +60,10 @@ app.use("/auth", authRoute)
 app.use("/prot", protRoute)
 
 app.use("/priv", adminRoute)
+
+mongoose.connect(`${connectionString}test`)
+    .then((result)=>app.listen(port,()=> console.log(`running in port ${port}`))) //run the port in 3000
+    .catch(err=>{console.log(err)})
 
 app.use("/", (req,res)=>{
     res.status(200).json("successfully running")

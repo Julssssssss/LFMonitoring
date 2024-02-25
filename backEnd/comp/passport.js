@@ -5,7 +5,7 @@ const findOrCreateUser = require('./findOrCreateUser')
 passport.serializeUser((user, done)=>{
     console.log('serialize', user)
     console.log('userID', user.id)
-    done(null, user)
+    done(null, user.id)
 })
 passport.deserializeUser((user, done)=>{
     console.log('deserialize', user)
