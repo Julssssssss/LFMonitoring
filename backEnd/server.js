@@ -34,7 +34,8 @@ const connectionString = process.env.MONGO_CONNECTION_STRING
 app.use(session({
     secret: `${process.env.SESSION_SECRET}`,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    sameSite: false
 }))
 
 app.use(passport.initialize())
