@@ -5,11 +5,11 @@ const findOrCreateUser = require('./findOrCreateUser')
 passport.serializeUser((user, done)=>{
     console.log('serialize', user)
     //console.log('userID', user.id)
-    done(null, user)
+    done(user, null)
 })
-passport.deserializeUser(async(user, done)=>{
-    console.log('deserialize', await user)
-    done(null, await user)
+passport.deserializeUser((user, done)=>{
+    console.log('deserialize', user)
+    done(user, null)
 })
 
 passport.use(
@@ -23,7 +23,8 @@ passport.use(
         function (accessToken, refreshToken, profile, done){
             const {sub, name, picture, email} = profile._json
             const user = {sub, name, picture, email}
-            findOrCreateUser(user, done);
+            //findOrCreateUser(user, done);
+            done(user, err)
         }
     )
 )
