@@ -83,7 +83,6 @@ router.get("/google/callback",
         //NOTE!!!! TEMPORARY MUNA SA DASHBOARD IBATO PARA IF EVER IPRESENT PERO BABALIK SA / LANG PARA IAUTH
         successRedirect: `${process.env.CLIENT_URL}`,
         failureRedirect: `/login/failed`,
-
     })
 )
 router.get("/google", passport.authenticate("google", ["email", "profile"]))
