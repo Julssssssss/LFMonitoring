@@ -22,6 +22,7 @@ const createToken = (user, profile)=>{
     const refreshToken = jwt.sign(data, process.env.JWT_REFRESH_SECRET, {expiresIn: '1hr'})
     addRefreshToken(refreshToken, Email)
     const token = {
+      "id": _id,
       'accessToken': accessToken,
       'refreshToken': refreshToken,
       'role' : data.Role,
