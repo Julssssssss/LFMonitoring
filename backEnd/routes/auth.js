@@ -52,7 +52,7 @@ router.get("/login/success", async(req, res)=>{
 
         // Set cookie with refresh token
         res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true });
-
+ 
         // Send response with user data
         res.status(200).json({
             error: false,

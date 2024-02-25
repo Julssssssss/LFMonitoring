@@ -1,7 +1,7 @@
 const GoogleStrategy = require("passport-google-oauth20").Strategy
 const passport =require('passport')
 const findOrCreateUser = require('./findOrCreateUser')
-const User = require('../Models/userModels')
+
 
 passport.serializeUser((user, done)=>{
     console.log('serialize', user)
@@ -11,9 +11,7 @@ passport.serializeUser((user, done)=>{
 
 passport.deserializeUser((id, done)=>{
     console.log('deserialize', id)
-    User.findById(id, (err, user) => {
-        done(err, user); // Pass the user object retrieved from the database
-    });
+    done(null, id)
 })
 
 passport.use(

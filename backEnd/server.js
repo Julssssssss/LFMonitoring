@@ -8,6 +8,9 @@ const protRoute = require('./routes/protected')
 
 const passport = require('passport')
 
+//jwt 
+const jwt =require('jsonwebtoken')
+
 //passport.js file
 const passportSetup =require('./comp/passport')
 //routes
@@ -27,8 +30,19 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose')
 const connectionString = process.env.MONGO_CONNECTION_STRING
 
-//jwt 
-const jwt =require('jsonwebtoken')
+//use session
+app.use(session({
+    secret: `${process.env.SESSION_SECRET}`,
+    resave: false,
+    saveUninitialized: false
+}))
+
+app.use(passport.initialize())
+app.use(passport.session())
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+app.use(cookieParser())    
 
 //to whitelist urls
 const corsOptions =
@@ -39,21 +53,6 @@ const corsOptions =
     }
 
 app.use(cors(corsOptions))
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
-
-app.use(cookieParser())
-
-//use session
-app.use(session({
-    secret: `${process.env.SESSION_SECRET}`,
-    resave: false,
-    saveUninitialized: false
-}))    
-    
-app.use(passport.initialize())
-app.use(passport.session())
 
 app.use("/auth", authRoute)
 
