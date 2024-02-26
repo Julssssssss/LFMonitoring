@@ -81,6 +81,8 @@ router.get("/login/failed", (req, res)=>{
     })
 })
 
+router.get("/google", passport.authenticate("google", ["email", "profile"]))
+
 router.get("/google/callback",
     passport.authenticate("google", {
         //NOTE!!!! TEMPORARY MUNA SA DASHBOARD IBATO PARA IF EVER IPRESENT PERO BABALIK SA / LANG PARA IAUTH
@@ -88,7 +90,6 @@ router.get("/google/callback",
         failureRedirect: `/login/failed`,
     })
 )
-router.get("/google", passport.authenticate("google", ["email", "profile"]))
 
 router.get("/logout", (req, res)=>{
     const cookies =req.cookies

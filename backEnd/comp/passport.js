@@ -2,25 +2,6 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy
 const passport =require('passport')
 const findOrCreateUser = require('./findOrCreateUser')
 
-passport.serializeUser((user, done)=>{
-    try{
-        //console.log('serialize', user)
-        done(null, user.id)
-    }
-    catch(err){
-        console.log(err)
-    }
-})
-
-passport.deserializeUser((user, done)=>{
-    try{
-        console.log('deserialize', user)
-        done(null, user)
-    }
-    catch(err){
-        console.log(err)
-    }
-})
 
 passport.use(
     new GoogleStrategy(
@@ -38,3 +19,27 @@ passport.use(
         }
     )
 )
+
+passport.serializeUser(async(user, done)=>{
+    await user
+    try{
+        console.log('serialize')
+        console.log(user)
+        done(null, user.id)
+    }
+    catch(err){
+        console.log(err)
+    }
+})
+
+passport.deserializeUser(async(user, done)=>{
+    await user
+    try{
+        console.log('deserialize')
+        console.log(user)
+        done(null, user)
+    }
+    catch(err){
+        console.log(err)
+    }
+})
