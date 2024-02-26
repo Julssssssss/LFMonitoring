@@ -44,7 +44,7 @@ router.post('/refreshToken', async(req, res)=>{
 
 router.get("/login/success", (req, res)=>{
     try{
-        console.log('user', user)
+        console.log('user', req.user)
         //const { accessToken, refreshToken, role, TAC } = user;
 
         // Set cookie with refresh token
