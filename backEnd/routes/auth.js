@@ -42,35 +42,40 @@ router.post('/refreshToken', async(req, res)=>{
     })
 })
 
-router.get("/login/success", passport.authenticate('google', { failureRedirect: '/login' }), (req, res)=>{
+router.get("/login/success", (req, res)=>{
     try{
-        const user = req.user
-        console.log('user', user)
-        //const { accessToken, refreshToken, role, TAC } = user;
+        if(req.user){
+            const user = req.user
+            console.log('user', user)
+            //const { accessToken, refreshToken, role, TAC } = user;
 
-        // Set cookie with refresh token
-        //res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true });
-        
-        //req.session = {...req.session,"jwt": user} 
-        console.log('jabe', req.session)
-        
+            // Set cookie with refresh token
+            //res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true });
+            
+            //req.session = {...req.session,"jwt": user} 
+            console.log('jabe', req.session)
+            
 
-        // Send response with user data
-        res.status(200).json({
-            error: false,
-            message: "Success",
-            userId: user
-            /*accessToken: accessToken,
-            role: role,
-            TAC: TAC */
-        });
+            // Send response with user data
+            res.status(200).json({
+                error: false,
+                message: "Success",
+                userId: user
+                /*accessToken: accessToken,
+                role: role,
+                TAC: TAC */
+            });
+        }
+        else{
+            res.status(403).json({
+                error: true,
+                message: "Not Authorized",
+                //errorMSG: error.message
+            });
+        }
     } catch (error) {
         // If an error occurs, send 403 response
-        res.status(403).json({
-            error: true,
-            message: "Not Authorized",
-            errorMSG: error.message
-        });
+        console.log(error)
     }
 })
 
