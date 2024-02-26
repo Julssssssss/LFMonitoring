@@ -28,6 +28,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose')
 const connectionString = process.env.MONGO_CONNECTION_STRING
 
+app.set('trust proxy', 1);
+
 app.use(cookieParser())   
 app.use(bodyParser.json()); 
 
@@ -36,9 +38,6 @@ app.use(session({
     secret: `${process.env.SESSION_SECRET}`,
     resave: false,
     saveUninitialized: false,
-    cookie:{
-        secure: true
-    }
 }))
 
 app.use(passport.initialize())
