@@ -14,8 +14,8 @@ passport.use(
         function (accessToken, refreshToken, profile, done){
             const {sub, name, picture, email} = profile._json
             const user = {sub, name, picture, email}
-            findOrCreateUser(user, done);
-            //done(null, user)
+            //findOrCreateUser(user, done);
+            done(null, user)
         }
     )
 )
