@@ -25,7 +25,7 @@ passport.serializeUser(async(user, done)=>{
     try{
         console.log('serialize')
         console.log(user)
-        done(null, user.id)
+        done(null, user.sub)
     }
     catch(err){
         console.log(err)
