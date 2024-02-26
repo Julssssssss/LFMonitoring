@@ -10,6 +10,7 @@ passport.use(
             clientSecret: process.env.CLIENT_SECRET,
             callbackURL: `${process.env.CYCLIC_URL}/auth/google/callback`,
             scope:["email", "profile"],
+            session: true
         },
         function (accessToken, refreshToken, profile, done){
             const {sub, name, picture, email} = profile._json
@@ -20,8 +21,7 @@ passport.use(
     )
 )
 
-passport.serializeUser(async(user, done)=>{
-    await user
+passport.serializeUser((user, done)=>{
     try{
         console.log('serialize')
         console.log(user)
@@ -32,8 +32,7 @@ passport.serializeUser(async(user, done)=>{
     }
 })
 
-passport.deserializeUser(async(user, done)=>{
-    await user
+passport.deserializeUser((user, done)=>{
     try{
         console.log('deserialize')
         console.log(user)
