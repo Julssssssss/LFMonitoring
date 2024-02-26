@@ -10,9 +10,7 @@ const passport = require('passport')
 
 //jwt 
 const jwt =require('jsonwebtoken')
-
-//passport.js file
-const passportSetup =require('./comp/passport')
+const passportSetup = require('./comp/passport')
 //routes
 const authRoute = require("./routes/auth")
 const adminRoute = require("./routes/admin")
