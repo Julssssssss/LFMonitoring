@@ -28,18 +28,20 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose')
 const connectionString = process.env.MONGO_CONNECTION_STRING
 
+app.use(cookieParser())   
+
 //use session
 app.use(session({
     secret: `${process.env.SESSION_SECRET}`,
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: false
+    
 }))
 
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use(bodyParser.json());
-app.use(cookieParser())    
+app.use(bodyParser.json()); 
 
 //to whitelist urls
 const corsOptions =
