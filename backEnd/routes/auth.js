@@ -46,19 +46,23 @@ router.get("/login/success", async(req, res)=>{
     const user = await req.user
     try{
         console.log('user', user)
-        const { accessToken, refreshToken, role, TAC } = user;
+        //const { accessToken, refreshToken, role, TAC } = user;
 
         // Set cookie with refresh token
-        res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true });
+        //res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true });
+        
+        //req.session = {...req.session,"jwt": user} 
         console.log('jabe', req.session)
+        
 
         // Send response with user data
         res.status(200).json({
             error: false,
             message: "Success",
-            accessToken: accessToken,
+            userId: user
+            /*accessToken: accessToken,
             role: role,
-            TAC: TAC 
+            TAC: TAC */
         });
     } catch (error) {
         // If an error occurs, send 403 response
