@@ -42,7 +42,7 @@ router.post('/refreshToken', async(req, res)=>{
     })
 })
 
-router.get("/login/success", (req, res)=>{
+router.get("/login/success", passport.authenticate('google', { failureRedirect: '/login' }), (req, res)=>{
     try{
         const user = req.user
         console.log('user', user)
