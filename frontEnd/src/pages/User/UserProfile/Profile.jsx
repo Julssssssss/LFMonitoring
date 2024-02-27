@@ -27,7 +27,7 @@ const Profile = () => {
             </button>
           </Link>
         </div>
-        <div className="bg-[#0d1832] font-poppins h-screen flex flex-col items-center">
+        <div className="bg-[#0d1832] font-poppins h-auto flex flex-col items-center">
           {/* USER IMAGE */}
           <img className='rounded-full border-8 mt-10 w-[10rem] h-[10rem] border-yellow-400' src={User[0].picture}></img>
           {/* USER DATA */}

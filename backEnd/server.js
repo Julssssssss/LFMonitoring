@@ -39,7 +39,6 @@ const corsOptions =
 app.use(cors(corsOptions))
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 
 app.use(cookieParser())
 

@@ -79,7 +79,7 @@ const Dashboard = () => {
         <div key={index} className="flex flex-row m-[1rem] mb-[2.5rem] rounded-lg z-0 justify-end h-[6rem] items-center ">
           <Link to={{ pathname: `/Item/${el._id}` }} state={{ el }}>
             <div className="m-2 rounded-lg bg-[#003985] hover:bg-sky-700 active:bg-[#0d1832] overflow-hidden w-[16rem] h-[5rem]">
-              <div className="flex items-center font-bold text-white ml-[7rem] h-full p-4">{el.nameItem}</div>
+              <div className="whitespace-nowrap flex items-center font-bold text-white text-[0.7rem] ml-[7.4rem] h-full p-4">{el.nameItem}</div>
             </div>
           </Link>
 
