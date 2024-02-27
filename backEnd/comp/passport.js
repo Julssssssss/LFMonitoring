@@ -16,7 +16,7 @@ passport.use(
             const {sub, name, picture, email} = profile._json
             const user = {sub, name, picture, email}
             //findOrCreateUser(user, done);
-            done(null, user)
+            done(null, sub)
         }
     )
 )
@@ -25,7 +25,7 @@ passport.serializeUser((user, done)=>{
     try{
         console.log('serialize')
         console.log(user)
-        done(null, user.sub)
+        done(null, user)
     }
     catch(err){
         console.log(err)

@@ -42,6 +42,16 @@ router.post('/refreshToken', async(req, res)=>{
     })
 })
 
+router.get("/google", passport.authenticate("google", ["email", "profile"]))
+
+router.get("/google/callback",
+    passport.authenticate("google", {
+        //NOTE!!!! TEMPORARY MUNA SA DASHBOARD IBATO PARA IF EVER IPRESENT PERO BABALIK SA / LANG PARA IAUTH
+        successRedirect: `${process.env.CLIENT_URL}`,
+        failureRedirect: `/login/failed`
+    })
+)
+
 router.get("/login/success", (req, res)=>{
     try{
         const user = req.user
@@ -81,16 +91,6 @@ router.get("/login/failed", (req, res)=>{
         message:"Log in failure"
     })
 })
-
-router.get("/google", passport.authenticate("google", ["email", "profile"]))
-
-router.get("/google/callback",
-    passport.authenticate("google", {
-        //NOTE!!!! TEMPORARY MUNA SA DASHBOARD IBATO PARA IF EVER IPRESENT PERO BABALIK SA / LANG PARA IAUTH
-        successRedirect: `${process.env.CLIENT_URL}`,
-        failureRedirect: `/login/failed`
-    })
-)
 
 router.get("/logout", (req, res)=>{
     const cookies =req.cookies
