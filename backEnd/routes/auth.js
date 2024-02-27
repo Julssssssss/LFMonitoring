@@ -53,7 +53,7 @@ router.get("/login/success", (req, res)=>{
         
         req.session = {...req.session,"borat": "burikat"} 
         console.log('jabe', req.session)
-        console.log(req.headers)
+        //console.log(req.headers)
         
 
         // Send response with user data
