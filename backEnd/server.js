@@ -4,13 +4,12 @@ const app = express(); //to use express
 const port = 3000;
 require('dotenv').config()
 
-const protRoute = require('./routes/protected')
-
 const passport = require('passport')
+const passportSetup = require('./comp/passport')
+const protRoute = require('./routes/protected')
 
 //jwt 
 const jwt =require('jsonwebtoken')
-const passportSetup = require('./comp/passport')
 //routes
 const authRoute = require("./routes/auth")
 const adminRoute = require("./routes/admin")
@@ -33,11 +32,19 @@ app.set('trust proxy', 1);
 app.use(cookieParser())   
 app.use(bodyParser.json()); 
 
+const sessionSecure=()=>{
+    return process.env.CYLIC_URL === `http://localhost:3000` ? true : false
+}
+
 //use session
 app.use(session({
     secret: `${process.env.SESSION_SECRET}`,
     resave: false,
     saveUninitialized: false,
+    cookie: {
+        secure: sessionSecure(), // Set to true if using HTTPS in production
+        maxAge: 60 * 60 * 1000, // Set cookie expiration time (1 hour)
+      },
 }))
 
 app.use(passport.initialize())
