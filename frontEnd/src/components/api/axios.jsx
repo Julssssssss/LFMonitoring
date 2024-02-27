@@ -16,7 +16,8 @@ const logout =()=>{
 
 //get
 const axiosFetchToken = axios.create({
-    baseURL: `${baseUrl}/auth/login/success`
+    baseURL: `${baseUrl}/auth/login/success`,
+    withCredentials: true
 });
 
 //post kasi eto na mga need mo pakita token e
