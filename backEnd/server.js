@@ -38,8 +38,8 @@ const sessionSecure=()=>{
         return true
     }
 }
-console.log(sessionSecure())
-console.log(process.env.SERVER_URL)
+//console.log(sessionSecure())
+//console.log(process.env.SERVER_URL)
 
 //use session
 app.use(session({
@@ -52,10 +52,6 @@ app.use(session({
       },
 }))
 
-app.use(passport.initialize())
-app.use(passport.session())
-
-
 //to whitelist urls
 const corsOptions =
     {
@@ -66,6 +62,10 @@ const corsOptions =
     }
 
 app.use(cors(corsOptions))
+
+app.use(passport.initialize())
+app.use(passport.session())
+
 
 app.use("/auth", authRoute)
 
