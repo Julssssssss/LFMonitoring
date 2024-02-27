@@ -8,7 +8,7 @@ passport.use(
         {
             clientID: process.env.CLIENT_ID,
             clientSecret: process.env.CLIENT_SECRET,
-            callbackURL: `${process.env.CYCLIC_URL}/auth/google/callback`,
+            callbackURL: `${process.env.SERVER_URL}/auth/google/callback`,
             scope:["email", "profile"],
             session: true
         },

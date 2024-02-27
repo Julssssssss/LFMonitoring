@@ -31,8 +31,15 @@ app.use(cookieParser())
 app.use(bodyParser.json()); 
 
 const sessionSecure=()=>{
-    return process.env.CYLIC_URL === `http://localhost:3000` ? true : false
+    if(process.env.SERVER_URL === `http://localhost:3000`){
+        return false
+    }
+    else{
+        return true
+    }
 }
+console.log(sessionSecure())
+console.log(process.env.SERVER_URL)
 
 //use session
 app.use(session({
@@ -55,6 +62,7 @@ const corsOptions =
         origin: `${process.env.CLIENT_URL}`,
         methods: "GET,POST,PUT,DELETE",
         credentials: true,
+        allowedHeaders: ['Content-Type']
     }
 
 app.use(cors(corsOptions))
