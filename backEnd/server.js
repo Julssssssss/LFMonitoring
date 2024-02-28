@@ -46,10 +46,11 @@ app.use(session({
     secret: `${process.env.SESSION_SECRET}`,
     resave: false,
     saveUninitialized: false,
+    store: new MongoStore({ mongooseConnection: mongoose.connection, ttl: 3600  }),
     cookie: {
-        secure: sessionSecure(), // Set to true if using HTTPS in production
+        secure: true, // Set to true if using HTTPS in production
         maxAge: 60 * 60 * 1000, // Set cookie expiration time (1 hour)
-      },
+      }
 }))
 
 //to whitelist urls
