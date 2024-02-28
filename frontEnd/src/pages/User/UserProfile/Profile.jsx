@@ -36,8 +36,8 @@ const Profile = () => {
             <b>Email:</b> {User[0].user.Email}
           </div>
           {/* yellow designs */}
-          <div className="absolute left-0 top-[18rem] bg-yellow-400 w-[14rem] h-[4.6rem] z-10"></div>
-          <div className=" absolute right-0 top-[26rem] bg-yellow-400 w-[14rem] h-[4.6rem] z-10"></div>
+          <div className="absolute left-0 top-[18rem] bg-yellow-400 w-[14rem] h-[4.6rem] z-10 sm:w-[15.6rem] md:w-[26.3rem] lg:w-[34.3rem] xl:w-[47.4rem] 2xl:w-[62.4rem]"></div>
+          <div className=" absolute right-0 top-[26rem] bg-yellow-400 w-[14rem] h-[4.6rem] z-10 sm:w-[15.6rem] md:w-[26.3rem] lg:w-[34.3rem] xl:w-[47.4rem] 2xl:w-[62.4rem]"></div>
           <div className="mt-[5rem] mb-[2rem]">
             <Logout />
           </div>
