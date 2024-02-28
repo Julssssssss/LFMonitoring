@@ -32,7 +32,8 @@ const connectionString = process.env.MONGO_CONNECTION_STRING
 app.use(session({
     secret: `${process.env.SESSION_SECRET}`,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    store: new MongoStore({ mongooseConnection: mongoose.connection, ttl: 3600  })
 }))
 
 app.use(passport.initialize())
