@@ -4,6 +4,8 @@ const app = express(); //to use express
 const port = 3000;
 require('dotenv').config()
 
+const passport = require('passport')
+const passportSetup = require('./comp/passport')
 const protRoute = require('./routes/protected')
 const MongoStore = require('connect-mongo')(session)
 
@@ -11,7 +13,6 @@ const passport = require('passport')
 
 //jwt 
 const jwt =require('jsonwebtoken')
-const passportSetup = require('./comp/passport')
 //routes
 const authRoute = require("./routes/auth")
 const adminRoute = require("./routes/admin")
@@ -29,19 +30,31 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose')
 const connectionString = process.env.MONGO_CONNECTION_STRING
 
+app.use(cookieParser())   
+app.use(bodyParser.json()); 
+
+const sessionSecure=()=>{
+    if(process.env.SERVER_URL === `http://localhost:3000`){
+        return false
+    }
+    else{
+        return true
+    }
+}
+//console.log(sessionSecure())
+//console.log(process.env.SERVER_URL)
+
 //use session
 app.use(session({
     secret: `${process.env.SESSION_SECRET}`,
     resave: false,
     saveUninitialized: false,
-    store: new MongoStore({ mongooseConnection: mongoose.connection, ttl: 3600  })
+    store: new MongoStore({ mongooseConnection: mongoose.connection, ttl: 3600  }),
+    cookie: {
+        secure: true, // Set to true if using HTTPS in production
+        maxAge: 60 * 60 * 1000, // Set cookie expiration time (1 hour)
+      }
 }))
-
-app.use(passport.initialize())
-app.use(passport.session())
-
-app.use(bodyParser.json());
-app.use(cookieParser())    
 
 //to whitelist urls
 const corsOptions =
@@ -49,9 +62,14 @@ const corsOptions =
         origin: `${process.env.CLIENT_URL}`,
         methods: "GET,POST,PUT,DELETE",
         credentials: true,
+        allowedHeaders: ['Content-Type']
     }
 
 app.use(cors(corsOptions))
+
+app.use(passport.initialize())
+app.use(passport.session())
+
 
 app.use("/auth", authRoute)
 

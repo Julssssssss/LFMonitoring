@@ -42,17 +42,18 @@ router.post('/refreshToken', async(req, res)=>{
     })
 })
 
-router.get("/login/success", async(req, res)=>{
-    const user = await req.user
+router.get("/login/success", (req, res)=>{
     try{
+        const user = req.user
         console.log('user', user)
         //const { accessToken, refreshToken, role, TAC } = user;
 
         // Set cookie with refresh token
         //res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true });
         
-        //req.session = {...req.session,"jwt": user} 
+        req.session = {...req.session,"borat": "burikat"} 
         console.log('jabe', req.session)
+        //console.log(req.headers)
         
 
         // Send response with user data
@@ -87,7 +88,7 @@ router.get("/google/callback",
     passport.authenticate("google", {
         //NOTE!!!! TEMPORARY MUNA SA DASHBOARD IBATO PARA IF EVER IPRESENT PERO BABALIK SA / LANG PARA IAUTH
         successRedirect: `${process.env.CLIENT_URL}`,
-        failureRedirect: `/login/failed`,
+        failureRedirect: `/login/failed`
     })
 )
 
