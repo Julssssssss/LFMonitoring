@@ -44,19 +44,19 @@ router.post('/refreshToken', async(req, res)=>{
 
 router.get("/login/success", async(req, res)=>{
     try{
-       // const {accessToken, refreshToken, role, TAC} = await req.user
+        const {accessToken, refreshToken, role, TAC} = req.user
         
-        req.session = null
+       // req.session = null
         //send as http only para hindi maaccess through javascript
-       // res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24 * 60 *60 * 1000 })
-            
+       res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24 * 60 *60 * 1000 })
+            console.log('hiii', req.session)
         res.status(200).json({
             error:false,
             message:"Success",
             mema: req.user,
-           /* accessToken: accessToken,
+            accessToken: accessToken,
             role : role, 
-            TAC : TAC,*/
+            TAC : TAC,
         })
     }catch(err){
         res.status(403).json({
