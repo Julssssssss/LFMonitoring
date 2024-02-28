@@ -34,19 +34,21 @@ const createToken = (user, profile)=>{
 
 const findOrCreateUser = async (profile, done) => {
     try {
+      const {sub, name, picture, email,} = profile
       // Find the user based on the provider ID
-      let user = await User.findOne({ 'Email': profile.email });
+      let user = await User.findOne({ 'Email': email });
   
       if (user) {
-        const token = createToken(user, profile)
+        const token = createToken(user)
         //console.log('findorcreate', token)
         return done(null, token);
       } else {
         // If user doesn't exist, create a new user
         user = new User({
-          _id: profile.sub,
-          Name: profile.name,
-          Email: profile.email,
+          _id: sub,
+          Name: name,
+          Email: email,
+          Picture: picture,
           Role: 'user', 
           TAC: false
           // Add any other relevant fields from the profile
@@ -54,7 +56,7 @@ const findOrCreateUser = async (profile, done) => {
         await user.save();
 
         //const newUser = true
-        const token = createToken(user, profile)
+        const token = createToken(user)
         //console.log('findorcreate', token)
         return done(null, token);
       }
