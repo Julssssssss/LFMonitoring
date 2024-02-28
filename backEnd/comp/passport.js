@@ -15,16 +15,15 @@ passport.use(
         function (accessToken, refreshToken, profile, done){
             const {sub, name, picture, email} = profile._json
             const user = {sub, name, picture, email}
-            //findOrCreateUser(user, done);
-            done(null, sub)
+            findOrCreateUser(user, done);
+            //done(null, sub)
         }
     )
 )
 
 passport.serializeUser((user, done)=>{
     try{
-        console.log('serialize')
-        console.log(user)
+        //console.log('serialize', user)
         done(null, user)
     }
     catch(err){
@@ -34,8 +33,7 @@ passport.serializeUser((user, done)=>{
 
 passport.deserializeUser((user, done)=>{
     try{
-        console.log('deserialize')
-        console.log(user)
+        //console.log('deserialize', user)
         done(null, user)
     }
     catch(err){
