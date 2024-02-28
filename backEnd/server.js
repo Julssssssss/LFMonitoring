@@ -5,6 +5,7 @@ const port = 3000;
 require('dotenv').config()
 
 const protRoute = require('./routes/protected')
+const MongoStore = require('connect-mongo')(session)
 
 const passport = require('passport')
 
