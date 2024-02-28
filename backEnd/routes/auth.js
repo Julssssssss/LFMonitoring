@@ -82,6 +82,9 @@ router.get("/google/callback",
         
     }),(req, res, next) => {
         console.log('hello', req.session)
+        const mem = req.user
+        console.log('sample', req.user)
+        req.session = {...req.session, 'borat': mem}
         res.redirect(process.env.CLIENT_URL)
     }
 )
