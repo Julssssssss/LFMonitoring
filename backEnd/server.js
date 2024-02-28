@@ -4,12 +4,9 @@ const app = express(); //to use express
 const port = 3000;
 require('dotenv').config()
 
-const passport = require('passport')
 const passportSetup = require('./comp/passport')
 const protRoute = require('./routes/protected')
 const MongoStore = require('connect-mongo')(session)
-
-const passport = require('passport')
 
 //jwt 
 const jwt =require('jsonwebtoken')
@@ -43,6 +40,9 @@ const sessionSecure=()=>{
 }
 //console.log(sessionSecure())
 //console.log(process.env.SERVER_URL)
+mongoose.connect(`${connectionString}test`)
+    .then((result)=>app.listen(port,()=> console.log(`running in port ${port}`))) //run the port in 3000
+    .catch(err=>{console.log(err)})
 
 //use session
 app.use(session({
@@ -56,6 +56,7 @@ app.use(session({
       }
 }))
 
+const passport = require('passport')
 //to whitelist urls
 const corsOptions =
     {
@@ -76,10 +77,6 @@ app.use("/auth", authRoute)
 app.use("/prot", protRoute)
 
 app.use("/priv", adminRoute)
-
-mongoose.connect(`${connectionString}test`)
-    .then((result)=>app.listen(port,()=> console.log(`running in port ${port}`))) //run the port in 3000
-    .catch(err=>{console.log(err)})
 
 app.get("/", (req,res)=>{
     res.status(200).json("successfully running")
