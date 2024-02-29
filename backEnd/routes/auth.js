@@ -2,65 +2,103 @@ const router =require("express").Router()
 const passport = require("passport")
 const jwt = require('jsonwebtoken')
 const jwtRefreshToken = require('../Models/refreshTokenModels')
+const userModel = require('../Models/userModels')
+
 
 //TODO: check and fix this
 const checkRefToken = async(refreshToken) =>{
-    let token = await jwtRefreshToken.findOne({ 'refreshToken': refreshToken });
+    const token = await jwtRefreshToken.findOne({ 'refreshToken': refreshToken })
+    //console.log(token._id)
     if(token){
-        return null
+        console.log(token._id)
+        return token._id
     }
     else{
         return 401
     }
 }
 
-const deleteRefTokenDb = async(refreshToken)=>{
+const deleteRefTokenDb = async(id)=>{
     try{
-        await jwtRefreshToken.findOneAndDelete({ 'refreshToken': refreshToken });
+        await jwtRefreshToken.findByIdAndDelete(id)
+        .then(()=>{
+            console.log('successfully deleted')
+            return null
+        })
     }catch(err) {console.log(err)}
 }
 
 router.post('/refreshToken', async(req, res)=>{
+    //console.log(req.cookies.jwt)
     const refreshToken =req.cookies
     if(!refreshToken?.jwt) return res.sendStatus(401)
+    //console.log(refreshToken.jwt)
 
-    const status = await checkRefToken(refreshToken.jwt)
-        if(status=== 401){
+    const id = await checkRefToken(refreshToken.jwt)
+        if(id=== 401){
             return res.sendStatus(401)
         }
-
     jwt.verify (refreshToken.jwt, process.env.JWT_REFRESH_SECRET, (err, user)=>{
         //if expired na refreshToken delete na
         if(err) {
-            deleteRefTokenDb(refreshToken.jwt)
-            return res.sendStatus(401)
+            console.log(id)
+            deleteRefTokenDb(id)
+            return res.status(401)
         }
-        const {_id, Name, Email, Role, TAC, picture}=user
-        const data = {_id, Name, Email,TAC, Role, picture}
-        const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET, {expiresIn: '10s'})
+        const {_id, Name, Email, Role, TAC, Picture}=user
+        const data = {_id, Name, Email,TAC, Role, Picture}
+        const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET, {expiresIn: '120s'})
+        console.log('success')
         res.json({ accessToken: accessToken})
     })
 })
 
-router.get("/login/success", async(req, res)=>{
-    try{
-        const user = await req.user
-        console.log('after awaiting', user)
-        console.log('jabe', req.session)
-        
-        const { accessToken, refreshToken, role, TAC } = user;
-
-        // Set cookie with refresh token
-        res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true });
-
-        // Send response with user data
-        res.status(200).json({
-            error: false,
-            message: "Success",
-            accessToken: accessToken,
-            role: role,
-            TAC: TAC 
+const addRefreshTokenToDB = async(_id,  refreshToken) =>{
+    await jwtRefreshToken.findByIdAndDelete(_id)
+    .finally(()=>{
+        refreshToken = new jwtRefreshToken({
+            _id: _id,
+            refreshToken: refreshToken
         });
+        refreshToken.save();
+    })
+}
+
+router.post("/login/success", async(req, res)=>{
+    try{
+        const userId = req.user
+        //console.log('after awaiting', user)
+        
+        //console.log('jabe', req.session)
+        if(userId){
+            await userModel.findById(userId)
+            .then(async(result)=>{
+                //console.log(result)
+                const {_id, Name, Email, Picture, Role, TAC} = result;
+                const userData = {_id, Name, Email, Picture, Role, TAC}
+                const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_SECRET, {expiresIn: '10s'})
+                const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET, {expiresIn: '25s'}) //1hr
+                await addRefreshTokenToDB(_id, refreshToken)
+                // Set cookie with refresh token
+                res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true });
+
+                // Send response with user data
+                res.status(200).json({
+                    error: false,
+                    message: "Success",
+                    accessToken: accessToken,
+                    role: Role,
+                    TAC: TAC 
+                });
+            })
+            .catch(err=>{
+                console.log(err)
+                res.status(500).json({
+                    error: true,
+                    message: "Error occured try again later"
+                });
+            })
+        }
     } catch (error) {
         // If an error occurs, send 403 response
         res.status(403).json({
@@ -89,8 +127,8 @@ router.get("/google/callback",
 router.get("/google", passport.authenticate("google", ["email", "profile"]))
 
 router.get("/logout", (req, res)=>{
-    const cookies =req.cookies
-    const refreshToken = cookies.jwt
+    //console.log('cookies', req.cookies)
+    const refreshToken = req.cookies.jwt
     req.logout((err)=>{
         if (err) {
             console.error("Error logging out:", err);
@@ -98,11 +136,10 @@ router.get("/logout", (req, res)=>{
         }
     });
     deleteRefTokenDb(refreshToken)
-        .then(()=>{ 
-            for (const cookieName in cookies) {
-                res.clearCookie(cookieName);
-              }
-            req.session = null            
+        .then((result)=>{     
+            
+            res.clearCookie('connect.sid') 
+            res.clearCookie('jwt')      
             res.redirect(process.env.CLIENT_URL)
         })
         .catch((err) => {
