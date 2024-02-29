@@ -47,7 +47,7 @@ router.post('/refreshToken', async(req, res)=>{
         }
         const {_id, Name, Email, Role, TAC, Picture}=user
         const data = {_id, Name, Email,TAC, Role, Picture}
-        const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET, {expiresIn: '120s'})
+        const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET, {expiresIn: '300s'})
         console.log('success')
         res.json({ accessToken: accessToken})
     })
@@ -76,8 +76,8 @@ router.post("/login/success", async(req, res)=>{
                 //console.log(result)
                 const {_id, Name, Email, Picture, Role, TAC} = result;
                 const userData = {_id, Name, Email, Picture, Role, TAC}
-                const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_SECRET, {expiresIn: '10s'})
-                const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET, {expiresIn: '25s'}) //1hr
+                const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_SECRET, {expiresIn: '300s'})
+                const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET, {expiresIn: '1hr'}) //1hr
                 await addRefreshTokenToDB(_id, refreshToken)
                 // Set cookie with refresh token
                 res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true });
