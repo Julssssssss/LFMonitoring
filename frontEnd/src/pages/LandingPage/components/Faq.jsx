@@ -35,7 +35,7 @@ const Faq = () => {
             </button>
           </div>
           {isOpen[index] && (
-            <div className="relative z-20 p-2 text-justify text-[0.7rem] border border-[#F9D62B] rounded shadow-md mt-2 md:text-[1rem] lg:text-[1.5rem] lg:w-[45rem] xl:text-[1.6rem] xl:w-[55rem] 2xl:text-[1.9rem] 2xl:w-[75rem] 2xl:ml-[2rem]">
+            <div className="relative z-20 p-2 text-justify text-[0.7rem] border border-[#F9D62B] rounded shadow-md mt-2 md:text-[1rem] lg:text-[1.5rem] lg:w-[45rem] xl:text-[1.6rem] xl:w-[55rem] xl:ml-[1.5rem] 2xl:text-[1.9rem] 2xl:w-[75rem] 2xl:ml-[2rem]">
               {el.contents}
             </div>
           )}
@@ -54,8 +54,8 @@ const Faq = () => {
           </div>
           {Format()}
         </div>
-        <img src="https://res.cloudinary.com/dxjpbwlkh/image/upload/v1708962233/Assets/Untitled_design_ryezys.gif"alt="model3" className="h-[10rem] w-[10rem] absolute z-0 top-0 right-0 sm:h-[11rem] sm:w-[11rem] md:h-[16rem] md:w-[16rem] md:right-[1rem] md:-top-[1rem] lg:h-[18rem] lg:w-[18rem] lg:right-[14rem]"/>
-        <img src="https://res.cloudinary.com/dxjpbwlkh/image/upload/v1709027083/Assets/Group_2_cgstab.png" alt="model4" className="absolute z-0 h-[10rem] w-[10rem] -bottom-[2.5rem] -right-[2rem] opacity-20 sm:h-[12rem] sm:w-[12rem] lg:w-[26rem] lg:h-[26rem]"/>
+        <img src="https://res.cloudinary.com/dxjpbwlkh/image/upload/v1708962233/Assets/Untitled_design_ryezys.gif"alt="model3" className="h-[10rem] w-[10rem] absolute z-0 top-0 right-0 sm:h-[11rem] sm:w-[11rem] md:h-[16rem] md:w-[16rem] md:right-[1rem] md:-top-[1rem] lg:h-[18rem] lg:w-[18rem] lg:right-[14rem] xl:right-[30rem] xl:h-[19rem] xl:w-[19rem] 2xl:h-[24rem] 2xl:w-[24rem] 2xl:right-[40rem]"/>
+        <img src="https://res.cloudinary.com/dxjpbwlkh/image/upload/v1709027083/Assets/Group_2_cgstab.png" alt="model4" className="absolute z-0 h-[10rem] w-[10rem] -bottom-[2.5rem] -right-[2rem] opacity-20 sm:h-[12rem] sm:w-[12rem] lg:w-[26rem] lg:h-[26rem] xl:w-[35rem] xl:h-[35rem] xl:-bottom-[8rem] 2xl:w-[50rem] 2xl:h-[50rem]"/>
       </div>
     </>
   );

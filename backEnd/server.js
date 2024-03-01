@@ -50,7 +50,8 @@ mongoose.connect(`${connectionString}test`)
 app.use(session({
     secret: `${process.env.SESSION_SECRET}`,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie:{secure: false}
 }))    
     
 app.use(passport.initialize())

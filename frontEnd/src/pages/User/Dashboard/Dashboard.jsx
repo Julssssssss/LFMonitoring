@@ -46,9 +46,9 @@ const Dashboard = () => {
   function searchBar() {
     return (
       <>
-        <div className="flex flex-row justify-center mt-[1rem]">
-          <div className="w-[2rem] h-[2rem] p-2 bg-[#17394C] rounded-l-lg">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div className="flex flex-row justify-center mt-[1rem] mb-[1rem] md:justify-start md:ml-[1.5rem] md:mb-[1rem]">
+          <div className="w-[2rem] h-[2.1rem] p-2 bg-[#17394C] rounded-l-lg border-b-2 2xl:h-[3rem] 2xl:w-[3rem]">
+            <svg className="2xl:w-[2rem] 2xl:h-[2rem]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
               <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
               <g id="SVGRepo_iconCarrier">
@@ -64,7 +64,7 @@ const Dashboard = () => {
           </div>
           <input
             type="text"
-            className="bg-[#17394C] text-white p-[1rem] w-[16rem] h-8 rounded-r-lg"
+            className="bg-[#17394C] border-b-2 mb-[1rem]  text-white p-[1rem] w-[16rem] h-8 rounded-r-lg sm:w-[19rem] xl:w-[22rem] 2xl:w-[30rem] 2xl:h-[3rem] 2xl:text-[1.5rem]"
             value={searchQuery}
             onChange={handleInputChange}
           />
@@ -76,52 +76,45 @@ const Dashboard = () => {
   function sample() {
     return filteredData.map((el, index) => {
       return (
-        <div key={index} className="flex flex-row m-[1rem] mb-[2.5rem] rounded-lg z-0 justify-end h-[6rem] items-center ">
+        <div key={index} className="flex flex-row mb-[3rem] rounded-lg justify-center items-center">
+          
           <Link to={{ pathname: `/Item/${el._id}` }} state={{ el }}>
-            <div className="m-2 rounded-lg bg-[#003985] hover:bg-sky-700 active:bg-[#0d1832] overflow-hidden w-[16rem] h-[5rem]">
-              <div className="whitespace-nowrap flex items-center font-bold text-white text-[0.7rem] ml-[7.4rem] h-full p-4">{el.nameItem}</div>
+            <div className="flex items-center rounded-l-[10rem] rounded-r-[4rem] bg-[#003985] border-b-[0.1rem] border-white hover:bg-sky-700 active:bg-[#0d1832] w-[17rem] h-[6rem] sm:w-[20rem] sm:h-[6.5rem] lg:w-[18rem] lg:h-[6rem] xl:w-[25rem] xl:h-[8rem] xl:mt-[2rem] xl:mb-[2rem] 2xl:h-[9rem] 2xl:w-[26rem]">
+              <div className="p-2 rounded-full bg-yellow-400">
+                <img src={el.url[0]} alt={el.nameItem} className="rounded-full object-contain w-[7rem] h-[7rem] sm:w-[7.5rem] sm:h-[7.5rem] lg:w-[7rem] lg:h-[7rem] xl:h-[12.5rem] xl:w-[12.5rem]" />
+              </div>
+              <div className="whitespace-nowrap flex items-center font-bold text-white text-[0.7rem] ml-[0.4rem] h-full p-[0.5rem] sm:ml-[0.5rem] md:text-[0.9rem] md:ml-[0.4rem] xl:text-[1.1rem] 2xl:text-[1.3rem]">{el.nameItem}</div>
+              
             </div>
           </Link>
 
-          <div className="p-2 rounded-full bg-yellow-400 overflow-hidden absolute left-[3rem] ">
-            <img src={el.url[0]} alt={el.nameItem} className="rounded-full object-contain w-28 h-28" />
-          </div>
+
         </div>
       );
     });
   }
 
   return (
-    <div className="bg-[#0d1832] p-[1rem] min-h-screen font-poppins">
-      <div className="bg-[#002855] rounded-[1rem]">
-        <div className="flex pt-[1rem] px-[1rem]">
+    <>
+    <div className="relative flex justify-center bg-[#0d1832] w-screen p-[1.5rem] min-h-screen font-poppins overflow-x-hidden 2xl:p-[2rem]">
+      <div className=" bg-[#002855] rounded-[1rem] w-full">
+        <div className="flex flex-row space-x-[2.8rem] pt-[1rem] px-[1rem] xl:space-x-[4rem]">
           <ProfilePic User={data} />
-          <div className="flex p-[0.5rem] whitespace-nowrap w-full">
-            <div className="text-white text-lg"> Hi, {data[0].user.Name}</div>
+          <div className="flex p-[0.5rem] whitespace-nowrap w-full xl:p-[1.2rem] 2xl:p-[1.7rem]">
+            <div className="text-white text-lg xl:text-[2rem] 2xl:text-[2.5rem]"> Hi, {data[0].user.Name}</div>
           </div>
         </div>
 
         {searchBar()}
-        <div className={`flex flex-col p-[1rem] min-h-screen`}>
-          <img
-            className="w-[5rem] h-[5rem] fixed right-[0.5rem] top-[8rem]"
-            src="https://res.cloudinary.com/dxjpbwlkh/image/upload/v1702908163/Assets/Untitled_design_4_3_c6zova.png"
-            alt="rectangle"
-          />
-          <img
-            className="w-[5rem] h-[5rem] fixed left-[0.6rem] bottom-[2rem]"
-            src="https://res.cloudinary.com/dxjpbwlkh/image/upload/v1702908164/Assets/Untitled_design_8_2_r00uua.png"
-            alt="rectangle"
-          />
-          <img
-            className="w-[5rem] h-[5rem] fixed left-[10rem] top-[19rem]"
-            src="https://res.cloudinary.com/dxjpbwlkh/image/upload/v1702908163/Assets/Untitled_design_9_2_vm1wx2.png"
-            alt="rectangle"
-          />
-          {sample()}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[1rem] xl:grid-cols-[20rem]xl xl:mx-[1.5rem] 2xl:grid-cols-4">
+          <img src="https://res.cloudinary.com/dxjpbwlkh/image/upload/v1709031100/Assets/Group_4_d8iknv.png" alt="shape1" className="h-[10rem] w-[10.5rem] absolute z-10 -top-[3rem] -right-[1rem] opacity-50 md:h-[12rem] md:w-[12.5rem] lg:h-[13rem] lg:w-[13.5rem] xl:h-[24rem] xl:w-[25rem] xl:-top-[7rem] xl:right-[10rem] 2xl:w-[28rem] 2xl:h-[27rem]" />
+          <img src="https://res.cloudinary.com/dxjpbwlkh/image/upload/v1709031100/Assets/Group_3_umxc26.png" alt="shape2" className="h-[10rem] w-[10rem] absolute z-10 -top-[1.5rem] -left-[5rem] opacity-50 xsm:h-[11rem] xsm:w-[10rem] xsm:-top-[1.7rem] md:h-[12.8rem] md:w-[11rem] md:-left-[6.2rem] md:-top-[2.1rem] xl:h-[16rem] xl:w-[13rem] xl:-left-[7rem] 2xl:w-[15rem] 2xl:h-[20rem] 2xl:-top-[3rem] 2xl:-left-[8rem]"/>
+          <img src="https://res.cloudinary.com/dxjpbwlkh/image/upload/v1709126701/Assets/Group_21_tplope.png" alt="shape3" className="h-[5rem] w-[5rem] absolute z-10 bottom-0 right-[0rem] opacity-50 xsm:h-[7rem] xsm:w-[10rem] md:h-[9rem] md:w-[12.5rem] 2xl:w-[20rem] 2xl:h-[14rem]" />
+            {sample()}
         </div>
       </div>
     </div>
+    </>
   );
 };
 

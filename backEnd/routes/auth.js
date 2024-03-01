@@ -49,6 +49,7 @@ router.get("/login/success", async(req, res)=>{
         //req.session = null
         //send as http only para hindi maaccess through javascript
         res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24 * 60 *60 * 1000 })
+        console.log('here', req.user)
         res.status(200).json({
 
             mema: req.user,
@@ -58,6 +59,7 @@ router.get("/login/success", async(req, res)=>{
             role : role, 
             TAC : TAC,
         })
+        
     }catch(err){
         res.status(403).json({
             error: true,
