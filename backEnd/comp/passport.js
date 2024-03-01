@@ -9,14 +9,18 @@ passport.use(
             clientID: process.env.CLIENT_ID,
             clientSecret: process.env.CLIENT_SECRET,
             callbackURL: `${process.env.SERVER_URL}/auth/google/callback`,
-            scope:["email", "profile"],
-            session: true
+            scope:["email", "profile"]
         },
         function (accessToken, refreshToken, profile, done){
+            try{
             const {sub, name, picture, email} = profile._json
             const user = {sub, name, picture, email}
             findOrCreateUser(user, done);
             //done(null, sub)
+            }
+            catch(err){
+                console.log(err)
+            }
         }
     )
 )

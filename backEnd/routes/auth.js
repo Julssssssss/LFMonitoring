@@ -41,7 +41,7 @@ router.post('/refreshToken', async(req, res)=>{
         }
         const {_id, Name, Email, Picture, Role, TAC,}=user
         const data = {_id, Name, Email, Picture, TAC, Role}
-        const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET, {expiresIn: '120s'})
+        const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET, {expiresIn: '300s'})
         res.json({ accessToken: accessToken})
     })
 })
@@ -70,7 +70,7 @@ router.get("/login/success", async(req, res)=>{
             //console.log(result)
             const {_id, Name, Email, Picture, Role, TAC} = result
             const data = {_id, Name, Email, Picture, Role, TAC}
-            const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET, {expiresIn: '120s'})
+            const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET, {expiresIn: '300s'})
             const refreshToken = jwt.sign(data, process.env.JWT_REFRESH_SECRET, {expiresIn: '1hr'})
             res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true })
             // Send response with user data
@@ -113,14 +113,13 @@ router.get("/google/callback",
 )
 
 router.get("/logout", (req, res)=>{
-    const cookies =req.cookies
-    const refreshToken = cookies.jwt
     req.logout((err)=>{
         if (err) {
             console.error("Error logging out:", err);
             return res.status(500).send("Error logging out");
         }
     });
+    res.clearCookie('jwt')
     res.redirect(process.env.CLIENT_URL)
     /*deleteRefTokenDb(refreshToken)
         .then(()=>{ 
