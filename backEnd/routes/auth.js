@@ -93,7 +93,7 @@ router.get("/login/success", async(req, res)=>{
             })
             .catch(err=>{
                 console.log(err)
-                res.status(500).json({
+                    res.status(500).json({
                     error: true,
                     message: "Error occured try again later"
                 });
@@ -107,12 +107,7 @@ router.get("/login/success", async(req, res)=>{
             });
         }
     } catch (error) {
-        // If an error occurs, send 403 response
-        res.status(403).json({
-            error: true,
-            message: "Not Authorized",
-            errorMSG: error.message
-        });
+        console.log(error)
     }
 })
 
