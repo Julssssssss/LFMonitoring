@@ -64,7 +64,7 @@ const addRefreshTokenToDB = async(_id,  refreshToken) =>{
     })
 }
 
-router.post("/login/success", async(req, res)=>{
+router.get("/login/success", async(req, res)=>{
     try{
         const userId = req.user
         //console.log('after awaiting', user)
