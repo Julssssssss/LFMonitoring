@@ -99,6 +99,13 @@ router.post("/login/success", async(req, res)=>{
                 });
             })
         }
+        else{
+            res.status(403).json({
+                error: true,
+                message: "Not Authorized",
+                errorMSG: error.message
+            });
+        }
     } catch (error) {
         // If an error occurs, send 403 response
         res.status(403).json({
