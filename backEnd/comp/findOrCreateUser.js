@@ -7,6 +7,7 @@ const findOrCreateUser = async (profile, done) => {
       // Find the user based on the provider ID
       let user = await User.findOne({ 'Email': profile.email });
       const {sub, name, email, picture} = profile
+      const tapon = {sub, name, email, picture}
       
       if (user === null) {
         user = new User({
@@ -20,7 +21,7 @@ const findOrCreateUser = async (profile, done) => {
         });
         await user.save();
       } 
-        return done(null, sub);
+        return done(null, tapon);
     }
     catch (error) {
       return done(error);

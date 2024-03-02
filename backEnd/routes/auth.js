@@ -69,6 +69,7 @@ const addRefreshTokenToDB = async(Email,  refreshToken) =>{
 
 router.get("/login/success", async(req, res)=>{
     const userId = req.user
+    console.log('here', req.user)
     //console.log('after awaiting', user)
     //console.log('jabe', req.session)
     if(userId){
