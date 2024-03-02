@@ -112,11 +112,7 @@ router.get("/login/success", async(req, res)=>{
         */
     }
     catch(err){
-        res.status(401).json({
-            error: true,
-            message: "Not Authorized",
-            msgErr: err.message
-        });
+        console.log(err)
     }
 })
 
