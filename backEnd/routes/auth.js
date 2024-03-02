@@ -68,43 +68,54 @@ const addRefreshTokenToDB = async(Email,  refreshToken) =>{
 }
 
 router.get("/login/success", async(req, res)=>{
-    const userId = req.user
-    console.log('here', req.user)
-    //console.log('after awaiting', user)
-    //console.log('jabe', req.session)
-    if(userId){
-        await userModel.findById(userId)
-        .then(async(result)=>{
-            //console.log(result)
-            const {_id, Name, Email, Picture, Role, TAC} = result;
-            const userData = {_id, Name, Email, Picture, Role, TAC}
-            const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_SECRET, {expiresIn: '300s'})
-            const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET, {expiresIn: '1hr'}) //1hr
-            await addRefreshTokenToDB(Email, refreshToken)
-            // Set cookie with refresh token
-            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true });
+    try{
+        const userId = req.user
+        console.log('here', req.user)
+        //console.log('after awaiting', user)
+        //console.log('jabe', req.session)
+        if(userId){
+            await userModel.findById(userId)
+            .then(async(result)=>{
+                //console.log(result)
+                const {_id, Name, Email, Picture, Role, TAC} = result;
+                const userData = {_id, Name, Email, Picture, Role, TAC}
+                const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_SECRET, {expiresIn: '300s'})
+                const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET, {expiresIn: '1hr'}) //1hr
+                await addRefreshTokenToDB(Email, refreshToken)
+                // Set cookie with refresh token
+                res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true });
 
-            // Send response with user data
-            res.status(200).json({
-                error: false,
-                message: "Success",
-                accessToken: accessToken,
-                role: Role,
-                TAC: TAC 
-            });
-        })
-        .catch(err=>{
-            console.log(err)
-                res.status(500).json({
+                // Send response with user data
+                res.status(200).json({
+                    error: false,
+                    message: "Success",
+                    accessToken: accessToken,
+                    role: Role,
+                    TAC: TAC 
+                });
+            })
+            .catch(err=>{
+                console.log(err)
+                    res.status(500).json({
+                    error: true,
+                    message: "Error occured try again later"
+                });
+            })
+        }
+        /*
+        else{
+            res.status(403).json({
                 error: true,
-                message: "Error occured try again later"
+                message: "Not Authorized",
             });
-        })
+        }
+        */
     }
-    else{
-        res.status(403).json({
+    catch(err){
+        res.status(401).json({
             error: true,
             message: "Not Authorized",
+            msgErr: err.message
         });
     }
 })
@@ -121,7 +132,7 @@ router.get("/google/callback",
         //NOTE!!!! TEMPORARY MUNA SA DASHBOARD IBATO PARA IF EVER IPRESENT PERO BABALIK SA / LANG PARA IAUTH
         successRedirect: `${process.env.CLIENT_URL}`,
         failureRedirect: `/login/failed`,
-
+        failureMessage: true
     })
 )
 router.get("/google", passport.authenticate("google", ["email", "profile"]))

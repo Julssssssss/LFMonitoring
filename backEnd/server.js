@@ -58,7 +58,7 @@ const sessionSecure=()=>{
         return true
     }
 }
-console.log('secure: ',sessionSecure())
+//console.log('secure: ',sessionSecure())
 //use session
 app.use(session({
     secret: `${process.env.SESSION_SECRET}`,
