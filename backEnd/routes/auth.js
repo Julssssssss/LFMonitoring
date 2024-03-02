@@ -77,7 +77,7 @@ router.get("/login/success", async(req, res)=>{
             //console.log(result)
             const {_id, Name, Email, Picture, Role, TAC} = result;
             const userData = {_id, Name, Email, Picture, Role, TAC}
-            const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_SECRET, {expiresIn: '10s'})
+            const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_SECRET, {expiresIn: '300s'})
             const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET, {expiresIn: '1hr'}) //1hr
             await addRefreshTokenToDB(Email, refreshToken)
             // Set cookie with refresh token
