@@ -73,7 +73,8 @@ router.get("/login/success", async(req, res)=>{
         console.log('here', req.user)
         //console.log('after awaiting', user)
         //console.log('jabe', req.session)
-        if(userId){
+        if(req.user){
+            console.log('here', req.user)
             await userModel.findById(userId)
             .then(async(result)=>{
                 //console.log(result)

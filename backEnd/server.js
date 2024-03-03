@@ -35,7 +35,7 @@ const jwt =require('jsonwebtoken')
 const corsOptions =
     {
         origin: `${process.env.CLIENT_URL}`,
-        methods: "GET,POST,PUT,DELETE",
+        methods: ['GET', 'PUT', 'POST'],
         credentials: true,
     }
 
@@ -58,7 +58,7 @@ const sessionSecure=()=>{
         return true
     }
 }
-//console.log('secure: ',sessionSecure())
+console.log('secure: ',sessionSecure())
 //use session
 app.use(session({
     secret: `${process.env.SESSION_SECRET}`,
@@ -72,7 +72,7 @@ app.use(session({
     }),
     */
     cookie: {
-        secure: false, // true mo to if prod na
+        secure: true, //sessionSecure(), // true mo to if prod na
         expires: 60 * 60  //1 hour
     }
 }))    

@@ -20,7 +20,7 @@ const findOrCreateUser = async (profile, done) => {
         });
         await user.save();
       } 
-        return done(null, sub);
+        return done(null, user);
     }
     catch (error) {
       return done(error);
