@@ -72,7 +72,7 @@ app.use(session({
     }),
     */
     cookie: {
-        secure: true, //sessionSecure(), // true mo to if prod na
+        secure: sessionSecure(), // true mo to if prod na
         expires: 60 * 60  //1 hour
     }
 }))    
