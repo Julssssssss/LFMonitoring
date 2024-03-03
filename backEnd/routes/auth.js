@@ -68,7 +68,7 @@ const addRefreshTokenToDB = async(Email,  refreshToken) =>{
 }
 
 router.get("/login/success", async(req, res)=>{
-    //try{
+    try{
         const userId = req.user
         console.log('here', req.user)
         //console.log('after awaiting', user)
@@ -102,7 +102,7 @@ router.get("/login/success", async(req, res)=>{
                     message: "Error occured try again later"
                 });
             })
-        //}
+        }
         /*
         else{
             res.status(403).json({
@@ -112,11 +112,12 @@ router.get("/login/success", async(req, res)=>{
         }
         */
     }
-    /*
     catch(err){
-        console.log(err)
+        res.status(400).json({
+            error: true,
+            message: "GAWA KO TO MAY CONNECTION PERO ALANG SINESEND",
+        });
     }
-    */
 })
 
 router.get("/login/failed", (req, res)=>{

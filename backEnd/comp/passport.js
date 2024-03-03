@@ -12,7 +12,6 @@ passport.serializeUser((user, done)=>{
     }
     //gtry
 })
-/*
 passport.deserializeUser((user, done)=>{
     try{
         console.log('deserialize', user)
@@ -22,7 +21,6 @@ passport.deserializeUser((user, done)=>{
         console.log(err)
     }
 })
-*/
 passport.use(
     new GoogleStrategy(
         {
