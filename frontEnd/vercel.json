@@ -2,7 +2,7 @@
     "routes": [
       { "handle": "filesystem" },
       { "src": "/src/main.jsx", "dest": "/index.html" },
-      { "src": "/src/app.jsx", "dest": "/index.html" }
+      { "src": "/src/App.jsx", "dest": "/index.html" }
 
     ]
   }
