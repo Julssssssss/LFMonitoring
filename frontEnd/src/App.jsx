@@ -38,18 +38,18 @@ const App = () => {
           <Route exact path='/' element={<LandingPage/>}/>
           {/*pag gusto mo mag-add pa ng ibang path declare mo muna dito*/}
 
-            <Route path='/Dashboard' element={<Dashboard/>}/>
-            <Route path='/Profile' element={<Profile/>}/>
-            <Route path='/Item/:itemId' element={<ItemDetails/>}/>
+            <Route exact path='/Dashboard' element={<Dashboard/>}/>
+            <Route exact path='/Profile' element={<Profile/>}/>
+            <Route exact path='/Item/:itemId' element={<ItemDetails/>}/>
             
           {/*admin/mod side */}
-            <Route path='/Admin/Dashboard' element={<DashView/>}/>
-            <Route path='/Admin/LostItems' element={<LostView/>}/>
-            <Route path='/Admin/Requests' element={<RequestsView/>}/>
-            <Route path='/Admin/HlpDocs' element={<HlpDocumentation/>}/>
-            <Route path='/Admin/AdminProfile' element={<AdminProfile/>}/>
+            <Route exact path='/Admin/Dashboard' element={<DashView/>}/>
+            <Route exact path='/Admin/LostItems' element={<LostView/>}/>
+            <Route exact path='/Admin/Requests' element={<RequestsView/>}/>
+            <Route exact path='/Admin/HlpDocs' element={<HlpDocumentation/>}/>
+            <Route exact path='/Admin/AdminProfile' element={<AdminProfile/>}/>
 
-            <Route path='/Admin/Privilege' element={<Privilege/>}/>
+            <Route exact path='/Admin/Privilege' element={<Privilege/>}/>
 
           {/* 404 page  catch all  palitan to in the future hopefully ng 404 page tlga */}
           <Route path='/401' element={<Page401/>}/>

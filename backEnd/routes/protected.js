@@ -7,39 +7,22 @@ const reqModel = require("../Models/requestModels")
 const UserModel = require('../Models/userModels')
 
 //to verify token 
-const verifyToken = async (req, res, next) => {
-    try {
-      const authHeader = req.headers['authorization'];
-      const token = authHeader && authHeader.split(' ')[1];
-      if (!token || token === 'null') {
-        return res.sendStatus(401);
-      }
-  
-      const user = await jwt.verify(token, process.env.JWT_ACCESS_SECRET);
-      const { Role, picture } = user;
-  
-      if (Role !== 'admin' && Role !== 'mod') {
-        return res.sendStatus(401);
-      }
-  
-      req.user = {
-        user: user,
-        picture: picture
-      };
-  
-      next();
-    } catch (error) {
-      console.error('Token verification error:', error);
-      return res.sendStatus(403);
-    }
-  };
-  
+const verifyToken = (req, res, next) => {
+    const authHeader = req.headers['authorization']
+    const token = authHeader.split(' ')[1]
+    if(token === 'null' ) {return res.sendStatus(401)}
+    jwt.verify(token, process.env.JWT_ACCESS_SECRET, (err, user)=>{
+        if(err) return res.sendStatus(403)
+        req.user = user
+        next()
+    })
+};
 
 router.put("/TACagreement", verifyToken, async(req, res)=>{
     try{
-        const {user} = req.user
-        const {Email} = user
-        let Agreed = await UserModel.updateOne({ 'Email': Email }, {$set:{TAC:true}})
+        //console.log(req.user)
+        const {_id} = req.user
+        let Agreed = await UserModel.findByIdAndUpdate({ '_id': _id }, {$set:{TAC:true}})
 
         return res.sendStatus(200)
     }
@@ -51,13 +34,14 @@ router.put("/TACagreement", verifyToken, async(req, res)=>{
 
 //papalitan to ng post mmya pero get muna kasi tinetest placement ng data
 router.post("/data", verifyToken, (req, res)=>{
-        const {user, picture, TAC} = req.user
+        const {Name, Email, Picture, TAC} = req.user
+        const user = {Name, Email} 
         if(TAC){
             itemModels.find({})
                 .then(result=>{
                     res.status(200).json({
                         items: result,
-                        picture: picture,
+                        picture: Picture,
                         user: user,
                     })
                 }
@@ -68,12 +52,11 @@ router.post("/data", verifyToken, (req, res)=>{
 
 router.post("/request", verifyToken, async(req, res)=>{
     const {itemId} = req.body
-    const {user} = req.user
     try{
         let item = await itemModels.findOne({ '_id': itemId });
 
         const {nameItem, _id} = item
-        const {Email} = user
+        const {Email} = req.user
 
         if(item == null){return res.sendStatus(403)}
 

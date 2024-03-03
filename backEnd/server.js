@@ -2,15 +2,14 @@ const express = require('express') //npm i express cors
 const cors = require('cors')
 const app = express(); //to use express
 const port = 3000;
-const bodyParser = require('body-parser');
 require('dotenv').config()
 
+const passport = require('passport')
+const passportSetup = require('./comp/passport')
 const protRoute = require('./routes/protected')
 
-const passport = require('passport')
-
-//passport.js file
-const passportSetup =require('./comp/passport')
+//jwt 
+const jwt =require('jsonwebtoken')
 //routes
 const authRoute = require("./routes/auth")
 const adminRoute = require("./routes/admin")
@@ -21,12 +20,37 @@ const session = require("express-session")
 //for cookie req
 const cookieParser = require('cookie-parser')
 
+//for body  parser
+const bodyParser = require('body-parser');
+
 //mongoose db
 const mongoose = require('mongoose')
 const connectionString = process.env.MONGO_CONNECTION_STRING
 
-//jwt 
-const jwt =require('jsonwebtoken')
+app.use(cookieParser())   
+app.use(bodyParser.json()); 
+
+const sessionSecure=()=>{
+    if(process.env.SERVER_URL === `http://localhost:3000`){
+        return false
+    }
+    else{
+        return true
+    }
+}
+//console.log(sessionSecure())
+//console.log(process.env.SERVER_URL)
+
+//use session
+app.use(session({
+    secret: `${process.env.SESSION_SECRET}`,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: sessionSecure(), // Set to true if using HTTPS in production
+        maxAge: 60 * 60 * 1000, // Set cookie expiration time (1 hour)
+      },
+}))
 
 //to whitelist urls
 const corsOptions =
@@ -38,23 +62,9 @@ const corsOptions =
 
 app.use(cors(corsOptions))
 
-app.use(bodyParser.json());
-
-app.use(cookieParser())
-
-mongoose.connect(`${connectionString}test`)
-    .then((result)=>app.listen(port,()=> console.log(`running in port ${port}`))) //run the port in 3000
-    .catch(err=>{console.log(err)})
-
-//use session
-app.use(session({
-    secret: `${process.env.SESSION_SECRET}`,
-    resave: false,
-    saveUninitialized: false
-}))    
-    
 app.use(passport.initialize())
 app.use(passport.session())
+
 
 app.use("/auth", authRoute)
 
@@ -62,7 +72,11 @@ app.use("/prot", protRoute)
 
 app.use("/priv", adminRoute)
 
-app.use("/", (req,res)=>{
+mongoose.connect(`${connectionString}test`)
+    .then((result)=>app.listen(port,()=> console.log(`running in port ${port}`))) //run the port in 3000
+    .catch(err=>{console.log(err)})
+
+app.get("/", (req,res)=>{
     res.status(200).json("successfully running")
 })
 
