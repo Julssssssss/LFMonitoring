@@ -86,7 +86,7 @@ router.get("/login/success", async(req, res)=>{
         })
     } catch (error) {
         // If an error occurs, send 403 response
-        res.status(403).json({
+        res.status(304).json({
             error: true,
             message: "Not Authorized",
             errorMSG: error.message
