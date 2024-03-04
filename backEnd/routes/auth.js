@@ -69,7 +69,6 @@ const addRefreshTokenToDB = async(Email,  refreshToken) =>{
 }
 
 router.get("/login/success", async(req, res)=>{
-    try{
         const userId = req.user
         logger.silly('here', req.user)
         logger.silly('here', req.session)
@@ -105,22 +104,12 @@ router.get("/login/success", async(req, res)=>{
                 });
             })
         }
-        /*
         else{
             res.status(203).json({
                 error: true,
                 message: "walang laman req.user mo lods",
             });
         }
-        */
-        
-    }
-    catch(err){
-        res.status(203).json({
-            error: true,
-            message: err.message
-        });
-    }
 })
 
 router.get("/login/failed", (req, res)=>{
