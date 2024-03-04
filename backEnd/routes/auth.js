@@ -72,6 +72,7 @@ router.get("/login/success", async(req, res)=>{
     try{
         const userId = req.user
         logger.debug('here', req.user)
+        logger.debug('here', req.session)
         //console.log('after awaiting', user)
         //console.log('jabe', req.session)
         if(req.user){
