@@ -6,7 +6,7 @@ const logger = require('./logger')
 passport.serializeUser((user, done)=>{
     logger.debug('User before serialization:', user);
     try {
-      done(null, serializedUser);
+      done(null, user);
     } catch (error) {
       logger.error('Error during serialization:', error);
       done(error, null); // Pass the error to the next middleware
@@ -15,7 +15,7 @@ passport.serializeUser((user, done)=>{
 passport.deserializeUser((user, done)=>{
     logger.debug('User before Deserialization:', user);
     try {
-      done(null, serializedUser);
+      done(null, user);
     } catch (error) {
       logger.error('Error during Deserialization:', error);
       done(error, null); // Pass the error to the next middleware
