@@ -47,7 +47,7 @@ router.post('/refreshToken', async(req, res)=>{
 })
 
 router.get("/login/success", async(req, res)=>{
-    //try{
+    try{
         //const user = req.user
         //console.log('user', user)
         //const { accessToken, refreshToken, role, TAC } = user;
@@ -58,7 +58,6 @@ router.get("/login/success", async(req, res)=>{
         //req.session = {...req.session,"borat": "burikat"} 
         //console.log('jabe', req.session)
         //console.log(req.headers)
-        
         const latestTemp = await Temp.findOne({}).sort({ _id: -1 }).limit(1)
         await Temp.findByIdAndDelete(latestTemp.id)//dko magawang isa lang ang idelete so yaan mo na hehe
         .then(result=>{
@@ -85,14 +84,14 @@ router.get("/login/success", async(req, res)=>{
         .catch(err=>{
             console.log(err)
         })
-    /*} catch (error) {
+    } catch (error) {
         // If an error occurs, send 403 response
         res.status(403).json({
             error: true,
             message: "Not Authorized",
             errorMSG: error.message
         });
-    }*/
+    }
 })
 
 router.get("/login/failed", (req, res)=>{
