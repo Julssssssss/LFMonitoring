@@ -5,6 +5,8 @@ const logger = winston.createLogger({
   level: 'silly',
   format: winston.format.json(),
   defaultMeta: { service: 'user-service' },
+  handleExceptions: true,
+  humanReadableUnhandledException: true,
   transports: [
     new winston.transports.Console()
   ],
