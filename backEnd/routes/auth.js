@@ -47,7 +47,7 @@ router.post('/refreshToken', async(req, res)=>{
 })
 
 router.post("/login/success", async(req, res)=>{
-    try{
+    //try{
         //const user = req.user
         //console.log('user', user)
         //const { accessToken, refreshToken, role, TAC } = user;
@@ -85,14 +85,14 @@ router.post("/login/success", async(req, res)=>{
         .catch(err=>{
             console.log(err)
         })
-    } catch (error) {
+    /*} catch (error) {
         // If an error occurs, send 403 response
         res.status(403).json({
             error: true,
             message: "Not Authorized",
             errorMSG: error.message
         });
-    }
+    }*/
 })
 
 router.get("/login/failed", (req, res)=>{
