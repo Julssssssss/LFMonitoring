@@ -46,8 +46,13 @@ router.post('/refreshToken', async(req, res)=>{
     })
 })
 
-router.get("/login/success", async(req, res)=>{
-    try{
+const redirectCheck = (req, res, next) => {
+    req.isRedirected = req.query.redirected === 'true';
+    next(); // Pass control to the next middleware or route handler
+  };
+
+router.get("/login/success", redirectCheck, async(req, res)=>{
+    if(req.isRedirected){
         //const user = req.user
         //console.log('user', user)
         //const { accessToken, refreshToken, role, TAC } = user;
@@ -84,12 +89,12 @@ router.get("/login/success", async(req, res)=>{
         .catch(err=>{
             console.log(err)
         })
-    } catch (error) {
+    }
+    else{
         // If an error occurs, send 403 response
         res.status(204).json({
             error: true,
-            message: "Not Authorized",
-            errorMSG: error.message
+            message: "Not Authorized"
         });
     }
 })
