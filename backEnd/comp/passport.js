@@ -4,6 +4,7 @@ const findOrCreateUser = require('./findOrCreateUser')
 const logger = require('./logger')
 
 passport.serializeUser((user, done)=>{
+    console.log(user)
     logger.debug('User before serialization:', user);
     try {
       done(null, user);
