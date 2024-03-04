@@ -105,18 +105,20 @@ router.get("/login/success", async(req, res)=>{
                 });
             })
         }
+        /*
         else{
             res.status(203).json({
                 error: true,
                 message: "walang laman req.user mo lods",
             });
         }
+        */
         
     }
     catch(err){
         res.status(203).json({
             error: true,
-            message: "inde ka pa naglologin lods",
+            message: err.message
         });
     }
 })
