@@ -5,18 +5,22 @@ const logger = require('./logger')
 
 passport.serializeUser((user, done)=>{
     console.log(user)
-    logger.silly('User before serialization:', user);
+    logger.debug('User before serialization:', user);
     try {
-      done(null, user);
+        process.nextTick(function() {
+            return done(null, user);
+        });
     } catch (error) {
       logger.error('Error during serialization:', error);
       done(error, null); // Pass the error to the next middleware
     }
 })
 passport.deserializeUser(async(user, done)=>{
-    logger.silly('User before Deserialization:', user);
+    logger.debug('User before Deserialization:', user);
     try {
-        done(null, user);
+        process.nextTick(function() {
+            return done(null, user);
+        });
     } catch (error) {
       logger.error('Error during Deserialization:', error);
       done(error, null); // Pass the error to the next middleware

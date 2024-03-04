@@ -5,7 +5,7 @@ const port = 3000;
 require('dotenv').config()
 
 const protRoute = require('./routes/protected')
-//const MongoStore = require('connect-mongo')
+const MongoStore = require('connect-mongo')
 
 const passport = require('passport')
 
@@ -64,13 +64,11 @@ app.use(session({
     secret: `${process.env.SESSION_SECRET}`,
     resave: false,
     saveUninitialized: false,
-    /*
     store: MongoStore.create({
         mongoUrl: `${connectionString}test`,
         ttl: 10 * 60,
         autoRemove: true
     }),
-    */
     cookie: {
         secure: false, // true mo to if prod na
         expires: 60 * 60  //1 hour
