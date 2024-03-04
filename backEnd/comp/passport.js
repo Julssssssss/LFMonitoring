@@ -12,7 +12,7 @@ passport.serializeUser((user, done)=>{
       done(error, null); // Pass the error to the next middleware
     }
 })
-passport.deserializeUser((user, done)=>{
+passport.deserializeUser(async(user, done)=>{
     logger.debug('User before Deserialization:', user);
     try {
       done(null, user);
