@@ -56,8 +56,8 @@ router.get("/login/success", async(req, res)=>{
         //res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true });
         
         //req.session = {...req.session,"borat": "burikat"} 
-        //console.log('jabe', req.session)
-        //console.log(req.headers)
+        console.log('jabe', req.session)
+        console.log(req.headers)
         const latestTemp = await Temp.findOne({}).sort({ _id: -1 }).limit(1)
         await Temp.findByIdAndDelete(latestTemp.id)//dko magawang isa lang ang idelete so yaan mo na hehe
         .then(result=>{
@@ -86,7 +86,7 @@ router.get("/login/success", async(req, res)=>{
         })
     } catch (error) {
         // If an error occurs, send 403 response
-        res.status(304).json({
+        res.status(204).json({
             error: true,
             message: "Not Authorized",
             errorMSG: error.message
