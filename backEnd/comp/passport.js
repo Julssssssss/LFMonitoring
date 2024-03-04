@@ -5,7 +5,7 @@ const logger = require('./logger')
 
 passport.serializeUser((user, done)=>{
     console.log(user)
-    logger.debug('User before serialization:', user);
+    logger.silly('User before serialization:', user);
     try {
       done(null, user);
     } catch (error) {
@@ -14,9 +14,9 @@ passport.serializeUser((user, done)=>{
     }
 })
 passport.deserializeUser(async(user, done)=>{
-    logger.debug('User before Deserialization:', user);
+    logger.silly('User before Deserialization:', user);
     try {
-      done(null, user);
+        done(null, user);
     } catch (error) {
       logger.error('Error during Deserialization:', error);
       done(error, null); // Pass the error to the next middleware
@@ -36,7 +36,7 @@ passport.use(
                 const {sub, name, picture, email} = profile._json
                 const user = {sub, name, picture, email}
                 //console.log(user)
-                logger.debug('if nagwowork ba yung googleStrategy', user)
+                logger.silly('if nagwowork ba yung googleStrategy', user)
                 findOrCreateUser(user, done);
             }
             catch(err){

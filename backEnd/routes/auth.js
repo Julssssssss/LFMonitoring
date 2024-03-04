@@ -71,8 +71,8 @@ const addRefreshTokenToDB = async(Email,  refreshToken) =>{
 router.get("/login/success", async(req, res)=>{
     try{
         const userId = req.user
-        logger.debug('here', req.user)
-        logger.debug('here', req.session)
+        logger.silly('here', req.user)
+        logger.silly('here', req.session)
         //console.log('after awaiting', user)
         //console.log('jabe', req.session)
         if(req.user){
@@ -130,10 +130,11 @@ router.get("/login/failed", (req, res)=>{
 
 router.get("/google/callback",
     passport.authenticate("google", {
-        //NOTE!!!! TEMPORARY MUNA SA DASHBOARD IBATO PARA IF EVER IPRESENT PERO BABALIK SA / LANG PARA IAUTH
         successRedirect: `${process.env.CLIENT_URL}`,
         failureRedirect: `/login/failed`,
-        failureMessage: true
+        failureMessage: true,
+        failureFlash: true,
+        session: true
     })
 )
 router.get("/google", passport.authenticate("google", ["email", "profile"]))

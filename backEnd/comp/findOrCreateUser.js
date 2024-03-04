@@ -21,8 +21,7 @@ const findOrCreateUser = async (profile, done) => {
         });
         await user.save();
       } 
-        logger.debug('findOrCreateUser', user)
-        logger.debug('findOrCreateUser !user!', user)
+        logger.silly('findOrCreateUser', user)
         return done(null, sub);
     }
     catch (error) {
