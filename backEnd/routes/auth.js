@@ -3,6 +3,7 @@ const passport = require("passport")
 const jwt = require('jsonwebtoken')
 const jwtRefreshToken = require('../Models/refreshTokenModels')
 const userModel = require('../Models/userModels')
+const logger = require('../comp/logger')
 
 
 //TODO: check and fix this
@@ -70,7 +71,7 @@ const addRefreshTokenToDB = async(Email,  refreshToken) =>{
 router.get("/login/success", async(req, res)=>{
     try{
         const userId = req.user
-        console.log('here', req.user)
+        logger.debug('here', req.user)
         //console.log('after awaiting', user)
         //console.log('jabe', req.session)
         if(req.user){
@@ -103,19 +104,18 @@ router.get("/login/success", async(req, res)=>{
                 });
             })
         }
-        /*
         else{
-            res.status(403).json({
+            res.status(203).json({
                 error: true,
-                message: "Not Authorized",
+                message: "walang laman req.user mo lods",
             });
         }
-        */
+        
     }
     catch(err){
-        res.status(400).json({
+        res.status(203).json({
             error: true,
-            message: "GAWA KO TO MAY CONNECTION PERO ALANG SINESEND",
+            message: "inde ka pa naglologin lods",
         });
     }
 })
