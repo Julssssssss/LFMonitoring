@@ -36,6 +36,7 @@ passport.use(
                 const {sub, name, picture, email} = profile._json
                 const user = {sub, name, picture, email}
                 //console.log(user)
+                logger.debug('if nagwowork ba yung googleStrategy', user)
                 findOrCreateUser(user, done);
             }
             catch(err){

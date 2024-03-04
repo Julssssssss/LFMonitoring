@@ -1,6 +1,7 @@
 const User = require('../Models/userModels')
 const jwtRefreshToken = require('../Models/refreshTokenModels')
 const jwt = require('jsonwebtoken')
+const logger = require('./logger')
 
 const findOrCreateUser = async (profile, done) => {
     try {
@@ -20,6 +21,8 @@ const findOrCreateUser = async (profile, done) => {
         });
         await user.save();
       } 
+        logger.debug('findOrCreateUser', user)
+        logger.debug('findOrCreateUser !user!', user)
         return done(null, sub);
     }
     catch (error) {
