@@ -71,8 +71,9 @@ app.use(session({
         autoRemove: true
     }),
     cookie: {
-        secure: false, // true mo to if prod na
-        expires: 60 * 60  //1 hour
+        httpOnly: true,
+        secure: sessionSecure(), // true mo to if prod na
+        maxAge: 60*60*1000
     }
 }))    
     

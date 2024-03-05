@@ -4,27 +4,10 @@ const findOrCreateUser = require('./findOrCreateUser')
 const logger = require('./logger')
 
 passport.serializeUser((user, done)=>{
-    console.log(user)
-    logger.debug('User before serialization:', user);
-    try {
-        process.nextTick(function() {
-            return done(null, user);
-        });
-    } catch (error) {
-      logger.error('Error during serialization:', error);
-      done(error, null); // Pass the error to the next middleware
-    }
+    done(null, user);
 })
 passport.deserializeUser(async(user, done)=>{
-    logger.debug('User before Deserialization:', user);
-    try {
-        process.nextTick(function() {
-            return done(null, user);
-        });
-    } catch (error) {
-      logger.error('Error during Deserialization:', error);
-      done(error, null); // Pass the error to the next middleware
-    }
+    done(null, user);
 })
 
 passport.use(
