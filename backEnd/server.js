@@ -64,6 +64,7 @@ app.use(session({
     secret: `${process.env.SESSION_SECRET}`,
     resave: false,
     saveUninitialized: false,
+    proxy: true,
     store: MongoStore.create({
         mongoUrl: `${connectionString}test`,
         ttl: 10 * 60,
