@@ -5,7 +5,7 @@ const port = 3000;
 require('dotenv').config()
 
 const protRoute = require('./routes/protected')
-const MongoStore = require('connect-mongo')
+//const MongoStore = require('connect-mongo')
 
 const passport = require('passport')
 
@@ -45,7 +45,7 @@ app.use(bodyParser.json());
 //app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 
 app.use(cookieParser())
-
+app.enable('trust proxy')
 mongoose.connect(`${connectionString}test`)
     .then((result)=>app.listen(port,()=> console.log(`running in port ${port}`))) //run the port in 3000
     .catch(err=>{console.log(err)})
@@ -65,12 +65,15 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     proxy: true,
+    /*
     store: MongoStore.create({
         mongoUrl: `${connectionString}test`,
         ttl: 10 * 60,
         autoRemove: true
     }),
+    */
     cookie: {
+        //sameSite: "none", //sessionSecure() ? 'none': 'true',
         httpOnly: true,
         secure: sessionSecure(), // true mo to if prod na
         maxAge: 60*60*1000

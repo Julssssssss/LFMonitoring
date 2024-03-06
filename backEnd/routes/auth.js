@@ -124,7 +124,6 @@ router.get("/google/callback",
         successRedirect: `${process.env.CLIENT_URL}`,
         failureRedirect: `/login/failed`,
         failureMessage: true,
-        failureFlash: true,
         session: true
     })
 )
