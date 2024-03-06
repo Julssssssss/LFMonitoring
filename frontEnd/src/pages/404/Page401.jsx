@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 const Page401 = () => {
   return (
     <>
-    <div className='bg-[#0D1832] space-y-[1rem] flex flex-col justify-center h-screen w-screen flex items-center px-[3.5rem] text-white text-center font-poppins'>
+    <div className='bg-[#0D1832] space-y-[1rem] flex flex-col justify-center h-screen w-screen items-center px-[3.5rem] text-white text-center font-poppins'>
       <div className="bg-[#134083] items-center justify-center flex flex-col space-y-[1rem] h-[20rem] w-full rounded-xl border-2 border-[#F9D62B]">
         <div className="font-bold text-[3rem]">4 0 1</div>
         <div className="w-[7rem] h-[7rem]">

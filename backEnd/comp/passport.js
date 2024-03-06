@@ -19,7 +19,7 @@ passport.use(
                 const user = {sub, name, picture, email}
                 req.session.userId = sub
                 //res.cookie('userId', sub, { httpOnly: true, secure: true, maxAge: 60*60*1000, path: '/' })
-                //console.log(req.session)
+                console.log(req.session)
                 findOrCreateUser(user, done);
             }
             catch(err){
@@ -51,3 +51,23 @@ passport.deserializeUser((user, done)=>{
     }
 })
 */
+
+passport.serializeUser((user, done)=>{
+    try{
+        console.log('serialize', user)
+        done(null, user)
+    }
+    catch(err){
+        console.log(err)
+    }
+})
+
+passport.deserializeUser((user, done)=>{
+    try{
+        console.log('deserialize', user)
+        done(null, user)
+    }
+    catch(err){
+        console.log(err)
+    }
+})

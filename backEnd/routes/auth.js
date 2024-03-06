@@ -7,6 +7,7 @@ const logger = require('../comp/logger')
 
 
 //TODO: check and fix this
+/*
 const checkRefToken = async(refreshToken) =>{
     const result = await jwtRefreshToken.findOne({ 'refreshToken': refreshToken })
     if(result){
@@ -17,6 +18,7 @@ const checkRefToken = async(refreshToken) =>{
         return 401
     }
 }
+*/
 
 const deleteRefTokenDb = async(Email)=>{
     await jwtRefreshToken.findOneAndDelete({Email: Email})
@@ -81,7 +83,7 @@ router.get("/login/success", async(req, res)=>{
             const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET, {expiresIn: '1hr'}) //1hr
             await addRefreshTokenToDB(Email, refreshToken)
             // Set cookie with refresh token
-            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true, sameSite: 'none' });
+            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true, sameSite: 'None' });
 
             // Send response with user data
             res.status(200).json({
@@ -114,6 +116,8 @@ router.get("/login/failed", (req, res)=>{
         message:"Log in failure"
     })
 })
+
+router.get("/google", passport.authenticate("google", ["email", "profile"]))
 
 router.get("/google/callback",
     passport.authenticate("google", {
@@ -148,6 +152,7 @@ router.get("/logout", async(req, res)=>{
             console.error(`error deleting token in database`, err);
             res.sendStatus(500); // Return an appropriate status code in case of error
         });
+        
 })
 
 module.exports = router
