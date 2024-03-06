@@ -81,7 +81,7 @@ router.get("/login/success", async(req, res)=>{
             const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET, {expiresIn: '1hr'}) //1hr
             await addRefreshTokenToDB(Email, refreshToken)
             // Set cookie with refresh token
-            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true, sameSite: 'Lax' });
+            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true, sameSite: 'none' });
 
             // Send response with user data
             res.status(200).json({

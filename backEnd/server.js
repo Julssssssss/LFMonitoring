@@ -44,7 +44,7 @@ app.use(bodyParser.json());
 
 app.use(cookieParser())
 
-app.enable('trust proxy')
+app.enable('trust proxy', 1)
 
 mongoose.connect(`${connectionString}test`)
     .then((result)=>app.listen(port,()=> console.log(`running in port ${port}`))) //run the port in 3000
@@ -62,10 +62,11 @@ const sessionSecure=()=>{
 //use session
 
 app.use(session({
+    name: 'sessioner',
     secret: `${process.env.SESSION_SECRET}`,
     resave: false,
     saveUninitialized: false,
-    //proxy: true,
+    proxy: true,
     store: MongoStore.create({
         mongoUrl: `${connectionString}test`,
         ttl: 10 * 60,
@@ -75,13 +76,12 @@ app.use(session({
         sameSite: "none", //sessionSecure() ? 'none': 'true',
         httpOnly: true,
         secure: true, // true mo to if prod na
-        maxAge: 60*60*1000,
-        domain:  process.env.CLIENT_URL
+        maxAge: 60*60*1000
     }
 }))    
 
 app.use(passport.initialize({ session: false }))
-//app.use(passport.session())
+app.use(passport.session())
 //passport.js file
 const passportSetup =require('./comp/passport')
 
