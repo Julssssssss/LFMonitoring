@@ -130,7 +130,9 @@ router.get("/google", passport.authenticate("google"))
 
 router.get("/logout", async(req, res)=>{
     console.log('cookies', req.cookies)
+    consoel.log(req.cookies.jwt)
     const refreshToken = req.cookies.jwt
+    consoel.log(refreshToken)
     const Email = await checkRefToken(refreshToken)
     if(!Email){
         console.error("Error logging out:", err);
