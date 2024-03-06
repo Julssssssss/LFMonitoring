@@ -9,7 +9,6 @@ const passportSetup = require('./comp/passport')
 const protRoute = require('./routes/protected')
 const MongoStore = require('connect-mongo')
 
-const passport = require('passport')
 
 //routes
 const authRoute = require("./routes/auth")
