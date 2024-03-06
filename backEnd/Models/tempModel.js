@@ -1,17 +1,16 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const schema = mongoose.Schema;
 
-const temp = new Schema({
-  _id: {
-    type: String,
-    required: true,
-  },
-  Email: {
-    type: String,
-    required: true,
-  }
-});
 
-const tempModel = mongoose.model("tempos", temp);
-
-module.exports = tempModel;
+const tempSchema = new schema({
+    _id:{
+        type: String, 
+        required: true
+    },
+    Email:{
+        type: String, 
+        required: true
+    }
+})
+const tempModelo = mongoose.model("Tempo", tempSchema)
+module.exports = tempModelo
