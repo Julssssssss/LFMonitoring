@@ -62,7 +62,7 @@ const sessionSecure=()=>{
 //use session
 
 app.use(session({
-    name: 'sessioner',
+    name: 'session',
     secret: `${process.env.SESSION_SECRET}`,
     resave: false,
     saveUninitialized: false,
