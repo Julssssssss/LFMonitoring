@@ -18,7 +18,7 @@ passport.use(
                 const {sub, name, picture, email} = profile._json
                 const user = {sub, name, picture, email}
                 req.session.userId = sub
-                console.log(req.session)
+                //console.log(req.session)
                 findOrCreateUser(user, done);
             }
             catch(err){
