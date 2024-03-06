@@ -7,7 +7,7 @@ const logger = require('../comp/logger')
 
 
 //TODO: check and fix this
-/*
+
 const checkRefToken = async(refreshToken) =>{
     const result = await jwtRefreshToken.findOne({ 'refreshToken': refreshToken })
     if(result){
@@ -18,7 +18,7 @@ const checkRefToken = async(refreshToken) =>{
         return 401
     }
 }
-*/
+
 
 const deleteRefTokenDb = async(Email)=>{
     await jwtRefreshToken.findOneAndDelete({Email: Email})
