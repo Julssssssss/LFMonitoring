@@ -2,15 +2,13 @@ const express = require('express') //npm i express cors
 const cors = require('cors')
 const app = express(); //to use express
 const port = 3000;
-const bodyParser = require('body-parser');
 require('dotenv').config()
 
 const protRoute = require('./routes/protected')
+const MongoStore = require('connect-mongo')
 
 const passport = require('passport')
 
-//passport.js file
-const passportSetup =require('./comp/passport')
 //routes
 const authRoute = require("./routes/auth")
 const adminRoute = require("./routes/admin")
@@ -20,6 +18,9 @@ const session = require("express-session")
 
 //for cookie req
 const cookieParser = require('cookie-parser')
+
+//for body  parser
+const bodyParser = require('body-parser');
 
 //mongoose db
 const mongoose = require('mongoose')
@@ -32,30 +33,54 @@ const jwt =require('jsonwebtoken')
 const corsOptions =
     {
         origin: `${process.env.CLIENT_URL}`,
-        methods: "GET,POST,PUT,DELETE",
+        methods: ['GET', 'PUT', 'POST'],
         credentials: true,
     }
 
 app.use(cors(corsOptions))
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+//app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 
 app.use(cookieParser())
-
+app.enable('trust proxy')
 mongoose.connect(`${connectionString}test`)
     .then((result)=>app.listen(port,()=> console.log(`running in port ${port}`))) //run the port in 3000
     .catch(err=>{console.log(err)})
 
+const sessionSecure=()=>{
+    if(process.env.SERVER_URL === `http://localhost:3000`){
+        return false
+    }
+    else{
+        return true
+    }
+}
+//console.log('secure: ',sessionSecure())
 //use session
+
 app.use(session({
     secret: `${process.env.SESSION_SECRET}`,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    //proxy: true,
+    store: MongoStore.create({
+        mongoUrl: `${connectionString}test`,
+        ttl: 10 * 60,
+        autoRemove: true
+    }),
+    cookie: {
+        sameSite: "None", //sessionSecure() ? 'none': 'true',
+        httpOnly: true,
+        secure: true, // true mo to if prod na
+        maxAge: 60*60*1000
+    }
 }))    
-    
-app.use(passport.initialize())
-app.use(passport.session())
+
+app.use(passport.initialize({ session: false }))
+//app.use(passport.session())
+//passport.js file
+const passportSetup =require('./comp/passport')
 
 app.use("/auth", authRoute)
 
