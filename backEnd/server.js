@@ -70,8 +70,8 @@ app.use(session({
         autoRemove: true
     }),
     cookie: {
-        sameSite: "Lax", //sessionSecure() ? 'none': 'true',
-        //httpOnly: true,
+        sameSite: "none", //sessionSecure() ? 'none': 'true',
+        httpOnly: true,
         secure: true, // true mo to if prod na
         maxAge: 60*60*1000
     }
