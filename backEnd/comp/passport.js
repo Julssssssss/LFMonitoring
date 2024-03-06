@@ -19,7 +19,7 @@ passport.use(
                 const user = {sub, name, picture, email}
                 req.session.userId = sub
                 //res.cookie('userId', sub, { httpOnly: true, secure: true, maxAge: 60*60*1000, path: '/' })
-                //console.log(req.session)
+                console.log(req.session)
                 findOrCreateUser(user, done);
             }
             catch(err){
