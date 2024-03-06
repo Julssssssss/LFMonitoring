@@ -54,7 +54,7 @@ passport.deserializeUser((user, done)=>{
 
 passport.serializeUser((user, done)=>{
     try{
-        //console.log('serialize', user)
+        console.log('serialize', user)
         done(null, user)
     }
     catch(err){
@@ -64,7 +64,7 @@ passport.serializeUser((user, done)=>{
 
 passport.deserializeUser((user, done)=>{
     try{
-        //console.log('deserialize', user)
+        console.log('deserialize', user)
         done(null, user)
     }
     catch(err){
