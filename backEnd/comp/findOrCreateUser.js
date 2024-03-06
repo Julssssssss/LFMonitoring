@@ -23,6 +23,7 @@ const findOrCreateUser = async (profile, done) => {
       } 
         //logger.debug('findOrCreateUser', user)
         return done(null, sub);
+        //return null
     }
     catch (error) {
       return done(error);

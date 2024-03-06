@@ -69,47 +69,43 @@ const addRefreshTokenToDB = async(Email,  refreshToken) =>{
 }
 
 router.get("/login/success", async(req, res)=>{
-        const userId = req.user
-        logger.debug('here', req.user)
-        logger.debug('here', req.session)
-        //console.log('after awaiting', user)
-        //console.log('jabe', req.session)
-        if(req.user){
-            console.log('here', req.user)
-            await userModel.findById(userId)
-            .then(async(result)=>{
-                //console.log(result)
-                const {_id, Name, Email, Picture, Role, TAC} = result;
-                const userData = {_id, Name, Email, Picture, Role, TAC}
-                const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_SECRET, {expiresIn: '300s'})
-                const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET, {expiresIn: '1hr'}) //1hr
-                await addRefreshTokenToDB(Email, refreshToken)
-                // Set cookie with refresh token
-                res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true });
+    console.log('here', req.session)
+    if(req.session.userId){
+        const userId = req.session.userId
+        await userModel.findById(userId)
+        .then(async(result)=>{
+            //console.log(result)
+            const {_id, Name, Email, Picture, Role, TAC} = result;
+            const userData = {_id, Name, Email, Picture, Role, TAC}
+            const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_SECRET, {expiresIn: '300s'})
+            const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET, {expiresIn: '1hr'}) //1hr
+            await addRefreshTokenToDB(Email, refreshToken)
+            // Set cookie with refresh token
+            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true });
 
-                // Send response with user data
-                res.status(200).json({
-                    error: false,
-                    message: "Success",
-                    accessToken: accessToken,
-                    role: Role,
-                    TAC: TAC 
-                });
-            })
-            .catch(err=>{
-                console.log(err)
-                    res.status(500).json({
-                    error: true,
-                    message: "Error occured try again later"
-                });
-            })
-        }
-        else{
-            res.status(203).json({
-                error: true,
-                message: "walang laman req.user mo lods",
+            // Send response with user data
+            res.status(200).json({
+                error: false,
+                message: "Success",
+                accessToken: accessToken,
+                role: Role,
+                TAC: TAC 
             });
-        }
+        })
+        .catch(err=>{
+            console.log(err)
+                res.status(500).json({
+                error: true,
+                message: "Error occured try again later"
+            });
+        })
+    }
+    else{
+        res.status(203).json({
+            error: true,
+            message: "walang laman req.user mo lods",
+        });
+    }
 })
 
 router.get("/login/failed", (req, res)=>{
@@ -124,10 +120,10 @@ router.get("/google/callback",
         successRedirect: `${process.env.CLIENT_URL}`,
         failureRedirect: `/login/failed`,
         failureMessage: true,
-        session: true
+        session: false
     })
 )
-router.get("/google", passport.authenticate("google", ["email", "profile"]))
+router.get("/google", passport.authenticate("google"))
 
 router.get("/logout", async(req, res)=>{
     //console.log('cookies', req.cookies)

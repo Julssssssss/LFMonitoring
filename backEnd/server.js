@@ -9,8 +9,6 @@ const protRoute = require('./routes/protected')
 
 const passport = require('passport')
 
-//passport.js file
-const passportSetup =require('./comp/passport')
 //routes
 const authRoute = require("./routes/auth")
 const adminRoute = require("./routes/admin")
@@ -60,11 +58,12 @@ const sessionSecure=()=>{
 }
 //console.log('secure: ',sessionSecure())
 //use session
+
 app.use(session({
     secret: `${process.env.SESSION_SECRET}`,
     resave: false,
     saveUninitialized: false,
-    proxy: true,
+    //proxy: true,
     /*
     store: MongoStore.create({
         mongoUrl: `${connectionString}test`,
@@ -73,15 +72,17 @@ app.use(session({
     }),
     */
     cookie: {
-        sameSite: "none", //sessionSecure() ? 'none': 'true',
-        httpOnly: true,
+        //sameSite: "none", //sessionSecure() ? 'none': 'true',
+        //httpOnly: true,
         secure: sessionSecure(), // true mo to if prod na
         maxAge: 60*60*1000
     }
 }))    
-    
+
 app.use(passport.initialize())
-app.use(passport.session())
+//app.use(passport.session())
+//passport.js file
+const passportSetup =require('./comp/passport')
 
 app.use("/auth", authRoute)
 
