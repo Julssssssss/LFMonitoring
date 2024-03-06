@@ -7,9 +7,10 @@ require('dotenv').config()
 const passport = require('passport')
 const passportSetup = require('./comp/passport')
 const protRoute = require('./routes/protected')
+const MongoStore = require('connect-mongo')
 
-//jwt 
-const jwt =require('jsonwebtoken')
+const passport = require('passport')
+
 //routes
 const authRoute = require("./routes/auth")
 const adminRoute = require("./routes/admin")
@@ -56,15 +57,30 @@ app.use(session({
 const corsOptions =
     {
         origin: `${process.env.CLIENT_URL}`,
-        methods: "GET,POST,PUT,DELETE",
+        methods: ['GET', 'PUT', 'POST'],
         credentials: true,
     }
 
 app.use(cors(corsOptions))
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+
+app.use(cookieParser())
+
+mongoose.connect(`${connectionString}test`)
+    .then((result)=>app.listen(port,()=> console.log(`running in port ${port}`))) //run the port in 3000
+    .catch(err=>{console.log(err)})
+
+//use session
+app.use(session({
+    secret: `${process.env.SESSION_SECRET}`,
+    resave: false,
+    saveUninitialized: false
+}))    
+    
 app.use(passport.initialize())
 app.use(passport.session())
-
 
 app.use("/auth", authRoute)
 

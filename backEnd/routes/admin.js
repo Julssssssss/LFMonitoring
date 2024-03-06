@@ -39,9 +39,9 @@ const verifyToken = (req, res, next) => {
   jwt.verify(token, process.env.JWT_ACCESS_SECRET, (err, user) => {
     if (err) {
       console.log('error');
-      return res.sendStatus(403)};
-    const { Role } = user;
-    if (Role !== 'admin' && Role !== 'mod') {return res.sendStatus(401)};
+      return res.sendStatus(403)
+    };   
+    if (user.Role !== 'admin' && user.Role !== 'mod') {return res.sendStatus(401)};
     req.user = user
     next();
   });
@@ -56,9 +56,9 @@ const adminOnlyToken = (req, res, next) => {
   }
   jwt.verify(token, process.env.JWT_ACCESS_SECRET, (err, user) => {
     if (err) {
-      return res.sendStatus(403)};
-    const { Role } = user;
-    if (Role !== 'admin') {return res.sendStatus(401)};
+      return res.sendStatus(403)
+    };
+    if (user.Role !== 'admin') {return res.sendStatus(401)};
     req.user = user
     next();
   });
@@ -66,7 +66,7 @@ const adminOnlyToken = (req, res, next) => {
 
 router.post('/data', verifyToken, (req, res) => {
   if (req.user) {
-    const {Name, Email, Picture } = req.user;
+    const { Name, Email, Picture } = req.user;
     const user = {Name, Email}
     itemModels
       .find({})
