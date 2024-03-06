@@ -62,7 +62,7 @@ const sessionSecure=()=>{
 app.use(session({
     secret: `${process.env.SESSION_SECRET}`,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     //proxy: true,
     store: MongoStore.create({
         mongoUrl: `${connectionString}test`,

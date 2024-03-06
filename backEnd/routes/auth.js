@@ -69,7 +69,7 @@ const addRefreshTokenToDB = async(Email,  refreshToken) =>{
 }
 
 router.get("/login/success", async(req, res)=>{
-    console.log('here', req.session)
+    //console.log('here', req.session)
     if(req.session.userId){
         const userId = req.session.userId
         await userModel.findById(userId)
@@ -119,14 +119,13 @@ router.get("/google/callback",
     passport.authenticate("google", {
         successRedirect: `${process.env.CLIENT_URL}`,
         failureRedirect: `/login/failed`,
-        failureMessage: true,
-        session: false
+        session: false,
     })
 )
 router.get("/google", passport.authenticate("google"))
 
 router.get("/logout", async(req, res)=>{
-    //console.log('cookies', req.cookies)
+    console.log('cookies', req.cookies)
     const refreshToken = req.cookies.jwt
     const Email = await checkRefToken(refreshToken)
     if(!Email){
