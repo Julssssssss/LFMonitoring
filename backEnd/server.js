@@ -43,7 +43,9 @@ app.use(bodyParser.json());
 //app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 
 app.use(cookieParser())
+
 app.enable('trust proxy')
+
 mongoose.connect(`${connectionString}test`)
     .then((result)=>app.listen(port,()=> console.log(`running in port ${port}`))) //run the port in 3000
     .catch(err=>{console.log(err)})
@@ -73,7 +75,8 @@ app.use(session({
         sameSite: "none", //sessionSecure() ? 'none': 'true',
         httpOnly: true,
         secure: true, // true mo to if prod na
-        maxAge: 60*60*1000
+        maxAge: 60*60*1000,
+        domain:  process.env.CLIENT_URL
     }
 }))    
 
