@@ -7,7 +7,6 @@ const logger = require('../comp/logger')
 
 
 //TODO: check and fix this
-/*
 const checkRefToken = async(refreshToken) =>{
     const result = await jwtRefreshToken.findOne({ 'refreshToken': refreshToken })
     if(result){
@@ -18,7 +17,6 @@ const checkRefToken = async(refreshToken) =>{
         return 401
     }
 }
-*/
 
 const deleteRefTokenDb = async(Email)=>{
     await jwtRefreshToken.findOneAndDelete({Email: Email})
@@ -130,9 +128,9 @@ router.get("/google", passport.authenticate("google"))
 
 router.get("/logout", async(req, res)=>{
     console.log('cookies', req.cookies)
-    consoel.log(req.cookies.jwt)
+    console.log(req.cookies.jwt)
     const refreshToken = req.cookies.jwt
-    consoel.log(refreshToken)
+    console.log(refreshToken)
     const Email = await checkRefToken(refreshToken)
     if(!Email){
         console.error("Error logging out:", err);
@@ -140,7 +138,7 @@ router.get("/logout", async(req, res)=>{
     }
     await deleteRefTokenDb(Email)
         .then((result)=>{     
-            res.clearCookie('connect.sid') 
+            res.clearCookie('session') 
             res.clearCookie('jwt')  
             req.logout((err)=>{
                 if (err) {
