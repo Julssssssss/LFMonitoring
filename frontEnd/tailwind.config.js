@@ -7,12 +7,14 @@ export default {
   ],
   theme: {
     screens: {
-      //default size 375px
+      //default size 360px
+      'xsm': '375px',
       'sm': '425px',
       'md': '768px',
       'lg': '1024px',
-      'xl': '1440',
-      '2xl': '1920',
+      'xl': '1440px',
+      '2xl': '1920px',
+      '3xl': '1600px',
     },
     extend: {
       boxShadow: {

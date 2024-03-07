@@ -21,11 +21,11 @@ const Faq = () => {
     return Questions.map((el, index) => {
       return (
         <div className="overflow-hidden" key={index}>
-          <div className="bg-[#134083] rounded-full flex flex-row justify-between p-[0.2rem] px-[1rem] items-center relative z-20">
-            <div className="text-[0.7rem] text-justify">{el.label}</div>
+          <div className="bg-[#134083] rounded-full flex flex-row justify-between p-[0.2rem] px-[1rem] items-center relative z-20 md:p-[0.6rem] lg:w-[45rem] lg:py-[0.4rem] lg:px-[1rem] xl:p-[1.2rem] xl:ml-[1.5rem] xl:w-[55rem] 2xl:w-[75rem] 2xl:ml-[2rem]">
+            <div className="text-[0.7rem] text-justify md:text-[1rem] lg:text-[1.5rem] xl:text-[1.7rem] 2xl:text-[1.9rem]">{el.label}</div>
             <button
               onClick={() => toggleDropdown(index)}
-              className="w-[1rem] h-[1rem] flex items-center justify-center"
+              className="w-[1rem] h-[1rem] flex items-center justify-center lg:w-[1.5rem] lg:h-[1.5rem]"
             >
                   {
                     isOpen[index]
@@ -35,7 +35,7 @@ const Faq = () => {
             </button>
           </div>
           {isOpen[index] && (
-            <div className="p-2 text-justify text-[0.7rem] border border-[#F9D62B] rounded shadow-md mt-2">
+            <div className="relative z-20 p-2 text-justify text-[0.7rem] border border-[#F9D62B] rounded shadow-md mt-2 md:text-[1rem] lg:text-[1.5rem] lg:w-[45rem] xl:text-[1.6rem] xl:w-[55rem] xl:ml-[1.5rem] 2xl:text-[1.9rem] 2xl:w-[75rem] 2xl:ml-[2rem]">
               {el.contents}
             </div>
           )}
@@ -48,13 +48,14 @@ const Faq = () => {
     <>
       <div className="relative w-screen overflow-hidden">
         <div className="text-white font-poppins flex flex-col space-y-[1rem] mx-[1.5rem] mb-[3rem]">
-          <div className="text-[1.5rem] font-bold">FAQ</div>
-          <div className="text-[0.9rem]">
+          <div className="text-[1.5rem] font-bold md:text-[2.5rem] lg:text-[2.5rem] xl:ml-[2rem] 2xl:text-[3.5rem] 2xl:ml-[2rem]">FAQ</div>
+          <div className="z-10 text-[0.9rem] md:text-[1.5rem] lg:text-[1.5rem] xl:text-[2.5rem] xl:ml-[2rem] 2xl:text-[1.9rem] 2xl:ml-[2rem]">
             Frequently Asked Questions
           </div>
           {Format()}
         </div>
-        <img src="https://res.cloudinary.com/dxjpbwlkh/image/upload/v1702903076/Assets/ease_2_egomvy.png" alt="Mockups" className="absolute bottom-[-2rem] right-0 w-[10rem] h-[15rem] z-10 opacity-50"/>
+        <img src="https://res.cloudinary.com/dxjpbwlkh/image/upload/v1708962233/Assets/Untitled_design_ryezys.gif"alt="model3" className="h-[10rem] w-[10rem] absolute z-0 top-0 right-0 sm:h-[11rem] sm:w-[11rem] md:h-[16rem] md:w-[16rem] md:right-[1rem] md:-top-[1rem] lg:h-[18rem] lg:w-[18rem] lg:right-[14rem] xl:right-[30rem] xl:h-[19rem] xl:w-[19rem] 2xl:h-[24rem] 2xl:w-[24rem] 2xl:right-[40rem]"/>
+        <img src="https://res.cloudinary.com/dxjpbwlkh/image/upload/v1709027083/Assets/Group_2_cgstab.png" alt="model4" className="absolute z-0 h-[10rem] w-[10rem] -bottom-[2.5rem] -right-[2rem] opacity-20 sm:h-[12rem] sm:w-[12rem] lg:w-[26rem] lg:h-[26rem] xl:w-[35rem] xl:h-[35rem] xl:-bottom-[8rem] 2xl:w-[50rem] 2xl:h-[50rem]"/>
       </div>
     </>
   );

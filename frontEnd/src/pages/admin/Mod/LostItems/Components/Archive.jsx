@@ -58,7 +58,7 @@ const Archive = ({ Info }) => {
       <div>
         <button
           onClick={openPopup}
-          className="bg-[#F9D62B] text-[1.4rem] font-bold text-black w-[7rem] h-auto rounded-xl m-[0.3rem]"
+          className="bg-[#F9D62B] text-[1.4rem] lg:text-[1rem] xl:text-[1.4rem] xl:w-[8.5rem] font-bold font-poppins text-black w-[7rem] h-auto rounded-full m-[0.3rem]"
         >
           Archive
         </button>
@@ -66,7 +66,7 @@ const Archive = ({ Info }) => {
 
       {showPopup && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
-          <div className="flex flex-col bg-[#134083] shadow-md w-[40rem] h-[35rem] rounded-2xl whitespace-pre space-y-[1rem] items-center">
+          <div className="flex flex-col bg-[#134083] shadow-md w-[40rem] h-[35rem] lg:w-[35rem] lg:h-[30rem] lg:space-y-[2rem] rounded-2xl whitespace-pre space-y-[1rem] items-center">
           <button
               className="w-[3rem] h-[3rem] place-self-end m-[0.5rem]"
               onClick={closePopup}
@@ -102,8 +102,8 @@ const Archive = ({ Info }) => {
               <div>Description:           {item.desc}</div>
               <div>Found at:               {item.found}</div>
               <div>Surrendered by:    {item.surrenderedBy}</div>
-              <div className='text-center'>Date posted</div>
-              <div className="text-center">{item.datePosted}</div>
+              <div>Date posted:         {item.datePosted}</div>
+              
             </div>
             <button
               onClick={sendToArchive}

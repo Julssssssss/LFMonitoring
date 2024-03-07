@@ -28,7 +28,7 @@ const ItemsCarousel = ({ imageUrl, item, handleDelete, handleDeleteLink, enableD
           {/* Render images from images array */}
           {images.map((url, index) => (
             <div key={index}>
-              <img className='object-contain w-[25rem] h-[15rem]' src={url} alt={`product-${index}`} />
+              <img className='object-contain w-[25rem] h-[15rem] lg:h-[13.5rem] lg:w-[13.5rem]' src={url} alt={`product-${index}`} />
               {/* Call handleDeleteClick with appropriate arguments */}
               <button
                 type="button"

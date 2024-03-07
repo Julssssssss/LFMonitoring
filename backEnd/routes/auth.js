@@ -129,7 +129,9 @@ router.get("/google", passport.authenticate("google"))
 router.get("/logout", async(req, res)=>{
     console.log('cookies', req.cookies)
     console.log(req.cookies.jwt)
+    console.log(req.cookies.jwt)
     const refreshToken = req.cookies.jwt
+    console.log(refreshToken)
     console.log(refreshToken)
     const Email = await checkRefToken(refreshToken)
     if(!Email){
