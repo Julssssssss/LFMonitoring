@@ -16,7 +16,7 @@ const logout =()=>{
 
 //get
 const axiosFetchToken = axios.create({
-    baseURL: `${baseUrl}/auth/login/success`
+    baseURL: `${baseUrl}/auth/login/success`,
 });
 
 //post kasi eto na mga need mo pakita token e
@@ -46,6 +46,11 @@ axiosFetchItems.interceptors.response.use(
                 else if (error.response.status === 401) {
                     window.location.href = `${import.meta.env.VITE_CLIENT_URL}/401`;
                     
+                    return Promise.resolve(); // Returning a resolved promise to stop further processing
+                }
+                else if (error.response.status === 404) {
+                    window.location.href = `${import.meta.env.VITE_CLIENT_URL}/`;
+                    logout()
                     return Promise.resolve(); // Returning a resolved promise to stop further processing
                 }
             } 
@@ -85,6 +90,11 @@ axiosFetchAdminData.interceptors.response.use(
                 else if (error.response.status === 401) {
                     window.location.href = `${import.meta.env.VITE_CLIENT_URL}/401`;
                     
+                    return Promise.resolve(); // Returning a resolved promise to stop further processing
+                }
+                else if (error.response.status === 404) {
+                    window.location.href = `${import.meta.env.VITE_CLIENT_URL}/`;
+                    logout()
                     return Promise.resolve(); // Returning a resolved promise to stop further processing
                 }
             } 
@@ -132,6 +142,11 @@ axiosSendItem.interceptors.response.use(
               
               return Promise.resolve(); // Returning a resolved promise to stop further processing
             }
+            else if (error.response.status === 404) {
+                window.location.href = `${import.meta.env.VITE_CLIENT_URL}/`;
+                logout()
+                return Promise.resolve(); // Returning a resolved promise to stop further processing
+            }
         } 
         catch (e){
             console.log(e)
@@ -170,6 +185,11 @@ axiosUpdateImage.interceptors.response.use(
               window.location.href = `${import.meta.env.VITE_CLIENT_URL}/401`;
               
               return Promise.resolve(); // Returning a resolved promise to stop further processing
+            }
+            else if (error.response.status === 404) {
+                window.location.href = `${import.meta.env.VITE_CLIENT_URL}/`;
+                logout()
+                return Promise.resolve(); // Returning a resolved promise to stop further processing
             }
         } 
         catch (e){
@@ -210,6 +230,11 @@ axiosSendUpdate.interceptors.response.use(
               
               return Promise.resolve(); // Returning a resolved promise to stop further processing
             }
+            else if (error.response.status === 404) {
+                window.location.href = `${import.meta.env.VITE_CLIENT_URL}/`;
+                logout()
+                return Promise.resolve(); // Returning a resolved promise to stop further processing
+            }
         } 
         catch (e){
             console.log(e)
@@ -248,6 +273,11 @@ axiosUnclaimedItems.interceptors.response.use(
               window.location.href = `${import.meta.env.VITE_CLIENT_URL}/401`;
               
               return Promise.resolve(); // Returning a resolved promise to stop further processing
+            }
+            else if (error.response.status === 404) {
+                window.location.href = `${import.meta.env.VITE_CLIENT_URL}/`;
+                logout()
+                return Promise.resolve(); // Returning a resolved promise to stop further processing
             }
         } 
         catch (e){
@@ -288,6 +318,11 @@ axiosDeleteItem.interceptors.response.use(
               
               return Promise.resolve(); // Returning a resolved promise to stop further processing
             }
+            else if (error.response.status === 404) {
+                window.location.href = `${import.meta.env.VITE_CLIENT_URL}/`;
+                logout()
+                return Promise.resolve(); // Returning a resolved promise to stop further processing
+            }
         } 
         catch (e){
             console.log(e)
@@ -325,6 +360,11 @@ axiosGetReqList.interceptors.response.use(
                 else if (error.response.status === 401) {
                     window.location.href = `${import.meta.env.VITE_CLIENT_URL}/401`;
                     
+                    return Promise.resolve(); // Returning a resolved promise to stop further processing
+                }
+                else if (error.response.status === 404) {
+                    window.location.href = `${import.meta.env.VITE_CLIENT_URL}/`;
+                    logout()
                     return Promise.resolve(); // Returning a resolved promise to stop further processing
                 }
             } 
@@ -367,6 +407,11 @@ axiosSendEmail.interceptors.response.use(
                     
                     return Promise.resolve(); // Returning a resolved promise to stop further processing
                 }
+                else if (error.response.status === 404) {
+                    window.location.href = `${import.meta.env.VITE_CLIENT_URL}/`;
+                    logout()
+                    return Promise.resolve(); // Returning a resolved promise to stop further processing
+                }
             } 
             catch (e){
                 console.log(e)
@@ -404,6 +449,11 @@ axiosDeleteReq.interceptors.response.use(
                 else if (error.response.status === 401) {
                     window.location.href = `${import.meta.env.VITE_CLIENT_URL}/401`;
                     
+                    return Promise.resolve(); // Returning a resolved promise to stop further processing
+                }
+                else if (error.response.status === 404) {
+                    window.location.href = `${import.meta.env.VITE_CLIENT_URL}/`;
+                    logout()
                     return Promise.resolve(); // Returning a resolved promise to stop further processing
                 }
             } 

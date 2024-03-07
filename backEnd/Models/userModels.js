@@ -15,6 +15,10 @@ const userSchema = new schema({
         type: String, 
         required: true
     },
+    Picture:{
+        type: String,
+        required: true
+    },
     Role:{
         type: String,
         required: true

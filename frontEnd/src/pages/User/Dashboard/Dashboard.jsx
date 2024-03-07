@@ -12,6 +12,7 @@ const Dashboard = () => {
 
   const getData = async () => {
     const temp = await getUserAndItem();
+    console.log(temp)
     setData([temp]);
     setLoading(false);
     setFilteredData(temp.items);
