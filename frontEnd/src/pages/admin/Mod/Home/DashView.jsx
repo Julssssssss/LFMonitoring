@@ -12,10 +12,12 @@ const DashView = () => {
   const [pic, setPic] = useState(null);
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState(null)
+  const [itemData, setItemData] = useState(null)
 
   const getItems = async () => {
     const temp = await getData();
     const item = ([temp])
+    setItemData(temp)
     setUser([item[0].user]);
     setPic ([item[0].pic])
     
@@ -44,7 +46,7 @@ const DashView = () => {
           </div>
           <ProfileIcon User={[user, pic]} />
         </div>
-          <Panels />
+          <Panels itemData = {itemData}/>
       </div>
     </div>
     </>
