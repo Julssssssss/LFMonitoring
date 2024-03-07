@@ -52,7 +52,6 @@ router.get("/login/success", async(req, res)=>{
         console.log('here', req.user)
         res.status(200).json({
 
-            mema: req.user,
             error:false,
             message:"Success",
             accessToken: accessToken,

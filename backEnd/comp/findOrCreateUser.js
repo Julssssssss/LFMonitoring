@@ -18,7 +18,7 @@ const createToken = (user, profile)=>{
     const data = {_id, Name, Email, Role, TAC, picture}
     // If user exists, return the user
     //wag kalimutan palitan 60s
-    const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET, {expiresIn: '60s'})
+    const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET, {expiresIn: '300s'})
     const refreshToken = jwt.sign(data, process.env.JWT_REFRESH_SECRET, {expiresIn: '1hr'})
     addRefreshToken(refreshToken, Email)
     const token = {

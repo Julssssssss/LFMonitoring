@@ -14,6 +14,7 @@ export default {
       'lg': '1024px',
       'xl': '1440px',
       '2xl': '1920px',
+      '3xl': '1600px',
     },
     extend: {
       boxShadow: {
