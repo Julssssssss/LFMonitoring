@@ -37,7 +37,7 @@ const ImageCarousel = ({ url, currentSlide, onNext, onPrev, onClose }) => {
 const DisplayImage = ({ url, onClick }) => {
   return (
     <div onClick={onClick} className="cursor-pointer">
-      <img src={url} alt="Item" className="w-[15rem] h-[12rem] object-cover rounded-2xl" />
+      <img src={url} alt="Item" className=" w-[12rem] h-[12rem] sm:w-[13rem] sm:h-[13rem] lg:h-[14.5rem] lg:w-[14.5rem] xl:w-[19rem] xl:h-[19rem] 2xl:h-[28rem] 2xl:w-[28rem] bg-[white] border-[1rem] border-[#17394C] object-contain rounded-2xl" />
     </div>
   );
 };

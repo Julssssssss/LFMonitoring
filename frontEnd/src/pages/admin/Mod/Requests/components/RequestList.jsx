@@ -137,18 +137,18 @@ const RequestList = () => {
          {searchBar()}
       </div>
 
-      <div className="bg-[#134083] w-full h-full rounded-[2rem] flex flex-row space-x-[2rem] self-center px-[2rem] py-[2rem]">
+      <div className="bg-[#134083] w-full h-full rounded-[2rem] flex flex-row lg:space-x-[1.5rem] lg:overflow-y-auto self-center lg:p-[1rem]">
         <div className="w-full h-auto overflow-y-auto space-y-[1rem] p-[1rem]">
-          {requestFormat()}
+          {/*requestFormat()*/}
         </div>
-        <div className="flex flex-col h-full w-full p-[1.5rem] bg-white rounded-xl border-[#F9D62B] border-[0.5rem] space-y-[0.5rem]">
+        <div className="flex flex-col h-auto w-full p-[1rem] lg:overflow-y-auto bg-white rounded-xl border-[#F9D62B] border-[0.5rem] space-y-[0.5rem]">
           <div className="flex flex-row">
             <div className="flex w-auto h-[2rem] items-center font-semibold"> Requested by: {requestBy}</div>
           </div>
             
-          <div className="flex flex-col space-y-[1rem] h-full whitespace-nowrap">
+          <div className="flex flex-col space-y-[1rem] h-auto whitespace-nowrap">
             <div className="flex flex-row justify-between text-[1rem]">
-              <div className="flex flex-col h-full w-[20rem] p-[0.5rem]">
+              <div className="flex flex-col h-full lg:w-[15rem] p-[0.5rem]">
                 <div className="flex flex-col items-start space-y-[0.7rem] leading-[0.9] whitespace-normal">
                   <div className="flex items-center space-x-[2.5rem]">
                     <div className="w-24">Name of item:</div>
@@ -176,7 +176,7 @@ const RequestList = () => {
                   </div>
                 </div>
             </div>
-            <div className="h-[16.5rem] w-[15rem] py-2 border-[0.3rem] border-[#F9D62B] rounded-xl flex flex-col">
+            <div className="lg:h-[11.5rem] lg:w-[10rem] py-2 border-[0.3rem] border-[#F9D62B] rounded-xl flex flex-col">
               {displayPic()}
             </div>
           </div>
@@ -184,15 +184,15 @@ const RequestList = () => {
               type="text"
               id="subject"  
               placeholder="Subject" 
-              className="border-[0.2rem] border-[#F9D62B] h-[2.5rem] w-full text-[1.5rem] p-[1rem]"
+              className="border-[0.2rem] border-[#F9D62B] h-[2.5rem] w-full text-[1.5rem] p-[1rem] lg:p-[0.8rem] lg:text-[1rem] lg:h-[1rem]"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
             /> 
               <textarea 
               id="letter" 
-              rows={1} 
+              rows={4}
               placeholder="" 
-              className="border-[0.2rem] border-[#F9D62B] h-full w-full text-[1.5rem] p-[1rem]"
+              className="border-[0.2rem] border-[#F9D62B] h-full w-full text-[1.5rem] p-[1rem] lg:p-[0.5rem] lg:text-[1rem] lg:h-"
               value={emailContent}
               onChange={(e) => setEmailContent(e.target.value)}
             /> 

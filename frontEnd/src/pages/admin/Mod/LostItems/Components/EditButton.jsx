@@ -8,7 +8,7 @@ const Modal = ({ isOpen, children }) => {
 
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-[#134083] shadow-md w-[30rem] h-[45rem] rounded-2xl">
+      <div className="bg-[#134083] shadow-md w-[30rem] h-[45rem] lg:w-[25rem] lg:h-[40rem] rounded-2xl">
         {children}
       </div>
     </div>
@@ -137,7 +137,7 @@ const EditButton = ({ Info }) => {
             setCooldownActive(true)
 
             setTimeout(()=>{
-              //console.log('hi')
+  
               setCooldownActive(false)
             }, 5000)
           })
@@ -192,7 +192,7 @@ const EditButton = ({ Info }) => {
       <div>
         <button
           onClick={openModal}
-          className="bg-[#F9D62B] text-[1.4rem] font-bold text-black w-[7rem] h-auto m-[0.3rem] rounded-xl"
+          className="bg-[#F9D62B] text-[1.4rem] lg:text-[1rem] xl:text-[1.4rem] xl:w-[8.5rem] font-poppins font-bold text-black w-[7rem] h-auto m-[0.3rem] rounded-full"
         >
           Edit
         </button>
@@ -200,10 +200,10 @@ const EditButton = ({ Info }) => {
         {confirm && (
           <Modal isOpen={confirm} onClose={() => setConfirm(false)}>
             <div className="absolute inset-0 flex justify-center bg-black bg-opacity-50">
-              <div className="z-30 text-white text-[2rem] place-self-center text-center bg-[#134083] p-[1.5rem] rounded-2xl shadow-md w-[30rem] h-[45rem]">
+              <div className="z-30 text-white text-[2rem] place-self-center text-center bg-[#134083] p-[1.5rem] rounded-2xl shadow-md w-[30rem] h-[45rem] lg:w-[25rem] lg:h-[40rem] lg:p-[2rem]">
                 <div className="flex flex-col h-[40rem] space-y-[10rem] justify-center items-center">
                   <div>Ready to confirm and submit this information?</div>
-                  <div className="flex flex-row space-x-[7rem]">
+                  <div className="flex flex-row space-x-[7rem] lg:space-x-[5rem]">
                     <button
                       type="button"
                       className="text-black text-[1.5rem] bg-[#F9D62B] w-[8rem] h-[3rem] rounded-full mr-2"
@@ -228,7 +228,7 @@ const EditButton = ({ Info }) => {
         <Modal isOpen={isModalOpen} onClose={closeModal} className="relative z-0">
           <form className="flex flex-col space-y-[0.5rem] items-center ">
             <button
-              className="w-[3rem] h-[3rem] place-self-end m-[0.5rem]"
+              className="w-[3rem] h-[3rem] lg:w-[2rem] lg:h-[2rem] place-self-end m-[0.5rem]"
               onClick={closeModal}
             >
              <svg
@@ -257,7 +257,7 @@ const EditButton = ({ Info }) => {
                 </g>
               </svg>
             </button>
-            <div className="h-[17rem] w-[17rem] border-[0.3rem] border-[#F9D62B] rounded-xl p-[0.1rem] flex flex-col justify-center">
+            <div className="h-[17rem] w-[17rem] border-[0.3rem] border-[#F9D62B] rounded-xl p-[0.1rem] flex flex-col justify-center lg:w-[15rem] lg:h-[15rem]">
               {displayPic()}
             </div>
             
@@ -308,7 +308,7 @@ const EditButton = ({ Info }) => {
             <div className="flex flex-col items-center space-y-[1rem] text-white">
               <input
                 type="text"
-                className="form-control bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[21rem] h-[3rem] text-[1.3rem]"
+                className="form-control bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[21rem] h-[3rem] text-[1.3rem] lg:text-[1rem] lg:h-[2.5rem] lg:w-[17.5rem]"
                 placeholder="Name of item"
                 value={item.nameItem}
                 onChange={(e) => setItem({ ...item, nameItem: e.target.value })
@@ -316,21 +316,21 @@ const EditButton = ({ Info }) => {
               />
               <input
                 type="text"
-                className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[21rem] h-[3rem] text-[1.3rem]"
+                className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[21rem] h-[3rem] text-[1.3rem] lg:text-[1rem] lg:h-[2.5rem] lg:w-[17.5rem]"
                 placeholder="Description"
                 value={item.desc}
                 onChange={(e) => setItem({ ...item, desc: e.target.value })}
               />
               <input
                 type="text"
-                className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[21rem] h-[3rem] text-[1.3rem]"
+                className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[21rem] h-[3rem] text-[1.3rem] lg:text-[1rem] lg:h-[2.5rem] lg:w-[17.5rem]"
                 placeholder="Found at"
                 value={item.found}
                 onChange={(e) => setItem({ ...item, found: e.target.value })}
               />
               <input
                 type="text"
-                className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[21rem] h-[3rem] text-[1.3rem]"
+                className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[21rem] h-[3rem] text-[1.3rem] lg:text-[1rem] lg:h-[2.5rem] lg:w-[17.5rem]"
                 placeholder="Surredered by: "
                 value={item.surrenderedBy}
                 onChange={(e) =>
@@ -339,7 +339,7 @@ const EditButton = ({ Info }) => {
               />
               <button
                 type="button"
-                className="text-black text-[1.5rem] bg-[#F9D62B] w-[15rem] h-[3rem] rounded-full"
+                className="text-black text-[1.5rem] bg-[#F9D62B] w-[15rem] h-[3rem] rounded-full lg:text-[1.2rem] lg:h-[2.5rem] lg:w-[12rem]"
                 onClick={checker}
               >
                 SAVE
