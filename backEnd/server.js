@@ -73,9 +73,9 @@ app.use(session({
         autoRemove: true
     }),
     cookie: {
-        //sameSite: "None", //sessionSecure() ? 'none': 'true',
+        sameSite: "None", //sessionSecure() ? 'none': 'true',
         httpOnly: true,
-        //secure: true, // true mo to if prod na
+        secure: true, // true mo to if prod na
         maxAge: 60*60*1000
     }
 }))    
