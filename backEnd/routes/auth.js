@@ -3,7 +3,6 @@ const passport = require("passport")
 const jwt = require('jsonwebtoken')
 const jwtRefreshToken = require('../Models/refreshTokenModels')
 const userModel = require('../Models/userModels')
-const logger = require('../comp/logger')
 
 
 //TODO: check and fix this
@@ -72,9 +71,9 @@ router.post("/login/success", async(req, res)=>{
     console.log('here', req.session)
     if(req.session.userId){
         const userId = req.session.userId
-        await userModel.findById(userId)
+        await userModel.findById(userId).lean()
         .then(async(result)=>{
-            //console.log(result)
+            console.log(result)
             const {_id, Name, Email, Picture, Role, TAC} = result;
             const userData = {_id, Name, Email, Picture, Role, TAC}
             const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_SECRET, {expiresIn: '600s'})
