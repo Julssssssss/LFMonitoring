@@ -86,6 +86,17 @@ router.post('/data', verifyToken, (req, res) => {
   }
 });
 
+router.post('/archiveLength', verifyToken, async(req, res)=>{
+  try{
+    const archiveData = await transModels.find()
+    //console.log(archiveData.length)
+    res.status(200).json(archiveData.length)
+  }catch(err){
+    console.log(err)
+    res.sendStatus(500)
+  }
+})
+
 //find userdata
 
 router.post('/userData', adminOnlyToken, async(req, res)=>{
