@@ -20,11 +20,12 @@ const verifyToken = (req, res, next) => {
 
 router.put("/TACagreement", verifyToken, async(req, res)=>{
     try{
-        console.log(req.user)
         const {_id} = req.user
-        let Agreed = await UserModel.findByIdAndUpdate({ '_id': _id }, {$set:{TAC:true}})
-
-        return res.sendStatus(200)
+        const result = await UserModel.findByIdAndUpdate({ '_id': _id }, {$set:{TAC:true}})
+        if(!result){
+            res.sendStatus(500)
+        }
+        res.sendStatus(200)
     }
     catch(err){
         console.log(err)
