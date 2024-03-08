@@ -68,7 +68,7 @@ const addRefreshTokenToDB = async(Email,  refreshToken) =>{
     })
 }
 
-router.get("/login/success", async(req, res)=>{
+router.post("/login/success", async(req, res)=>{
     console.log('here', req.session)
     if(req.session.userId){
         const userId = req.session.userId
