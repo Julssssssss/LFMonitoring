@@ -18,7 +18,8 @@ const TermsAndAgreement = ({closeTAC}) => {
         }
       )
       .then(res=>{
-        window.location.reload();
+        Auth()
+        //window.location.reload();
       })
     }
     catch(err){console.log(err)}
