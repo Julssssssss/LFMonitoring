@@ -1,7 +1,6 @@
 const User = require('../Models/userModels')
 const jwtRefreshToken = require('../Models/refreshTokenModels')
 const jwt = require('jsonwebtoken')
-const logger = require('./logger')
 
 const findOrCreateUser = async (profile, done) => {
     try {

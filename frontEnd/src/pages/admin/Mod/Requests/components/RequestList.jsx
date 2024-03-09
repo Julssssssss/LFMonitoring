@@ -31,11 +31,11 @@ const RequestList = () => {
   const getReqList = async() => {
     try{
       const res = await axiosGetReqList.post()
+      console.log(res)
       const temp = await getData();
       setItems(temp.items); 
       setList(res.data.reqList)
       setFilteredData(res.data.reqList)
-      
     }
     catch(err){
       console.log(err)

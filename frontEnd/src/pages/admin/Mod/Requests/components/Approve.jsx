@@ -126,29 +126,29 @@ const Approve = ({ RequestItem, Item, index, list }) => {
             </button>
           <div className="flex flex-col space-y-[3rem] justify-center items-center">
             <div className='text-[1.5rem] space-y-[1rem] font-poppins text-white'>
-                <div className="flex flex-col items-start space-y-[1rem]">
+                <div className="flex flex-col items-start justify-start space-y-[1rem]">
                   <div className="flex items-center space-x-[5rem]">
-                    <div className="w-24">Name of item:</div>
+                    <div className="w-[15rem]">Name of item:</div>
                     <div>{selectedItem.nameItem}</div>
                   </div>
                   <div className="flex items-center space-x-[5rem]">
-                    <div className="w-24">Description:</div>
+                    <div className="w-[15rem]">Description:</div>
                     <div>{selectedItem.desc}</div>
                   </div>
                   <div className="flex items-center space-x-[5rem]">
-                    <div className="w-24">Found at:</div>
+                    <div className="w-[15rem]">Found at:</div>
                     <div>{selectedItem.found}</div>
                   </div>
                   <div className="flex items-center space-x-[5rem]">
-                    <div className="w-24">Surrendered by:</div>
+                    <div className="w-[15rem]">Surrendered by:</div>
                     <div>{selectedItem.surrenderedBy}</div>
                   </div>
                   <div className="flex items-center space-x-[5rem]">
-                    <div className="w-24 text-center">Date posted:</div>
+                    <div className="w-[15rem]">Date posted:</div>
                     <div className="text-center">{selectedItem.datePosted}</div>
                   </div>
                   <div className="flex items-center space-x-[5rem]">
-                    <div className="w-24">Owner:</div>
+                    <div className="w-[15rem]">Owner:</div>
                     <div>{RequestItem.Email}</div>
                   </div>
               </div>

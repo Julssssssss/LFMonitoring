@@ -26,7 +26,9 @@ const DeleteButton = ({ Info, onDelete }) => {
   const selectedItem = async () => {
     if(!cooldownActive){
       try {
-        await axiosDeleteItem.delete(`${Info._id}`, { data: { url: Info.url } })
+        await axiosDeleteItem.post(`${Info._id}`, { 
+          data: { url: Info.url } })
+          
         .then(res=>{
 
           onDelete(Info._id, Info.url);
@@ -36,7 +38,7 @@ const DeleteButton = ({ Info, onDelete }) => {
           setCooldownActive(true)
 
             setTimeout(()=>{
-              //console.log('hi')
+            
               setCooldownActive(false)
             }, 5000)
         })

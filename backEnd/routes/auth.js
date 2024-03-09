@@ -3,11 +3,9 @@ const passport = require("passport")
 const jwt = require('jsonwebtoken')
 const jwtRefreshToken = require('../Models/refreshTokenModels')
 const userModel = require('../Models/userModels')
-const logger = require('../comp/logger')
 
 
 //TODO: check and fix this
-
 const checkRefToken = async(refreshToken) =>{
     const result = await jwtRefreshToken.findOne({ 'refreshToken': refreshToken })
     if(result){
@@ -18,7 +16,6 @@ const checkRefToken = async(refreshToken) =>{
         return 401
     }
 }
-
 
 const deleteRefTokenDb = async(Email)=>{
     await jwtRefreshToken.findOneAndDelete({Email: Email})
@@ -48,7 +45,7 @@ router.post('/refreshToken', async(req, res)=>{
         }
         const {_id, Name, Email, Role, TAC, Picture}=user
         const data = {_id, Name, Email,TAC, Role, Picture}
-        const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET, {expiresIn: '300s'})
+        const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET, {expiresIn: '600s'})
         console.log('success')
         res.json({ accessToken: accessToken})
     })
@@ -62,29 +59,28 @@ const addRefreshTokenToDB = async(Email,  refreshToken) =>{
             //console.log(Email)
             deleteRefTokenDb(Email)
         }
-        refreshToken = new jwtRefreshToken({
+        const newRefreshToken = new jwtRefreshToken({
             Email: Email,
-            refreshToken: refreshToken
+            refreshToken: refreshToken, 
         });
-        refreshToken.save();
+        newRefreshToken.save();
     })
 }
 
-router.get("/login/success", async(req, res)=>{
+router.post("/login/success", async(req, res)=>{
     console.log('here', req.session)
     if(req.session.userId){
         const userId = req.session.userId
-        await userModel.findById(userId)
+        await userModel.findById(userId).lean()
         .then(async(result)=>{
-            //console.log(result)
             const {_id, Name, Email, Picture, Role, TAC} = result;
             const userData = {_id, Name, Email, Picture, Role, TAC}
-            const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_SECRET, {expiresIn: '300s'})
-            const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET, {expiresIn: '1hr'}) //1hr
+            const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_SECRET, {expiresIn: '600s'})
+            const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET, {expiresIn: '900s'}) //15 minutes
             await addRefreshTokenToDB(Email, refreshToken)
             // Set cookie with refresh token
-            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, /*secure: true,*/ /*sameSite: 'None' */});
-
+            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true, sameSite: 'None' });
+            req.session.userId = null
             // Send response with user data
             res.status(200).json({
                 error: false,
@@ -130,9 +126,7 @@ router.get("/google", passport.authenticate("google"))
 
 router.get("/logout", async(req, res)=>{
     console.log('cookies', req.cookies)
-    console.log(req.cookies.jwt)
     const refreshToken = req.cookies.jwt
-    console.log(refreshToken)
     const Email = await checkRefToken(refreshToken)
     if(!Email){
         console.error("Error logging out:", err);
@@ -140,8 +134,9 @@ router.get("/logout", async(req, res)=>{
     }
     await deleteRefTokenDb(Email)
         .then((result)=>{     
-            res.clearCookie('connect.sid') 
-            res.clearCookie('jwt')  
+            //res.clearCookie('jwt')  
+            console.log('cookies2', req.cookies)
+            //res.clearCookie('session')
             req.logout((err)=>{
                 if (err) {
                     console.error("Error logging out:", err);

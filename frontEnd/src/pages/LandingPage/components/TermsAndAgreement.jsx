@@ -8,7 +8,7 @@ const TermsAndAgreement = ({closeTAC}) => {
 
   const handleAcceptTAC = async () => {
     try{
-      const response = await axios.put(
+      await axios.put(
         `${import.meta.env.VITE_API_URL}/prot/TACagreement`,
         null,
         {
@@ -17,7 +17,9 @@ const TermsAndAgreement = ({closeTAC}) => {
             }
         }
       )
-      Auth()
+      .then(res=>{
+        window.location.reload();
+      })
     }
     catch(err){console.log(err)}
   }

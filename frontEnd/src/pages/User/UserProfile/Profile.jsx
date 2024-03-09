@@ -29,7 +29,11 @@ const Profile = () => {
         </div>
         <div className="bg-[#0d1832] font-poppins h-auto flex flex-col items-center 3xl:h-screen">
           {/* USER IMAGE */}
-          <img className='rounded-full border-8 mt-10 w-[10rem] h-[10rem] border-yellow-400 xsm:w-[11rem] xsm:h-[11rem] lg:h-[12rem] lg:w-[12rem] xl:w-[12.5rem] xl:h-[12.5rem] 3xl:h-[14rem] 3xl:w-[14rem]' src={User[0].picture}></img>
+          <img className='rounded-full border-8 mt-10 w-[10rem] h-[10rem] border-yellow-400 xsm:w-[11rem] xsm:h-[11rem] lg:h-[12rem] lg:w-[12rem] xl:w-[12.5rem] xl:h-[12.5rem] 3xl:h-[14rem] 3xl:w-[14rem]' 
+            rel="preload" 
+            loading="lazy"
+            src={User[0].picture}>
+          </img>
           {/* USER DATA */}
           <div className="bg-[#003985] h-[10rem] leading-[1rem] w-[15rem] mt-[5rem] text-white p-[1rem] justify-center flex flex-col z-20 rounded-xl xsm:w-[16rem] xsm:h-[11rem] xsm:mt-[6rem] sm:h-[12rem] sm:w-[20rem] sm:mt-[6.5rem] lg:w-[22rem] lg:h-[13rem] lg:text-[1.1rem] xl:w-[25rem] xl:h-[15rem] xl:text-[1.3rem] 3xl:h-[20rem] 3xl:w-[32rem] 3xl:text-[2rem] 3xl:leading-[2rem] xl:mt-[8.5rem]">
             <b>Name:</b> {User[0].user.Name}  <br/><br/>

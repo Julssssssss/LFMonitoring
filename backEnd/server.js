@@ -4,6 +4,16 @@ const app = express(); //to use express
 const port = 3000;
 require('dotenv').config()
 
+//cache
+const helmet = require('helmet');
+app.use(helmet({
+    cacheControl: {
+        maxAge: 3600, // Cache for 1 hour
+        staleWhileRevalidate: 300, // Allow serving stale data for 5 minutes while refetching
+    }
+}));
+
+
 const protRoute = require('./routes/protected')
 const MongoStore = require('connect-mongo')
 
@@ -73,9 +83,9 @@ app.use(session({
         autoRemove: true
     }),
     cookie: {
-        //sameSite: "None", //sessionSecure() ? 'none': 'true',
+        //sameSite: "None",
         httpOnly: true,
-       // secure: true, // true mo to if prod na
+        //secure: true, // true mo to if prod na
         maxAge: 60*60*1000
     }
 }))    

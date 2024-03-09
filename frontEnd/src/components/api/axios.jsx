@@ -467,6 +467,50 @@ axiosDeleteReq.interceptors.response.use(
     }
 );
 
+const axiosFetchArchLength = axios.create({
+    baseURL: `${baseUrl}/priv/archiveLength`,
+    headers:{
+        'authorization': `Bearer ${accessToken}`
+    }
+});
+
+axiosFetchArchLength.interceptors.response.use(
+    response => response,
+    error => {
+        const originalRequest = error.config;
+        try
+            {    if (error.response.status === 403 && !originalRequest._retry) {
+                    originalRequest._retry = true;
+                    return axiosReFetchToken.post()
+                        .then(response => {
+                            const newAccessToken = response.data.accessToken;
+                            const temp = JSON.stringify(newAccessToken)
+                            localStorage.setItem('accessToken', temp);
+                            originalRequest.headers['authorization'] = `Bearer ${newAccessToken}`;
+                            return axiosFetchArchLength(originalRequest);
+                        });
+                }
+                else if (error.response.status === 401) {
+                    window.location.href = `${import.meta.env.VITE_CLIENT_URL}/401`;
+                    
+                    return Promise.resolve(); // Returning a resolved promise to stop further processing
+                }
+                else if (error.response.status === 404) {
+                    window.location.href = `${import.meta.env.VITE_CLIENT_URL}/`;
+                    logout()
+                    return Promise.resolve(); // Returning a resolved promise to stop further processing
+                }
+            } 
+            catch (e){
+                console.log(e)
+                //logout()
+                return Promise.resolve()
+            }
+
+        return Promise.reject(error);
+    }
+);
 
 
-export {axiosDeleteReq, axiosGetReqList, axiosFetchToken, axiosFetchItems, axiosReFetchToken, axiosSendItem, axiosSendUpdate, axiosUpdateImage, axiosUnclaimedItems, axiosDeleteItem, axiosFetchAdminData, axiosSendEmail};
+
+export {axiosFetchArchLength, axiosDeleteReq, axiosGetReqList, axiosFetchToken, axiosFetchItems, axiosReFetchToken, axiosSendItem, axiosSendUpdate, axiosUpdateImage, axiosUnclaimedItems, axiosDeleteItem, axiosFetchAdminData, axiosSendEmail};
