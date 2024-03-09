@@ -7,7 +7,6 @@ const logger = require('../comp/logger')
 
 
 //TODO: check and fix this
-
 const checkRefToken = async(refreshToken) =>{
     const result = await jwtRefreshToken.findOne({ 'refreshToken': refreshToken })
     if(result){
@@ -18,7 +17,6 @@ const checkRefToken = async(refreshToken) =>{
         return 401
     }
 }
-
 
 const deleteRefTokenDb = async(Email)=>{
     await jwtRefreshToken.findOneAndDelete({Email: Email})
@@ -48,7 +46,7 @@ router.post('/refreshToken', async(req, res)=>{
         }
         const {_id, Name, Email, Role, TAC, Picture}=user
         const data = {_id, Name, Email,TAC, Role, Picture}
-        const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET, {expiresIn: '300s'})
+        const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET, {expiresIn: '600s'})
         console.log('success')
         res.json({ accessToken: accessToken})
     })
@@ -79,8 +77,8 @@ router.get("/login/success", async(req, res)=>{
             //console.log(result)
             const {_id, Name, Email, Picture, Role, TAC} = result;
             const userData = {_id, Name, Email, Picture, Role, TAC}
-            const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_SECRET, {expiresIn: '300s'})
-            const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET, {expiresIn: '1hr'}) //1hr
+            const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_SECRET, {expiresIn: '600s'})
+            const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET, {expiresIn: '900s'}) //15 minutes
             await addRefreshTokenToDB(Email, refreshToken)
             // Set cookie with refresh token
             res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true, sameSite: 'None' });
@@ -131,7 +129,9 @@ router.get("/google", passport.authenticate("google"))
 router.get("/logout", async(req, res)=>{
     console.log('cookies', req.cookies)
     console.log(req.cookies.jwt)
+    console.log(req.cookies.jwt)
     const refreshToken = req.cookies.jwt
+    console.log(refreshToken)
     console.log(refreshToken)
     const Email = await checkRefToken(refreshToken)
     if(!Email){
@@ -140,7 +140,7 @@ router.get("/logout", async(req, res)=>{
     }
     await deleteRefTokenDb(Email)
         .then((result)=>{     
-            res.clearCookie('connect.sid') 
+            res.clearCookie('session') 
             res.clearCookie('jwt')  
             req.logout((err)=>{
                 if (err) {

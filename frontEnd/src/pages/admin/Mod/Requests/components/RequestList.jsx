@@ -31,11 +31,11 @@ const RequestList = () => {
   const getReqList = async() => {
     try{
       const res = await axiosGetReqList.post()
+      console.log(res)
       const temp = await getData();
       setItems(temp.items); 
       setList(res.data.reqList)
       setFilteredData(res.data.reqList)
-      
     }
     catch(err){
       console.log(err)
@@ -139,7 +139,7 @@ const RequestList = () => {
 
       <div className="bg-[#134083] w-full h-full rounded-[2rem] flex flex-row lg:space-x-[1.5rem] lg:overflow-y-auto self-center lg:p-[1rem]">
         <div className="w-full h-auto overflow-y-auto space-y-[1rem] p-[1rem]">
-          {/*requestFormat()*/}
+          {requestFormat()}
         </div>
         <div className="flex flex-col h-auto w-full p-[1rem] lg:overflow-y-auto bg-white rounded-xl border-[#F9D62B] border-[0.5rem] space-y-[0.5rem]">
           <div className="flex flex-row">
