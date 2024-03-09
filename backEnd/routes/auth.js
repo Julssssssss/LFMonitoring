@@ -135,7 +135,7 @@ router.get("/logout", async(req, res)=>{
     await deleteRefTokenDb(Email)
         .then((result)=>{     
             //res.clearCookie('jwt')  
-            console.log('cookies2', req.cookies)
+            //console.log('cookies2', req.cookies)
             //res.clearCookie('session')
             req.logout((err)=>{
                 if (err) {

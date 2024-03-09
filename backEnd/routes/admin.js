@@ -296,9 +296,11 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
 
 router.post('/ArchivingTrans', verifyToken, async(req, res, next)=>{
   try{
-    
-    const {_id, itemId, nameItem, Email}= req.body
+    const {Request} = req.body
+    const {_id, itemId, Email}= Request
+    //console.log('itemId', itemId)
     const itemDel = await itemModels.findOne({'_id': itemId})
+    //console.log(itemDel)
     if(itemDel === null){
       res.status(404).json({error: 'data not found'})
     }
@@ -337,7 +339,6 @@ router.post('/ArchivingTrans', verifyToken, async(req, res, next)=>{
       )
       //NOTE: TANGALIN LANG TO PAG READY NA ISAVE WALA PA KASI YUNG postedBy DATA AND TINATAMAD AKO MAGDELETE
     }
-
   }
   catch(err){
     console.log(err)
