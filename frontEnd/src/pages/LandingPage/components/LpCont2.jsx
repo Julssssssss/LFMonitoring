@@ -5,7 +5,7 @@ const LpCont2 = () => {
     
   return (
     <>
-      <div className="relative flex flex-col text-white overflow-hidden w-screen h-auto pb-[6.5rem] sm:pb-[7rem] md:pb-[10rem] lg:pb-[11rem] xl:pb-[23rem] 2xl:pb-[24rem]">
+      <div className="relative flex flex-col text-white overflow-hidden w-screen h-auto pb-[6.5rem] sm:pb-[7rem] md:pb-[10rem] lg:pb-[16rem] xl:pb-[23rem] 2xl:pb-[24rem] 3xl:pb-[21rem]">
         <div className="relative w-screen flex flex-col space-y-[0.5rem] items-center mt-[4rem] text-white font-poppins text-center sm:mt-[5rem] md:mt-[5.5rem] lg:mt-[8rem] lg:-left-[4rem] lg:flex-row xl:mt-[14rem] 2xl:mt-[20rem]">
           <div className="z-10 absolute lg:left-0 2xl:left-[5.5rem]">
             <div className="bg-[#17394C] w-[13rem] h-[13rem] rounded-full blur-xl md:w-[20rem] md:h-[24rem] lg:w-[30rem] lg:h-[30rem] xl:w-[33rem] lg:h-[33rem] 2xl:w-[35rem] 2xl:h-[40rem]"/>
@@ -18,7 +18,7 @@ const LpCont2 = () => {
             <div className="z-20 relative font-semithin text-[0.8rem] mx-[1rem] sm:text-[0.9rem] md:text-[1.1rem] md:mx-[1rem] lg:text-[1.5rem] lg:mx-[2rem] lg:-right-[4rem] lg:relative xl:text-[1.8rem] 2xl:text-[2.5rem] 2xl:mx-[4rem]">A Lost and Found monitoring solution system, accessing a comprehensive directory of found items and making it easy for users to search for their lost belongings on any device, is designed for quick access to found items and appointment requests to streamline the process of item retrieval and, most especially, in a secure way, safeguarding user information and interactions.</div>
           </div>
         </div>
-        <img src="https://i.postimg.cc/P5NyMx6L/Untitled-design-10-4.png" alt="Mockups" className="object-fill w-screen h-[37rem] z-0 absolute sm:h-[40rem] md:h-[48rem] lg:h-[52.5rem] xl:h-[70rem] 2xl:h-[80rem]"/>
+        <img src="https://i.postimg.cc/P5NyMx6L/Untitled-design-10-4.png" alt="Mockups" className="object-fill w-screen h-[37rem] z-0 absolute sm:h-[32rem] md:h-[48rem] lg:h-[49rem] xl:h-[70rem] 2xl:h-[92rem] 3xl:h-[83rem]"/>
       </div>
     </>
   )

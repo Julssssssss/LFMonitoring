@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
 
 const ImageCarousel = ({ url, currentSlide, onNext, onPrev, onClose }) => {
   return (
@@ -37,7 +36,7 @@ const ImageCarousel = ({ url, currentSlide, onNext, onPrev, onClose }) => {
 const DisplayImage = ({ url, onClick }) => {
   return (
     <div onClick={onClick} className="cursor-pointer">
-      <img src={url} alt="Item" className=" w-[12rem] h-[12rem] sm:w-[13rem] sm:h-[13rem] lg:h-[14.5rem] lg:w-[14.5rem] xl:w-[19rem] xl:h-[19rem] 2xl:h-[28rem] 2xl:w-[28rem] bg-[white] border-[1rem] border-[#17394C] object-contain rounded-2xl" />
+      <img src={url} alt="Item" className="hover:opacity-75 w-[12rem] h-[12rem] xsm:w-[13rem] xsm:h-[13rem] md:h-[14.5rem] md:w-[14.5rem] lg:h-[16rem] lg:h-[16rem] xl:w-[19rem] xl:h-[19rem] 3xl:h-[28rem] 3xl:w-[28rem] bg-[white] border-[1rem] border-[#17394C] object-contain rounded-2xl" />
     </div>
   );
 };
@@ -45,28 +44,12 @@ const DisplayImage = ({ url, onClick }) => {
 const Carousel = () => {
   const location = useLocation();
   const data = location.state && location.state.el; // Check if location.state is defined
-  const accessToken = localStorage.getItem("accessToken");
 
   if (!data) {
     // Handle the case where data is not available
     return <div>No data available.</div>;
   }
 
-  const sendReq = async () => {
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/prot/request`,
-        { itemId: data._id },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const url = data.url || []; // Use an empty array if data.img is undefined
 

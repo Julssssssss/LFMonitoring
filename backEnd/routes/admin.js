@@ -144,8 +144,9 @@ router.post('/setRoles', adminOnlyToken, async(req, res, next) => {
 router.post('/sendItem', verifyToken, upload.array('image'), async (req, res) => {
   try {
     const data = req.user
-    const { user: { Email }} = data;
-
+    
+    const { Email } = data;
+    console.log('here', Email)
     const { nameItem, desc, found, surrenderedBy, datePosted } = req.body;
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ error: 'No files were uploaded.' });
@@ -245,11 +246,13 @@ router.post('/archive/UnclaimedItems/:id', verifyToken, async (req, res) => {
 });
 
 //delete data to mongodb 
-router.delete('/delete/:id', verifyToken, async (req, res) => {
+router.post('/delete/:id', verifyToken, async (req, res) => {
   try {
+    
     const { id } = req.params;
-    const { url } = req.body;
-
+    const {data} = req.body;
+    console.log('here', data)
+    const { url } = data
     const extractUrl = (url) => {
       const match = url.match(/\/(FoundItems\/Item\d+)\.jpg$/);
       return match ? match[1] : null;
@@ -296,22 +299,19 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
 
 router.post('/ArchivingTrans', verifyToken, async(req, res, next)=>{
   try{
-    
     const {Request} = req.body
-    const {_id, itemId, nameItem, Email}= Request
-    const transacID = _id
+    const {_id, itemId, Email}= Request
+    //console.log('itemId', itemId)
     const itemDel = await itemModels.findOne({'_id': itemId})
+    //console.log(itemDel)
     if(itemDel === null){
       res.status(404).json({error: 'data not found'})
     }
     else{
-      const data = req.user
-      const { user: { Email:postedBy }} = data;
-      const {_id, url, nameItem, desc, found, surrenderedBy, datePosted}= itemDel
-      const itemId = _id.toString()
+      const {url, nameItem, desc, found, surrenderedBy, datePosted, postedBy}= itemDel
       const currentDate = new Date();
       const archData = new transModels({
-        "_id": transacID,
+        "_id": _id,
         "itemId": itemId,
         "itemImages": url,
         "nameItem":  nameItem,
@@ -326,26 +326,29 @@ router.post('/ArchivingTrans', verifyToken, async(req, res, next)=>{
 
       await archData.save() 
       .then(async()=>{
-          await itemModels.findByIdAndDelete({'_id': _id})
+          await itemModels.findByIdAndDelete({'_id': itemId})
+          .then(res=>{
+            console.log('successFully deleted the item')
+          })
 
-          const requestDel = await reqModels.findByIdAndDelete({'_id': transacID})
+          const requestDel = await reqModels.findByIdAndDelete({'_id': _id})
           if(requestDel === null){
             res.status(404).json({error: 'data not found'})
           }
-          else{res.status(200).json('success')}
+          else{
+            console.log('successfully deleted the request')
+            res.status(200).json('success')
+          }
         }
       )
       //NOTE: TANGALIN LANG TO PAG READY NA ISAVE WALA PA KASI YUNG postedBy DATA AND TINATAMAD AKO MAGDELETE
     }
-
   }
   catch(err){
     console.log(err)
     res.status(500)
   }
 })
-
-
 //nodemailer 
 //to send mails
 
@@ -385,10 +388,8 @@ router.post('/sendEmail', verifyToken, async(req, res, next)=>{
 
 router.post('/delReq', verifyToken, async(req, res, next)=>{
   try{
-    //console.log(req.body)
+    
     const {_id} = req.body
-    //console.log(_id)
-
     await reqModels.findById(_id)
     .then(async()=>{
       await reqModels.findByIdAndDelete(_id)

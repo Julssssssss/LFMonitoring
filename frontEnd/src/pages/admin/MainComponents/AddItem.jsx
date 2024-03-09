@@ -146,7 +146,7 @@ const AddItem = () => {
     <div>
       <button
         onClick={openModal}
-        className="bg-[#F9D62B] font-poppins text-black font-bold lg:py-1 lg:px-3 lg:w-[10rem] xl:py-2 xl:px-4 lg:mb-[1rem] mb-[2rem] rounded-full xl:text-[1.3rem] xl:w-[15rem] 2xl:text-[1.5rem] hover:bg-blue-700"
+        className="bg-[#F9D62B] font-poppins text-black font-bold md:py-1 md:px-3 md:w-[10rem] xl:py-2 xl:px-4 md:mb-[1rem] mb-[2rem] rounded-full xl:text-[1.3rem] xl:w-[15rem] 2xl:text-[1.5rem] hover:bg-[#134083] hover:text-white"
       >
         ADD ITEM
       </button>
@@ -181,24 +181,36 @@ const AddItem = () => {
 
       <Modal isOpen={isModalOpen} onClose={closeModal} className="relative z-0">
         <form className="flex flex-col space-y-[0.5rem] items-center ">
-          <button onClick={closeModal} className="w-[3rem] h-[3rem] place-self-end m-[0.5rem]">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#F9D62B">
-              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-              <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
-              <g id="SVGRepo_iconCarrier">
-                <path
-                  d="M8.00386 9.41816C7.61333 9.02763 7.61334 8.39447 8.00386 8.00395C8.39438 7.61342 9.02755 7.61342 9.41807 8.00395L12.0057 10.5916L14.5907 8.00657C14.9813 7.61605 15.6144 7.61605 16.0049 8.00657C16.3955 8.3971 16.3955 9.03026 16.0049 9.42079L13.4199 12.0058L16.0039 14.5897C16.3944 14.9803 16.3944 15.6134 16.0039 16.0039C15.6133 16.3945 14.9802 14.3945 14.5896 14.0039L12.0057 13.42L9.42097 16.0048C9.03045 16.3953 8.39728 16.3953 8.00676 16.0048C7.61624 15.6142 7.61624 14.9811 8.00676 14.5905L10.5915 12.0058L8.00386 9.41816Z"
-                  fill="#F9D62B"
-                ></path>{' '}
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z"
-                  fill="#F9D62B"
-                ></path>{' '}
-              </g>
-            </svg>
-          </button>
+        <button
+              className="w-[3rem] h-[3rem] md:w-[2rem] md:h-[2rem] place-self-end m-[0.5rem] 2xl:w-[3rem] 2xl:h-[3rem] stroke-[#F9D62B] hover:stroke-white"
+              onClick={closeModal}
+            >
+             <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                
+              >
+                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></g>
+                <g id="SVGRepo_iconCarrier">
+                  <path
+                    d="M8.00386 9.41816C7.61333 9.02763 7.61334 8.39447 8.00386 8.00395C8.39438 7.61342 9.02755 7.61342 9.41807 8.00395L12.0057 10.5916L14.5907 8.00657C14.9813 7.61605 15.6144 7.61605 16.0049 8.00657C16.3955 8.3971 16.3955 9.03026 16.0049 9.42079L13.4199 12.0058L16.0039 14.5897C16.3944 14.9803 16.3944 15.6134 16.0039 16.0039C15.6133 16.3945 14.9802 14.9802 14.5896 16.0039L12.0057 13.42L9.42097 16.0048C9.03045 16.3953 8.39728 16.3953 8.00676 16.0048C7.61624 15.6142 7.61624 14.9811 8.00676 14.5905L10.5915 12.0058L8.00386 9.41816Z"
+                    
+                  ></path>{' '}
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z"
+                    
+                  ></path>{' '}
+                </g>
+              </svg>
+            </button>
           <div className="h-[17rem] w-[17rem] border-[0.3rem] border-[#F9D62B] rounded-xl p-[0.1rem] flex flex-col justify-center">
             {displayPic()}
           </div>
@@ -279,7 +291,7 @@ const AddItem = () => {
             />
             <button
               type="button"
-              className="text-black text-[1.5rem] bg-[#F9D62B] w-[15rem] h-[3rem] rounded-full"
+              className="text-black text-[1.5rem] hover:bg-[#134083] hover:text-white bg-[#F9D62B] w-[15rem] h-[3rem] rounded-full"
               onClick={checker}
             >
               ADD
