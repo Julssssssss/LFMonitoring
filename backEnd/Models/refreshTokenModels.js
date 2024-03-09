@@ -10,6 +10,13 @@ const refreshTokensSchema = new schema({
     refreshToken:{
         type: String, 
         required: true
+    },
+    expireAt: { 
+        type: Date,
+        default: Date.now,
+        index: { 
+            expires: '960s' 
+        }
     }
 })
 const refreshTokensModelo = mongoose.model("refreshTokens", refreshTokensSchema)

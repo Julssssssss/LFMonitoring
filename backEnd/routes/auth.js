@@ -59,11 +59,11 @@ const addRefreshTokenToDB = async(Email,  refreshToken) =>{
             //console.log(Email)
             deleteRefTokenDb(Email)
         }
-        refreshToken = new jwtRefreshToken({
+        const newRefreshToken = new jwtRefreshToken({
             Email: Email,
-            refreshToken: refreshToken
+            refreshToken: refreshToken, 
         });
-        refreshToken.save();
+        newRefreshToken.save();
     })
 }
 
