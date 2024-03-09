@@ -8,7 +8,7 @@ const Modal = ({ isOpen, children }) => {
 
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-[#134083] shadow-md w-[30rem] h-[45rem] lg:w-[25rem] lg:h-[40rem] rounded-2xl">
+      <div className="bg-[#134083] shadow-md w-[30rem] h-[45rem] md:w-[25rem] md:h-[40rem] 2xl:h-[45rem] 2xl:w-[30rem] rounded-2xl">
         {children}
       </div>
     </div>
@@ -115,7 +115,6 @@ const EditButton = ({ Info }) => {
             setCooldownActive(true)
 
             setTimeout(()=>{
-              //console.log('hi')
               setCooldownActive(false)
             }, 5000)
           })
@@ -192,7 +191,7 @@ const EditButton = ({ Info }) => {
       <div>
         <button
           onClick={openModal}
-          className="bg-[#F9D62B] text-[1.4rem] lg:text-[1rem] xl:text-[1.4rem] xl:w-[8.5rem] font-poppins font-bold text-black w-[7rem] h-auto m-[0.3rem] rounded-full"
+          className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-[1.4rem] md:text-[1rem] xl:text-[1.4rem] xl:w-[8.5rem] 3xl:text-[1.8rem] font-poppins font-bold text-black w-[7rem] h-auto m-[0.3rem] rounded-full"
         >
           Edit
         </button>
@@ -200,10 +199,10 @@ const EditButton = ({ Info }) => {
         {confirm && (
           <Modal isOpen={confirm} onClose={() => setConfirm(false)}>
             <div className="absolute inset-0 flex justify-center bg-black bg-opacity-50">
-              <div className="z-30 text-white text-[2rem] place-self-center text-center bg-[#134083] p-[1.5rem] rounded-2xl shadow-md w-[30rem] h-[45rem] lg:w-[25rem] lg:h-[40rem] lg:p-[2rem]">
+              <div className="z-30 text-white text-[2rem] place-self-center text-center bg-[#134083] p-[1.5rem] rounded-2xl shadow-md w-[30rem] h-[45rem] md:w-[25rem] md:h-[40rem] md:p-[2rem] 2xl:h-[45rem] 2xl:w-[30rem]">
                 <div className="flex flex-col h-[40rem] space-y-[10rem] justify-center items-center">
                   <div>Ready to confirm and submit this information?</div>
-                  <div className="flex flex-row space-x-[7rem] lg:space-x-[5rem]">
+                  <div className="flex flex-row space-x-[7rem] md:space-x-[5rem]">
                     <button
                       type="button"
                       className="text-black text-[1.5rem] bg-[#F9D62B] w-[8rem] h-[3rem] rounded-full mr-2"
@@ -228,14 +227,14 @@ const EditButton = ({ Info }) => {
         <Modal isOpen={isModalOpen} onClose={closeModal} className="relative z-0">
           <form className="flex flex-col space-y-[0.5rem] items-center ">
             <button
-              className="w-[3rem] h-[3rem] lg:w-[2rem] lg:h-[2rem] place-self-end m-[0.5rem]"
+              className="w-[3rem] h-[3rem] md:w-[2rem] md:h-[2rem] place-self-end m-[0.5rem] 2xl:w-[3rem] 2xl:h-[3rem] stroke-[#F9D62B] hover:stroke-white"
               onClick={closeModal}
             >
              <svg
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                stroke="#F9D62B"
+                
               >
                 <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                 <g
@@ -246,18 +245,18 @@ const EditButton = ({ Info }) => {
                 <g id="SVGRepo_iconCarrier">
                   <path
                     d="M8.00386 9.41816C7.61333 9.02763 7.61334 8.39447 8.00386 8.00395C8.39438 7.61342 9.02755 7.61342 9.41807 8.00395L12.0057 10.5916L14.5907 8.00657C14.9813 7.61605 15.6144 7.61605 16.0049 8.00657C16.3955 8.3971 16.3955 9.03026 16.0049 9.42079L13.4199 12.0058L16.0039 14.5897C16.3944 14.9803 16.3944 15.6134 16.0039 16.0039C15.6133 16.3945 14.9802 14.9802 14.5896 16.0039L12.0057 13.42L9.42097 16.0048C9.03045 16.3953 8.39728 16.3953 8.00676 16.0048C7.61624 15.6142 7.61624 14.9811 8.00676 14.5905L10.5915 12.0058L8.00386 9.41816Z"
-                    fill="#F9D62B"
+                    
                   ></path>{' '}
                   <path
                     fillRule="evenodd"
                     clipRule="evenodd"
                     d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z"
-                    fill="#F9D62B"
+                    
                   ></path>{' '}
                 </g>
               </svg>
             </button>
-            <div className="h-[17rem] w-[17rem] border-[0.3rem] border-[#F9D62B] rounded-xl p-[0.1rem] flex flex-col justify-center lg:w-[15rem] lg:h-[15rem]">
+            <div className="h-[17rem] w-[17rem] border-[0.3rem] border-[#F9D62B] rounded-xl p-[0.1rem] flex flex-col justify-center md:w-[15rem] md:h-[15rem] 2xl:w-[17rem] 2xl:h-[17rem]">
               {displayPic()}
             </div>
             
@@ -308,7 +307,7 @@ const EditButton = ({ Info }) => {
             <div className="flex flex-col items-center space-y-[1rem] text-white">
               <input
                 type="text"
-                className="form-control bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[21rem] h-[3rem] text-[1.3rem] lg:text-[1rem] lg:h-[2.5rem] lg:w-[17.5rem]"
+                className="form-control bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[21rem] h-[3rem] text-[1.3rem] md:text-[1rem] md:h-[2.5rem] md:w-[17.5rem] 2xl:h-[3rem] 2xl:w-[21rem] 2xl:text-[1.2rem]"
                 placeholder="Name of item"
                 value={item.nameItem}
                 onChange={(e) => setItem({ ...item, nameItem: e.target.value })
@@ -316,21 +315,21 @@ const EditButton = ({ Info }) => {
               />
               <input
                 type="text"
-                className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[21rem] h-[3rem] text-[1.3rem] lg:text-[1rem] lg:h-[2.5rem] lg:w-[17.5rem]"
+                className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[21rem] h-[3rem] text-[1.3rem] md:text-[1rem] md:h-[2.5rem] md:w-[17.5rem] 2xl:h-[3rem] 2xl:w-[21rem] 2xl:text-[1.2rem]"
                 placeholder="Description"
                 value={item.desc}
                 onChange={(e) => setItem({ ...item, desc: e.target.value })}
               />
               <input
                 type="text"
-                className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[21rem] h-[3rem] text-[1.3rem] lg:text-[1rem] lg:h-[2.5rem] lg:w-[17.5rem]"
+                className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[21rem] h-[3rem] text-[1.3rem] md:text-[1rem] md:h-[2.5rem] md:w-[17.5rem] 2xl:h-[3rem] 2xl:w-[21rem] 2xl:text-[1.2rem]"
                 placeholder="Found at"
                 value={item.found}
                 onChange={(e) => setItem({ ...item, found: e.target.value })}
               />
               <input
                 type="text"
-                className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[21rem] h-[3rem] text-[1.3rem] lg:text-[1rem] lg:h-[2.5rem] lg:w-[17.5rem]"
+                className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[21rem] h-[3rem] text-[1.3rem] md:text-[1rem] md:h-[2.5rem] md:w-[17.5rem] 2xl:h-[3rem] 2xl:w-[21rem] 2xl:text-[1.2rem]"
                 placeholder="Surredered by: "
                 value={item.surrenderedBy}
                 onChange={(e) =>
@@ -339,7 +338,7 @@ const EditButton = ({ Info }) => {
               />
               <button
                 type="button"
-                className="text-black text-[1.5rem] bg-[#F9D62B] w-[15rem] h-[3rem] rounded-full lg:text-[1.2rem] lg:h-[2.5rem] lg:w-[12rem]"
+                className="text-black text-[1.5rem] bg-[#F9D62B] hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white w-[15rem] h-[3rem] rounded-full md:text-[1.2rem] md:h-[2.5rem] md:w-[12rem] 2xl:h-[3rem] 2xl:w-[16rem] 2xl:text-[1.5rem]"
                 onClick={checker}
               >
                 SAVE

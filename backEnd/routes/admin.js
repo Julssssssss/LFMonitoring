@@ -318,7 +318,6 @@ router.post('/ArchivingTrans', verifyToken, async(req, res, next)=>{
         "claimedBy": Email,
         "dateClaimed": currentDate,
       })
-
       await archData.save() 
       .then(async()=>{
           await itemModels.findByIdAndDelete({'_id': itemId})
@@ -345,8 +344,6 @@ router.post('/ArchivingTrans', verifyToken, async(req, res, next)=>{
     res.status(500)
   }
 })
-
-
 //nodemailer 
 //to send mails
 
@@ -386,10 +383,8 @@ router.post('/sendEmail', verifyToken, async(req, res, next)=>{
 
 router.post('/delReq', verifyToken, async(req, res, next)=>{
   try{
-    //console.log(req.body)
+    
     const {_id} = req.body
-    //console.log(_id)
-
     await reqModels.findById(_id)
     .then(async()=>{
       await reqModels.findByIdAndDelete(_id)
