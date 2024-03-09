@@ -73,7 +73,6 @@ router.post("/login/success", async(req, res)=>{
         const userId = req.session.userId
         await userModel.findById(userId).lean()
         .then(async(result)=>{
-            console.log(result)
             const {_id, Name, Email, Picture, Role, TAC} = result;
             const userData = {_id, Name, Email, Picture, Role, TAC}
             const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_SECRET, {expiresIn: '600s'})
@@ -81,7 +80,7 @@ router.post("/login/success", async(req, res)=>{
             await addRefreshTokenToDB(Email, refreshToken)
             // Set cookie with refresh token
             res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true, sameSite: 'None' });
-
+            req.session.userId = null
             // Send response with user data
             res.status(200).json({
                 error: false,
@@ -127,11 +126,7 @@ router.get("/google", passport.authenticate("google"))
 
 router.get("/logout", async(req, res)=>{
     console.log('cookies', req.cookies)
-    console.log(req.cookies.jwt)
-    console.log(req.cookies.jwt)
     const refreshToken = req.cookies.jwt
-    console.log(refreshToken)
-    console.log(refreshToken)
     const Email = await checkRefToken(refreshToken)
     if(!Email){
         console.error("Error logging out:", err);
@@ -139,8 +134,9 @@ router.get("/logout", async(req, res)=>{
     }
     await deleteRefTokenDb(Email)
         .then((result)=>{     
-            res.clearCookie('session') 
-            res.clearCookie('jwt')  
+            //res.clearCookie('jwt')  
+            console.log('cookies2', req.cookies)
+            //res.clearCookie('session')
             req.logout((err)=>{
                 if (err) {
                     console.error("Error logging out:", err);
