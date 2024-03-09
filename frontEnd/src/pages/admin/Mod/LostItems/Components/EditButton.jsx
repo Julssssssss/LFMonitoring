@@ -70,83 +70,60 @@ const EditButton = ({ Info }) => {
   
     try {
       setLoading(true);
-      if(!cooldownActive){
-        if (files.length > 0) {
-          const formData = new FormData();
-          const hasExistingImages = item.url && Array.isArray(item.url) && item.url.length > 0;
-          const newFiles = hasExistingImages ? [...files, ...item.url] : files;
-    
-          for (const file of newFiles) {
-            formData.append('image', file);
-          }
-    
-          const newImageResponse = await axiosUpdateImage.post('', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          })
-          .then(res=>{
-            setCooldownActive(true)
-
-            setTimeout(()=>{
-              //console.log('hi')
-              setCooldownActive(false)
-            }, 5000)
-          })
-    
-          const newImages = newImageResponse.data.images;
-          const updatedImages = hasExistingImages ? [...item.url, ...newImages] : newImages;
-    
-          setImageUrl(updatedImages);
-    
-          const formattedDate = new Date().toISOString();
-          await axiosSendUpdate.put(`${item.id}`, {
-            nameItem: item.nameItem,
-            desc: item.desc,
-            found: item.found,
-            surrenderedBy: item.surrenderedBy,
-            url: updatedImages,
-            datePosted: formattedDate,
-          })
-          .then(res=>{
-            setLoading(false);
-            uploadSuccess();
-
-            setCooldownActive(true)
-
-            setTimeout(()=>{
-              setCooldownActive(false)
-            }, 5000)
-          })
-        } else {
-        
-          const formattedDate = new Date().toISOString();
-          await axiosSendUpdate.put(`${item.id}`, {
-            nameItem: item.nameItem,
-            desc: item.desc,
-            found: item.found,
-            surrenderedBy: item.surrenderedBy,
-            url: item.url,
-            datePosted: formattedDate,
-          })
-          .then(res=>{
-            setLoading(false);
-            uploadSuccess();
-
-            setCooldownActive(true)
-
-            setTimeout(()=>{
   
-              setCooldownActive(false)
-            }, 5000)
-          })
-
+      if (files.length > 0) {
+        const formData = new FormData();
+        const hasExistingImages = item.url && Array.isArray(item.url) && item.url.length > 0;
+        const newFiles = hasExistingImages ? [...files, ...item.url] : files;
+  
+        for (const file of newFiles) {
+          formData.append('image', file);
         }
+  
+        const newImageResponse = await axiosUpdateImage.post('', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+  
+        const newImages = newImageResponse.data.images;
+        const updatedImages = hasExistingImages ? [...item.url, ...newImages] : newImages;
+  
+        setImageUrl(updatedImages);
+  
+        const formattedDate = new Date().toISOString();
+        await axiosSendUpdate.put(`${item.id}`, {
+          nameItem: item.nameItem,
+          desc: item.desc,
+          found: item.found,
+          surrenderedBy: item.surrenderedBy,
+          url: updatedImages,
+          datePosted: formattedDate,
+        });
+  
+        setLoading(false);
+        uploadSuccess();
+      } else {
+       
+        const formattedDate = new Date().toISOString();
+        await axiosSendUpdate.put(`${item.id}`, {
+          nameItem: item.nameItem,
+          desc: item.desc,
+          found: item.found,
+          surrenderedBy: item.surrenderedBy,
+          url: item.url,
+          datePosted: formattedDate,
+        });
+  
+        setLoading(false);
+        uploadSuccess();
       }
     } catch (error) {
       console.error('Error during save edit:', error);
     }
   };
+  
+
   
 
   const handleDelete = (index) => {

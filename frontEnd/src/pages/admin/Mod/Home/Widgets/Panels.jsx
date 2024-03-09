@@ -27,7 +27,7 @@ const Panels = ({itemData}) => {
       <div className="flex flex-row space-x-[1.5rem] w-full text-white text-[2rem] md:text-[1.5rem] 2xl:text-[2.4rem] 3xl:text-[2.3rem]">
         <div className="flex flex-col bg-[#134083] border-[0.1rem] border-[#F9D62B] md:h-[10rem] p-[0.5rem] lg:h-[12rem] xl:h-[15rem] 3xl:h-[19rem] 3xl:p-[1rem] w-full rounded-[1rem]">
           ONLINE USERS
-          <p className="text-center p-[2rem]">{ Math.floor(Math.random() * 8)}</p>
+          <p className="text-center p-[2rem]">{ Math.floor(Math.random() * 3)}</p>
         </div>
         <div className="flex flex-col bg-[#134083] border-[0.1rem] border-[#F9D62B] md:h-[10rem] p-[0.5rem] lg:h-[12rem] xl:h-[15rem] 3xl:h-[19rem] 3xl:p-[1rem] w-full rounded-[1rem]">
           lOST ITEMS
