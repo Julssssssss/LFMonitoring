@@ -297,21 +297,16 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
 router.post('/ArchivingTrans', verifyToken, async(req, res, next)=>{
   try{
     
-    const {Request} = req.body
-    const {_id, itemId, nameItem, Email}= Request
-    const transacID = _id
+    const {_id, itemId, nameItem, Email}= req.body
     const itemDel = await itemModels.findOne({'_id': itemId})
     if(itemDel === null){
       res.status(404).json({error: 'data not found'})
     }
     else{
-      const data = req.user
-      const { user: { Email:postedBy }} = data;
-      const {_id, url, nameItem, desc, found, surrenderedBy, datePosted}= itemDel
-      const itemId = _id.toString()
+      const {url, nameItem, desc, found, surrenderedBy, datePosted, postedBy}= itemDel
       const currentDate = new Date();
       const archData = new transModels({
-        "_id": transacID,
+        "_id": _id,
         "itemId": itemId,
         "itemImages": url,
         "nameItem":  nameItem,
@@ -326,13 +321,19 @@ router.post('/ArchivingTrans', verifyToken, async(req, res, next)=>{
 
       await archData.save() 
       .then(async()=>{
-          await itemModels.findByIdAndDelete({'_id': _id})
+          await itemModels.findByIdAndDelete({'_id': itemId})
+          .then(res=>{
+            console.log('successFully deleted the item')
+          })
 
-          const requestDel = await reqModels.findByIdAndDelete({'_id': transacID})
+          const requestDel = await reqModels.findByIdAndDelete({'_id': _id})
           if(requestDel === null){
             res.status(404).json({error: 'data not found'})
           }
-          else{res.status(200).json('success')}
+          else{
+            console.log('successfully deleted the request')
+            res.status(200).json('success')
+          }
         }
       )
       //NOTE: TANGALIN LANG TO PAG READY NA ISAVE WALA PA KASI YUNG postedBy DATA AND TINATAMAD AKO MAGDELETE
