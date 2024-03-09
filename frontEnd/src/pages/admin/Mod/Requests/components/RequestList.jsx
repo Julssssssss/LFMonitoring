@@ -92,7 +92,7 @@ const RequestList = () => {
           <input
             type="text"
             placeholder="Search"
-            className="mt-[1.5rem] ml-[1.5rem] mr-[1rem] mb-4 bg-[#17394C] p-[1rem] text-white h-[3rem] w-[30rem] rounded-full text-[1.4rem]"
+            className="mt-[1.5rem] ml-[1.5rem] mr-[1rem] mb-4 bg-[#17394C] p-[1rem] text-white md:mt-[0rem] md:h-[2.5rem] md:w-[20rem] xl:h-[3rem] xl:w-[30rem] rounded-full xl:text-[1.4rem] 3xl:h-[3.5rem] 3xl:w-[35rem] 3xl:text-[1.7rem]"
             value={searchQuery}
             onChange={handleInputChange}
           />
@@ -104,8 +104,8 @@ const RequestList = () => {
     return filteredData.map((elem, index) => {
       return(
         <div key={index}>
-          <div className="flex flex-col border-b-2 border-white bg-[#17394C] w-full h-[4.5rem] space-x-[2rem] rounded-xl p-1">
-            <div className="flex flex-row justify-between items-center text-white ml-[1rem] text-[1.3rem]">
+          <div className="flex flex-col border-b-2 border-white bg-[#17394C] md:w-[17.5rem] md:h-[4rem] lg:w-[27rem] xl:w-[31rem] 2xl:w-[37rem] 2xl:p-[0.1rem] h-[4rem] space-x-[2rem] rounded-xl p-1 3xl:w-[45rem] 3xl:h-[6rem] 3xl:p-[0.2rem]">
+            <div className="flex flex-row justify-between items-center text-white ml-[0.5rem] text-[1.3rem] md:text-[0.9rem] 2xl:text-[1.2rem] 3xl:text-[2rem]">
               {elem.Email}
               <div className={`${elem.haveBeenEmailed ? "bg-green-700" : "bg-red-700"} group h-[1rem] w-[1rem] rounded-full mr-[1rem]`}
               >
@@ -115,8 +115,8 @@ const RequestList = () => {
                 </span>
               </div>
             </div>
-            <div className="items-center justify-center flex flex-row space-x-[1.5rem] pr-[1.5rem] text-[1rem]">
-              <button onClick={() => viewItem(elem, items)} className="bg-[#F9D62B] w-[5rem] rounded-xl py-[0.2rem]">View</button>
+            <div className="items-center justify-center flex flex-row space-x-[1.5rem] md:space-x-[1rem] pr-[1.5rem]">
+              <button onClick={() => viewItem(elem, items)} className="bg-[#F9D62B] font-poppins hover:bg-[#134083] hover:text-white w-[5rem] rounded-full py-[0.2rem] md:w-[4rem] md:text-[0.7rem] md:py-[0.1rem] md:mt-[0.4rem] 2xl:w-[5rem] rounded-full 3xl:text-[1.3rem] 3xl:w-[6rem]">View</button>
               <Approve RequestItem = {elem} index={index} list={list} Item = {items} onClick={viewItem} />
               <DeleteReq reqData={elem}/>
             </div>
@@ -132,51 +132,51 @@ const RequestList = () => {
 
   return (
     <>
-      <div className="flex flex-row justify-between mt-[2rem] text-white whitespace-nowrap">
-        <div className='text-[2.5rem]'>REQUEST</div>   
+      <div className="flex flex-row justify-between md:mt-[2rem] xl:mt-[2rem] 2xl:mt-[3rem] text-white whitespace-nowrap">
+        <div className='md:text-[2rem] xl:text-[2.5rem] 2xl:text-[3rem] font-poppins 3xl:text-[3rem]'>REQUEST</div>   
          {searchBar()}
       </div>
 
-      <div className="bg-[#134083] w-full h-full rounded-[2rem] flex flex-row lg:space-x-[1.5rem] lg:overflow-y-auto self-center lg:p-[1rem]">
-        <div className="w-full h-auto overflow-y-auto space-y-[1rem] p-[1rem]">
-          {/*requestFormat()*/}
+      <div className="bg-[#134083] p-[0.8rem] w-full h-full rounded-[2rem] flex flex-row md:space-x-[1rem] md:overflow-y-auto self-center">
+        <div className="flex flex-col py-[1rem] items-center overflow-y-auto w-full h-full space-y-[1rem]">
+          {requestFormat()}
         </div>
-        <div className="flex flex-col h-auto w-full p-[1rem] lg:overflow-y-auto bg-white rounded-xl border-[#F9D62B] border-[0.5rem] space-y-[0.5rem]">
+        <div className="flex flex-col h-auto w-auto p-[1rem] bg-white rounded-xl border-[#F9D62B] border-[0.5rem] space-y-[0.5rem]">
           <div className="flex flex-row">
-            <div className="flex w-auto h-[2rem] items-center font-semibold"> Requested by: {requestBy}</div>
+            <div className="flex w-auto h-[2rem] items-center font-semibold font-poppins 3xl:text-[1.5rem]"> Requested by: {requestBy}</div>
           </div>
             
-          <div className="flex flex-col space-y-[1rem] h-auto whitespace-nowrap">
-            <div className="flex flex-row justify-between text-[1rem]">
-              <div className="flex flex-col h-full lg:w-[15rem] p-[0.5rem]">
-                <div className="flex flex-col items-start space-y-[0.7rem] leading-[0.9] whitespace-normal">
-                  <div className="flex items-center space-x-[2.5rem]">
-                    <div className="w-24">Name of item:</div>
+          <div className="flex flex-col space-y-[1rem] h-auto whitespace-normal break-words overflow-y-auto">
+            <div className="flex flex-row justify-between font-poppins text-[1rem] xl:text-[1.2rem] 3xl:text-[1.6rem]">
+              <div className="flex flex-col h-full md:w-[15rem] lg:w-[18rem] xl:w-[25rem] 3xl:w-[32rem] p-[0.5rem]">
+                <div className="flex flex-col items-start space-y-[0.7rem] leading-[0.9]">
+                  <div className="flex items-center space-x-[2.5rem] md:space-x-[0.5rem]">
+                    <div className="w-24 md:w-[5.5rem] xl:w-[6rem] 2xl:w-[8.5rem] 3xl:w-[10rem]">Name of item:</div>
                     <div>{name}</div>
                   </div>
-                  <div className="flex items-center space-x-[2.5rem]">
-                    <div className="w-24">Description:</div>
+                  <div className="flex items-center space-x-[2.5rem] md:space-x-[0.5rem]">
+                    <div className="w-24 md:w-[5.5rem] xl:w-[6rem] 2xl:w-[8.5rem] 3xl:w-[10rem]">Description:</div>
                     <div>{desc}</div>
                   </div>
-                  <div className="flex items-center space-x-[2.5rem]">
-                    <div className="w-24">Found at:</div>
+                  <div className="flex items-center space-x-[2.5rem] md:space-x-[0.5rem]">
+                    <div className="w-24 md:w-[5.5rem] xl:w-[6rem] 2xl:w-[8.5rem] 3xl:w-[10rem]">Found at:</div>
                     <div>{found}</div>
                   </div>
-                  <div className="flex items-center space-x-[2.5rem]">
-                    <div className="w-24">Surrendered by:</div>
+                  <div className="flex items-center space-x-[2.5rem] md:space-x-[0.5rem]">
+                    <div className="w-24 md:w-[5.5rem] xl:w-[6rem] 2xl:w-[8.5rem] 3xl:w-[10rem]">Surrendered by:</div>
                     <div>{surrenderedBy}</div>
                   </div>
-                  <div className="flex items-center space-x-[2.5rem]">
-                    <div className="w-24">Posted by:</div>
+                  <div className="flex items-center space-x-[2.5rem] md:space-x-[0.5rem]">
+                    <div className="w-24 md:w-[5.5rem] xl:w-[6rem] 2xl:w-[8.5rem] 3xl:w-[10rem]">Posted by:</div>
                     <div>{postedby}</div>
                   </div>
-                  <div className="flex items-center space-x-[3.1rem]">
-                    <div className="w-24">Date posted:</div>
+                  <div className="flex items-center space-x-[2.5rem] md:space-x-[0.5rem]">
+                    <div className="w-24 md:w-[7rem] xl:w-[6rem] 2xl:w-[8.5rem] 3xl:w-[10rem]">Date posted:</div>
                     <div>{datePosted}</div>
                   </div>
                 </div>
             </div>
-            <div className="lg:h-[11.5rem] lg:w-[10rem] py-2 border-[0.3rem] border-[#F9D62B] rounded-xl flex flex-col">
+            <div className="md:h-[12rem] md:w-[12rem] xl:h-[15rem] xl:w-[15rem] 2xl:h-[15.5rem] 3xl:w-[19rem] 3xl:h-[19rem] 2xl:w-[15.5rem] py-2 border-[0.3rem] border-[#F9D62B] rounded-xl flex flex-col">
               {displayPic()}
             </div>
           </div>
@@ -184,15 +184,15 @@ const RequestList = () => {
               type="text"
               id="subject"  
               placeholder="Subject" 
-              className="border-[0.2rem] border-[#F9D62B] h-[2.5rem] w-full text-[1.5rem] p-[1rem] lg:p-[0.8rem] lg:text-[1rem] lg:h-[1rem]"
+              className="border-[0.2rem] border-[#F9D62B] h-[2.5rem] w-full text-[1.5rem] p-[1rem] md:p-[0.8rem] md:text-[1rem] md:h-[1rem] 2xl:text-[1.2rem] 2xl:h-[2.5rem] 3xl:text-[1.4rem] 3xl:h-[2.8rem]"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
             /> 
               <textarea 
               id="letter" 
-              rows={4}
+              rows={10}
               placeholder="" 
-              className="border-[0.2rem] border-[#F9D62B] h-full w-full text-[1.5rem] p-[1rem] lg:p-[0.5rem] lg:text-[1rem] lg:h-"
+              className="border-[0.2rem] border-[#F9D62B] h-full w-full text-[1.5rem] p-[1rem] md:p-[0.5rem] md:text-[1rem] 2xl:text-[1.2rem] 3xl:text-[1.4rem]"
               value={emailContent}
               onChange={(e) => setEmailContent(e.target.value)}
             /> 

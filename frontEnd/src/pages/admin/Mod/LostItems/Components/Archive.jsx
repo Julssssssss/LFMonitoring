@@ -58,7 +58,7 @@ const Archive = ({ Info }) => {
       <div>
         <button
           onClick={openPopup}
-          className="bg-[#F9D62B] text-[1.4rem] lg:text-[1rem] xl:text-[1.4rem] xl:w-[8.5rem] font-bold font-poppins text-black w-[7rem] h-auto rounded-full m-[0.3rem]"
+          className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-[1.4rem] md:text-[1rem] xl:text-[1.4rem] xl:w-[8.5rem] 3xl:text-[1.8rem] font-bold font-poppins text-black w-[7rem] h-auto rounded-full m-[0.3rem]"
         >
           Archive
         </button>
@@ -66,16 +66,16 @@ const Archive = ({ Info }) => {
 
       {showPopup && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
-          <div className="flex flex-col bg-[#134083] shadow-md w-[40rem] h-[35rem] lg:w-[35rem] lg:h-[30rem] lg:space-y-[2rem] rounded-2xl whitespace-pre space-y-[1rem] items-center">
+          <div className="flex flex-col bg-[#134083] shadow-md w-[40rem] h-[35rem] md:w-[35rem] md:h-[30rem] md:space-y-[2rem] rounded-2xl whitespace-pre space-y-[1rem] items-center">
           <button
-              className="w-[3rem] h-[3rem] place-self-end m-[0.5rem]"
+              className="w-[3rem] h-[3rem] md:w-[2rem] md:h-[2rem] place-self-end m-[0.5rem] 2xl:w-[3rem] 2xl:h-[3rem] stroke-[#F9D62B] hover:stroke-white"
               onClick={closePopup}
             >
-              <svg
+             <svg
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                stroke="#F9D62B"
+                
               >
                 <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                 <g
@@ -86,13 +86,13 @@ const Archive = ({ Info }) => {
                 <g id="SVGRepo_iconCarrier">
                   <path
                     d="M8.00386 9.41816C7.61333 9.02763 7.61334 8.39447 8.00386 8.00395C8.39438 7.61342 9.02755 7.61342 9.41807 8.00395L12.0057 10.5916L14.5907 8.00657C14.9813 7.61605 15.6144 7.61605 16.0049 8.00657C16.3955 8.3971 16.3955 9.03026 16.0049 9.42079L13.4199 12.0058L16.0039 14.5897C16.3944 14.9803 16.3944 15.6134 16.0039 16.0039C15.6133 16.3945 14.9802 14.9802 14.5896 16.0039L12.0057 13.42L9.42097 16.0048C9.03045 16.3953 8.39728 16.3953 8.00676 16.0048C7.61624 15.6142 7.61624 14.9811 8.00676 14.5905L10.5915 12.0058L8.00386 9.41816Z"
-                    fill="#F9D62B"
+                    
                   ></path>{' '}
                   <path
                     fillRule="evenodd"
                     clipRule="evenodd"
                     d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z"
-                    fill="#F9D62B"
+                    
                   ></path>{' '}
                 </g>
               </svg>
@@ -107,7 +107,7 @@ const Archive = ({ Info }) => {
             </div>
             <button
               onClick={sendToArchive}
-              className="bg-[#F9D62B] text-[1.5rem] text-black p-2 rounded-2xl mt-4"
+              className="bg-[#F9D62B] text-[1.5rem] text-black p-2 rounded-2xl mt-4 hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white"
             >
               Confirm Archive
             </button>

@@ -25,18 +25,17 @@ const AdminProfile = () => {
               </button>
             </Link>
           </div>
-          <div className="bg-[#0d1832] font-poppins h-screen flex flex-col items-center">
+          <div className="bg-[#0d1832] font-poppins h-auto flex flex-col items-center 3xl:h-screen">
             {/* USER IMAGE */}
-            <img className='rounded-full border-8 mt-10 w-[10rem] h-[10rem] border-yellow-400' src={userPic}></img>
+            <img className='rounded-full border-8 mt-10 w-[10rem] h-[10rem] border-yellow-400 xsm:w-[11rem] xsm:h-[11rem] lg:h-[12rem] lg:w-[12rem] xl:w-[12.5rem] xl:h-[12.5rem] 3xl:h-[14rem] 3xl:w-[14rem]' src={userPic}></img>
             {/* USER DATA */}
-            <div className="bg-[#003985] h-[10rem] w-[15rem] mt-[3.5rem] text-white p-5 z-20 rounded-xl">
-              <b>Name:</b> {info.Name}  <br/><br/>
+            <div className="bg-[#003985] h-[10rem] leading-[1rem] w-[15rem] mt-[5rem] text-white p-[1rem] justify-center flex flex-col z-20 rounded-xl xsm:w-[16rem] xsm:h-[11rem] xsm:mt-[6rem] sm:h-[12rem] sm:w-[20rem] sm:mt-[6.5rem] lg:w-[22rem] lg:h-[13rem] lg:text-[1.1rem] xl:w-[25rem] xl:h-[15rem] xl:text-[1.3rem] 3xl:h-[20rem] 3xl:w-[32rem] 3xl:text-[2rem] 3xl:leading-[2rem] xl:mt-[8.5rem]">              <b>Name:</b> {info.Name}  <br/><br/>
               <b>Email:</b> {info.Email}
             </div>
             {/* yellow designs */}
-            <div className="absolute left-0 top-[18rem] bg-yellow-400 w-[14rem] h-[4.6rem] z-10"></div>
-            <div className=" absolute right-0 top-[26rem] bg-yellow-400 w-[14rem] h-[4.6rem] z-10"></div>
-            <div className="mt-[5rem] mb-[2rem]">
+            <div className="absolute rounded-tr-full left-0 top-[19rem] bg-yellow-400 w-[14rem] h-[4.6rem] z-10 xsm:top-[21rem] sm:h-[6rem] sm:w-[21rem] md:h-[7rem] md:w-[30rem] xl:h-[9rem] xl:w-[45rem] xl:top-[24rem] 3xl:h-[11rem] 3xl:w-[60rem]"></div>
+          <div className=" absolute rounded-bl-full right-0 top-[27.5rem] bg-yellow-400 w-[14rem] h-[4.6rem] z-10 xsm:top-[31rem] sm:h-[6rem] sm:w-[20rem] md:h-[7rem] md:w-[30rem] lg:top-[33rem] xl:h-[9rem] xl:w-[45rem] xl:top-[36rem] 3xl:h-[11rem] 3xl:w-[60rem] 3xl:top-[40rem]"></div>
+            <div className="mt-[7rem] mb-[8rem] xsm:mt-[8rem] sm:mt-[9rem]">
               <Logout />
             </div>
           </div>

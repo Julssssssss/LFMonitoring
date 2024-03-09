@@ -37,9 +37,9 @@ const DashView = () => {
     <>
     <div className='flex flex-row h-screen w-screen bg-[#17394C] font-poppins space-x-[1.5rem] overflow-x-hidden overflow-y-hidden'>
       <Sidebar />
-      <div className="flex flex-col self-center h-full w-full bg-[#0D1832] border-l-[0.5rem] border-[#134083] lg:rounded-l-[6rem] xl:space-y-[2rem] lg:space-y-[1rem] xl:rounded-l-[7rem] 3xl:rounded-l-[7.5rem]">
-        <div className='flex flex-row justify-between xl:ml-[3rem] lg:mt-[2rem] lg:ml-[2rem] lg:mr-[2rem] xl:mr-[3rem] xl:mt-[2rem] 2xl:mt-[2.5rem] text-white whitespace-nowrap'>
-          <div className='xl:text-[2.5rem] lg:text-[2rem] 2xl:text-[3rem]'>
+      <div className="flex flex-col self-center h-full w-full bg-[#0D1832] border-l-[0.5rem] border-[#134083] md:rounded-l-[6rem] xl:space-y-[2rem] md:space-y-[1rem] xl:rounded-l-[7rem] 3xl:rounded-l-[7.5rem]">
+        <div className='flex flex-row justify-between xl:ml-[3rem] md:mt-[2rem] md:ml-[2rem] md:mr-[2rem] xl:mr-[3rem] xl:mt-[2rem] 2xl:mt-[2.5rem] text-white whitespace-nowrap'>
+          <div className='xl:text-[2.5rem] md:text-[2rem] 2xl:text-[3rem]'>
             Welcome back, <b>{Fname}</b>
           </div>
           <ProfileIcon User={[user, pic]} />

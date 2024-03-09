@@ -47,7 +47,7 @@ const SendButton = ({ subject, emailContent, requestBy, index }) => {
   return (
     <>
       <div>
-        <button onClick={checker} className="bg-[#F9D62B] self-center w-[20rem] h-[3rem] text-[1.5rem] rounded-full">
+        <button onClick={checker} className="bg-[#F9D62B] self-center w-[20rem] h-[3rem] text-[1.5rem] rounded-full md:w-[15rem] md:h-[2rem] md:text-[1rem] 2xl:text-[1.5rem] 3xl:text-[1.7rem] 3xl:p-[0.2rem] 3xl:h-[3rem]">
           SEND
         </button>
 
