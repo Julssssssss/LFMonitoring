@@ -100,7 +100,7 @@ const Dashboard = () => {
   return (
     <>
     <div className="relative z-0 flex flex-col space-y-[1rem] bg-[#0d1832] w-auto p-[1.5rem] pb-[0.8rem] min-h-screen font-poppins overflow-x-hidden 3xl:p-[2rem]">
-      <div className="z-50 bg-[#002855] bg-opacity-50 rounded-[1rem] md:h-screen w-full">
+      <div className="z-50 bg-[#002855] bg-opacity-50 rounded-[1rem] md:h-auto w-full">
         <div className="flex flex-row space-x-[2.8rem] pt-[1rem] px-[1rem] lg:space-x-[3rem] xl:space-x-[4rem]">
           <ProfilePic User={data} />
           <div className="flex p-[0.5rem] whitespace-nowrap w-full xl:p-[1.2rem] 3xl:p-[1.7rem]">

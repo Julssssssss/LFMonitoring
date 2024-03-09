@@ -116,7 +116,7 @@ const RequestList = () => {
               </div>
             </div>
             <div className="items-center justify-center flex flex-row space-x-[1.5rem] md:space-x-[1rem] pr-[1.5rem]">
-              <button onClick={() => viewItem(elem, items)} className="bg-[#F9D62B] font-poppins hover:bg-[#134083] hover:text-white w-[5rem] rounded-full py-[0.2rem] md:w-[4rem] md:text-[0.7rem] md:py-[0.1rem] md:mt-[0.4rem] 2xl:w-[5rem] rounded-full 3xl:text-[1.3rem] 3xl:w-[6rem]">View</button>
+              <button onClick={() => viewItem(elem, items)} className="bg-[#F9D62B] font-poppins hover:bg-[#134083] hover:text-white w-[5rem] py-[0.2rem] md:w-[4rem] md:text-[0.7rem] md:py-[0.1rem] md:mt-[0.4rem] 2xl:w-[5rem] rounded-full 3xl:text-[1.3rem] 3xl:w-[6rem]">View</button>
               <Approve RequestItem = {elem} index={index} list={list} Item = {items} onClick={viewItem} />
               <DeleteReq reqData={elem}/>
             </div>

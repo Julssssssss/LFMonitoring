@@ -97,7 +97,7 @@ const ItemDetails = () => {
 
         <div className="flex flex-col 2xl:h-screen 3xl:h-screen items-center justify-center xl:space-y-[2rem] 3xl:space-y-[3.5rem]">
           {/* IMG */}
-          <div className="flex flex-col items-center mt-[1rem] justify-center sm:flex-row sm:space-x-[2rem] xl:space-x-[2.5rem]">
+          <div className="flex flex-col items-center mt-[1rem] justify-center sm:flex-row sm: sm:space-x-[2rem] xl:space-x-[2.5rem]">
             <Carousel />
             {/* DIV FOR CONTAINER OF CONTENTS */}
             <div className=" whitespace-nowrap text-center p-[1.2rem] flex flex-col items-center justify-center bg-[#17394c] h-auto w-[19rem] xsm:w-[21rem] md:w-[22rem] md:h-auto lg:w-[25rem] lg:text-[1.4rem] xl:w-[25rem] xl:text-[1.3rem] 2xl:w-[30rem] 3xl:w-[34rem] 3xl:text-[2rem] mt-[3rem] mb-[4rem] rounded-lg text-white">
