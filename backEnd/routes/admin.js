@@ -4,6 +4,7 @@ const reqModels = require('../Models/requestModels')
 const userModels = require('../Models/userModels')
 const transModels = require("../Models/completedTrans")
 const unclaimedItemsModels = require('../Models/unclaimedItems')
+const writeActLogs = require('../comp/saveToLogs')
 
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
@@ -64,24 +65,24 @@ const adminOnlyToken = (req, res, next) => {
   });
 };
 
-router.post('/data', verifyToken, (req, res) => {
+router.post('/data', verifyToken, async(req, res) => {
   if (req.user) {
-    const { Name, Email, Picture } = req.user;
+    const { Name, Email, Picture, Role } = req.user;
     const user = {Name, Email}
-    itemModels
-      .find({})
-      .then((result) => {
-        res.status(200).json({
-          items: result,
-          user: user,
-          picture: Picture,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json({ error: 'Internal Server Error' });
+    await itemModels.find({})
+    .then((result) => {
+      res.status(200).json({
+        items: result,
+        user: user,
+        picture: Picture,
       });
-  } else {
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    });
+  }
+  else {
     return res.sendStatus(403);
   }
 });
@@ -130,6 +131,7 @@ router.post('/setRoles', adminOnlyToken, async(req, res, next) => {
   if(req.body){
     //console.log(req.body)
     const {Email, roleToChange}=req.body
+    //const Activity = `changed the role of ${Email} to ${roleToChange}`
     //console.log(roleToChange)
     const result = await userModels.updateOne({ 'Email': Email }, {$set:{Role:roleToChange}})
     res.status(200).json("success")

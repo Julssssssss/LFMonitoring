@@ -3,6 +3,7 @@ const passport = require("passport")
 const jwt = require('jsonwebtoken')
 const jwtRefreshToken = require('../Models/refreshTokenModels')
 const userModel = require('../Models/userModels')
+const writeActLogs = require('../comp/saveToLogs')
 
 
 //TODO: check and fix this
@@ -19,9 +20,9 @@ const checkRefToken = async(refreshToken) =>{
 
 const deleteRefTokenDb = async(Email)=>{
     await jwtRefreshToken.findOneAndDelete({Email: Email})
-    .then(()=>{
+    .then((result)=>{
         console.log('successfully deleted')
-        return null
+        return result
     })
     .catch((err)=> {console.log(err)})
 }
@@ -41,7 +42,7 @@ router.post('/refreshToken', async(req, res)=>{
         if(err) {
             console.log(Email)
             deleteRefTokenDb(Email)
-            return res.status(401)
+            return res.sendStatus(401)
         }
         const {_id, Name, Email, Role, TAC, Picture}=user
         const data = {_id, Name, Email,TAC, Role, Picture}
@@ -81,6 +82,14 @@ router.post("/login/success", async(req, res)=>{
             // Set cookie with refresh token
             res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true, sameSite: 'None' });
             req.session.userId = null
+
+            //send logs in db if mod or admin
+            if(Role === "mod" || Role === "admin"){
+                const Activity = `logged in as ${Role}`
+                const Details = null   
+                writeActLogs(Email, Activity, Details)
+            }
+
             // Send response with user data
             res.status(200).json({
                 error: false,
@@ -125,15 +134,21 @@ router.get("/google/callback",
 router.get("/google", passport.authenticate("google"))
 
 router.get("/logout", async(req, res)=>{
-    console.log('cookies', req.cookies)
+    //console.log('cookies', req.cookies)
     const refreshToken = req.cookies.jwt
     const Email = await checkRefToken(refreshToken)
+    const {Role} = await userModel.findOne({Email}, {Role:1, _id: 0})
     if(!Email){
         console.error("Error logging out:", err);
         return res.status(500).send("Error logging out");
     }
     await deleteRefTokenDb(Email)
-        .then((result)=>{     
+        .then((result)=>{
+            if(Role === "mod" || Role === "admin"){
+                const Activity = `logged out as ${Role}`
+                const Details = null   
+                writeActLogs(Email, Activity, Details)
+            }     
             //res.clearCookie('jwt')  
             //console.log('cookies2', req.cookies)
             //res.clearCookie('session')
