@@ -5,7 +5,7 @@ import { axiosReFetchToken } from '../../../components/api/axios';
 
 const Privilege = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("")
+  const [searchQuery, setSearchQuery] = useState(null)
   const [userData, setUserData] = useState(null)
   const [tempRole, setTempRole] = useState(null)
   const [cooldownActive, setCooldownActive] = useState(false)
@@ -14,7 +14,9 @@ const Privilege = () => {
     if(!isOpen)
     {
       setUserData(null)
-      findUser()
+      if(searchQuery){
+        findUser()
+      }
       console.log(userData)
     }
     setIsOpen(true);

@@ -11,7 +11,7 @@ const actLogs = new Schema({
         required: true,
     },
     Details: {
-        type: [String],
+        type: Object,
         required: false,
     },
     Date: {

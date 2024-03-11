@@ -7,6 +7,9 @@ const writeActLogs = async(Email, Activity, Details)=>{
         Details:Details
     })
     await actLogs.save()
+    .then(res=>{
+        console.log(`successfully logged: ${Activity}`)
+    })
     .catch(err=>{
         console.log(err)
     })

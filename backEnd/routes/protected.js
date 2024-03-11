@@ -38,7 +38,7 @@ router.put("/TACagreement", verifyToken, async(req, res)=>{
 router.post("/data", verifyToken, async(req, res)=>{
         const {_id, Name, Email, Picture} = req.user
         const {TAC} = await UserModel.findById( _id).select('TAC -_id').lean()
-        console.log(TAC)
+        //console.log(TAC)
         const user = {Name, Email}
         if(TAC){
             itemModels.find({})

@@ -99,11 +99,14 @@ router.post('/archiveLength', verifyToken, async(req, res)=>{
 })
 
 //find userdata
-
+//action search kasi to e
 router.post('/userData', adminOnlyToken, async(req, res)=>{
   if(req.body){
+    //console.log(req.user)
     const {Email} = req.body
-    if (Email == null || Email == "") {res.sendStatus(404)}
+    const Activity = `searched for ${Email}`
+    const Details = null
+    writeActLogs(req.user.Email, Activity, Details)
 
     const result = await userModels.findOne({'Email': Email})
     if (result){
@@ -116,7 +119,7 @@ router.post('/userData', adminOnlyToken, async(req, res)=>{
       )
     }
     else{
-      res.sendStatus(404)
+      res.sendStatus(200)
     }
   }
   else{
@@ -131,7 +134,9 @@ router.post('/setRoles', adminOnlyToken, async(req, res, next) => {
   if(req.body){
     //console.log(req.body)
     const {Email, roleToChange}=req.body
-    //const Activity = `changed the role of ${Email} to ${roleToChange}`
+    const Activity = `changed the role of ${Email} to ${roleToChange}`
+    const Details = null
+    writeActLogs(req.user.Email, Activity, Details)
     //console.log(roleToChange)
     const result = await userModels.updateOne({ 'Email': Email }, {$set:{Role:roleToChange}})
     res.status(200).json("success")
@@ -167,9 +172,18 @@ router.post('/sendItem', verifyToken, upload.array('image'), async (req, res) =>
       resolve: false,
     });
 
-    await uploadItem.save();
-
-    res.status(200).json({ success: true, images: uploadedImages });
+    await uploadItem.save()
+    .then(res=>{
+      //console.log(res)
+      const Activity = `added an item`
+      const Details = res   
+      writeActLogs(Email, Activity, Details)
+    })
+    .catch(err=>{
+      console.log(err)
+      res.sendStatus(500)
+    })
+    res.status(200).json({ success: true, images: uploadedImages })
   } catch (error) {
     console.error('Error during upload:', error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -177,6 +191,7 @@ router.post('/sendItem', verifyToken, upload.array('image'), async (req, res) =>
 });
 
 // for edit button, updates the image 
+//EDDIT BUTTON
 router.post('/update/image', verifyToken, upload.array('image'), async (req, res) => {
   try {
     if (!req.files || req.files.length === 0) {
@@ -194,7 +209,7 @@ router.post('/update/image', verifyToken, upload.array('image'), async (req, res
         return res.status(500).json({ error: 'Error uploading to Cloudinary' });
       }
     }
-
+    
     // Send the array of image URLs to the frontend
     res.json({ images: uploadedImages });
 
@@ -215,6 +230,10 @@ router.put('/update/data/:id', verifyToken, async (req, res) => {
       { url, nameItem, desc, found, surrenderedBy, datePosted },
       { new: true }
     );
+    console.log(updateItem)
+    const Activity = `edited an item`
+    const Details = updateItem   
+    writeActLogs(req.user.Email, Activity, Details)
     res.json(updateItem);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -238,7 +257,12 @@ router.post('/archive/UnclaimedItems/:id', verifyToken, async (req, res) => {
       "datePosted":datePosted,  
       "approved": approved, 
     })
-    await moveItem.save();
+    await moveItem.save()
+    .then(result=>{
+      const Activity = `archived an item`
+      const Details = result   
+      writeActLogs(req.user.Email, Activity, Details)
+    })
     await itemModels.findByIdAndDelete(id);
     res.json(moveItem)
   } catch (error) {
@@ -272,6 +296,11 @@ router.post('/delete/:id', verifyToken, async (req, res) => {
 
     if (!deletedItem) {
       return res.status(404).json({ error: 'Item not found' });
+    }
+    else{
+      const Activity = `deleted an item`
+      const Details = deletedItem   
+      writeActLogs(req.user.Email, Activity, Details)
     }
 
     res.json(deletedItem);
@@ -327,10 +356,17 @@ router.post('/ArchivingTrans', verifyToken, async(req, res, next)=>{
       })
 
       await archData.save() 
-      .then(async()=>{
+      .then(async(result)=>{
+            console.log(result)
+            const Activity = `Approved a transaction`
+            const Details = result   
+            writeActLogs(req.user.Email, Activity, Details)
+          
           await itemModels.findByIdAndDelete({'_id': itemId})
           .then(res=>{
+            console.log(res)
             console.log('successFully deleted the item')
+            
           })
 
           const requestDel = await reqModels.findByIdAndDelete({'_id': _id})
@@ -341,6 +377,7 @@ router.post('/ArchivingTrans', verifyToken, async(req, res, next)=>{
             console.log('successfully deleted the request')
             res.status(200).json('success')
           }
+          
         }
       )
       //NOTE: TANGALIN LANG TO PAG READY NA ISAVE WALA PA KASI YUNG postedBy DATA AND TINATAMAD AKO MAGDELETE
@@ -351,9 +388,10 @@ router.post('/ArchivingTrans', verifyToken, async(req, res, next)=>{
     res.status(500)
   }
 })
+
+
 //nodemailer 
 //to send mails
-
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   host: 'smtp.gmail.com',
@@ -368,9 +406,17 @@ const transporter = nodemailer.createTransport({
 
 router.post('/sendEmail', verifyToken, async(req, res, next)=>{
   try{
-    const {id} = req.body
-    console.log('eme' ,id)
-    const {to, subject, text} = req.body;
+    const {id, to, subject, text} = req.body;
+    console.log(req.body)
+
+    const Activity = `Emailed to  ${to}`;
+    const Details = {
+      'to': to,
+      'subject': subject,
+      'text': text
+    }
+    writeActLogs(req.user.Email, Activity, Details)
+
     const info = await transporter.sendMail({
       from: process.env.SERVER_ACC_EMAIL,
       to: to,
@@ -391,17 +437,14 @@ router.post('/sendEmail', verifyToken, async(req, res, next)=>{
 router.post('/delReq', verifyToken, async(req, res, next)=>{
   try{
     
-    const {_id} = req.body
-    await reqModels.findById(_id)
-    .then(async()=>{
-      await reqModels.findByIdAndDelete(_id)
-        .then(()=>{
-          res.status(200).json('success')
-        })
-        .catch(err=>{
-          console.log(err) 
-          res.sendStatus(500)
-        })
+    const {data} = req.body
+    await reqModels.findByIdAndDelete(data)
+    .then((result)=>{
+      //console.log(result)
+      const Activity = `deleted the request of ${result.Email}`;
+      const Details = result
+      writeActLogs(req.user.Email, Activity, Details)
+      res.status(200).json('success')
     })
     .catch(err=>{
       console.log(err) 
@@ -413,6 +456,16 @@ router.post('/delReq', verifyToken, async(req, res, next)=>{
     res.sendStatus(500)
   }
 
+})
+
+router.post('/historyLogs', verifyToken, async(req, res, next)=>{
+  await  logsModels.find({}).lean().limit(5)
+  .then(result=>{
+    res.status(200).json(result)
+  })
+  .catch(err=>{
+    console.log(err)
+  })
 })
 
 module.exports = router;
