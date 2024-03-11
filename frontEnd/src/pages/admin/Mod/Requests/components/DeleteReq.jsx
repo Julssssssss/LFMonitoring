@@ -13,15 +13,14 @@ const DeleteReq = ({reqData}) => {
   };
 
     
-
     const sendDeleteReq = async()=>{
       try{
-        await axiosDeleteReq.post(null, reqData)
-      .then(res=>{
-          console.log(res)
-          window.location.reload();
-      })
-      .catch(err=>{console.log(err)})
+        await axiosDeleteReq.post(null, {'data':reqData._id})
+        .then(res=>{
+            console.log(res)
+            window.location.reload();
+        })
+        .catch(err=>{console.log(err)})
       }
       catch(err){console.log(err)}
     }

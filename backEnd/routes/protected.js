@@ -35,8 +35,10 @@ router.put("/TACagreement", verifyToken, async(req, res)=>{
 })
 
 //papalitan to ng post mmya pero get muna kasi tinetest placement ng data
-router.post("/data", verifyToken, (req, res)=>{
-        const {Name, Email, Picture, TAC} = req.user
+router.post("/data", verifyToken, async(req, res)=>{
+        const {_id, Name, Email, Picture} = req.user
+        const {TAC} = await UserModel.findById( _id).select('TAC -_id').lean()
+        //console.log(TAC)
         const user = {Name, Email}
         if(TAC){
             itemModels.find({})
