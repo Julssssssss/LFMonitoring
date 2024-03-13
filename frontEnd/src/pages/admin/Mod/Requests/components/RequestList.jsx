@@ -35,7 +35,6 @@ const RequestList = () => {
       const temp = await getData();
       setItems(temp.items); 
       setList(res.data.reqList)
-      setFilteredData(res.data.reqList)
     }
     catch(err){
       console.log(err)
@@ -69,19 +68,7 @@ const RequestList = () => {
     }
   };
   
-  const sort = (val)=>{
-    if(val.length === 0){
-      setFilteredData(list);
-    }
-    else{
-      const filtered = list.filter((el) => {
-        return el.Email.toLowerCase().includes(val.toLowerCase());
-      });
-      setFilteredData(filtered);
-    }
-  }
   const handleInputChange = (e) => {
-    sort(e.target.value)
     setSearchQuery(e.target.value);
   };
 
@@ -101,7 +88,7 @@ const RequestList = () => {
     );
   }
   function requestFormat() {
-    return filteredData.map((elem, index) => {
+    return list.map((elem, index) => {
       return(
         <div key={index}>
           <div className="flex flex-col border-b-2 border-white bg-[#17394C] md:w-[17.5rem] md:h-[4rem] lg:w-[27rem] xl:w-[31rem] 2xl:w-[37rem] 2xl:p-[0.1rem] h-[4rem] space-x-[2rem] rounded-xl p-1 3xl:w-[45rem] 3xl:h-[6rem] 3xl:p-[0.2rem]">

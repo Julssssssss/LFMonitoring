@@ -8,10 +8,10 @@ const baseUrl = `${import.meta.env.VITE_API_URL}`;
 const accessToken = localStorage.getItem('accessToken')
 
 const logout =()=>{
-    localStorage.clear()
     window.open(
         `${import.meta.env.VITE_API_URL}/auth/logout`, "_self"
     )
+    localStorage.clear()
 }
 
 //get
@@ -111,6 +111,34 @@ axiosFetchAdminData.interceptors.response.use(
 const axiosReFetchToken = axios.create({
     baseURL: `${baseUrl}/auth/refreshToken`,
 });
+
+axiosReFetchToken.interceptors.response.use(
+    response => response,
+    error => {
+        const originalRequest = error.config;
+        try
+            {  
+                if (error.response.status === 403) {
+                    logout()
+                    window.location.href = `${import.meta.env.VITE_CLIENT_URL}`;
+                    
+                    return Promise.resolve(); // Returning a resolved promise to stop further processing
+                }
+                else if (error.response.status === 401) {
+                    window.location.href = `${import.meta.env.VITE_CLIENT_URL}/401`;
+                    
+                    return Promise.resolve(); // Returning a resolved promise to stop further processing
+                }
+            } 
+            catch (e){
+                console.log(e)
+                logout()
+                return Promise.resolve()
+            }
+
+        return Promise.reject(error);
+    }
+)
 
 //mod side
 

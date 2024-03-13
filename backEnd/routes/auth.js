@@ -10,7 +10,7 @@ const writeActLogs = require('../comp/saveToLogs')
 const checkRefToken = async(refreshToken) =>{
     const result = await jwtRefreshToken.findOne({ 'refreshToken': refreshToken })
     if(result){
-        //console.log(result)
+        console.log(result.Email)
         return result.Email
     }
     else{
@@ -40,13 +40,11 @@ router.post('/refreshToken', async(req, res)=>{
     jwt.verify (refreshToken.jwt, process.env.JWT_REFRESH_SECRET, (err, user)=>{
         //if expired na refreshToken delete na
         if(err) {
-            //console.log(Email)
-            deleteRefTokenDb(Email)
-            return res.sendStatus(401)
+            return res.sendStatus(403)
         }
         const {_id, Name, Email, Role, TAC, Picture}=user
         const data = {_id, Name, Email,TAC, Role, Picture}
-        const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET,) //{expiresIn: '600s'})
+        const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET, {expiresIn: '600s'})
         console.log('success')
         res.json({ accessToken: accessToken})
     })
@@ -69,18 +67,18 @@ const addRefreshTokenToDB = async(Email,  refreshToken) =>{
 }
 
 router.post("/login/success", async(req, res)=>{
-    console.log('here', req.session)
+    //console.log('here', req.session)
     if(req.session.userId){
         const userId = req.session.userId
         await userModel.findById(userId).lean()
         .then(async(result)=>{
             const {_id, Name, Email, Picture, Role, TAC} = result;
             const userData = {_id, Name, Email, Picture, Role, TAC}
-            const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_SECRET, )//{expiresIn: '600s'})
-            const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET, )//{expiresIn: '900s'}) //15 minutes
+            const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_SECRET, {expiresIn: '900'})
+            const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET, {expiresIn: '960s'}) //15 minutes
             await addRefreshTokenToDB(Email, refreshToken)
             // Set cookie with refresh token
-            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true, sameSite: 'None' });
+            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true,}) //sameSite: 'None' });
             req.session.userId = null
 
             //send logs in db if mod or admin
@@ -136,13 +134,20 @@ router.get("/google", passport.authenticate("google"))
 router.get("/logout", async(req, res)=>{
     //console.log('cookies', req.cookies)
     const refreshToken = req.cookies.jwt
+    /*
+    jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET, (err, user)=>{
+
+    })
+    */
+    console.log(refreshToken)
     const Email = await checkRefToken(refreshToken)
+    console.log(Email)
     if(!Email){
         console.error("Error logging out:", err);
         return res.status(500).send("Error logging out");
     }
     deleteRefTokenDb(Email)
-    console.log(Email)
+    
     await userModel.findOne({Email}, {Role:1, _id: 0})
     .then(({Role})=> {
         if(Role === "mod" || Role === "admin"){
@@ -154,6 +159,7 @@ router.get("/logout", async(req, res)=>{
     .catch(err=>{
         console.log(err)
     })
+    
     req.logout((err)=>{
         if (err) {
             console.error("Error logging out:", err);

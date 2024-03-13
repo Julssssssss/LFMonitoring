@@ -68,8 +68,8 @@ const adminOnlyToken = (req, res, next) => {
 router.post('/data', verifyToken, async(req, res) => {
   if (req.user) {
     const { Name, Email, Picture, Role } = req.user;
-    const user = {Name, Email}
-    await itemModels.find({})
+    const user = {Name, Email, Role}
+    await itemModels.find({}).lean().limit(5) //ok na pagination waiting for frontEnd
     .then((result) => {
       res.status(200).json({
         items: result,
@@ -313,7 +313,7 @@ router.post('/delete/:id', verifyToken, async (req, res) => {
 //request data
 router.post('/reqList', verifyToken, async (req, res, next)=>{
   try{
-    reqModels.find({})
+    reqModels.find({}).lean().limit(5) //may pagination na waiting na lang sa frontEnd
     .then(result=>{
       res.status(200).json({
         'reqList': result
@@ -460,6 +460,16 @@ router.post('/delReq', verifyToken, async(req, res, next)=>{
 
 router.post('/historyLogs', verifyToken, async(req, res, next)=>{
   await  logsModels.find({}).lean().limit(5)
+  .then(result=>{
+    res.status(200).json(result)
+  })
+  .catch(err=>{
+    console.log(err)
+  })
+})
+
+router.post('/archiveData', verifyToken, async(req, res, next)=>{
+  await transModels.find({}).lean()
   .then(result=>{
     res.status(200).json(result)
   })

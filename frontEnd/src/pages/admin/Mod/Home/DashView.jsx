@@ -44,6 +44,11 @@ const DashView = () => {
           <div className='xl:text-[2.5rem] md:text-[2rem] 2xl:text-[3rem]'>
             Welcome back, <b>{Fname}</b>
           </div>
+          <div className='xl:text-[2.5rem] md:text-[2rem] 2xl:text-[3rem]'>
+            <b>
+              {user[0].Role}
+            </b>
+          </div>
           <ProfileIcon User={[user, pic]} />
         </div>
           <Panels itemData = {itemData}/>
