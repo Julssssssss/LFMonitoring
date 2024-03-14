@@ -44,16 +44,16 @@ const ItemList = () => {
 
   function searchBar() {
     return (
-      <>
-          <input
-            type="text"
-            placeholder="Search"
-            className="mt-[1.5rem] ml-[1.5rem] mr-[1rem] mb-4 bg-[#17394C] p-[1rem] text-white md:mt-[0rem] md:h-[2.5rem] md:w-[20rem] xl:h-[3rem] xl:w-[30rem] rounded-full xl:text-[1.4rem] 3xl:h-[3.5rem] 3xl:w-[35rem] 3xl:text-[1.7rem]"
-            value={searchQuery}
-            onChange={handleInputChange}
-          />
-       
-      </>
+      <div>
+        <input
+          type="text"
+          placeholder="Search"
+          className="mt-[1.5rem] ml-[1.5rem] mr-[1rem] mb-4 bg-[#17394C] p-[1rem] text-white md:mt-[0rem] md:h-[2.5rem] md:w-[20rem] xl:h-[3rem] xl:w-[30rem] rounded-full xl:text-[1.4rem] 3xl:h-[3.5rem] 3xl:w-[35rem] 3xl:text-[1.7rem]"
+          value={searchQuery}
+          onChange={handleInputChange}
+        />
+        <button className="h-[2rem] w-[3rem] mr-2">{`Search`}</button>
+      </div>
     );
   }
 
@@ -83,7 +83,7 @@ const ItemList = () => {
     <>
       <div className="flex flex-row justify-between md:mt-[2rem] xl:mt-[2rem] 2xl:mt-[3rem] text-white whitespace-nowrap">
         <div className='md:text-[2rem] xl:text-[2.5rem] 2xl:text-[3rem] font-poppins'>LOST ITEMS</div>   
-         {searchBar()}
+        {searchBar()}
       </div>
       <div className="bg-[#134083] w-full h-full rounded-[2rem] flex flex-col space-y-[1.5rem] self-center md:p-[2rem] lg:p-[1.5rem] xl:p-[1rem] 2xl:p-[1.5rem]">
         <div className="flex flex-row-reverse md:mt-[0.5rem] mt-[1.5rem] xl:h-[4rem]">

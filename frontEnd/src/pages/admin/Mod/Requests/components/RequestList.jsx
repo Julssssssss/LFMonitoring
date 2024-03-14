@@ -74,19 +74,19 @@ const RequestList = () => {
 
   function searchBar() {
     return (
-      <>
-      
-          <input
-            type="text"
-            placeholder="Search"
-            className="mt-[1.5rem] ml-[1.5rem] mr-[1rem] mb-4 bg-[#17394C] p-[1rem] text-white md:mt-[0rem] md:h-[2.5rem] md:w-[20rem] xl:h-[3rem] xl:w-[30rem] rounded-full xl:text-[1.4rem] 3xl:h-[3.5rem] 3xl:w-[35rem] 3xl:text-[1.7rem]"
-            value={searchQuery}
-            onChange={handleInputChange}
-          />
-       
-      </>
+      <div>
+        <input
+          type="text"
+          placeholder="Search"
+          className="mt-[1.5rem] ml-[1.5rem] mr-[1rem] mb-4 bg-[#17394C] p-[1rem] text-white md:mt-[0rem] md:h-[2.5rem] md:w-[20rem] xl:h-[3rem] xl:w-[30rem] rounded-full xl:text-[1.4rem] 3xl:h-[3.5rem] 3xl:w-[35rem] 3xl:text-[1.7rem]"
+          value={searchQuery}
+          onChange={handleInputChange}
+        />
+        <button className="h-[2rem] w-[3rem] mr-2">{`Search`}</button>
+      </div>
     );
   }
+  
   function requestFormat() {
     return list.map((elem, index) => {
       return(

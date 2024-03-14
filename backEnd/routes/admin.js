@@ -68,8 +68,10 @@ const adminOnlyToken = (req, res, next) => {
   });
 };
 
+//lost items data
 router.post('/data', verifyToken, async(req, res) => {
   if (req.user) {
+    //console.log(req.params)
     const { Name, Email, Picture, Role } = req.user;
     const user = {Name, Email, Role}
     await itemModels.find({}).lean().limit(5) //ok na pagination waiting for frontEnd
