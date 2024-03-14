@@ -4,8 +4,11 @@ const reqModels = require('../Models/requestModels')
 const userModels = require('../Models/userModels')
 const transModels = require("../Models/completedTrans")
 const unclaimedItemsModels = require('../Models/unclaimedItems')
+const logsModels = require('../Models/ActivityLogs')
 const writeActLogs = require('../comp/saveToLogs')
+const generatePDF = require('../comp/pdfFileMaker')
 
+const fs = require('fs')
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const cloudinary = require('cloudinary').v2;
@@ -105,7 +108,7 @@ router.post('/userData', adminOnlyToken, async(req, res)=>{
     //console.log(req.user)
     const {Email} = req.body
     const Activity = `searched for ${Email}`
-    const Details = null
+    const Details = `NA`
     writeActLogs(req.user.Email, Activity, Details)
 
     const result = await userModels.findOne({'Email': Email})
@@ -135,7 +138,7 @@ router.post('/setRoles', adminOnlyToken, async(req, res, next) => {
     //console.log(req.body)
     const {Email, roleToChange}=req.body
     const Activity = `changed the role of ${Email} to ${roleToChange}`
-    const Details = null
+    const Details = `NA`
     writeActLogs(req.user.Email, Activity, Details)
     //console.log(roleToChange)
     const result = await userModels.updateOne({ 'Email': Email }, {$set:{Role:roleToChange}})
@@ -459,18 +462,53 @@ router.post('/delReq', verifyToken, async(req, res, next)=>{
 })
 
 router.post('/historyLogs', verifyToken, async(req, res, next)=>{
-  await  logsModels.find({}).lean().limit(5)
-  .then(result=>{
-    res.status(200).json(result)
+  const {startDate, endDate} = req.body
+  
+  const Activity = `Generated history Logs ranging from ${startDate} to ${endDate}`;
+  const Details = `NA`
+  //writeActLogs(req.user.Email, Activity, Details)
+
+  await logsModels.find({
+    Date:{
+      $gte: new Date(startDate), //gte stands for greater than
+      $lt: new Date(endDate).setUTCHours(23, 59, 59, 999), //lt stands for less than //set utchours means set time 
+    },
+  }).lean()
+  .then(async(result)=>{
+    const type = `Logs`
+    //console.log(result)
+    const pdfData = await generatePDF(type, [result])
+
+    const fileName = `History-Logs-from-${startDate}-to-${endDate}.pdf`
+    fs.writeFileSync(fileName, pdfData)
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+    res.send(pdfData); // Send the PDF data to the frontend?
+
+    // Optionally, delete the temporary file after download
+    fs.unlinkSync(fileName);
   })
   .catch(err=>{
     console.log(err)
   })
 })
 
-router.post('/archiveData', verifyToken, async(req, res, next)=>{
-  await transModels.find({}).lean()
+router.post('/archiveDataGenerate', verifyToken, async(req, res, next)=>{
+
+  const {startDate, endDate} = req.body
+
+  const Activity = `Generated an archiveData ranging from ${startDate} to ${endDate}`;
+  const Details = `NA`
+  writeActLogs(req.user.Email, Activity, Details)
+
+  await transModels.find({
+    dateClaimed:{
+      $gte: new Date(startDate), //gte stands for greater than
+      $lt: new Date(endDate).setUTCHours(23, 59, 59, 999) //lt stands for less than
+    }
+  }).lean()
   .then(result=>{
+    console.log(result)
     res.status(200).json(result)
   })
   .catch(err=>{

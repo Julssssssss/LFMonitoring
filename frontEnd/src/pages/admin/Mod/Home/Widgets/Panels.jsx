@@ -7,6 +7,7 @@ const Panels = ({itemData}) => {
   //console.log(itemData)
   const [reqLength, setReqLength] = useState(null) //nandito na yung max length ng data ng request gagamitin mo n lang
   const [archiveLength, setArchiveLength] = useState(null) //nandito na din yung data ha ng length ng archives
+
   useEffect(()=>{
     fetchArchReqLength()
     

@@ -44,7 +44,7 @@ router.post('/refreshToken', async(req, res)=>{
         }
         const {_id, Name, Email, Role, TAC, Picture}=user
         const data = {_id, Name, Email,TAC, Role, Picture}
-        const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET, {expiresIn: '600s'})
+        const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET,) //{expiresIn: '600s'})
         console.log('success')
         res.json({ accessToken: accessToken})
     })
@@ -74,8 +74,8 @@ router.post("/login/success", async(req, res)=>{
         .then(async(result)=>{
             const {_id, Name, Email, Picture, Role, TAC} = result;
             const userData = {_id, Name, Email, Picture, Role, TAC}
-            const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_SECRET, {expiresIn: '900'})
-            const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET, {expiresIn: '960s'}) //15 minutes
+            const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_SECRET,) //{expiresIn: '900'})
+            const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET,) //{expiresIn: '960s'}) //15 minutes
             await addRefreshTokenToDB(Email, refreshToken)
             // Set cookie with refresh token
             res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true,}) //sameSite: 'None' });
@@ -84,7 +84,7 @@ router.post("/login/success", async(req, res)=>{
             //send logs in db if mod or admin
             if(Role === "mod" || Role === "admin"){
                 const Activity = `logged in as ${Role}`
-                const Details = null   
+                const Details = `NA`   
                 writeActLogs(Email, Activity, Details)
             }
 
@@ -149,10 +149,11 @@ router.get("/logout", async(req, res)=>{
     deleteRefTokenDb(Email)
     
     await userModel.findOne({Email}, {Role:1, _id: 0})
-    .then(({Role})=> {
+    .then((result)=> {
+        const {Role} = result
         if(Role === "mod" || Role === "admin"){
             const Activity = `logged out as ${Role}`
-            const Details = null   
+            const Details = `NA`   
             writeActLogs(Email, Activity, Details)
         }  
     })
