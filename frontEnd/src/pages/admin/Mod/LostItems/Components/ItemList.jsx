@@ -12,7 +12,6 @@ const ItemList = () => {
 
   //for searchBar
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredData, setFilteredData] = useState(null);
 
   const handleDelete = (deletedId) => {
     setFilteredData(filteredData.filter(item => item._id !== deletedId));
@@ -24,7 +23,6 @@ const ItemList = () => {
       .then((temp) => {
         setItems(temp.items); 
         setLoading(false);
-        setFilteredData(temp.items)
       })
     } catch (error) {
       console.error("Error getting items", error);
@@ -40,22 +38,7 @@ const ItemList = () => {
     return <div><Loading /></div>;
   }
 
-  //for searchquery
-  const sort = (val)=>{
-    if(val.length === 0){
-      setFilteredData(items);
-    }
-    else{
-      const filtered = items.filter((el) => {
-        return el.nameItem.toLowerCase().includes(val.toLowerCase());
-      });
-      setFilteredData(filtered);
-    }
-    console.log(val)
-  }
-
   const handleInputChange = (e) => {
-    sort(e.target.value)
     setSearchQuery(e.target.value);
   };
 
@@ -75,7 +58,7 @@ const ItemList = () => {
   }
 
   function itemsFormat() {
-    return filteredData.map((item, index) => {
+    return items.map((item, index) => {
       return(
         <div key={index}>
           <div className="flex flex-col items-center p-1 border-b-2 border-white bg-[#17394C] w-full h-auto space-x-[0.5rem] rounded-xl">

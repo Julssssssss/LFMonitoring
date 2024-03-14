@@ -41,7 +41,7 @@ router.post("/data", verifyToken, async(req, res)=>{
         //console.log(TAC)
         const user = {Name, Email}
         if(TAC){
-            itemModels.find({})
+            itemModels.find({}).lean().limit(5) //waiting na lang sa pagination sa frontEnd
                 .then(result=>{
                     res.status(200).json({
                         items: result,

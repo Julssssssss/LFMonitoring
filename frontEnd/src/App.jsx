@@ -17,6 +17,10 @@ import AdminProfile from './pages/admin/Mod/Home/Widgets/AdminProfile'
 
 import Privilege from './pages/admin/Privilege/Privilege'
 
+//try
+import ArchiveDataGenerator from './pages/admin/Mod/Home/Widgets/ArchiveDataGenerator'
+import HistoryLogs from './pages/admin/Mod/HistoryLogs/HistoryLogs'
+
 
 
 const App = () => {
@@ -32,6 +36,7 @@ const App = () => {
       <style>
         {`*{outline: solid red}`}
       </style>
+      
 
       <div>
         <Routes>

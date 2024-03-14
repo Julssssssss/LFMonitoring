@@ -43,7 +43,6 @@ const RequestList = () => {
       const temp = await getData();
       setItems(temp.items); 
       setList(res.data.reqList)
-      setFilteredData(res.data.reqList)
     }
     catch(err){
       console.log(err)
@@ -76,40 +75,27 @@ const RequestList = () => {
     }
   };
   
-  const sort = (val)=>{
-    if(val.length === 0){
-      setFilteredData(list);
-    }
-    else{
-      const filtered = list.filter((el) => {
-        return el.Email.toLowerCase().includes(val.toLowerCase());
-      });
-      setFilteredData(filtered);
-    }
-  }
   const handleInputChange = (e) => {
-    sort(e.target.value)
     setSearchQuery(e.target.value);
   };
 
   function searchBar() {
     return (
-      <>
-          <input
-            type="text"
-            placeholder="Search"
-            className=" mb-4 mt-[1rem] bg-[#17394C] p-[0.4rem] text-white rounded-full"
-            value={searchQuery}
-            onChange={handleInputChange}
-          />
-       
-      </>
+      <div>
+        <input
+          type="text"
+          placeholder="Search"
+          className=" mb-4 mt-[1rem] bg-[#17394C] p-[0.4rem] text-white rounded-full"
+          value={searchQuery}
+          onChange={handleInputChange}
+        />
+        <button className="h-[2rem] w-[3rem] mr-2">{`Search`}</button>
+      </div>
     );
   }
-
+  
   function requestFormat() {
-    return filteredData.map((elem, index) => {
-      const dateFormat = elem.dateRequested.split(" GMT")[0];
+    return list.map((elem, index) => {
       return(
         <div key={index}>
           <div className="flex flex-col justify-center border-b-2 border-white bg-[#17394C] w-full h-[4rem] space-y-[0.2rem] rounded-xl p-1">

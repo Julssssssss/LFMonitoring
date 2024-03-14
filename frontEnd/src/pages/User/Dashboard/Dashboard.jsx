@@ -4,19 +4,17 @@ import ProfilePic from "./components/ProfilePic";
 import { getUserAndItem } from "./components/getUserAndItemData";
 import Loading from "../../404/Loading";
 
-
+//need ayusin search
 const Dashboard = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredData, setFilteredData] = useState(null);
 
   const getData = async () => {
     const temp = await getUserAndItem();
     console.log(temp)
     setData([temp]);
     setLoading(false);
-    setFilteredData(temp.items);
   };
   
   useEffect(() => {
@@ -27,21 +25,7 @@ const Dashboard = () => {
     return <div><Loading/></div>;
   }
 
-  const sort = (val)=>{
-    if (val.length > 0) {
-      const filtered = data[0].items.filter((el) => {
-        return el.nameItem.toLowerCase().includes(val.toLowerCase());
-      });
-      setFilteredData(filtered);
-    } else {
-      setFilteredData(data[0].items);
-    }
-    console.log(val)
-  }
-
-
   const handleInputChange = (e) => {
-    sort(e.target.value)
     setSearchQuery(e.target.value);
   };
 
@@ -74,9 +58,8 @@ const Dashboard = () => {
       </>
     );
   }
-
   function sample() {
-    return filteredData.map((el, index) => {
+    return data[0].items.map((el, index) => {
       return (
         <div key={index} className="flex flex-row mb-[3rem] rounded-lg justify-center items-center">
           

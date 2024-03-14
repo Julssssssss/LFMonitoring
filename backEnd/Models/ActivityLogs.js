@@ -21,10 +21,12 @@ const actLogs = new Schema({
     //remove this after tapos na
     expireAt: { 
         type: Date,
-        default: Date.now,
-        index: { 
-            expires: '10s' 
-        }
+        default: function () {
+            return new Date(Date.now() + 960000); // 960 seconds = 960000 milliseconds
+        },
+        index: {
+            expires: '960s',
+        },
     }
 });
 

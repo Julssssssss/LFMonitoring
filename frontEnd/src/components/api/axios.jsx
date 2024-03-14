@@ -8,10 +8,10 @@ const baseUrl = `${import.meta.env.VITE_API_URL}`;
 const accessToken = localStorage.getItem('accessToken')
 
 const logout =()=>{
-    localStorage.clear()
     window.open(
         `${import.meta.env.VITE_API_URL}/auth/logout`, "_self"
     )
+    localStorage.clear()
 }
 
 //get
@@ -111,6 +111,34 @@ axiosFetchAdminData.interceptors.response.use(
 const axiosReFetchToken = axios.create({
     baseURL: `${baseUrl}/auth/refreshToken`,
 });
+
+axiosReFetchToken.interceptors.response.use(
+    response => response,
+    error => {
+        const originalRequest = error.config;
+        try
+            {  
+                if (error.response.status === 403) {
+                    logout()
+                    window.location.href = `${import.meta.env.VITE_CLIENT_URL}`;
+                    
+                    return Promise.resolve(); // Returning a resolved promise to stop further processing
+                }
+                else if (error.response.status === 401) {
+                    window.location.href = `${import.meta.env.VITE_CLIENT_URL}/401`;
+                    
+                    return Promise.resolve(); // Returning a resolved promise to stop further processing
+                }
+            } 
+            catch (e){
+                console.log(e)
+                logout()
+                return Promise.resolve()
+            }
+
+        return Promise.reject(error);
+    }
+)
 
 //mod side
 
@@ -511,6 +539,93 @@ axiosFetchArchLength.interceptors.response.use(
     }
 );
 
+const axiosArchiveDataGeneration = axios.create({
+    baseURL: `${baseUrl}/priv/archiveDataGenerate`,
+    headers:{
+        'authorization': `Bearer ${accessToken}`
+    }
+})
+
+axiosArchiveDataGeneration.interceptors.response.use(
+    response => response,
+    error => {
+        const originalRequest = error.config;
+        try
+            {    if (error.response.status === 403 && !originalRequest._retry) {
+                    originalRequest._retry = true;
+                    return axiosReFetchToken.post()
+                        .then(response => {
+                            const newAccessToken = response.data.accessToken;
+                            const temp = JSON.stringify(newAccessToken)
+                            localStorage.setItem('accessToken', temp);
+                            originalRequest.headers['authorization'] = `Bearer ${newAccessToken}`;
+                            return axiosArchiveDataGeneration(originalRequest);
+                        });
+                }
+                else if (error.response.status === 401) {
+                    window.location.href = `${import.meta.env.VITE_CLIENT_URL}/401`;
+                    
+                    return Promise.resolve(); // Returning a resolved promise to stop further processing
+                }
+                else if (error.response.status === 404) {
+                    window.location.href = `${import.meta.env.VITE_CLIENT_URL}/`;
+                    logout()
+                    return Promise.resolve(); // Returning a resolved promise to stop further processing
+                }
+            } 
+            catch (e){
+                console.log(e)
+                //logout()
+                return Promise.resolve()
+            }
+
+        return Promise.reject(error);
+    }
+);
+
+const axiosGetLogs = axios.create({
+    baseURL: `${baseUrl}/priv/historyLogs`,
+    headers:{
+        'authorization': `Bearer ${accessToken}`
+    }
+})
+
+axiosGetLogs.interceptors.response.use(
+    response => response,
+    error => {
+        const originalRequest = error.config;
+        try
+            {    if (error.response.status === 403 && !originalRequest._retry) {
+                    originalRequest._retry = true;
+                    return axiosReFetchToken.post()
+                        .then(response => {
+                            const newAccessToken = response.data.accessToken;
+                            const temp = JSON.stringify(newAccessToken)
+                            localStorage.setItem('accessToken', temp);
+                            originalRequest.headers['authorization'] = `Bearer ${newAccessToken}`;
+                            return axiosGetLogs(originalRequest);
+                        });
+                }
+                else if (error.response.status === 401) {
+                    window.location.href = `${import.meta.env.VITE_CLIENT_URL}/401`;
+                    
+                    return Promise.resolve(); // Returning a resolved promise to stop further processing
+                }
+                else if (error.response.status === 404) {
+                    window.location.href = `${import.meta.env.VITE_CLIENT_URL}/`;
+                    logout()
+                    return Promise.resolve(); // Returning a resolved promise to stop further processing
+                }
+            } 
+            catch (e){
+                console.log(e)
+                //logout()
+                return Promise.resolve()
+            }
+
+        return Promise.reject(error);
+    }
+);
 
 
-export {axiosFetchArchLength, axiosDeleteReq, axiosGetReqList, axiosFetchToken, axiosFetchItems, axiosReFetchToken, axiosSendItem, axiosSendUpdate, axiosUpdateImage, axiosUnclaimedItems, axiosDeleteItem, axiosFetchAdminData, axiosSendEmail};
+export {axiosGetLogs, axiosArchiveDataGeneration, axiosFetchArchLength, axiosDeleteReq, axiosGetReqList, axiosFetchToken, axiosFetchItems, axiosReFetchToken, axiosSendItem, axiosSendUpdate, axiosUpdateImage, axiosUnclaimedItems, axiosDeleteItem, axiosFetchAdminData, axiosSendEmail};

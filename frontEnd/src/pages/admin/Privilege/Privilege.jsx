@@ -6,8 +6,8 @@ import { axiosReFetchToken } from '../../../components/api/axios';
 const Privilege = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('')
-  const [userData, setUserData] = useState('')
-  const [tempRole, setTempRole] = useState('')
+  const [userData, setUserData] = useState(null)
+  const [tempRole, setTempRole] = useState(null)
   const [cooldownActive, setCooldownActive] = useState(false)
 
   const dropResult = () => {
