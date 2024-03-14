@@ -96,6 +96,7 @@ const RequestList = () => {
   
   function requestFormat() {
     return list.map((elem, index) => {
+      const dateFormat = elem.dateRequested.split(" GMT")[0];
       return(
         <div key={index}>
           <div className="flex flex-col justify-center border-b-2 border-white bg-[#17394C] w-full h-[4rem] space-y-[0.2rem] rounded-xl p-1">
@@ -210,7 +211,7 @@ const RequestList = () => {
               type="text"
               id="subject"  
               placeholder="Subject" 
-              className="border-[0.2rem] border-[#F9D62B] h-[2.5rem] font-poppins rounded-xl text-white w-full text-[0.7rem] p-[0.5rem]"
+              className="border-[0.2rem] text-white border-[#F9D62B] h-[2.5rem] font-poppins rounded-xl text-white w-full text-[0.7rem] p-[0.5rem]"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
             /> 

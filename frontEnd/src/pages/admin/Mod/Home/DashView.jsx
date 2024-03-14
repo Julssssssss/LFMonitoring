@@ -47,7 +47,7 @@ const DashView = () => {
                 </div>
                 <div className='text-[1rem] flex items-center'>
                   <b>
-                    Role
+                    {user[0].Role}
                   </b>
                 </div>
                 <div className='flex items-center'>
