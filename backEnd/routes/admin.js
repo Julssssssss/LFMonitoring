@@ -168,7 +168,7 @@ router.post('/sendItem', verifyToken, upload.array('image'), async (req, res) =>
       found,
       surrenderedBy,
       postedBy: Email,
-      datePosted,
+      datePosted: new Date(),
       resolve: false,
     });
 
@@ -190,55 +190,46 @@ router.post('/sendItem', verifyToken, upload.array('image'), async (req, res) =>
   }
 });
 
-// for edit button, updates the image 
-//EDDIT BUTTON
-router.post('/update/image', verifyToken, upload.array('image'), async (req, res) => {
-  try {
-    if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ error: 'No files were uploaded.' });
-    }
-
-    const uploadedImages = [];
-
-    for (const file of req.files) {
-      console.log('file', file)
-      try {
-        uploadedImages.push(file.path);
-      } catch (uploadError) {
-        console.error('Error uploading to Cloudinary:', uploadError);
-        return res.status(500).json({ error: 'Error uploading to Cloudinary' });
-      }
-    }
-    
-    // Send the array of image URLs to the frontend
-    res.json({ images: uploadedImages });
-
-  } catch (error) {
-    console.error('Error updating:', error);
-    res.status(500).json({ error: 'Error updating data' });
-  }
-});
-
 // update or edit data to mongodb 
-router.put('/update/data/:id', verifyToken, async (req, res) => {
+router.put('/update/data/:id', verifyToken, upload.array('image'), async (req, res) => {
   try {
+    const uploadedImages = [];
     const { id } = req.params;
-    const { url, nameItem, desc, found, surrenderedBy, datePosted } = req.body;
+    const { nameItem, desc, found, surrenderedBy, datePosted, OldPic } = req.body;
+    const files = req.files || [];
+    const oldPicArray = Array.isArray(OldPic) ? OldPic : (OldPic ? [OldPic] : []);
 
+    if (oldPicArray.length > 0 || files.length > 0) {
+      uploadedImages.push(...oldPicArray, ...files.map(file => file.path));
+    }
+
+   // console.log('Uploaded Images:', uploadedImages);
     const updateItem = await itemModels.findByIdAndUpdate(
       id,
-      { url, nameItem, desc, found, surrenderedBy, datePosted },
+      { 
+        url: uploadedImages,
+        nameItem, 
+        desc, 
+        found, 
+        surrenderedBy, 
+        datePosted: new Date(),
+      },
       { new: true }
     );
-    console.log(updateItem)
-    const Activity = `edited an item`
-    const Details = updateItem   
-    writeActLogs(req.user.Email, Activity, Details)
+
+    console.log('Updated Item:', updateItem);
+
+    const activity = `edited an item`;
+    const details = updateItem;
+    writeActLogs(req.user.Email, activity, details);
+
     res.json(updateItem);
   } catch (error) {
+    console.error('Error updating item:', error);
     res.status(500).json({ error: error.message });
   }
 });
+
 
 // archive unclaimed items 
 router.post('/archive/UnclaimedItems/:id', verifyToken, async (req, res) => {

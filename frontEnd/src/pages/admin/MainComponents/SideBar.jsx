@@ -17,9 +17,15 @@ const Sidebar = () => {
     function buttonsFormat (){
         return buttons.map((nav, index) =>{
             return(
-                <Link to={nav.to} key={index} className="group flex flex-row">
-                    <button className='stroke-white hover:stroke-[#F9D62B] xl:w-[2.5rem] xl:h-[2.5rem] md:h-[2rem] md:w-[2rem] 2xl:w-[3rem] 2xl:h-[3rem] 3xl:w-[4rem] 3xl:h-[4rem] group relative flex justify-center'>
-                        {nav.svg}
+                <Link to={nav.to} key={index} className="group flex flex-row items-center border-b-[0.1rem] border-white rounded-xl  w-[7rem] h-[2.5rem]">
+                    <button className='relative space-x-[2rem] items-center stroke-white hover:stroke-[#F9D62B] text-[0.6rem] font-bold justify-start'>
+                        <div className="absolute z-20 w-[1.5rem] h-[1.5rem]">
+                            {nav.svg}
+                        </div>
+                        <div className="w-[4rem]">
+                            {nav.name}
+                        </div>
+                      
                         <span className="font-poppins md:-left-[0.9rem] md:text-[1.7rem] md:w-[15rem] xl:w-[15rem] xl:p-[0.1rem] absolute left-0 2xl:-left-[1rem] 2xl:text-[2.5rem] 2xl:p-[0.5] 2xl:w-[20rem] 3xl:text-[2.5rem] 3xl:w-[18rem] 3xl:-left-[1rem] justify-center whitespace-nowrap flex scale-0 rounded bg-gray-800 p-1 text-[2rem] z-50 text-white group-hover:scale-50">{nav.name}</span>
                     </button>
                 </Link>
@@ -29,20 +35,46 @@ const Sidebar = () => {
     }
 
   return (
-        <>
-            <div className="flex flex-col h-screen md:h-screen md:w-[7rem] lg:w-[6.2rem] xl:h-screen xl:w-[7.5rem] 2xl:w-[10rem] border-r-[0.5rem] border-[#134083] md:space-y-[1.5rem] md:rounded-r-[5rem] xl:rounded-r-[6rem] xl:space-y-[2.5rem] 2xl:rounded-r-[8rem] 3xl:rounded-r-[7.5rem] bg-[#0D1832] items-center">
-                <img className="xl:w-[4.5rem] xl:h-[4.5rem] xl:m-[2rem] xl:mt-[4rem] md:w-[3.5rem] md:h-[3.5rem] md:mt-[4rem] 2xl:mt-[5rem] 2xl:w-[6rem] 2xl:h-[6rem]" src={'https://iieecsc.files.wordpress.com/2021/09/rizal_technological_university-1.png'} />
-
-                {buttonsFormat()}
-
-                <Link to={'/admin/HlpDocs'} className="absolute bottom-[4rem]">
-                    <button className="stroke-white hover:stroke-[#F9D62B] md:w-[2.5rem] md:h-[2.5rem] xl:w-[2.5rem] xl:h-[2.5rem] 2xl:w-[3rem] 2xl:h-[3rem] 3xl:w-[4rem] 3xl:h-[4rem] group relative flex justify-center">
-                        <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" strokeWidth="2"></path> <path d="M10.5 8.67709C10.8665 8.26188 11.4027 8 12 8C13.1046 8 14 8.89543 14 10C14 10.9337 13.3601 11.718 12.4949 11.9383C12.2273 12.0064 12 12.2239 12 12.5V12.5V13" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> <path d="M12 16H12.01" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>
-                        <span className="absolute left-[0rem] scale-0 rounded bg-gray-800 p-1 xl:text-[2rem] font-poppins text-white group-hover:scale-50 2xl:-left-[1rem] 2xl:text-[2.5rem] 2xl:p-[0.5] 2xl:w-[20rem] z-50">SUPPORT/HELP</span>
+    <>
+    <div className="drawer w-[4rem] relative z-30">
+        < input id="my-drawer" type="checkbox" className="drawer-toggle " />
+        <div className="drawer-content">
+        {/* Page content here */}
+        <label htmlFor="my-drawer" className=" drawer-button cursor-pointer">
+            <svg className="w-[4rem] h-[4rem] fill-[#F9D62B] hover:fill-white" viewBox="0 0 25.00 25.00" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5.5 11.75C5.08579 11.75 4.75 12.0858 4.75 12.5C4.75 12.9142 5.08579 13.25 5.5 13.25V11.75ZM19.5 13.25C19.9142 13.25 20.25 12.9142 20.25 12.5C20.25 12.0858 19.9142 11.75 19.5 11.75V13.25ZM5.5 7.75C5.08579 7.75 4.75 8.08579 4.75 8.5C4.75 8.91421 5.08579 9.25 5.5 9.25V7.75ZM14.833 9.25C15.2472 9.25 15.583 8.91421 15.583 8.5C15.583 8.08579 15.2472 7.75 14.833 7.75V9.25ZM5.5 15.75C5.08579 15.75 4.75 16.0858 4.75 16.5C4.75 16.9142 5.08579 17.25 5.5 17.25V15.75ZM14.833 17.25C15.2472 17.25 15.583 16.9142 15.583 16.5C15.583 16.0858 15.2472 15.75 14.833 15.75V17.25ZM5.5 13.25H19.5V11.75H5.5V13.25ZM5.5 9.25H14.833V7.75H5.5V9.25ZM5.5 17.25H14.833V15.75H5.5V17.25Z"></path> </g></svg>
+        </label>
+    </div> 
+    <div className="drawer-side">
+        <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
+        <ul className="flex flex-col space-y-[1rem] menu p-2 w-[50%] border-r-[0.2rem] border-[#134083] rounded-r-[6rem] h-screen bg-[#0D1832] flex flex-col items-center pt-[2rem]">
+            <img className="w-[4rem] h-[4rem]" src={'https://iieecsc.files.wordpress.com/2021/09/rizal_technological_university-1.png'} />
+                <div className="flex flex-col space-y-[0.5rem]">
+                    {buttonsFormat()}
+                </div>
+                <Link to={'/admin/HlpDocs'} className="absolute bottom-[3rem] group flex flex-row items-center border-b-[0.1rem] border-white rounded-xl  w-[7rem] h-[2.5rem]">
+                    <button className="space-x-[2rem] items-center stroke-white hover:stroke-[#F9D62B] text-[0.5rem] justify-start">
+                        <svg className= "absolute z-20 w-[1.5rem] h-[1.5rem]" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" strokeWidth="2"></path> <path d="M10.5 8.67709C10.8665 8.26188 11.4027 8 12 8C13.1046 8 14 8.89543 14 10C14 10.9337 13.3601 11.718 12.4949 11.9383C12.2273 12.0064 12 12.2239 12 12.5V12.5V13" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> <path d="M12 16H12.01" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>
+                        <div className="w-[5rem] font-poppins text-[0.6rem] font-bold">
+                            SUPPORT/HELP
+                        </div>
+                        <span className="font-poppins md:-left-[0.9rem] md:text-[1.7rem] md:w-[15rem] xl:w-[15rem] xl:p-[0.1rem] absolute left-0 2xl:-left-[1rem] 2xl:text-[2.5rem] 2xl:p-[0.5] 2xl:w-[20rem] 3xl:text-[2.5rem] 3xl:w-[18rem] 3xl:-left-[1rem] justify-center whitespace-nowrap flex scale-0 rounded bg-gray-800 p-1 text-[2rem] z-50 text-white group-hover:scale-50">SUPPORT/HELP</span>
                     </button>
                 </Link>
-            </div>
-        </>
+           
+        </ul>
+        </div>
+    </div>
+
+</>
+
+
+
+
+
+
+
+
+           
     );
 };
 

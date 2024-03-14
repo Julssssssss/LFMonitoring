@@ -18,6 +18,10 @@ const reqSchema = new schema({
     haveBeenEmailed:{
         type: Boolean,
         required: true
+    },
+    dateRequested:{
+        type: String,
+        default: Date.now,
     }
 })
 const reqModelo = mongoose.model("Request", reqSchema)

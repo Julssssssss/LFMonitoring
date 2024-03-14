@@ -32,23 +32,35 @@ const DashView = () => {
   if (loading) {
     return <div><Loading /></div>;
   }
-
   const Fname = user[0].Name? user[0].Name.split(' ')[0] : "";
 
   return (
     <>
-    <div className='flex flex-row h-screen w-screen bg-[#17394C] font-poppins space-x-[1.5rem] overflow-x-hidden overflow-y-hidden'>
-      <Sidebar />
-      <div className="flex flex-col self-center h-full w-full bg-[#0D1832] border-l-[0.5rem] border-[#134083] md:rounded-l-[6rem] xl:space-y-[2rem] md:space-y-[1rem] xl:rounded-l-[7rem] 3xl:rounded-l-[7.5rem]">
-        <div className='flex flex-row justify-between xl:ml-[3rem] md:mt-[2rem] md:ml-[2rem] md:mr-[2rem] xl:mr-[3rem] xl:mt-[2rem] 2xl:mt-[2.5rem] text-white whitespace-nowrap'>
-          <div className='xl:text-[2.5rem] md:text-[2rem] 2xl:text-[3rem]'>
-            Welcome back, <b>{Fname}</b>
+      <div className='bg-[#17394C] w-screen h-screen'>
+        <div className='h-full bg-[#0D1832] flex flex-col space-y-[1rem]'>
+          <div className='w-full flex flex-row space-x-[0.1rem]'>
+            <Sidebar />
+            <div className='flex flex-col space-y-[1rem]'>
+              <div className='text-white mt-[1rem] flex flex-row space-x-[0.2rem] h-auto'>
+                <div className='whitespace-normal w-[10rem]'>
+                  Welcome back, <b>{Fname}</b>
+                </div>
+                <div className='text-[1rem] flex items-center'>
+                  <b>
+                    Role
+                  </b>
+                </div>
+                <div className='flex items-center'>
+                  <ProfileIcon User={[user, pic]} />
+                </div>
+              </div>
+              
+            </div>
+            
           </div>
-          <ProfileIcon User={[user, pic]} />
-        </div>
           <Panels itemData = {itemData}/>
+        </div>
       </div>
-    </div>
     </>
   )
 }

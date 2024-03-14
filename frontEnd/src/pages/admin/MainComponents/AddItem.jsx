@@ -8,8 +8,8 @@ const Modal = ({ isOpen, children }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-[#134083] shadow-md w-[30rem] h-[45rem] rounded-2xl">
+    <div className="absolute z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-[#134083] shadow-md w-[18rem] h-[30rem] rounded-2xl">
         {children}
       </div>
     </div>
@@ -71,15 +71,12 @@ const AddItem = () => {
       setConfirm(false);
       try {
         setLoading(true)
-        const currentDate = new Date();
-        const formattedDate = currentDate.toISOString().split('T')[0];
     
         const formData = new FormData();
         formData.append('nameItem', nameItem);
         formData.append('desc', desc);
         formData.append('found', found);
         formData.append('surrenderedBy', surrenderedBy);
-        formData.append('datePosted', formattedDate);
     
         for (const file of files) {
           formData.append('image', file);
@@ -146,7 +143,7 @@ const AddItem = () => {
     <div>
       <button
         onClick={openModal}
-        className="bg-[#F9D62B] font-poppins text-black font-bold md:py-1 md:px-3 md:w-[10rem] xl:py-2 xl:px-4 md:mb-[1rem] mb-[2rem] rounded-full xl:text-[1.3rem] xl:w-[15rem] 2xl:text-[1.5rem] hover:bg-[#134083] hover:text-white"
+        className="bg-[#F9D62B] font-poppins text-black text-[0.8rem] w-[8rem] h-[2rem] rounded-xl font-bold md:py-1 hover:bg-[#134083] hover:text-white"
       >
         ADD ITEM
       </button>
@@ -180,9 +177,9 @@ const AddItem = () => {
       )}
 
       <Modal isOpen={isModalOpen} onClose={closeModal} className="relative z-0">
-        <form className="flex flex-col space-y-[0.5rem] items-center ">
+        <form className="flex flex-col space-y-[0.5rem] font-poppins items-center p-[0.5rem]">
         <button
-              className="w-[3rem] h-[3rem] md:w-[2rem] md:h-[2rem] place-self-end m-[0.5rem] 2xl:w-[3rem] 2xl:h-[3rem] stroke-[#F9D62B] hover:stroke-white"
+              className="self-end w-[2rem] h-[2rem] stroke-[#F9D62B] hover:stroke-white"
               onClick={closeModal}
             >
              <svg
@@ -211,13 +208,13 @@ const AddItem = () => {
                 </g>
               </svg>
             </button>
-          <div className="h-[17rem] w-[17rem] border-[0.3rem] border-[#F9D62B] rounded-xl p-[0.1rem] flex flex-col justify-center">
+          <div className="h-[10rem] w-[10rem] border-[0.3rem] border-[#F9D62B] rounded-xl p-[0.1rem] flex flex-col justify-center">
             {displayPic()}
           </div>
 
           <input
             type="file"
-            className="text-white text-[1rem]"
+            className="text-white text-[0.6rem]"
             accept="image/*"
             multiple
             onChange={(e) => {
@@ -263,35 +260,35 @@ const AddItem = () => {
           <div className="flex flex-col items-center space-y-[1rem] text-white">
             <input
               type="text"
-              className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[21rem] h-[3rem] text-[1.3rem]"
+              className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem]"
               placeholder="Name of item"
               value={nameItem}
               onChange={(e) => setName(e.target.value)}
             />
             <input
               type="text"
-              className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[21rem] h-[3rem] text-[1.3rem]"
+              className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem]"
               placeholder="Description"
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
             />
             <input
               type="text"
-              className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[21rem] h-[3rem] text-[1.3rem]"
+              className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem]"
               placeholder="Found at"
               value={found}
               onChange={(e) => setFound(e.target.value)}
             />
             <input
               type="text"
-              className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[21rem] h-[3rem] text-[1.3rem]"
+              className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem]"
               placeholder="Surrendered by: "
               value={surrenderedBy}
               onChange={(e) => setSurrenderedBy(e.target.value)}
             />
             <button
               type="button"
-              className="text-black text-[1.5rem] hover:bg-[#134083] hover:text-white bg-[#F9D62B] w-[15rem] h-[3rem] rounded-full"
+              className="text-black text-[1rem] hover:bg-[#134083] hover:text-white bg-[#F9D62B] w-[10rem] h-[2rem] rounded-full"
               onClick={checker}
             >
               ADD

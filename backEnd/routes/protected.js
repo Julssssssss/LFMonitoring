@@ -78,6 +78,7 @@ router.post("/request", verifyToken, async(req, res)=>{
             nameItem: nameItem,
             Email: Email, 
             haveBeenEmailed: false,
+            dateRequested: new Date(),
         })
         await newReq.save()
         return res.sendStatus(200);

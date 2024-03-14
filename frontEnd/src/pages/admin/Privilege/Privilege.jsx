@@ -5,9 +5,9 @@ import { axiosReFetchToken } from '../../../components/api/axios';
 
 const Privilege = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(null)
-  const [userData, setUserData] = useState(null)
-  const [tempRole, setTempRole] = useState(null)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [userData, setUserData] = useState('')
+  const [tempRole, setTempRole] = useState('')
   const [cooldownActive, setCooldownActive] = useState(false)
 
   const dropResult = () => {
@@ -17,7 +17,6 @@ const Privilege = () => {
       if(searchQuery){
         findUser()
       }
-      console.log(userData)
     }
     setIsOpen(true);
   };
@@ -138,24 +137,24 @@ const Privilege = () => {
 
 
   return (
-    <div className='flex flex-row h-screen w-screen bg-[#17394C] space-x-[1.5rem] overflow-x-hidden overflow-y-hidden'>
+    <div className='flex flex-row h-screen w-screen bg-[#17394C] overflow-x-hidden overflow-y-hidden'>
       <Sidebar />
-      <div className="flex flex-col self-center h-full w-full bg-[#0D1832] border-l-[0.5rem] border-[#134083] rounded-l-[5rem] 2xl:rounded-l-[7.4rem] 2xl:space-y-[2rem] space-y-[3.7rem] pb-[3rem] 2xl:pb-[2rem] px-[3rem] md:rounded-l-[6rem] md:px-[2rem] md:pb-[1.5rem] md:space-y-[2.5rem] 3xl:rounded-l-[7.7rem] 3xl:px-[3rem] 3xl:space-y-[2.2rem]">
-        <div className='flex flex-row justify-between mt-[2rem] text-white whitespace-nowrap md:mt-[2rem] 2xl:mt-[3rem] 3xl:mt-[2.8rem]'>
-          <div className='md:text-[2rem] xl:text-[2.5rem] 2xl:text-[3rem] font-poppins 3xl:text-[3rem]'>
-            PRIVILEGE
-          </div>
+      <div className="flex flex-col self-center p-[1rem] h-full w-screen bg-[#0D1832] border-[#134083]">
+        <div className="flex flex-col justify-between mt-[0.5rem] mb-[1rem] text-white whitespace-nowrap px-[1rem]">
+          <div className='font-poppins ml-[2rem]'>
+              PRIVILEGE
+          </div>   
         </div>
         
 
 
-        <div className="self-center h-full w-full">
+        <div className="self-center h-full w-screen px-[1rem]">
           <div className="flex flex-col items-center h-full w-full rounded-[2rem] bg-[#134083]">
-            <div className='flex flex-row space-x-[1.5rem] items-center top-[10rem] relative'>
+            <div className='flex flex-row space-x-[1.5rem] items-center top-[8rem] relative'>
               <div className="relative">
-                <div className='flex flex-row space-x-[2rem]'>
+                <div className='flex flex-row space-x-[0.5rem] items-center'>
                   <input type='text' 
-                    className="text-justify rounded-xl w-[40rem] h-[3rem] font-poppins bg-[#17394C] text-[1.5rem] p-2 text-white md:h-[2rem] md:w-[25rem] md:text-[1rem] xl:h-[2.5rem] xl:w-[30rem] 2xl:h-[3rem] 2xl:text-[1.5rem] 2xl:w-[35rem]"
+                    className="text-justify rounded-xl w-full h-[2rem] font-poppins bg-[#17394C] text-[0.7rem] p-2 text-white"
                     placeholder='Enter Email' 
                     value={searchQuery}
                     onChange={handleInputChange}
@@ -163,15 +162,15 @@ const Privilege = () => {
 
                   <button
                     onClick={dropResult}
-                    className="w-[8rem] h-[2.5rem] font-poppins flex items-center text-[1.5rem] justify-center bg-[#F9D62B] rounded-2xl md:h-[2rem] md:text-[1.5rem] xl:h-[2.5rem] 2xl:h-[3rem]"
+                    className="w-[7rem] h-[1.5rem] text-black font-poppins flex items-center text-[1rem] justify-center bg-[#F9D62B] rounded-2xl"
                   >
                     Find
                   </button>
                 </div>
                 {isOpen && (
                 
-                  <div className="flex flex-col mt-[2rem] space-y-[1rem] p-[1rem] text-[1.5rem] drop-shadow-2xl text-white rounded-xl shadow-md bg-[#17394C] w-[40rem] h-auto md:text-[1rem] md:w-[35rem] 2xl:w-[45rem] 2xl:text-[1.5rem]">
-                    <div className='flex flex-row justify-between'>
+                  <div className="flex flex-col mt-[2rem] space-y-[1rem] p-[1rem] text-[1.5rem] drop-shadow-2xl text-white rounded-xl shadow-md bg-[#17394C] w-[16.8rem] px-[1rem] h-auto">
+                    <div className='flex flex-row justify-between text-[0.7rem]'>
                       {userData ? (
                         <>
                           <div>{userData.Email}</div>
@@ -184,14 +183,14 @@ const Privilege = () => {
 
                     {userData && (
                      
-                      <div className='flex flex-row space-x-[1rem] justify-center text-black text-[1.3rem] items-center md:text-[1rem] 2xl:text-[1.5rem]'>
-                        <button className='bg-[#F9D62B] rounded-full w-[9rem] h-[2.5rem] md:h-[2rem] md:w-[7rem] 2xl:w-[10rem] 2xl:h-[2.5rem]'
+                      <div className='flex flex-row space-x-[1rem] justify-center font-poppins text-black font-bold text-[0.6rem] items-center'>
+                        <button className='bg-[#F9D62B] rounded-full w-[11rem] h-[1.5rem]'
                         onClick={()=>{setRole(0)}}>User</button>
 
-                        <button className='bg-[#F9D62B] rounded-full w-[9rem] h-[2.5rem] md:h-[2rem] md:w-[7rem] 2xl:w-[10rem] 2xl:h-[2.5rem]'
+                        <button className='bg-[#F9D62B] rounded-full w-[11rem] h-[1.5rem]'
                         onClick={()=>{setRole(1)}}>Moderator</button>
 
-                        <button className='bg-[#F9D62B] rounded-full w-[9rem] h-[2.5rem] md:h-[2rem] md:w-[7rem] 2xl:w-[10rem] 2xl:h-[2.5rem]'
+                        <button className='bg-[#F9D62B] rounded-full w-[11rem] h-[1.5rem]'
                         onClick={()=>{setRole(2)}}>Administrator</button>
                       </div>
                     )}
