@@ -8,8 +8,8 @@ const Modal = ({ isOpen, children }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="absolute z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-[#134083] shadow-md w-[18rem] h-[30rem] rounded-2xl">
+    <div className="absolute inset-0 z-1 inset-0 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="z-1 bg-[#134083] shadow-md w-[18rem] h-[30rem] rounded-2xl">
         {children}
       </div>
     </div>
@@ -150,21 +150,21 @@ const AddItem = () => {
 
       {confirm && (
         <Modal isOpen={confirm} onClose={() => setConfirm(false)}>
-          <div className="absolute inset-0 flex justify-center bg-black bg-opacity-50">
-            <div className="z-30 text-white text-[2rem] place-self-center text-center bg-[#134083] p-[1.5rem] rounded-2xl shadow-md w-[30rem] h-[45rem]">
-              <div className="flex flex-col h-[40rem] space-y-[10rem] justify-center items-center">
+          <div className="absolute inset-0 z-20 flex place-self-center h-screen w-screen justify-center bg-black bg-opacity-50">
+            <div className="absolute z-40 text-white text-[1rem] font-poppins place-self-center text-center bg-[#134083] p-[1rem] rounded-2xl shadow-md w-[18rem] h-[30rem]">
+              <div className="flex flex-col h-[30rem] space-y-[5rem] justify-center items-center">
                 <div>Are you sure you want to submit this information?</div>
-                <div className="flex flex-row space-x-[7rem]">
+                <div className="flex flex-row space-x-[2rem]">
                   <button
                     type="button"
-                    className="text-black text-[1.5rem] bg-[#F9D62B] w-[8rem] h-[3rem] rounded-full mr-2"
+                    className="text-black text-[1rem] bg-[#F9D62B] w-[4rem] h-[2rem] rounded-full mr-2"
                     onClick={handleConfirmation}
                   >
                     Yes
                   </button>
                   <button
                     type="button"
-                    className="text-white text-[1.5rem] bg-gray-500 w-[8rem] h-[3rem] rounded-full ml-2"
+                    className="text-white text-[1rem] bg-gray-500 w-[4rem] h-[2rem] rounded-full ml-2"
                     onClick={() => setConfirm(false)}
                   >
                     No
@@ -176,7 +176,7 @@ const AddItem = () => {
         </Modal>
       )}
 
-      <Modal isOpen={isModalOpen} onClose={closeModal} className="relative z-0">
+      <Modal isOpen={isModalOpen} onClose={closeModal} className= "relative z-0">
         <form className="flex flex-col space-y-[0.5rem] font-poppins items-center p-[0.5rem]">
         <button
               className="self-end w-[2rem] h-[2rem] stroke-[#F9D62B] hover:stroke-white"

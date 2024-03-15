@@ -20,7 +20,7 @@ const reqSchema = new schema({
         required: true
     },
     dateRequested:{
-        type: String,
+        type: Date,
         default: Date.now,
     }
 })

@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { axiosGetLogs } from "../../../../components/api/axios"
+import Sidebar from "../../MainComponents/SideBar"
 
 const HistoryLogs = () => {
     const [startDate, setStartDate] = useState('')
@@ -41,7 +42,7 @@ const HistoryLogs = () => {
 
 
   return (
-    <div>
+    <div className="bg-[#0D1832] h-screen w-screen">
         <b>StartDate : </b>
         <input
             type="date"
