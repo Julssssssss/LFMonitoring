@@ -1,9 +1,9 @@
 import { axiosFetchAdminData } from "../../../components/api/axios";
 
-const getData = async() => {
+const getData = async(currentPage) => {
   try {
     
-    const res = await axiosFetchAdminData.post()
+    const res = await axiosFetchAdminData.post('', {'currentPage': currentPage})
 
     const datas = res.data;
     

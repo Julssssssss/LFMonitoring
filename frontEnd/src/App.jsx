@@ -33,9 +33,7 @@ const App = () => {
     <>
 
       {/* eto yung red pang debug to*/}
-      <style>
-        {`*{outline: solid red}`}
-      </style>
+      
       
 
       <div>
@@ -44,7 +42,7 @@ const App = () => {
           <Route exact path='/' element={<LandingPage/>}/>
           {/*pag gusto mo mag-add pa ng ibang path declare mo muna dito*/}
 
-            <Route exact path='/Dashboard' element={<Dashboard/>}/>
+            <Route exact path='/Dashboard/' element={<Dashboard/>}/>
             <Route exact path='/Profile' element={<Profile/>}/>
             <Route exact path='/Item/:itemId' element={<ItemDetails/>}/>
             

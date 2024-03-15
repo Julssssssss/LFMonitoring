@@ -36,12 +36,13 @@ router.put("/TACagreement", verifyToken, async(req, res)=>{
 
 //papalitan to ng post mmya pero get muna kasi tinetest placement ng data
 router.post("/data", verifyToken, async(req, res)=>{
+        const {currentPage} = req.body
         const {_id, Name, Email, Picture} = req.user
         const {TAC} = await UserModel.findById( _id).select('TAC -_id').lean()
         //console.log(TAC)
         const user = {Name, Email}
         if(TAC){
-            itemModels.find({}).lean().limit(5) //waiting na lang sa pagination sa frontEnd
+            itemModels.find({}).lean().limit(6).skip((currentPage - 1) * 6).sort({'datePosted': -1}) //waiting na lang sa pagination sa frontEnd
                 .then(result=>{
                     res.status(200).json({
                         items: result,

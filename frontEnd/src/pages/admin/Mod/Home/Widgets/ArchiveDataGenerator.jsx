@@ -20,9 +20,21 @@ const ArchiveDataGenerator = () => {
             await axiosArchiveDataGeneration.post('', {
                 startDate:startDate,
                 endDate:endDate
-            })
+            },
+            {
+                responseType:'blob'
+            }
+            )
             .then(result=>{
-                console.log(result)
+                const pdfBlob = new Blob([result.data], { type: 'application/pdf' });
+                const url = window.URL.createObjectURL(pdfBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Logs-from${startDate}-to-${endDate}.pdf`; // Set the desired filename
+                a.click();
+
+                // Clean up the temporary URL
+                window.URL.revokeObjectURL(url);
             })
         }
     }

@@ -9,6 +9,7 @@ import Loading from "../../../../404/Loading";
 const ItemList = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1)
 
   //for searchBar
   const [searchQuery, setSearchQuery] = useState("");
@@ -19,7 +20,7 @@ const ItemList = () => {
 
   const getItems = async () => {
     try {
-      await getData()
+      await getData(currentPage)
       .then((temp) => {
         setItems(temp.items); 
         setLoading(false);
@@ -32,10 +33,34 @@ const ItemList = () => {
 
   useEffect(() => {
     getItems();
-  }, []);
+  }, [currentPage]);
 
   if (loading) {
     return <div><Loading /></div>;
+  }
+
+  const pagination =()=>{
+    const disable = `btn-disabled`
+    return(
+      <div className="flex flex-row justify-center ">
+        <div className="join">
+          <button className={`join-item btn btn-lg ${currentPage === 1 ? `btn-disabled` : ''}`} 
+            onClick={()=>{
+                setCurrentPage(currentPage - 1)
+              }}>
+              «
+          </button>
+          <button className="join-item btn btn-lg">{currentPage}</button>
+          <button 
+            className={`join-item btn btn-lg ${items.length < 6 ? 'btn-disabled' : ''}`}
+            onClick={()=>{
+                setCurrentPage(currentPage + 1)
+              }}>
+              »
+          </button>
+        </div>
+      </div>
+    )
   }
 
   const handleInputChange = (e) => {
@@ -95,6 +120,7 @@ const ItemList = () => {
           <AddItem  />
         </div>
         {itemsFormat()}
+        {pagination()}
       </div>
     </>
   );
