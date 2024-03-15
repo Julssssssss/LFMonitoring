@@ -7,14 +7,13 @@ export default {
   ],
   theme: {
     screens: {
-      //default size 360px
-      'xsm': '425px',
-      'sm': '768px',
-      'md': '1024px',
-      'lg': '1200px',
+      //default size 320px
+      'xsm': '375px',
+      'sm': '425px',
+      'md': '728px',
+      'lg': '1024px',
       'xl': '1440px',
-      '2xl': '1600px',
-      '3xl': '1920px',
+      '2xl': '2562px',
     },
     extend: {
       boxShadow: {
@@ -25,6 +24,6 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
 }
 

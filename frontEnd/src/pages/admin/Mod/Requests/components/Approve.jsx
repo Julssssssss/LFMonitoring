@@ -81,21 +81,21 @@ const Approve = ({ RequestItem, Item, index, list }) => {
 
   return (
     <>
-      <div className="md:mt-[0.1rem]">
+      <div className="">
         <button
           onClick={openPopup}
           type="button"
-          className="bg-[#F9D62B] font-poppins hover:bg-[#134083] hover:text-white w-[5rem] md:w-[4rem] md:text-[0.7rem] md:p-[0.1rem] 2xl:w-[5rem] 3xl:text-[1.3rem] 3xl:w-[6rem] rounded-full text-center"
+          className="bg-[#F9D62B] text-black font-poppins hover:bg-[#134083] text-[0.7rem] hover:text-white w-[4rem] rounded-full text-center"
         >
           Approve
         </button>
       </div>
 
       {showConfirmation && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
-          <div className="flex flex-col bg-[#134083] shadow-md w-[40rem] h-[35rem] rounded-2xl whitespace-pre space-y-[1rem] items-center">
+        <div className="absolute -inset-4 z-50 flex flex-col w-full h-full justify-center items-center px-[1rem] justify-center overflow-y-auto overflow-x-hidden bg-black bg-opacity-50">
+          <div className="flex flex-col bg-[#134083] shadow-md w-full h-auto p-[1rem] rounded-2xl whitespace-pre space-y-[1rem] items-center justify-center">
           <button
-              className="w-[3rem] h-[3rem] md:w-[2rem] md:h-[2rem] place-self-end m-[0.5rem] 2xl:w-[3rem] 2xl:h-[3rem] stroke-[#F9D62B] hover:stroke-white"
+              className="w-[2rem] h-[2rem] place-self-end m-[0.1rem] stroke-[#F9D62B] hover:stroke-white"
               onClick={closePopup}
             >
              <svg
@@ -125,36 +125,36 @@ const Approve = ({ RequestItem, Item, index, list }) => {
               </svg>
             </button>
           <div className="flex flex-col space-y-[3rem] justify-center items-center">
-            <div className='text-[1.5rem] space-y-[1rem] font-poppins text-white'>
-                <div className="flex flex-col items-start justify-start space-y-[1rem]">
-                  <div className="flex items-center space-x-[5rem]">
-                    <div className="w-[15rem]">Name of item:</div>
-                    <div>{selectedItem.nameItem}</div>
+            <div className='text-[0.7rem] space-y-[1rem] font-poppins text-white whitespace-normal'>
+                <div className="flex flex-col items-start justify-start space-y-[0.5rem]">
+                  <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
+                    <div className="w-24">Name of item:</div>
+                    <div className="w-[10rem] h-auto">{selectedItem.nameItem}</div>
                   </div>
-                  <div className="flex items-center space-x-[5rem]">
-                    <div className="w-[15rem]">Description:</div>
-                    <div>{selectedItem.desc}</div>
+                  <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
+                    <div className="w-24">Description:</div>
+                    <div className="w-[10rem] h-auto">{selectedItem.desc}</div>
                   </div>
-                  <div className="flex items-center space-x-[5rem]">
-                    <div className="w-[15rem]">Found at:</div>
-                    <div>{selectedItem.found}</div>
+                  <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
+                    <div className="w-24">Found at:</div>
+                    <div className="w-[10rem] h-auto">{selectedItem.found}</div>
                   </div>
-                  <div className="flex items-center space-x-[5rem]">
-                    <div className="w-[15rem]">Surrendered by:</div>
-                    <div>{selectedItem.surrenderedBy}</div>
+                  <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
+                    <div className="w-24">Surrendered by:</div>
+                    <div className="w-[10rem] h-auto">{selectedItem.surrenderedBy}</div>
                   </div>
-                  <div className="flex items-center space-x-[5rem]">
-                    <div className="w-[15rem]">Date posted:</div>
-                    <div className="text-center">{selectedItem.datePosted}</div>
+                  <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
+                    <div className="w-24">Date posted:</div>
+                    <div className="w-[10rem] h-auto">{selectedItem.datePosted}</div>
                   </div>
-                  <div className="flex items-center space-x-[5rem]">
-                    <div className="w-[15rem]">Owner:</div>
-                    <div>{RequestItem.Email}</div>
+                  <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
+                    <div className="w-24">Owner:</div>
+                    <div className="w-[10rem] h-auto">{RequestItem.Email}</div>
                   </div>
               </div>
             </div>
 
-            <button onClick={sendToArchive} className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white text-[1.5rem] text-black p-2 rounded-2xl w-[10rem] font-poppins">
+            <button onClick={sendToArchive} className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white text-[0.9rem] text-black p-[0.1rem] rounded-full w-[7rem] font-poppins">
               APPROVE
             </button>
           </div>

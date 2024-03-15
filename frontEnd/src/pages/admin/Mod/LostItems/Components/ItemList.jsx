@@ -12,7 +12,6 @@ const ItemList = () => {
 
   //for searchBar
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredData, setFilteredData] = useState(null);
 
   const handleDelete = (deletedId) => {
     setFilteredData(filteredData.filter(item => item._id !== deletedId));
@@ -24,7 +23,6 @@ const ItemList = () => {
       .then((temp) => {
         setItems(temp.items); 
         setLoading(false);
-        setFilteredData(temp.items)
       })
     } catch (error) {
       console.error("Error getting items", error);
@@ -40,22 +38,7 @@ const ItemList = () => {
     return <div><Loading /></div>;
   }
 
-  //for searchquery
-  const sort = (val)=>{
-    if(val.length === 0){
-      setFilteredData(items);
-    }
-    else{
-      const filtered = items.filter((el) => {
-        return el.nameItem.toLowerCase().includes(val.toLowerCase());
-      });
-      setFilteredData(filtered);
-    }
-    console.log(val)
-  }
-
   const handleInputChange = (e) => {
-    sort(e.target.value)
     setSearchQuery(e.target.value);
   };
 
@@ -65,7 +48,7 @@ const ItemList = () => {
           <input
             type="text"
             placeholder="Search"
-            className="mt-[1.5rem] ml-[1.5rem] mr-[1rem] mb-4 bg-[#17394C] p-[1rem] text-white md:mt-[0rem] md:h-[2.5rem] md:w-[20rem] xl:h-[3rem] xl:w-[30rem] rounded-full xl:text-[1.4rem] 3xl:h-[3.5rem] 3xl:w-[35rem] 3xl:text-[1.7rem]"
+            className=" mb-4 mt-[1rem] bg-[#17394C] p-[0.4rem] text-white rounded-full"
             value={searchQuery}
             onChange={handleInputChange}
           />
@@ -75,15 +58,16 @@ const ItemList = () => {
   }
 
   function itemsFormat() {
-    return filteredData.map((item, index) => {
+    return items.map((item, index) => {
       return(
         <div key={index}>
-          <div className="flex flex-row items-center p-1 border-b-2 border-white bg-[#17394C] w-full h-auto space-x-[2rem] rounded-xl">
-            <div className="text-white font-poppins whitespace-nowrap md:ml-[1rem] xl:ml-[1rem] xl:text-[1.5rem] 3xl:text-[2rem]">
+          <div className="flex flex-col items-center p-1 border-b-2 border-white bg-[#17394C] w-full h-auto space-x-[0.5rem] rounded-xl">
+            <div className="flex flex-row justify-between w-full text-white text-[0.8rem] font-poppins whitespace-nowrap">
               <div>{item.nameItem}</div>
+              <div>{item.datePosted}</div>
             </div>
-            <div className="flex flex-row-reverse bg-[#17394C] w-full items-center">
-              <div className="text-white mr-[2rem] flex flex-row space-x-[2rem] md:space-x-[1rem] md:mr-[1rem]">
+            <div className="flex flex-row justify-center bg-[#17394C] items-center">
+              <div className="text-white flex flex-row space-x-[0.8rem]">
                 <EditButton Info = {item}/>
                 <Archive Info = {item} />
                 <DeleteButton Info = {item} onDelete={handleDelete} />
@@ -98,12 +82,16 @@ const ItemList = () => {
   
   return (
     <>
-      <div className="flex flex-row justify-between md:mt-[2rem] xl:mt-[2rem] 2xl:mt-[3rem] text-white whitespace-nowrap">
-        <div className='md:text-[2rem] xl:text-[2.5rem] 2xl:text-[3rem] font-poppins'>LOST ITEMS</div>   
+      <div className="flex flex-col justify-between mt-[0.5rem] text-white whitespace-nowrap px-[1rem]">
+        <div className='font-poppins ml-[2rem]'>LOST ITEMS</div>   
          {searchBar()}
       </div>
-      <div className="bg-[#134083] w-full h-full rounded-[2rem] flex flex-col space-y-[1.5rem] self-center md:p-[2rem] lg:p-[1.5rem] xl:p-[1rem] 2xl:p-[1.5rem]">
-        <div className="flex flex-row-reverse md:mt-[0.5rem] mt-[1.5rem] xl:h-[4rem]">
+      <div className="bg-[#134083] overflow-y-auto w-full h-full rounded-[2rem] flex flex-col space-y-[1rem] self-center p-[0.8rem]">
+        <div className="flex flex-row font-poppins font-bold text-white justify-between px-[0.8rem] text-[0.7rem]">
+          <p>Name of item</p>
+          <p>Date</p>
+         </div>
+        <div className="flex flex-row-reverse w-full">
           <AddItem  />
         </div>
         {itemsFormat()}

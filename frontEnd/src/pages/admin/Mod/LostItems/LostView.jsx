@@ -5,9 +5,11 @@ import Sidebar from "../../MainComponents/SideBar"
 const lostView = () => {
   return (
     <>
-    <div className='flex flex-row h-screen w-screen bg-[#17394C] space-x-[1.5rem] overflow-x-hidden overflow-y-hidden'>
-      <Sidebar />
-      <div className="flex flex-col self-center h-full w-full bg-[#0D1832] border-l-[0.5rem] border-[#134083] md:px-[2rem] md:pb-[1.5rem] md:rounded-l-[6rem] lg:pb-[2rem] xl:rounded-l-[7.3rem] 3xl:rounded-l-[7.7rem] 3xl:px-[3rem] space-y-[2rem] pb-[3rem] px-[3rem]">
+    <div className='relative z-0 flex flex-row h-screen w-screen bg-[#17394C] overflow-x-hidden overflow-y-hidden'>
+        <div className='absolute z-0'>
+          <Sidebar />
+        </div>
+      <div className="flex flex-col self-center p-[1rem] h-full w-screen bg-[#0D1832] border-[#134083]">
         <ItemList/>
       </div>
     </div>

@@ -47,26 +47,26 @@ const SendButton = ({ subject, emailContent, requestBy, index }) => {
   return (
     <>
       <div>
-        <button onClick={checker} className="bg-[#F9D62B] self-center w-[20rem] h-[3rem] text-[1.5rem] rounded-full md:w-[15rem] md:h-[2rem] md:text-[1rem] 2xl:text-[1.5rem] 3xl:text-[1.7rem] 3xl:p-[0.2rem] 3xl:h-[3rem]">
+        <button onClick={checker} className="bg-[#F9D62B] self-center w-[10rem] h-[2rem] text-black text-[1rem] rounded-full">
           SEND
         </button>
 
         {showPopup && (
           <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
-            <div className="text-white text-[2rem] text-center bg-[#134083] p-[1.5rem] rounded-2xl shadow-md w-[30rem] h-[45rem]">
-              <div className="flex flex-col h-[40rem] space-y-[10rem] justify-center items-center">
+            <div className="text-white text-[1rem] text-center bg-[#134083] p-[1.5rem] rounded-2xl shadow-md w-[15rem] h-[20rem]">
+              <div className="flex flex-col h-[20rem] space-y-[5rem] justify-center items-center">
                 <div>Are you sure you want to send this email?</div>
-                <div className="flex flex-row space-x-[7rem]">
+                <div className="flex flex-row space-x-[2rem]">
                   <button
                     type="button"
-                    className="text-black text-[1.5rem] bg-[#F9D62B] w-[8rem] h-[3rem] rounded-full mr-2"
+                    className="text-black text-[1rem] bg-[#F9D62B] hover:bg-white w-[4rem] h-[2rem] rounded-full mr-2"
                     onClick={sendEmail}
                   >
                     Yes
                   </button>
                   <button
                     type="button"
-                    className="text-white text-[1.5rem] bg-gray-500 w-[8rem] h-[3rem] rounded-full ml-2"
+                    className="text-white text-[1rem] bg-gray-500 w-[4rem] h-[2rem] rounded-full ml-2"
                     onClick={closePopup}
                   >
                     No

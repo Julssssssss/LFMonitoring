@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { axiosUnclaimedItems } from '../../../../../components/api/axios';
 
 const Archive = ({ Info }) => {
@@ -58,17 +58,17 @@ const Archive = ({ Info }) => {
       <div>
         <button
           onClick={openPopup}
-          className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-[1.4rem] md:text-[1rem] xl:text-[1.4rem] xl:w-[8.5rem] 3xl:text-[1.8rem] font-bold font-poppins text-black w-[7rem] h-auto rounded-full m-[0.3rem]"
+          className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-[0.7rem] font-bold font-poppins text-black w-[3.5rem] h-auto rounded-full"
         >
           Archive
         </button>
       </div>
 
       {showPopup && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
-          <div className="flex flex-col bg-[#134083] shadow-md w-[40rem] h-[35rem] md:w-[35rem] md:h-[30rem] md:space-y-[2rem] rounded-2xl whitespace-pre space-y-[1rem] items-center">
+        <div className="absolute z-20 -inset-1 w-full h-full flex flex-row items-center bg-black bg-opacity-50">
+          <div className="flex flex-col bg-[#134083] shadow-md w-[19rem] h-[15rem] rounded-2xl whitespace-pre space-y-[0.5rem] items-center">
           <button
-              className="w-[3rem] h-[3rem] md:w-[2rem] md:h-[2rem] place-self-end m-[0.5rem] 2xl:w-[3rem] 2xl:h-[3rem] stroke-[#F9D62B] hover:stroke-white"
+              className="w-[2rem] h-[2rem] place-self-end m-[0.5rem] stroke-[#F9D62B] hover:stroke-white"
               onClick={closePopup}
             >
              <svg
@@ -97,7 +97,7 @@ const Archive = ({ Info }) => {
                 </g>
               </svg>
             </button>
-            <div className='text-[1.5rem] space-y-[1rem]'>
+            <div className='font-poppins text-[0.7rem] space-y-[0.5rem]'>
               <div>Name of item:       {item.nameItem}</div>
               <div>Description:           {item.desc}</div>
               <div>Found at:               {item.found}</div>
@@ -107,7 +107,7 @@ const Archive = ({ Info }) => {
             </div>
             <button
               onClick={sendToArchive}
-              className="bg-[#F9D62B] text-[1.5rem] text-black p-2 rounded-2xl mt-4 hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white"
+              className="font-poppins bg-[#F9D62B] text-[0.7rem] text-black p-2 rounded-2xl mt-4 hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white"
             >
               Confirm Archive
             </button>

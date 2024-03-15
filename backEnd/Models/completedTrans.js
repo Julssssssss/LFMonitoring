@@ -44,7 +44,7 @@ const completedTransactions = new Schema({
     required: true,
   },
   dateClaimed: {
-    type: String,
+    type: Date,
     default: Date.now,
   }
 });

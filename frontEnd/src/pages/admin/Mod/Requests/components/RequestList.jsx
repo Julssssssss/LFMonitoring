@@ -3,7 +3,6 @@ import { axiosGetReqList} from "../../../../../components/api/axios";
 import ItemsCarousel from "../../../MainComponents/ItemsCarousel";
 import { getData } from "../../../MainComponents/getData";
 import DeleteReq from "./DeleteReq";
-
 import SendButton from "./SendButton";
 import Approve from "./Approve";
 
@@ -26,16 +25,24 @@ const RequestList = () => {
   const [emailContent, setEmailContent] = useState('');
   const [subject, setSubject] = useState('');
   const [index, setIndex] = useState('');
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
+  const openPopup = () => {
+    setShowConfirmation(true);
+  };
+
+  const closePopup = () => {
+   setShowConfirmation(false);
+  };
+
 
 
   const getReqList = async() => {
     try{
       const res = await axiosGetReqList.post()
-      console.log(res)
       const temp = await getData();
       setItems(temp.items); 
       setList(res.data.reqList)
-      setFilteredData(res.data.reqList)
     }
     catch(err){
       console.log(err)
@@ -43,7 +50,6 @@ const RequestList = () => {
     }
   }
  
-
   useEffect(()=>{
     getReqList()
   }, [])
@@ -69,54 +75,44 @@ const RequestList = () => {
     }
   };
   
-  const sort = (val)=>{
-    if(val.length === 0){
-      setFilteredData(list);
-    }
-    else{
-      const filtered = list.filter((el) => {
-        return el.Email.toLowerCase().includes(val.toLowerCase());
-      });
-      setFilteredData(filtered);
-    }
-  }
   const handleInputChange = (e) => {
-    sort(e.target.value)
     setSearchQuery(e.target.value);
   };
 
   function searchBar() {
     return (
-      <>
-      
-          <input
-            type="text"
-            placeholder="Search"
-            className="mt-[1.5rem] ml-[1.5rem] mr-[1rem] mb-4 bg-[#17394C] p-[1rem] text-white md:mt-[0rem] md:h-[2.5rem] md:w-[20rem] xl:h-[3rem] xl:w-[30rem] rounded-full xl:text-[1.4rem] 3xl:h-[3.5rem] 3xl:w-[35rem] 3xl:text-[1.7rem]"
-            value={searchQuery}
-            onChange={handleInputChange}
-          />
-       
-      </>
+      <div>
+        <input
+          type="text"
+          placeholder="Search"
+          className=" mb-4 mt-[1rem] bg-[#17394C] p-[0.4rem] text-white rounded-full"
+          value={searchQuery}
+          onChange={handleInputChange}
+        />
+        <button className="h-[2rem] w-[3rem] mr-2">{`Search`}</button>
+      </div>
     );
   }
+  
   function requestFormat() {
-    return filteredData.map((elem, index) => {
+    return list.map((elem, index) => {
+      const dateFormat = elem.dateRequested.split(" GMT")[0];
       return(
         <div key={index}>
-          <div className="flex flex-col border-b-2 border-white bg-[#17394C] md:w-[17.5rem] md:h-[4rem] lg:w-[27rem] xl:w-[31rem] 2xl:w-[37rem] 2xl:p-[0.1rem] h-[4rem] space-x-[2rem] rounded-xl p-1 3xl:w-[45rem] 3xl:h-[6rem] 3xl:p-[0.2rem]">
-            <div className="flex flex-row justify-between items-center text-white ml-[0.5rem] text-[1.3rem] md:text-[0.9rem] 2xl:text-[1.2rem] 3xl:text-[2rem]">
+          <div className="flex flex-col justify-center border-b-2 border-white bg-[#17394C] w-full h-[4rem] space-y-[0.2rem] rounded-xl p-1">
+            <div className="flex flex-row justify-between items-center text-white text-[0.8rem]">
               {elem.Email}
-              <div className={`${elem.haveBeenEmailed ? "bg-green-700" : "bg-red-700"} group h-[1rem] w-[1rem] rounded-full mr-[1rem]`}
-              >
-                <span className="absolute left-[31rem] scale-0 bg-gray-800 p-2 text-[2rem] text-white group-hover:scale-50"
-                >
+              <div className="text-[0.7rem] h-[2rem] w-[5rem] text-end -mr-[1.3rem]">
+                {dateFormat}
+              </div>
+              <div className={`${elem.haveBeenEmailed ? "bg-green-700" : "bg-red-700"} group h-[1rem] w-[1rem] rounded-full mr-[0.3rem]`}>
+                <span className="absolute left-[31rem] p-2 scale-0 bg-gray-800 text-[2rem] text-white group-hover:scale-50">
                   {elem.haveBeenEmailed ? "user Emailed" : "user haven't Emailed"}
                 </span>
               </div>
             </div>
-            <div className="items-center justify-center flex flex-row space-x-[1.5rem] md:space-x-[1rem] pr-[1.5rem]">
-              <button onClick={() => viewItem(elem, items)} className="bg-[#F9D62B] font-poppins hover:bg-[#134083] hover:text-white w-[5rem] py-[0.2rem] md:w-[4rem] md:text-[0.7rem] md:py-[0.1rem] md:mt-[0.4rem] 2xl:w-[5rem] rounded-full 3xl:text-[1.3rem] 3xl:w-[6rem]">View</button>
+            <div className="items-center w-full justify-center flex flex-row space-x-[1rem]">
+              <button onClick={() => viewItem(elem, items, openPopup())} className="bg-[#F9D62B] font-poppins text-black hover:bg-[#134083] mt-[0.3rem] text-[0.7rem] hover:text-white w-[4rem] rounded-full">View</button>
               <Approve RequestItem = {elem} index={index} list={list} Item = {items} onClick={viewItem} />
               <DeleteReq reqData={elem}/>
             </div>
@@ -125,66 +121,97 @@ const RequestList = () => {
       )}
     );
   }
-    const enableDeleteButton = false
-    const displayPic = () => {
-      return <ItemsCarousel item={image} enableDeleteButton={enableDeleteButton}/>
+
+  const enableDeleteButton = false
+  const displayPic = () => {
+    return <ItemsCarousel item={image} enableDeleteButton={enableDeleteButton}/>
   };
 
   return (
     <>
-      <div className="flex flex-row justify-between md:mt-[2rem] xl:mt-[2rem] 2xl:mt-[3rem] text-white whitespace-nowrap">
-        <div className='md:text-[2rem] xl:text-[2.5rem] 2xl:text-[3rem] font-poppins 3xl:text-[3rem]'>REQUEST</div>   
+      <div className="relative z-10 flex flex-col justify-between mt-[0.5rem] text-white whitespace-nowrap px-[1rem]">
+        <div className='font-poppins ml-[2rem]'>REQUEST LIST</div>   
          {searchBar()}
       </div>
 
-      <div className="bg-[#134083] p-[0.8rem] w-full h-full rounded-[2rem] flex flex-row md:space-x-[1rem] md:overflow-y-auto self-center">
-        <div className="flex flex-col py-[1rem] items-center overflow-y-auto w-full h-full space-y-[1rem]">
+      <div className="bg-[#134083] font-poppins text-white overflow-y-auto p-[0.7rem] w-full h-full rounded-[2rem] flex flex-col">
+        <div className="flex flex-row p-[0.7rem] justify-between text-[0.7rem]">
+          <p>Requestor</p>
+          <p>Date Requested</p>
+        </div>
+        <div className="flex flex-col overflow-y-auto w-full h-full space-y-[1rem]">
           {requestFormat()}
         </div>
-        <div className="flex flex-col h-auto w-auto p-[1rem] bg-white rounded-xl border-[#F9D62B] border-[0.5rem] space-y-[0.5rem]">
-          <div className="flex flex-row">
-            <div className="flex w-auto h-[2rem] items-center font-semibold font-poppins 3xl:text-[1.5rem]"> Requested by: {requestBy}</div>
-          </div>
-            
-          <div className="flex flex-col space-y-[1rem] h-auto whitespace-normal break-words overflow-y-auto">
-            <div className="flex flex-row justify-between font-poppins text-[1rem] xl:text-[1.2rem] 3xl:text-[1.6rem]">
-              <div className="flex flex-col h-full md:w-[15rem] lg:w-[18rem] xl:w-[25rem] 3xl:w-[32rem] p-[0.5rem]">
-                <div className="flex flex-col items-start space-y-[0.7rem] leading-[0.9]">
-                  <div className="flex items-center space-x-[2.5rem] md:space-x-[0.5rem]">
-                    <div className="w-24 md:w-[5.5rem] xl:w-[6rem] 2xl:w-[8.5rem] 3xl:w-[10rem]">Name of item:</div>
-                    <div>{name}</div>
-                  </div>
-                  <div className="flex items-center space-x-[2.5rem] md:space-x-[0.5rem]">
-                    <div className="w-24 md:w-[5.5rem] xl:w-[6rem] 2xl:w-[8.5rem] 3xl:w-[10rem]">Description:</div>
-                    <div>{desc}</div>
-                  </div>
-                  <div className="flex items-center space-x-[2.5rem] md:space-x-[0.5rem]">
-                    <div className="w-24 md:w-[5.5rem] xl:w-[6rem] 2xl:w-[8.5rem] 3xl:w-[10rem]">Found at:</div>
-                    <div>{found}</div>
-                  </div>
-                  <div className="flex items-center space-x-[2.5rem] md:space-x-[0.5rem]">
-                    <div className="w-24 md:w-[5.5rem] xl:w-[6rem] 2xl:w-[8.5rem] 3xl:w-[10rem]">Surrendered by:</div>
-                    <div>{surrenderedBy}</div>
-                  </div>
-                  <div className="flex items-center space-x-[2.5rem] md:space-x-[0.5rem]">
-                    <div className="w-24 md:w-[5.5rem] xl:w-[6rem] 2xl:w-[8.5rem] 3xl:w-[10rem]">Posted by:</div>
-                    <div>{postedby}</div>
-                  </div>
-                  <div className="flex items-center space-x-[2.5rem] md:space-x-[0.5rem]">
-                    <div className="w-24 md:w-[7rem] xl:w-[6rem] 2xl:w-[8.5rem] 3xl:w-[10rem]">Date posted:</div>
-                    <div>{datePosted}</div>
-                  </div>
-                </div>
+    
+      </div>
+
+      {showConfirmation &&(
+          <div className="absolute inset-0 z-50 flex flex-col space-y-[1rem] bg-[#0D1832] w-screen h-auto p-[1rem] overflow-y-auto overflow-x-hidden">
+            <div className="flex flex-row justify-between">
+              <div className="flex w-auto h-[2rem] text-white text-[0.9rem] items-center font-semibold font-poppins whitespace-normal h-auto w-auto">Requested by: {requestBy}</div>
+              <button className="absolute right-[0.7rem] w-[2rem] h-[2rem] stroke-[#F9D62B] hover:stroke-white"
+                onClick={closePopup}>
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      <path
+                        d="M8.00386 9.41816C7.61333 9.02763 7.61334 8.39447 8.00386 8.00395C8.39438 7.61342 9.02755 7.61342 9.41807 8.00395L12.0057 10.5916L14.5907 8.00657C14.9813 7.61605 15.6144 7.61605 16.0049 8.00657C16.3955 8.3971 16.3955 9.03026 16.0049 9.42079L13.4199 12.0058L16.0039 14.5897C16.3944 14.9803 16.3944 15.6134 16.0039 16.0039C15.6133 16.3945 14.9802 14.9802 14.5896 16.0039L12.0057 13.42L9.42097 16.0048C9.03045 16.3953 8.39728 16.3953 8.00676 16.0048C7.61624 15.6142 7.61624 14.9811 8.00676 14.5905L10.5915 12.0058L8.00386 9.41816Z"
+                        
+                      ></path>{' '}
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z"
+                        
+                    ></path>{' '}
+                  </g>
+                </svg>
+              </button>
             </div>
-            <div className="md:h-[12rem] md:w-[12rem] xl:h-[15rem] xl:w-[15rem] 2xl:h-[15.5rem] 3xl:w-[19rem] 3xl:h-[19rem] 2xl:w-[15.5rem] py-2 border-[0.3rem] border-[#F9D62B] rounded-xl flex flex-col">
+
+            <div className="flex flex-col text-[0.9rem] text-white items-start space-y-[0.6rem] leading-[0.9]">
+              <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
+                <div className="w-24">Name of item:</div>
+                <div className="w-[10rem] h-auto">{name}</div>
+              </div>
+              <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
+                <div className="w-24">Description:</div>
+                <div className="w-[10rem] h-auto">{desc}</div>
+              </div>
+              <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
+                <div className="w-24">Found at:</div>
+                <div className="w-[10rem] h-auto">{found}</div>
+              </div>
+              <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
+                <div className="w-24">Surrendered by:</div>
+                <div className="w-[10rem] h-auto">{surrenderedBy}</div>
+              </div>
+              <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
+                <div className="w-24">Posted by:</div>
+                <div className="w-[10rem] h-auto">{postedby}</div>
+              </div>
+              <div className="flex items-center space-x-[2.5rem] md:space-x-[0.5rem]">
+                <div className="w-24 md:w-[7rem] xl:w-[6rem] 2xl:w-[8.5rem] 3xl:w-[10rem]">Date posted:</div>
+                <div className="w-[10rem] h-auto">{datePosted}</div>
+              </div>
+            </div>
+            <div className="relative p-2 h-full w-full border-[0.2rem] border-[#F9D62B] rounded-xl">
               {displayPic()}
             </div>
-          </div>
-              <input 
+
+            <input 
               type="text"
               id="subject"  
               placeholder="Subject" 
-              className="border-[0.2rem] border-[#F9D62B] h-[2.5rem] w-full text-[1.5rem] p-[1rem] md:p-[0.8rem] md:text-[1rem] md:h-[1rem] 2xl:text-[1.2rem] 2xl:h-[2.5rem] 3xl:text-[1.4rem] 3xl:h-[2.8rem]"
+              className="border-[0.2rem] text-white border-[#F9D62B] h-[2.5rem] font-poppins rounded-xl text-white w-full text-[0.7rem] p-[0.5rem]"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
             /> 
@@ -192,16 +219,17 @@ const RequestList = () => {
               id="letter" 
               rows={10}
               placeholder="" 
-              className="border-[0.2rem] border-[#F9D62B] h-full w-full text-[1.5rem] p-[1rem] md:p-[0.5rem] md:text-[1rem] 2xl:text-[1.2rem] 3xl:text-[1.4rem]"
+              className="border-[0.2rem] border-[#F9D62B] w-full text-[0.7rem] text-white p-[0.5rem] rounded-xl pb-[15rem]"
               value={emailContent}
               onChange={(e) => setEmailContent(e.target.value)}
             /> 
-          </div>
-            <div className="flex justify-center">
+            <div className="flex justify-center items-center">
               <SendButton subject={subject} emailContent={emailContent} requestBy={requestBy} index= {index}/>
             </div>
-        </div>
-      </div>
+
+          </div>
+
+      )}
     </>
   );
 };

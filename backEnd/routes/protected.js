@@ -38,10 +38,10 @@ router.put("/TACagreement", verifyToken, async(req, res)=>{
 router.post("/data", verifyToken, async(req, res)=>{
         const {_id, Name, Email, Picture} = req.user
         const {TAC} = await UserModel.findById( _id).select('TAC -_id').lean()
-        console.log(TAC)
+        //console.log(TAC)
         const user = {Name, Email}
         if(TAC){
-            itemModels.find({})
+            itemModels.find({}).lean().limit(5) //waiting na lang sa pagination sa frontEnd
                 .then(result=>{
                     res.status(200).json({
                         items: result,
@@ -78,6 +78,7 @@ router.post("/request", verifyToken, async(req, res)=>{
             nameItem: nameItem,
             Email: Email, 
             haveBeenEmailed: false,
+            dateRequested: new Date(),
         })
         await newReq.save()
         return res.sendStatus(200);
