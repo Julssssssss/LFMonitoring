@@ -35,7 +35,6 @@ const HistoryLogs = () => {
 
                 // Clean up the temporary URL
                 window.URL.revokeObjectURL(url);
-                
             })
         }
     }

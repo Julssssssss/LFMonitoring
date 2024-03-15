@@ -11,7 +11,6 @@ const RequestList = () => {
   const [list, setList] = useState([])
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredData, setFilteredData] = useState([]);
 
   const [items, setItems] = useState('')
   const [desc, setDesc] = useState('')
@@ -26,6 +25,7 @@ const RequestList = () => {
   const [subject, setSubject] = useState('');
   const [index, setIndex] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1)
 
   const openPopup = () => {
     setShowConfirmation(true);
@@ -34,14 +34,13 @@ const RequestList = () => {
   const closePopup = () => {
    setShowConfirmation(false);
   };
-
-
-
+  
   const getReqList = async() => {
     try{
-      const res = await axiosGetReqList.post()
+      const res = await axiosGetReqList.post('', {'currentPage': currentPage})
       const temp = await getData();
       setItems(temp.items); 
+      console.log(typeof temp.items[0].datePosted)
       setList(res.data.reqList)
     }
     catch(err){
@@ -53,6 +52,14 @@ const RequestList = () => {
   useEffect(()=>{
     getReqList()
   }, [])
+
+  const dateAndTime = (isoData)=>{
+    const Date = isoData.toISOString().split('T')[0]
+    const Time = isoData.toTimeString().split(' ')[0]
+    const dateAndTimeString = Date +" "+ Time
+    //console.log('dateAndTime', dateAndTime)
+    return dateAndTimeString
+  }
 
   const viewItem = async (elem, items) => {
     try {
@@ -74,6 +81,29 @@ const RequestList = () => {
       console.error("Error getting items", error);
     }
   };
+  const pagination =()=>{
+    const disable = `btn-disabled`
+    return(
+      <div className="flex flex-row justify-center ">
+        <div className="join">
+          <button className={`join-item btn btn-lg ${currentPage === 1 ? `btn-disabled` : ''}`} 
+            onClick={()=>{
+                setCurrentPage(currentPage - 1)
+              }}>
+              «
+          </button>
+          <button className="join-item btn btn-lg">{currentPage}</button>
+          <button 
+            className={`join-item btn btn-lg ${list.length < 6 ? 'btn-disabled' : ''}`}
+            onClick={()=>{
+                setCurrentPage(currentPage + 1)
+              }}>
+              »
+          </button>
+        </div>
+      </div>
+    )
+  }
   
   const handleInputChange = (e) => {
     setSearchQuery(e.target.value);
@@ -96,14 +126,14 @@ const RequestList = () => {
   
   function requestFormat() {
     return list.map((elem, index) => {
-      const dateFormat = elem.dateRequested.split(" GMT")[0];
+      
       return(
         <div key={index}>
           <div className="flex flex-col justify-center border-b-2 border-white bg-[#17394C] w-full h-[4rem] space-y-[0.2rem] rounded-xl p-1">
             <div className="flex flex-row justify-between items-center text-white text-[0.8rem]">
               {elem.Email}
               <div className="text-[0.7rem] h-[2rem] w-[5rem] text-end -mr-[1.3rem]">
-                {dateFormat}
+                {`dateAndTime(elem.dateRequested)`}
               </div>
               <div className={`${elem.haveBeenEmailed ? "bg-green-700" : "bg-red-700"} group h-[1rem] w-[1rem] rounded-full mr-[0.3rem]`}>
                 <span className="absolute left-[31rem] p-2 scale-0 bg-gray-800 text-[2rem] text-white group-hover:scale-50">
@@ -142,13 +172,13 @@ const RequestList = () => {
         <div className="flex flex-col overflow-y-auto w-full h-full space-y-[1rem]">
           {requestFormat()}
         </div>
-    
+        {pagination()}
       </div>
 
       {showConfirmation &&(
           <div className="absolute inset-0 z-50 flex flex-col space-y-[1rem] bg-[#0D1832] w-screen h-auto p-[1rem] overflow-y-auto overflow-x-hidden">
             <div className="flex flex-row justify-between">
-              <div className="flex w-auto h-[2rem] text-white text-[0.9rem] items-center font-semibold font-poppins whitespace-normal h-auto w-auto">Requested by: {requestBy}</div>
+              <div className="flex text-white text-[0.9rem] items-center font-semibold font-poppins whitespace-normal h-auto w-auto">Requested by: {requestBy}</div>
               <button className="absolute right-[0.7rem] w-[2rem] h-[2rem] stroke-[#F9D62B] hover:stroke-white"
                 onClick={closePopup}>
                 <svg
@@ -211,7 +241,7 @@ const RequestList = () => {
               type="text"
               id="subject"  
               placeholder="Subject" 
-              className="border-[0.2rem] text-white border-[#F9D62B] h-[2.5rem] font-poppins rounded-xl text-white w-full text-[0.7rem] p-[0.5rem]"
+              className="border-[0.2rem] border-[#F9D62B] h-[2.5rem] font-poppins rounded-xl text-white w-full text-[0.7rem] p-[0.5rem]"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
             /> 

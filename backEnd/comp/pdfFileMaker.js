@@ -1,41 +1,106 @@
 const {jsPDF} = require('jspdf')
 require('jspdf-autotable');
 
+const dateAndTime = (isoData)=>{
+    const Date = isoData.toISOString().split('T')[0]
+    const Time = isoData.toTimeString().split(' ')[0]
+    const dateAndTime = Date +" "+ Time
+    //console.log('dateAndTime', dateAndTime)
+    return dateAndTime
+}
+
+const fixObjectFormat = (objData)=>{
+    if(objData === 'NA'){
+        return `NA`
+    }
+    else{
+       const stringObj = JSON.stringify(objData).split(',').join('\n')
+       return stringObj
+    }
+}
+
 const makePdf = async(Type, Data)=>{
     try{
-        const doc = jsPDF();
+        const doc = new jsPDF('l', 'pt'); 
         doc.setFontSize(18)
-        doc.text('History Logs', 105, 10, {align: 'center'})
-        const startX =10
-        const startY = 20
-        let header = null
-        let bodyData =  null
-        if(Type === 'Logs'){ 
+        let format = null
+
+        if(Type === 'Logs'){  //LOGSSSSS MA GGGGG
+            doc.text('History Logs', 400, 30, {align: 'center'})
             const tableData = Data[0].map(elem => {
                 return [
                     elem._id.toString(),
                     elem.Email,
                     elem.Activity,
-                    elem.Details,
-                    elem.Date.toISOString().split('T')[0]
+                    fixObjectFormat(elem.Details),
+                    dateAndTime(elem.Date)
                 ];
             })
-            console.log(tableData)
-            header = [['_id', 'Email', 'Activity', 'Details', 'Date']]
-            bodyData = tableData
+
+            //console.log(tableData)
+            const header = [['_id', 'Email', 'Activity', 'Details', 'Date']]
+
+            format = {
+                head: header, 
+                body: tableData,
+                theme:'grid',
+                margin:{
+                    left: 35, 
+                    right: 35
+                },
+                columnStyles: {
+                    0: {cellWidth: 60},
+                    1: {cellWidth: 60},
+                    2: {cellWidth: 120},
+                    //3: {cellWidth: 50},
+                    4: {cellWidth: 60}
+                }
+            }
         }
-        else if(Type === 'Archive'){
-            header = [['_id', 'itemId', 'itemImages', 'nameItem', 'desc', 'found', 'surrenderedBy', 'postedBy', 'datePosted', 'claimedBy', 'dateClaimed']]
+        else if(Type === 'Archive'){  ////ARCHIVE MYYYYY NNNN
+            doc.text('Archive Datas', 400, 30, {align: 'center'})
+            const header = [['_id', 'Item Id', 'Item Images', 'Name of Items', 'Desccriptions', 'Found at', 'Surrendered By', 'Posted By', 'Date Posted', 'Claimed By', 'Date Approved']]
+            const tableData = Data[0].map(elem => {
+                return [
+                    elem._id.toString(),
+                    elem.itemId,
+                    elem.itemImages,
+                    elem.nameItem,
+                    elem.desc,
+                    elem.found,
+                    elem.surrenderedBy,
+                    elem.postedBy,
+                    dateAndTime(elem.datePosted),
+                    elem.claimedBy,
+                    dateAndTime(elem.dateClaimed),
+                ];
+            })
+
+            format = {
+                head: header, 
+                body: tableData,
+                theme:'grid',
+                margin:{
+                    left: 30,
+                    right: 30
+                },
+                columnStyles: {
+                    0: {cellWidth: 65},
+                    1: {cellWidth: 65},
+                    //2: {cellWidth: 90},
+                    3: {cellWidth: 70},
+                    4: {cellWidth: 80},
+                    5: {cellWidth: 80},
+                    6: {cellWidth: 70},
+                    7: {cellWidth: 65},
+                    8: {cellWidth: 60},
+                    9: {cellWidth: 65},
+                    10: {cellWidth: 60}
+                }
+            }
         }
 
-        doc.autoTable({
-            startY,
-            head: header, 
-            body: bodyData,
-            startY,
-            theme:'grid',
-            columnStyles: {0: {cellWidth: 20}}
-        })
+        doc.autoTable(format)
         return doc.output()
     }    
     catch(err){
