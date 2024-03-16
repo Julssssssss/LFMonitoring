@@ -5,11 +5,18 @@ import DeleteButton from "./DeleteButton";
 import { useState, useEffect } from "react";
 import { getData } from "../../../MainComponents/getData";
 import Loading from "../../../../404/Loading";
+import { axiosFetchAdminData } from "../../../../../components/api/axios";
 
 const ItemList = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const [currentPage, setCurrentPage] = useState(1)
+
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+
+  const [hidePagination, setHidePagination] = useState(false)
 
   //for searchBar
   const [searchQuery, setSearchQuery] = useState("");
@@ -20,6 +27,7 @@ const ItemList = () => {
 
   const getItems = async () => {
     try {
+      setLoading(true)
       await getData(currentPage)
       .then((temp) => {
         setItems(temp.items); 
@@ -27,9 +35,34 @@ const ItemList = () => {
       })
     } catch (error) {
       console.error("Error getting items", error);
-      setLoading(false);
+      setLoading(true);
     }
   };
+
+    const searchData = async()=>{
+    if(searchQuery){
+      await axiosFetchAdminData.post('', {
+        'searchQuery': searchQuery
+      })
+      .then(res=>{
+        setHidePagination(true)
+        setItems(res.data.items)
+      })
+    }
+  }
+
+  const searchByDate = async()=>{
+    if(startDate && endDate){
+      await axiosFetchAdminData.post('', {
+          startDate:startDate,
+          endDate:endDate,
+      })
+      .then(res=>{
+        setHidePagination(true)
+        setItems(res.data.items)
+      })
+    }
+  }
 
   useEffect(() => {
     getItems();
@@ -69,18 +102,56 @@ const ItemList = () => {
 
   function searchBar() {
     return (
-      <>
-          <input
-            type="text"
-            placeholder="Search"
-            className=" mb-4 mt-[1rem] bg-[#17394C] p-[0.4rem] text-white rounded-full"
-            value={searchQuery}
-            onChange={handleInputChange}
-          />
-       
-      </>
+      <div>
+        
+        <b>StartDate : </b>
+        <input
+            type="date"
+            id="startDate"
+            min="2024-01-01"
+            max={new Date().toISOString().split('T')[0]}
+            value={startDate}
+            onChange={handleStartDateChange}
+        />
+        
+        <b>EndDate : </b>
+        <input
+            type="date"
+            id="endDate"
+            min="2024-01-01"
+            max={new Date().toISOString().split('T')[0]}
+            value={endDate}
+            onChange={handleEndDateChange}
+        />
+        <button className="btn h-[2rem] w-[10rem] overflow-hidden"
+            onClick={searchByDate}
+        >
+            {'Search by Date'}
+        </button>
+        <input
+          type="text"
+          placeholder="Search"
+          className="w-[15rem] mb-4 mt-[1rem] bg-[#17394C] p-[0.4rem] text-white rounded-full"
+          value={searchQuery}
+          onChange={handleInputChange}
+        />
+        <button className="btn "
+          onClick={searchData}
+        >
+          {`Search`}
+        </button>
+      </div>
     );
   }
+
+  //handle range of dates
+  const handleStartDateChange = (e) => {
+    setStartDate(e.target.value);
+  };
+
+  const handleEndDateChange = (e) => {
+    setEndDate(e.target.value);
+  };
 
   function itemsFormat() {
     return items.map((item, index) => {
@@ -120,7 +191,7 @@ const ItemList = () => {
           <AddItem  />
         </div>
         {itemsFormat()}
-        {pagination()}
+        {hidePagination ? null : pagination()}
       </div>
     </>
   );

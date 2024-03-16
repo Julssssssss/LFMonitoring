@@ -71,21 +71,61 @@ const adminOnlyToken = (req, res, next) => {
 //lost items data
 router.post('/data', verifyToken, async(req, res) => {
   if (req.user) {
-    const {currentPage} = req.body
+    console.log(req.body)
     const { Name, Email, Picture, Role } = req.user;
     const user = {Name, Email, Role}
-    await itemModels.find({}).lean().limit(6).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
-    .then((result) => {
-      res.status(200).json({
-        items: result,
-        user: user,
-        picture: Picture,
+    if('startDate' in req.body && 'endDate' in req.body){
+      const {startDate, endDate} = req.body 
+      await itemModels.find({
+        datePosted:{
+          $gte: new Date(startDate), //gte stands for greater than
+          $lt: new Date(endDate).setUTCHours(23, 59, 59, 999) //lt stands for less than
+        }
+      }).lean().sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
+      .then((result) => {
+        res.status(200).json({
+          items: result,
+          user: user,
+          picture: Picture,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ error: 'Internal Server Error' });
       });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ error: 'Internal Server Error' });
-    });
+    }
+    else if('searchQuery' in req.body){
+      const {searchQuery} = req.body
+      console.log(searchQuery)
+      await itemModels.find({ 'nameItem': searchQuery}).lean().sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
+      .then((result) => {
+        console.log(result)
+        res.status(200).json({
+          items: result,
+          user: user,
+          picture: Picture,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+      });
+    }
+    else{
+      const {currentPage} = req.body
+      await itemModels.find({}).lean().limit(6).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
+      .then((result) => {
+        res.status(200).json({
+          items: result,
+          user: user,
+          picture: Picture,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+      });
+    }
   }
   else {
     return res.sendStatus(403);

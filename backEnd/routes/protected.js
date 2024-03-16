@@ -36,21 +36,53 @@ router.put("/TACagreement", verifyToken, async(req, res)=>{
 
 //papalitan to ng post mmya pero get muna kasi tinetest placement ng data
 router.post("/data", verifyToken, async(req, res)=>{
-        const {currentPage} = req.body
+        console.log(req.body)
         const {_id, Name, Email, Picture} = req.user
         const {TAC} = await UserModel.findById( _id).select('TAC -_id').lean()
         //console.log(TAC)
         const user = {Name, Email}
         if(TAC){
-            itemModels.find({}).lean().limit(6).skip((currentPage - 1) * 6).sort({'datePosted': -1}) //waiting na lang sa pagination sa frontEnd
-                .then(result=>{
-                    res.status(200).json({
-                        items: result,
-                        picture: Picture,
-                        user: user
-                    })
-                }
-            ).catch(err=>{console.log(err)})
+            if('startDate' in req.body && 'endDate' in req.body){
+                const {startDate, endDate} = req.body 
+                itemModels.find({
+                    datePosted:{
+                        $gte: new Date(startDate), //gte stands for greater than
+                        $lt: new Date(endDate).setUTCHours(23, 59, 59, 999) //lt stands for less than
+                    }
+                }).lean().sort({'datePosted': -1}) //waiting na lang sa pagination sa frontEnd
+                    .then(result=>{
+                        res.status(200).json({
+                            items: result,
+                            picture: Picture,
+                            user: user
+                        })
+                    }
+                ).catch(err=>{console.log(err)})
+            }
+            else if('searchQuery' in req.body){
+                const {searchQuery} = req.body
+                itemModels.find({'nameItem': searchQuery}).lean().sort({'datePosted': -1}) //waiting na lang sa pagination sa frontEnd
+                    .then(result=>{
+                        res.status(200).json({
+                            items: result,
+                            picture: Picture,
+                            user: user
+                        })
+                    }
+                ).catch(err=>{console.log(err)})
+            }
+            else{
+                const {currentPage} = req.body
+                itemModels.find({}).lean().limit(6).skip((currentPage - 1) * 6).sort({'datePosted': -1}) //waiting na lang sa pagination sa frontEnd
+                    .then(result=>{
+                        res.status(200).json({
+                            items: result,
+                            picture: Picture,
+                            user: user
+                        })
+                    }
+                ).catch(err=>{console.log(err)})
+            }
         }
         else{return res.sendStatus(401)}
 })

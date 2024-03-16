@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ProfilePic from "./components/ProfilePic";
 import { getUserAndItem } from "./components/getUserAndItemData";
+import { axiosFetchItems } from "../../../components/api/axios"; 
 import Loading from "../../404/Loading";
 
 //need ayusin search
@@ -10,6 +11,9 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1)
+  const [hidePagination, setHidePagination] = useState(false)
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
 
   const getData = async () => {
     setLoading(true)
@@ -28,6 +32,41 @@ const Dashboard = () => {
   if (loading) {
     return <div><Loading/></div>;
   }
+
+  const searchData = async()=>{
+    if(searchQuery){
+      await axiosFetchItems.post('', {
+        'searchQuery': searchQuery
+      })
+      .then(res=>{
+        setHidePagination(true)
+        console.log(res.data)
+        setData([res.data])
+      })
+    }
+  }
+
+  const searchByDate = async()=>{
+    if(startDate && endDate){
+      await axiosFetchItems.post('', {
+          startDate:startDate,
+          endDate:endDate,
+      })
+      .then(res=>{
+        setHidePagination(true)
+        setData([res.data])
+      })
+    }
+  }
+
+  //handle range of dates
+  const handleStartDateChange = (e) => {
+    setStartDate(e.target.value);
+  };
+
+  const handleEndDateChange = (e) => {
+    setEndDate(e.target.value);
+  };
 
   const pagination =()=>{
     const disable = `btn-disabled`
@@ -60,6 +99,31 @@ const Dashboard = () => {
   function searchBar() {
     return (
       <>
+        <b>StartDate : </b>
+        <input
+            type="date"
+            id="startDate"
+            min="2024-01-01"
+            max={new Date().toISOString().split('T')[0]}
+            value={startDate}
+            onChange={handleStartDateChange}
+        />
+        
+        <b>EndDate : </b>
+        <input
+            type="date"
+            id="endDate"
+            min="2024-01-01"
+            max={new Date().toISOString().split('T')[0]}
+            value={endDate}
+            onChange={handleEndDateChange}
+        />
+        <button className="btn h-[2rem] w-[10rem] overflow-hidden"
+            onClick={searchByDate}
+        >
+            {'Search by Date'}
+        </button>
+
         <div className="flex flex-row justify-center mt-[1rem] mb-[1rem] sm:justify-start sm:ml-[1.5rem] sm:mb-[1rem] lg:mb-[1.5rem]">
           <div className="w-[2rem] h-[2.1rem] p-2 bg-[#17394C] rounded-l-lg border-b-2 3xl:h-[3rem] 3xl:w-[3rem] 2xl:w-[3rem] 2xl:h-[3rem]">
             <svg className="3xl:w-[2rem] 3xl:h-[2rem] 2xl:w-[2rem] 2xl:h-[2rem]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -82,6 +146,10 @@ const Dashboard = () => {
             value={searchQuery}
             onChange={handleInputChange}
           />
+          <button className="btn"
+            onClick={searchData}>
+            {'search'}
+          </button>
         </div>
       </>
     );
@@ -125,7 +193,7 @@ const Dashboard = () => {
             {sample()}
         </div>
 
-        {pagination()}
+        {hidePagination ? null : pagination()}
 
       </div>
       <img src="https://res.cloudinary.com/dxjpbwlkh/image/upload/v1709030999/Assets/1_rqlvoq.png" alt="shape3" className="h-[11rem] w-[14rem] absolute z-10 -bottom-[0rem] -right-[3rem] xsm:h-[10rem] xsm:w-[12rem] sm:h-[9rem] sm:w-[12.5rem] lg:w-[17rem] lg:h-[15rem] 3xl:w-[25rem] 3xl:h-[20rem]" />
