@@ -11,7 +11,6 @@ const Sidebar = () => {
     const role = localStorage.getItem('role')
     if(role !== 'admin'){
         buttons.pop()
-        
     }
 
     function buttonsFormat (){
@@ -46,7 +45,7 @@ const Sidebar = () => {
     </div> 
     <div className="drawer-side">
         <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
-        <ul className="flex flex-col space-y-[1rem] menu p-2 w-[50%] border-r-[0.2rem] border-[#134083] rounded-r-[6rem] h-screen bg-[#0D1832] flex flex-col items-center pt-[2rem]">
+        <ul className=" space-y-[1rem] menu p-2 w-[50%] border-r-[0.2rem] border-[#134083] rounded-r-[6rem] h-screen bg-[#0D1832] flex flex-col items-center pt-[2rem]">
             <img className="w-[4rem] h-[4rem]" src={'https://iieecsc.files.wordpress.com/2021/09/rizal_technological_university-1.png'} />
                 <div className="flex flex-col space-y-[0.5rem]">
                     {buttonsFormat()}
