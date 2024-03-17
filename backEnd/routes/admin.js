@@ -71,21 +71,61 @@ const adminOnlyToken = (req, res, next) => {
 //lost items data
 router.post('/data', verifyToken, async(req, res) => {
   if (req.user) {
-    //console.log(req.params)
+    console.log(req.body)
     const { Name, Email, Picture, Role } = req.user;
     const user = {Name, Email, Role}
-    await itemModels.find({}).lean().limit(5) //ok na pagination waiting for frontEnd
-    .then((result) => {
-      res.status(200).json({
-        items: result,
-        user: user,
-        picture: Picture,
+    if('startDate' in req.body && 'endDate' in req.body){
+      const {startDate, endDate} = req.body 
+      await itemModels.find({
+        datePosted:{
+          $gte: new Date(startDate), //gte stands for greater than
+          $lt: new Date(endDate).setUTCHours(23, 59, 59, 999) //lt stands for less than
+        }
+      }).lean().sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
+      .then((result) => {
+        res.status(200).json({
+          items: result,
+          user: user,
+          picture: Picture,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ error: 'Internal Server Error' });
       });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ error: 'Internal Server Error' });
-    });
+    }
+    else if('searchQuery' in req.body){
+      const {searchQuery} = req.body
+      console.log(searchQuery)
+      await itemModels.find({ 'nameItem': searchQuery}).lean().sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
+      .then((result) => {
+        console.log(result)
+        res.status(200).json({
+          items: result,
+          user: user,
+          picture: Picture,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+      });
+    }
+    else{
+      const {currentPage} = req.body
+      await itemModels.find({}).lean().limit(6).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
+      .then((result) => {
+        res.status(200).json({
+          items: result,
+          user: user,
+          picture: Picture,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+      });
+    }
   }
   else {
     return res.sendStatus(403);
@@ -309,7 +349,8 @@ router.post('/delete/:id', verifyToken, async (req, res) => {
 //request data
 router.post('/reqList', verifyToken, async (req, res, next)=>{
   try{
-    reqModels.find({}).lean().limit(5) //may pagination na waiting na lang sa frontEnd
+    const {currentPage} = req.body
+    reqModels.find({}).lean().limit(5).skip((currentPage - 1) *5).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
     .then(result=>{
       res.status(200).json({
         'reqList': result
@@ -456,10 +497,6 @@ router.post('/delReq', verifyToken, async(req, res, next)=>{
 
 router.post('/historyLogs', verifyToken, async(req, res, next)=>{
   const {startDate, endDate} = req.body
-  
-  const Activity = `Generated history Logs ranging from ${startDate} to ${endDate}`;
-  const Details = `NA`
-  //writeActLogs(req.user.Email, Activity, Details)
 
   await logsModels.find({
     Date:{
@@ -470,6 +507,11 @@ router.post('/historyLogs', verifyToken, async(req, res, next)=>{
   .then(async(result)=>{
     const type = `Logs`
     //console.log(result)
+
+    const Activity = `Generated history Logs ranging from ${startDate} to ${endDate}`;
+    const Details = `NA`
+    writeActLogs(req.user.Email, Activity, Details)
+
     const pdfData = await generatePDF(type, [result])
 
     const fileName = `History-Logs-from-${startDate}-to-${endDate}.pdf`
@@ -490,19 +532,32 @@ router.post('/archiveDataGenerate', verifyToken, async(req, res, next)=>{
 
   const {startDate, endDate} = req.body
 
-  const Activity = `Generated an archiveData ranging from ${startDate} to ${endDate}`;
-  const Details = `NA`
-  writeActLogs(req.user.Email, Activity, Details)
-
   await transModels.find({
     dateClaimed:{
       $gte: new Date(startDate), //gte stands for greater than
       $lt: new Date(endDate).setUTCHours(23, 59, 59, 999) //lt stands for less than
     }
   }).lean()
-  .then(result=>{
+  .then(async(result)=>{
     console.log(result)
-    res.status(200).json(result)
+
+    //generate logs 
+    const Activity = `Generated an archiveData ranging from ${startDate} to ${endDate}`;
+    const Details = `NA`
+    writeActLogs(req.user.Email, Activity, Details)
+
+    //generate PDF
+    const type = `Archive`
+    const pdfData = await generatePDF(type, [result])
+
+    const fileName = `History-Logs-from-${startDate}-to-${endDate}.pdf`
+    fs.writeFileSync(fileName, pdfData)
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+    res.send(pdfData); // Send the PDF data to the frontend?
+
+    // Optionally, delete the temporary file after download
+    fs.unlinkSync(fileName);
   })
   .catch(err=>{
     console.log(err)

@@ -36,7 +36,7 @@ const completedTransactions = new Schema({
     required: true,
     },
   datePosted:{
-    type: String,
+    type: Date,
     required:true
     },
   claimedBy: {
