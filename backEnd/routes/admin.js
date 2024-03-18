@@ -71,7 +71,6 @@ const adminOnlyToken = (req, res, next) => {
 //lost items data
 router.post('/data', verifyToken, async(req, res) => {
   if (req.user) {
-    console.log(req.body)
     const { Name, Email, Picture, Role } = req.user;
     const user = {Name, Email, Role}
     if('startDate' in req.body && 'endDate' in req.body){
@@ -313,7 +312,6 @@ router.post('/delete/:id', verifyToken, async (req, res) => {
     
     const { id } = req.params;
     const {data} = req.body;
-    console.log('here', data)
     const { url } = data
     const extractUrl = (url) => {
       const match = url.match(/\/(FoundItems\/Item\d+)\.jpg$/);
