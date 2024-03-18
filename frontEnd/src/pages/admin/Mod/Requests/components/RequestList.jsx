@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { axiosGetReqList} from "../../../../../components/api/axios";
 import ItemsCarousel from "../../../MainComponents/ItemsCarousel";
-import { getData } from "../../../MainComponents/getData";
 import DeleteReq from "./DeleteReq";
 import SendButton from "./SendButton";
 import Approve from "./Approve";
@@ -28,6 +27,9 @@ const RequestList = () => {
   const [index, setIndex] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [currentPage, setCurrentPage] = useState(1)
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+  const [hidePagination, setHidePagination] = useState(false)
 
   const openPopup = () => {
     setShowConfirmation(true);
@@ -40,10 +42,10 @@ const RequestList = () => {
   const getReqList = async() => {
     try{
       const res = await axiosGetReqList.post('', {'currentPage': currentPage})
-      const temp = await getData();
-      setItems(temp.items); 
-      console.log(typeof temp.items[0].datePosted)
-      setList(res.data.reqList)
+      setItems([res.data.reqListAndItemData[0].itemData]);
+      console.log(res.data.reqListAndItemData[0].itemData)
+      setList(res.data.reqListAndItemData)
+      console.log(list)
       setLoading(false);
    
     }
@@ -58,13 +60,6 @@ const RequestList = () => {
     getReqList()
   }, [])
 
-  const dateAndTime = (isoData)=>{
-    const Date = isoData.toISOString().split('T')[0]
-    const Time = isoData.toTimeString().split(' ')[0]
-    const dateAndTimeString = Date +" "+ Time
-    //console.log('dateAndTime', dateAndTime)
-    return dateAndTimeString
-  }
 
   const viewItem = async (elem, items) => {
     try {
@@ -108,22 +103,97 @@ const RequestList = () => {
       </div>
     )
   }
+
   
   const handleInputChange = (e) => {
     setSearchQuery(e.target.value);
   };
+    //handle range of dates
+    const handleStartDateChange = (e) => {
+      setStartDate(e.target.value);
+    };
+  
+    const handleEndDateChange = (e) => {
+      setEndDate(e.target.value);
+    };
+
+  const searchData = async()=>{
+    if(searchQuery){
+      if(searchQuery.includes("@rtu.edu.ph")){
+        await axiosGetReqList.post('', {
+          'searchQuery': searchQuery
+        })
+        .then(res=>{
+          setHidePagination(true)
+          setItems(res.data.items)
+        })
+      }
+      else{
+        alert('user does not exist, please try again')
+      }
+    }
+  }
+
+  const searchByDate = async()=>{
+    if(startDate && endDate){
+      await axiosGetReqList.post('', {
+          startDate:startDate,
+          endDate:endDate,
+      })
+      .then(res=>{
+        setHidePagination(true)
+        setItems(res.data.items)
+      })
+    }
+  }
 
   function searchBar() {
     return (
-      <div>
-        <input
-          type="text"
-          placeholder="Search"
-          className=" mb-4 mt-[1rem] bg-[#17394C] p-[0.4rem] text-white rounded-full"
-          value={searchQuery}
-          onChange={handleInputChange}
-        />
-        <button className="h-[2rem] w-[3rem] mr-2">{`Search`}</button>
+      <div className="flex flex-col items-center space-y-[0.5rem] font-poppins mb-[0.5rem]">
+        <div className="flex p-[1rem] flex-row items-center justify-center space-x-[0.5rem]">
+          <input
+            type="text"
+            placeholder="Search"
+            className="w-[12rem] bg-[#17394C] text-[0.9rem] p-[0.4rem] text-white rounded-full"
+            value={searchQuery}
+            onChange={handleInputChange}
+          />
+          <button className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-black rounded-xl h-[2rem] w-[5rem]"
+            onClick={searchData}
+          >
+            Search
+          </button>
+        </div>
+
+        <div className="flex flex-row gap-[0.5rem]">
+          <b>StartDate : </b>
+          <input className="bg-[#0D1832] border-[#F9D62B] border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem]"
+              type="date"
+              id="startDate"
+              min="2024-01-01"
+              max={new Date().toISOString().split('T')[0]}
+              value={startDate}
+              onChange={handleStartDateChange}
+          />
+        </div>
+
+        <div className="flex flex-row gap-[1rem]">
+          <b>EndDate : </b>
+          <input className="bg-[#0D1832] border-[#F9D62B] border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem]"
+              type="date"
+              id="endDate"
+              min="2024-01-01"
+              max={new Date().toISOString().split('T')[0]}
+              value={endDate}
+              onChange={handleEndDateChange}
+          />
+        </div>
+
+        <button className="h-[2rem] w-[9rem] bg-[#F9D62B] text-black text-[0.9rem] rounded-xl hover:bg-[#134083] hover:text-white"
+            onClick={searchByDate}
+        >
+            Search by Date
+        </button>
       </div>
     );
   }
@@ -181,7 +251,7 @@ const RequestList = () => {
         <div className="flex flex-col overflow-y-auto w-full h-full space-y-[1rem]">
           {requestFormat()}
         </div>
-        {pagination()}
+        {hidePagination ? null : pagination()}
       </div>
 
       {showConfirmation &&(

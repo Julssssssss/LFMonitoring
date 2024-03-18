@@ -71,7 +71,6 @@ const adminOnlyToken = (req, res, next) => {
 //lost items data
 router.post('/data', verifyToken, async(req, res) => {
   if (req.user) {
-    console.log(req.body)
     const { Name, Email, Picture, Role } = req.user;
     const user = {Name, Email, Role}
     if('startDate' in req.body && 'endDate' in req.body){
@@ -257,7 +256,7 @@ router.put('/update/data/:id', verifyToken, upload.array('image'), async (req, r
         desc, 
         found, 
         surrenderedBy, 
-        datePosted,
+        datePosted: new Date(),
       },
       { new: true }
     );
@@ -313,7 +312,6 @@ router.post('/delete/:id', verifyToken, async (req, res) => {
     
     const { id } = req.params;
     const {data} = req.body;
-    console.log('here', data)
     const { url } = data
     const extractUrl = (url) => {
       const match = url.match(/\/(FoundItems\/Item\d+)\.jpg$/);
@@ -345,17 +343,86 @@ router.post('/delete/:id', verifyToken, async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' }); 
   }
 });
-
+//set date to string
+const dateAndTime = (isoData)=>{
+  const Date = isoData.toISOString().split('T')[0]
+  const Time = isoData.toTimeString().split(' ')[0]
+  const dateAndTimeString = Date +" "+ Time
+  //console.log('dateAndTime', dateAndTime)
+  return dateAndTimeString
+}
 //request data
 router.post('/reqList', verifyToken, async (req, res, next)=>{
   try{
-    const {currentPage} = req.body
-    reqModels.find({}).lean().limit(5).skip((currentPage - 1) *5).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
-    .then(result=>{
-      res.status(200).json({
-        'reqList': result
+    console.log(req.body)
+    if('startDate' in req.body && 'endDate' in req.body){
+      const {startDate, endDate} = req.body
+      reqModels.find({
+        dateRequested:{
+          $gte: new Date(startDate), //gte stands for greater than
+          $lt: new Date(endDate).setUTCHours(23, 59, 59, 999) //lt stands for less than
+        }
+      }).lean().sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
+      .then(result=>{
+        const reqList = result.map(elem=>{
+          return {
+            'id': elem._id,
+            "itemId": elem.itemId,
+            "Email":elem.Email,
+            "haveBeenEmailed": elem.haveBeenEmailed,
+            "dateRequested": dateAndTime(elem.dateRequested)
+          }
+        })
+        //console.log(reqList)
+        res.status(200).json({
+          'reqList': reqList
+        })
       })
-    })
+    }
+    else if('searchQuery' in req.body){
+      let {searchQuery} = req.body
+      reqModels.find({'Email':searchQuery}).lean().sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
+      .then(result=>{
+        if(!result){res.json(`request not found`)}
+        const reqList = result.map(elem=>{
+          //itemModels.findById(elem.itemId).lean()
+          return {
+            'id': elem._id,
+            "itemId": elem.itemId,
+            "Email":elem.Email,
+            "haveBeenEmailed": elem.haveBeenEmailed,
+            "dateRequested": dateAndTime(elem.dateRequested)
+          }
+        })
+        console.log(reqList[0].itemId)
+        res.status(200).json({
+          'reqList': reqList
+        })
+      })
+    }
+    else{
+      const {currentPage} = req.body
+      console.log('hello')
+      await reqModels.find({}).lean().limit(6).skip((currentPage - 1) *5).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
+      .then(async(result)=>{
+        const itemData = await itemModels.findById(result[0].itemId).lean()
+        //console.log(itemData)
+        const reqListAndItemData = result.map((elem)=>{
+            return {
+              'id': elem._id,
+              "itemId": elem.itemId,
+              "Email":elem.Email,
+              "haveBeenEmailed": elem.haveBeenEmailed,
+              "dateRequested": dateAndTime(elem.dateRequested),
+              "itemData": itemData
+            }
+        })
+
+        res.status(200).json({
+          'reqListAndItemData': reqListAndItemData
+        })
+      })
+    }
   }
   catch(err){
     console.log(err)
@@ -503,8 +570,9 @@ router.post('/historyLogs', verifyToken, async(req, res, next)=>{
       $gte: new Date(startDate), //gte stands for greater than
       $lt: new Date(endDate).setUTCHours(23, 59, 59, 999), //lt stands for less than //set utchours means set time 
     },
-  }).lean()
+  }).lean().sort({'datePosted': -1})
   .then(async(result)=>{
+    if(!result) res.json(`there is no data!`)
     const type = `Logs`
     //console.log(result)
 
@@ -537,17 +605,56 @@ router.post('/archiveDataGenerate', verifyToken, async(req, res, next)=>{
       $gte: new Date(startDate), //gte stands for greater than
       $lt: new Date(endDate).setUTCHours(23, 59, 59, 999) //lt stands for less than
     }
-  }).lean()
+  }).lean().sort({'datePosted': -1})
   .then(async(result)=>{
+    if(!result) res.json(`there is no data!`)
     console.log(result)
 
     //generate logs 
-    const Activity = `Generated an archiveData ranging from ${startDate} to ${endDate}`;
+    const Activity = `Generated an archiveData for claimed items ranging from ${startDate} to ${endDate}`;
     const Details = `NA`
     writeActLogs(req.user.Email, Activity, Details)
 
     //generate PDF
     const type = `Archive`
+    const pdfData = await generatePDF(type, [result])
+
+    const fileName = `History-Logs-from-${startDate}-to-${endDate}.pdf`
+    fs.writeFileSync(fileName, pdfData)
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+    res.send(pdfData); // Send the PDF data to the frontend?
+
+    // Optionally, delete the temporary file after download
+    fs.unlinkSync(fileName);
+  })
+  .catch(err=>{
+    console.log(err)
+  })
+})
+
+router.post('/genUnfoundItems', verifyToken, async(req, res, next)=>{
+
+  const {startDate, endDate} = req.body
+  console.log(req.body)
+
+  await unclaimedItemsModels.find({
+    datePosted:{
+      $gte: new Date(startDate), //gte stands for greater than
+      $lt: new Date(endDate).setUTCHours(23, 59, 59, 999) //lt stands for less than
+    }
+  }).lean().sort({'datePosted': -1})
+  .then(async(result)=>{
+    if(!result) res.json(`there is no data!`)
+    console.log(result)
+
+    //generate logs 
+    const Activity = `Generated an archiveData for unclaimed items ranging from ${startDate} to ${endDate}`;
+    const Details = `NA`
+    writeActLogs(req.user.Email, Activity, Details)
+
+    //generate PDF
+    const type = `unclaimed items`
     const pdfData = await generatePDF(type, [result])
 
     const fileName = `History-Logs-from-${startDate}-to-${endDate}.pdf`

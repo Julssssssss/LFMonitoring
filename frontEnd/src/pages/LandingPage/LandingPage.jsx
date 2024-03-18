@@ -14,14 +14,15 @@ const LandingPage = () => {
 
   const redirect = async()=>{
     await getAccessTokenAndRole()
-      .then(res=>{
-        if(res != null){
-          if(res === true){
-            Auth();
-          }
-          else{
-            setHandleTAC(res)
-          }
+      .then((res)=>{
+        if(res === null){logout()}
+        const {role, TAC} = res
+        //console.log(role, TAC)
+        if(role === 'admin' || TAC === true){
+          Auth();
+        }
+        else{
+          setHandleTAC(res)
         }
       })
   }

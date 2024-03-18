@@ -164,7 +164,6 @@ const ItemList = () => {
     return items.map((item, index) => {
       return(
         <div key={index}>
-          { console.log(typeof item.datePosted)}
           <div className="flex flex-col items-center p-1 border-b-2 border-white bg-[#17394C] w-full h-auto space-x-[0.5rem] rounded-xl">
             <div className="flex flex-row justify-between w-full text-white text-[0.8rem] font-poppins whitespace-nowrap">
               <div>{item.nameItem}</div>
