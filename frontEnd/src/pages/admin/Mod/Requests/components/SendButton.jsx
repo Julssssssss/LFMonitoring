@@ -1,8 +1,15 @@
 import { useState } from "react";
 import { axiosSendEmail } from "../../../../../components/api/axios";
+import LoadingDots from "../../../../404/LoadingDots";
 
 const SendButton = ({ subject, emailContent, requestBy, index }) => {
   const [showPopup, setShowPopup] = useState(false);
+ // const [loading, setLoading] = useState(true); 
+
+  const Success =()=>{
+   alert('Email successfully delivered.')
+   window.location.reload();
+  }
 
   const openPopup = () => {
     setShowPopup(true);
@@ -13,21 +20,19 @@ const SendButton = ({ subject, emailContent, requestBy, index }) => {
   };
  
   const sendEmail = async () => {
-    
     try {
       await axiosSendEmail.post('', {
         id: index,
         to: requestBy,
         subject: subject,
         text: emailContent,
-    
       });
-      console.log('success')
       closePopup(); 
-      window.location.reload();
-
+      
+      Success()
     } catch (error) {
       console.error("Error sending email:", error);
+      
     }
   };
 
@@ -42,12 +47,15 @@ const SendButton = ({ subject, emailContent, requestBy, index }) => {
       console.log(error);
     }
   };
-   
+
+
+
+  
   
   return (
     <>
       <div>
-        <button onClick={checker} className="bg-[#F9D62B] self-center w-[10rem] h-[2rem] text-black text-[1rem] rounded-full">
+        <button onClick={checker} className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white self-center w-[10rem] h-[2rem] border-[0.1rem] text-black text-[1rem] rounded-full">
           SEND
         </button>
 
@@ -66,7 +74,7 @@ const SendButton = ({ subject, emailContent, requestBy, index }) => {
                   </button>
                   <button
                     type="button"
-                    className="text-white text-[1rem] bg-gray-500 w-[4rem] h-[2rem] rounded-full ml-2"
+                    className="text-white text-[1rem] bg-gray-500 w-[4rem] h-[2rem] rounded-full ml-2 hover:bg-[#134083] hover:border-[0.1rem] hover:border-white"
                     onClick={closePopup}
                   >
                     No
@@ -76,7 +84,6 @@ const SendButton = ({ subject, emailContent, requestBy, index }) => {
             </div>
           </div>
         )}
-
       </div>
     </>
   );

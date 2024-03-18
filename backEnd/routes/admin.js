@@ -257,7 +257,7 @@ router.put('/update/data/:id', verifyToken, upload.array('image'), async (req, r
         desc, 
         found, 
         surrenderedBy, 
-        datePosted: new Date(),
+        datePosted,
       },
       { new: true }
     );

@@ -5,13 +5,15 @@ import { getData } from "../../../MainComponents/getData";
 import DeleteReq from "./DeleteReq";
 import SendButton from "./SendButton";
 import Approve from "./Approve";
+import Loading from "../../../../404/Loading";
+
 
 const RequestList = () => {
 
   const [list, setList] = useState([])
 
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [loading, setLoading] = useState(true);
   const [items, setItems] = useState('')
   const [desc, setDesc] = useState('')
   const [name, setName] = useState('')
@@ -42,9 +44,12 @@ const RequestList = () => {
       setItems(temp.items); 
       console.log(typeof temp.items[0].datePosted)
       setList(res.data.reqList)
+      setLoading(false);
+   
     }
     catch(err){
       console.log(err)
+      setLoading(false);
       return null
     }
   }
@@ -76,7 +81,6 @@ const RequestList = () => {
       setPostedBy(selectedItem.postedBy);
       setSurrenderedBy(selectedItem.surrenderedBy);
       setIndex(elem._id)
-      console.log('henlo', index)
     } catch (error) {
       console.error("Error getting items", error);
     }
@@ -84,17 +88,17 @@ const RequestList = () => {
   const pagination =()=>{
     const disable = `btn-disabled`
     return(
-      <div className="flex flex-row justify-center ">
-        <div className="join">
-          <button className={`join-item btn btn-lg ${currentPage === 1 ? `btn-disabled` : ''}`} 
+      <div className="flex flex-row justify-center">
+        <div className="join border-[0.1rem] border-[#F9D62B]">
+          <button className={`join-item btn btn-sm bg-[#17394C] ${currentPage === 1 ? `btn-disabled` : ''}`}
             onClick={()=>{
                 setCurrentPage(currentPage - 1)
               }}>
               «
           </button>
-          <button className="join-item btn btn-lg">{currentPage}</button>
+          <button className="join-item btn btn-sm bg-[#0D1832]">{currentPage}</button>
           <button 
-            className={`join-item btn btn-lg ${list.length < 6 ? 'btn-disabled' : ''}`}
+            className={`join-item btn btn-sm bg-[#17394C] ${list.length < 6 ? 'btn-disabled' : ''}`}
             onClick={()=>{
                 setCurrentPage(currentPage + 1)
               }}>
@@ -133,7 +137,7 @@ const RequestList = () => {
             <div className="flex flex-row justify-between items-center text-white text-[0.8rem]">
               {elem.Email}
               <div className="text-[0.7rem] h-[2rem] w-[5rem] text-end -mr-[1.3rem]">
-                {`dateAndTime(elem.dateRequested)`}
+                {elem.dateRequested}
               </div>
               <div className={`${elem.haveBeenEmailed ? "bg-green-700" : "bg-red-700"} group h-[1rem] w-[1rem] rounded-full mr-[0.3rem]`}>
                 <span className="absolute left-[31rem] p-2 scale-0 bg-gray-800 text-[2rem] text-white group-hover:scale-50">
@@ -152,11 +156,16 @@ const RequestList = () => {
     );
   }
 
+  if (loading) {
+    return <div><Loading /></div>;
+  }
+
+
   const enableDeleteButton = false
   const displayPic = () => {
     return <ItemsCarousel item={image} enableDeleteButton={enableDeleteButton}/>
   };
-
+  
   return (
     <>
       <div className="relative z-10 flex flex-col justify-between mt-[0.5rem] text-white whitespace-nowrap px-[1rem]">
@@ -176,6 +185,7 @@ const RequestList = () => {
       </div>
 
       {showConfirmation &&(
+        
           <div className="absolute inset-0 z-50 flex flex-col space-y-[1rem] bg-[#0D1832] w-screen h-auto p-[1rem] overflow-y-auto overflow-x-hidden">
             <div className="flex flex-row justify-between">
               <div className="flex text-white text-[0.9rem] items-center font-semibold font-poppins whitespace-normal h-auto w-auto">Requested by: {requestBy}</div>
@@ -206,7 +216,6 @@ const RequestList = () => {
                 </svg>
               </button>
             </div>
-
             <div className="flex flex-col text-[0.9rem] text-white items-start space-y-[0.6rem] leading-[0.9]">
               <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
                 <div className="w-24">Name of item:</div>
@@ -241,7 +250,7 @@ const RequestList = () => {
               type="text"
               id="subject"  
               placeholder="Subject" 
-              className="border-[0.2rem] border-[#F9D62B] h-[2.5rem] font-poppins rounded-xl text-white w-full text-[0.7rem] p-[0.5rem]"
+              className="border-[0.2rem] bg-white border-[#F9D62B] h-[2.5rem] font-poppins rounded-xl text-black w-full text-[0.7rem] p-[0.5rem]"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
             /> 
@@ -249,7 +258,7 @@ const RequestList = () => {
               id="letter" 
               rows={10}
               placeholder="" 
-              className="border-[0.2rem] border-[#F9D62B] w-full text-[0.7rem] text-white p-[0.5rem] rounded-xl pb-[15rem]"
+              className="border-[0.2rem] border-[#F9D62B] w-full text-[0.7rem] text-black bg-white p-[0.5rem] rounded-xl pb-[15rem]"
               value={emailContent}
               onChange={(e) => setEmailContent(e.target.value)}
             /> 

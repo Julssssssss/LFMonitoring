@@ -19,7 +19,8 @@ import Privilege from './pages/admin/Privilege/Privilege'
 
 //try
 import ArchiveDataGenerator from './pages/admin/Mod/Home/Widgets/ArchiveDataGenerator'
-import HistoryLogs from './pages/admin/Mod/HistoryLogs/HistoryLogs'
+import HistoryView from './pages/admin/Mod/HistoryLogs/HistoryView'
+
 
 
 
@@ -50,8 +51,7 @@ const App = () => {
             <Route exact path='/Admin/Dashboard' element={<DashView/>}/>
             <Route exact path='/Admin/LostItems' element={<LostView/>}/>
             <Route exact path='/Admin/Requests' element={<RequestsView/>}/>
-            <Route exact path='/Admin/HistoryLogs' element={<HistoryLogs/>}/>
-            <Route exact path='/Admin/Dashboard' element={<DashView/>}/>
+            <Route exact path='/Admin/HistoryLogs' element={<HistoryView/>}/>
             <Route exact path='/Admin/AdminProfile' element={<AdminProfile/>}/>
 
             <Route exact path='/Admin/Privilege' element={<Privilege/>}/>

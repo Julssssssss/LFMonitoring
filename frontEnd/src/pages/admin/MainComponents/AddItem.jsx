@@ -24,7 +24,7 @@ const AddItem = () => {
   const [surrenderedBy, setSurrenderedBy] = useState('');
   const [confirm, setConfirm] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); 
   const [imageUrl, setImageUrl] = useState([]);
   const [cooldownActive, setCooldownActive] = useState(false)
 

@@ -41,9 +41,9 @@ const ArchiveDataGenerator = () => {
 
 
   return (
-    <div>
+    <div className="flex flex-col justify-center items-center">
         <b>StartDate : </b>
-        <input
+        <input className="bg-[#0D1832] border-white border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem]"
             type="date"
             id="startDate"
             min="2024-01-01"
@@ -51,9 +51,9 @@ const ArchiveDataGenerator = () => {
             value={startDate}
             onChange={handleStartDateChange}
         />
-        <br></br>
+        
         <b>EndDate : </b>
-        <input
+        <input className="bg-[#0D1832] border-white border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem]"
             type="date"
             id="endDate"
             min="2024-01-01"
@@ -61,8 +61,8 @@ const ArchiveDataGenerator = () => {
             value={endDate}
             onChange={handleEndDateChange}
         />
-        <br></br>
-        <button className="h-[2rem] w-[10rem] overflow-hidden"
+
+        <button className="mt-[0.5rem] text-[0.7rem] bg-[#F9D62B] hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white text-black font-bold rounded-full h-[1.5rem] w-[8.5rem] overflow-hidden"
             onClick={requestArchiveData}
         >
             {'Generate Archive Data'}

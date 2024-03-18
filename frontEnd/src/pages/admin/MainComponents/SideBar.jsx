@@ -10,31 +10,27 @@ const Sidebar = () => {
 
     ];
 
-    const role = localStorage.getItem('role')
-    if(role !== 'admin'){
-        buttons.pop()
-        
-    }
+    const role = localStorage.getItem('role');
+    const filteredButtons = role === 'admin' ? buttons : buttons.filter(button => button.name !== 'AUTHORIZATION');
 
-    function buttonsFormat (){
-        return buttons.map((nav, index) =>{
-            return(
-                <Link to={nav.to} key={index} className="group flex flex-row items-center border-b-[0.1rem] border-white rounded-xl  w-[7rem] h-[2.5rem]">
-                    <button className='relative space-x-[2rem] items-center stroke-white hover:stroke-[#F9D62B] text-[0.6rem] font-bold justify-start'>
-                        <div className="absolute z-20 w-[1.5rem] h-[1.5rem]">
+    function buttonsFormat() {
+        return filteredButtons.map((nav, index) => {
+            return (
+                <Link to={nav.to} key={index} className="group flex items-center justify-center border-b-[0.1rem] border-white rounded-xl w-[7rem] h-[2.5rem]">
+                    <button className='relative flex space-x-[2rem] items-center stroke-white hover:stroke-[#F9D62B] text-[0.6rem] font-bold justify-start'>
+                        <div className="absolute z-10 w-[1.5rem] h-[1.5rem]">
                             {nav.svg}
                         </div>
                         <div className="w-[5rem]">
                             {nav.name}
                         </div>
-                      
-                        <span className="font-poppins md:-left-[0.9rem] md:text-[1.7rem] md:w-[15rem] xl:w-[15rem] xl:p-[0.1rem] absolute left-0 2xl:-left-[1rem] 2xl:text-[2.5rem] 2xl:p-[0.5] 2xl:w-[20rem] 3xl:text-[2.5rem] 3xl:w-[18rem] 3xl:-left-[1rem] justify-center whitespace-nowrap flex scale-0 rounded bg-gray-800 p-1 text-[2rem] z-50 text-white group-hover:scale-50">{nav.name}</span>
+                        <span className="font-poppins fixed z-80 whitespace-nowrap left-[3rem] flex scale-0 rounded bg-gray-800 p-[1.1rem] justify-center text-[1rem] text-white group-hover:scale-50 w-[8rem]">{nav.name}</span>
                     </button>
                 </Link>
-           
-        )
-        })
+            );
+        });
     }
+    
 
   return (
     <>
@@ -59,7 +55,7 @@ const Sidebar = () => {
                         <div className="w-[5rem] font-poppins text-[0.6rem] font-bold">
                             SUPPORT/HELP
                         </div>
-                        <span className="font-poppins md:-left-[0.9rem] md:text-[1.7rem] md:w-[15rem] xl:w-[15rem] xl:p-[0.1rem] absolute left-0 2xl:-left-[1rem] 2xl:text-[2.5rem] 2xl:p-[0.5] 2xl:w-[20rem] 3xl:text-[2.5rem] 3xl:w-[18rem] 3xl:-left-[1rem] justify-center whitespace-nowrap flex scale-0 rounded bg-gray-800 p-1 text-[2rem] z-50 text-white group-hover:scale-50">SUPPORT/HELP</span>
+                        <span className="font-poppins fixed z-80 whitespace-nowrap left-[3rem] flex scale-0 rounded bg-gray-800 p-[1.1rem] justify-center text-[1rem] text-white group-hover:scale-50 w-[8rem]">SUPPORT/HELP</span>
                     </button>
                 </Link>
            

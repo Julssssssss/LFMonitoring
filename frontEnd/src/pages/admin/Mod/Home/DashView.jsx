@@ -36,14 +36,14 @@ const DashView = () => {
 
   return (
     <>
-      <div className='bg-[#17394C] w-screen h-screen'>
-        <div className='h-full bg-[#0D1832] flex flex-col space-y-[1rem]'>
+      <div className='relative z-0 bg-[#17394C] w-screen h-screen'>
+        <div className='absolute z-1 h-full bg-[#0D1832] flex flex-col space-y-[1rem]'>
           <div className='w-full flex flex-row space-x-[0.1rem]'>
-            <Sidebar />
+              <Sidebar />
             <div className='flex flex-col space-y-[1rem]'>
               <div className='text-white mt-[1rem] flex flex-row space-x-[0.2rem] h-auto'>
-                <div className='whitespace-normal w-[10rem]'>
-                  Welcome back, <b>{Fname}</b>
+                <div className='whitespace-normal w-[10rem] text-[#F9D62B] font-bold'>
+                  Welcome back, <b className='text-white'>{Fname}</b>
                 </div>
                 <div className='text-[1rem] flex items-center'>
                   <b>
