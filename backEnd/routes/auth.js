@@ -78,7 +78,8 @@ router.post("/login/success", async(req, res)=>{
             const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET,) //{expiresIn: '960s'}) //15 minutes
             await addRefreshTokenToDB(Email, refreshToken)
             // Set cookie with refresh token
-            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true,}) //sameSite: 'None' });
+            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true}) //,sameSite: 'None' });
+            req.session.userId = null
 
             //send logs in db if mod or admin
             if(Role === "mod" || Role === "admin"){

@@ -3,31 +3,25 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 const ImageCarousel = ({ url, currentSlide, onNext, onPrev, onClose }) => {
+  const handlePrevClick = (e) => {
+    e.stopPropagation();
+    onPrev();
+  };
+
+  const handleNextClick = (e) => {
+    e.stopPropagation();
+    onNext();
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center" onClick={onClose}>
-      <button
-        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white text-2xl"
-        onClick={(e) => {
-          e.stopPropagation();
-          onPrev();
-        }}
-      >
+      <button className="bg-black pb-[0.4rem] absolute left-3 top-1/2 transform -translate-y-1/2 text-white text-2xl" onClick={handlePrevClick} type="button">
         &lt;
       </button>
       <div className="max-w-full max-h-full" onClick={(e) => e.stopPropagation()}>
-        <img
-          src={url[currentSlide]}
-          alt={`Image ${currentSlide + 1}`}
-          className="w-[20rem] h-[25rem] object-scale-down"
-        />
+        <img src={url[currentSlide]} alt={`Image ${currentSlide + 1}`} className="w-[17rem] h-[17rem] object-contain" />
       </div>
-      <button
-        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white text-2xl"
-        onClick={(e) => {
-          e.stopPropagation();
-          onNext();
-        }}
-      >
+      <button className="bg-black pb-[0.4rem] absolute right-3 top-1/2 transform -translate-y-1/2 text-white text-2xl" onClick={handleNextClick} type="button">
         &gt;
       </button>
     </div>
@@ -38,7 +32,8 @@ const ItemsCarousel = ({ imageUrl, item, handleDelete, handleDeleteLink, enableD
   const [carouselOpen, setCarouselOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const openCarousel = () => {
+  const openCarousel = (index, images) => {
+    setCurrentSlide(index);
     setCarouselOpen(true);
   };
 
@@ -47,11 +42,11 @@ const ItemsCarousel = ({ imageUrl, item, handleDelete, handleDeleteLink, enableD
   };
 
   const nextSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide + 1) % imageUrl.length);
+    setCurrentSlide((prevSlide) => (prevSlide + 1) % images.length);
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide - 1 + imageUrl.length) % imageUrl.length);
+    setCurrentSlide((prevSlide) => (prevSlide - 1 + images.length) % images.length);
   };
 
   const handleDeleteClick = (index, isItem) => {
@@ -77,31 +72,25 @@ const ItemsCarousel = ({ imageUrl, item, handleDelete, handleDeleteLink, enableD
       {images.length > 0 && (
         <div>
           {carouselOpen ? (
-            <ImageCarousel url={images} currentSlide={currentSlide} onNext={nextSlide} onPrev={prevSlide} onClose={closeCarousel}
-            />
+            <ImageCarousel url={images} currentSlide={currentSlide} onNext={nextSlide} onPrev={prevSlide} onClose={closeCarousel} />
           ) : (
             <Carousel showStatus={false} showThumbs={false}>
               {/* Render images from images array */}
               {images.map((url, index) => (
                 <div key={index}>
-                  <button onClick={() => {
-                      setCurrentSlide(index);
-                      openCarousel();
-                    }}>
-                    <img
-                      className='object-contain w-[10rem] h-[9rem]'
-                      src={url}
-                      alt={`product-${index}`}
-                    />
+                  <button onClick={() => openCarousel(index, images)}>
+                    <img className='object-contain w-[10rem] h-[9rem]' src={url} alt={`product-${index}`} />
                   </button>
-                  {/* Call handleDeleteClick with appropriate arguments */}
-                  <button
-                    type="button"
-                    className="text-white text-[1rem] bg-red-500 rounded-full absolute top-2 right-7"
-                    onClick={() => handleDeleteClick(index, index >= imageUrl.length)}
-                  >
-                    X
-                  </button>
+                  {/* Conditionally render delete button based on enableDeleteButton */}
+                  {enableDeleteButton && (
+                    <button
+                      type="button"
+                      className="text-white text-[1rem] bg-red-500 rounded-full absolute top-2 right-7"
+                      onClick={() => handleDeleteClick(index, index >= imageUrl.length)}
+                    >
+                      X
+                    </button>
+                  )}
                 </div>
               ))}
             </Carousel>
