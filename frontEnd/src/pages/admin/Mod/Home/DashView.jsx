@@ -37,21 +37,24 @@ const DashView = () => {
   return (
     <>
       <div className='relative z-0 bg-[#17394C] w-screen h-screen'>
-        <div className='absolute z-1 h-full bg-[#0D1832] flex flex-col space-y-[1rem]'>
+        <div className='absolute z-1 h-full w-full bg-[#0D1832] flex flex-col space-y-[1rem]'>
           <div className='w-full flex flex-row space-x-[0.1rem]'>
               <Sidebar />
             <div className='flex flex-col space-y-[1rem]'>
-              <div className='text-white mt-[1rem] flex flex-row space-x-[0.2rem] h-auto'>
-                <div className='whitespace-normal w-[10rem] text-[#F9D62B] font-bold'>
+              <div className='text-white mt-[1rem] flex flex-row justify-between h-auto w-full'>
+                <div className='whitespace-normal w-full text-[#F9D62B] font-bold'>
                   Welcome back, <b className='text-white'>{Fname}</b>
                 </div>
-                <div className='text-[1rem] flex items-center'>
-                  <b>
-                    {user[0].Role}
-                  </b>
-                </div>
-                <div className='flex items-center'>
-                  <ProfileIcon User={[user, pic]} />
+
+                <div className='flex flex-row w-full'>
+                  <div className='text-[1rem] flex items-center'>
+                    <b>
+                      {user[0].Role}
+                    </b>
+                  </div>
+                  <div className='flex items-center'>
+                    <ProfileIcon User={[user, pic]} />
+                  </div>
                 </div>
               </div>
               

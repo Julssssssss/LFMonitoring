@@ -102,43 +102,50 @@ const ItemList = () => {
 
   function searchBar() {
     return (
-      <div>
-        
-        <b>StartDate : </b>
-        <input
-            type="date"
-            id="startDate"
-            min="2024-01-01"
-            max={new Date().toISOString().split('T')[0]}
-            value={startDate}
-            onChange={handleStartDateChange}
-        />
-        
-        <b>EndDate : </b>
-        <input
-            type="date"
-            id="endDate"
-            min="2024-01-01"
-            max={new Date().toISOString().split('T')[0]}
-            value={endDate}
-            onChange={handleEndDateChange}
-        />
-        <button className="btn h-[2rem] w-[10rem] overflow-hidden"
+      <div className="flex flex-col items-center space-y-[0.5rem] font-poppins mb-[0.5rem]">
+        <div className="flex p-[1rem] flex-row items-center justify-center space-x-[0.5rem]">
+          <input
+            type="text"
+            placeholder="Search"
+            className="w-[12rem] bg-[#17394C] text-[0.9rem] p-[0.4rem] text-white rounded-full"
+            value={searchQuery}
+            onChange={handleInputChange}
+          />
+          <button className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-black rounded-xl h-[2rem] w-[5rem]"
+            onClick={searchData}
+          >
+            Search
+          </button>
+        </div>
+
+        <div className="flex flex-row gap-[0.5rem]">
+          <b>StartDate : </b>
+          <input className="bg-[#0D1832] border-[#F9D62B] border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem]"
+              type="date"
+              id="startDate"
+              min="2024-01-01"
+              max={new Date().toISOString().split('T')[0]}
+              value={startDate}
+              onChange={handleStartDateChange}
+          />
+        </div>
+
+        <div className="flex flex-row gap-[1rem]">
+          <b>EndDate : </b>
+          <input className="bg-[#0D1832] border-[#F9D62B] border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem]"
+              type="date"
+              id="endDate"
+              min="2024-01-01"
+              max={new Date().toISOString().split('T')[0]}
+              value={endDate}
+              onChange={handleEndDateChange}
+          />
+        </div>
+
+        <button className="h-[2rem] w-[9rem] bg-[#F9D62B] text-black text-[0.9rem] rounded-xl hover:bg-[#134083] hover:text-white"
             onClick={searchByDate}
         >
-            {'Search by Date'}
-        </button>
-        <input
-          type="text"
-          placeholder="Search"
-          className="w-[15rem] mb-4 mt-[1rem] bg-[#17394C] p-[0.4rem] text-white rounded-full"
-          value={searchQuery}
-          onChange={handleInputChange}
-        />
-        <button className="btn "
-          onClick={searchData}
-        >
-          {`Search`}
+            Search by Date
         </button>
       </div>
     );

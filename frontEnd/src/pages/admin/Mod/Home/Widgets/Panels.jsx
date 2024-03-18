@@ -6,7 +6,6 @@ import Archive from "../../LostItems/Components/Archive"
 
 
 const Panels = ({itemData}) => {
-  //console.log(itemData)
   const [reqLength, setReqLength] = useState(null) //nandito na yung max length ng data ng request gagamitin mo n lang
   const [archiveLength, setArchiveLength] = useState(null) //nandito na din yung data ha ng length ng archives
 
@@ -17,7 +16,6 @@ const Panels = ({itemData}) => {
   const fetchArchReqLength =async()=>{
     const result = await axiosGetReqList.post()
     setReqLength(result.data.reqList.length) 
-    //console.log(result.data.reqList.length)
 
     const archLength = await axiosFetchArchLength.post()
     setArchiveLength(archLength.data)
