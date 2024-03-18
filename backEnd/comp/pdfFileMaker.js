@@ -25,6 +25,8 @@ const makePdf = async(Type, Data)=>{
         doc.setFontSize(18)
         let format = null
 
+
+
         if(Type === 'Logs'){  //LOGSSSSS MA GGGGG
             doc.text('History Logs', 400, 30, {align: 'center'})
             const tableData = Data[0].map(elem => {
@@ -96,6 +98,42 @@ const makePdf = async(Type, Data)=>{
                     8: {cellWidth: 60},
                     9: {cellWidth: 65},
                     10: {cellWidth: 60}
+                }
+            }
+        }
+        else if(Type === `unclaimed items`){
+            doc.text('Unclaimed Items', 400, 30, {align: 'center'})
+            const tableData = Data[0].map(elem => {
+                return [
+                    elem._id.toString(),
+                    fixObjectFormat(elem.url),
+                    elem.nameItem,
+                    elem.found, 
+                    elem.surrenderedBy,
+                    elem.postedBy,
+                    dateAndTime(elem.datePosted)
+                ];
+            })
+
+            //console.log(tableData)
+            const header = [['_id', 'Images', 'Item Name', 'Found at', 'Surredered By', 'Posted By', 'Date Posted']]
+
+            format = {
+                head: header, 
+                body: tableData,
+                theme:'grid',
+                margin:{
+                    left: 35, 
+                    right: 35
+                },
+                columnStyles: {
+                    0: {cellWidth: 60},
+                    //1: {cellWidth: 120},
+                    2: {cellWidth: 60},
+                    3: {cellWidth: 60},
+                    4: {cellWidth: 60},
+                    5: {cellWidth: 60},
+                    6: {cellWidth: 60},
                 }
             }
         }

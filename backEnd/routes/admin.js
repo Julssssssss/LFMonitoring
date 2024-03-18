@@ -570,8 +570,9 @@ router.post('/historyLogs', verifyToken, async(req, res, next)=>{
       $gte: new Date(startDate), //gte stands for greater than
       $lt: new Date(endDate).setUTCHours(23, 59, 59, 999), //lt stands for less than //set utchours means set time 
     },
-  }).lean()
+  }).lean().sort({'datePosted': -1})
   .then(async(result)=>{
+    if(!result) res.json(`there is no data!`)
     const type = `Logs`
     //console.log(result)
 
@@ -604,17 +605,56 @@ router.post('/archiveDataGenerate', verifyToken, async(req, res, next)=>{
       $gte: new Date(startDate), //gte stands for greater than
       $lt: new Date(endDate).setUTCHours(23, 59, 59, 999) //lt stands for less than
     }
-  }).lean()
+  }).lean().sort({'datePosted': -1})
   .then(async(result)=>{
+    if(!result) res.json(`there is no data!`)
     console.log(result)
 
     //generate logs 
-    const Activity = `Generated an archiveData ranging from ${startDate} to ${endDate}`;
+    const Activity = `Generated an archiveData for claimed items ranging from ${startDate} to ${endDate}`;
     const Details = `NA`
     writeActLogs(req.user.Email, Activity, Details)
 
     //generate PDF
     const type = `Archive`
+    const pdfData = await generatePDF(type, [result])
+
+    const fileName = `History-Logs-from-${startDate}-to-${endDate}.pdf`
+    fs.writeFileSync(fileName, pdfData)
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+    res.send(pdfData); // Send the PDF data to the frontend?
+
+    // Optionally, delete the temporary file after download
+    fs.unlinkSync(fileName);
+  })
+  .catch(err=>{
+    console.log(err)
+  })
+})
+
+router.post('/genUnfoundItems', verifyToken, async(req, res, next)=>{
+
+  const {startDate, endDate} = req.body
+  console.log(req.body)
+
+  await unclaimedItemsModels.find({
+    datePosted:{
+      $gte: new Date(startDate), //gte stands for greater than
+      $lt: new Date(endDate).setUTCHours(23, 59, 59, 999) //lt stands for less than
+    }
+  }).lean().sort({'datePosted': -1})
+  .then(async(result)=>{
+    if(!result) res.json(`there is no data!`)
+    console.log(result)
+
+    //generate logs 
+    const Activity = `Generated an archiveData for unclaimed items ranging from ${startDate} to ${endDate}`;
+    const Details = `NA`
+    writeActLogs(req.user.Email, Activity, Details)
+
+    //generate PDF
+    const type = `unclaimed items`
     const pdfData = await generatePDF(type, [result])
 
     const fileName = `History-Logs-from-${startDate}-to-${endDate}.pdf`
