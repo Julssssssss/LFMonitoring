@@ -107,18 +107,18 @@ const ItemList = () => {
           <input
             type="text"
             placeholder="Search"
-            className="w-[12rem] bg-[#17394C] text-[0.9rem] p-[0.4rem] text-white rounded-full"
+            className="w-[12rem] xsm:w-[16rem] sm:w-[19rem] md:w-[25rem] md:h-[2.2rem] bg-[#17394C] text-[0.9rem] p-[0.3rem] text-white rounded-full"
             value={searchQuery}
             onChange={handleInputChange}
           />
-          <button className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-black rounded-xl h-[2rem] w-[5rem]"
+          <button className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-black rounded-xl text-[0.8rem] sm:text-[0.9rem] sm:h-[1.6rem] md:text-[1rem] md:h-[2rem] md:w-[5.5rem] h-[1.5rem] w-[4.5rem]"
             onClick={searchData}
           >
             Search
           </button>
         </div>
 
-        <div className="flex flex-row gap-[0.5rem]">
+        <div className="flex flex-row gap-[0.5rem] text-[0.9rem] md:text-[1.3rem]">
           <b>StartDate : </b>
           <input className="bg-[#0D1832] border-[#F9D62B] border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem]"
               type="date"
@@ -130,7 +130,7 @@ const ItemList = () => {
           />
         </div>
 
-        <div className="flex flex-row gap-[1rem]">
+        <div className="flex flex-row gap-[1rem] text-[0.9rem] md:text-[1.3rem]">
           <b>EndDate : </b>
           <input className="bg-[#0D1832] border-[#F9D62B] border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem]"
               type="date"
@@ -142,7 +142,7 @@ const ItemList = () => {
           />
         </div>
 
-        <button className="h-[2rem] w-[9rem] bg-[#F9D62B] text-black text-[0.9rem] rounded-xl hover:bg-[#134083] hover:text-white"
+        <button className="h-[1.5rem] w-[7rem] sm:h-[2rem] sm:w-[8rem] md:h-[2.5rem] md:w-[9rem] md:text-[1rem] bg-[#F9D62B] text-black text-[0.7rem] sm:text-[0.9rem] rounded-full hover:bg-[#134083] hover:text-white"
             onClick={searchByDate}
         >
             Search by Date
@@ -165,7 +165,7 @@ const ItemList = () => {
       return(
         <div key={index}>
           <div className="flex flex-col items-center p-1 border-b-2 border-white bg-[#17394C] w-full h-auto space-x-[0.5rem] rounded-xl">
-            <div className="flex flex-row justify-between w-full text-white text-[0.8rem] font-poppins whitespace-nowrap">
+            <div className="flex flex-row justify-between w-full text-white text-[0.8rem] md:text-[1rem] font-poppins whitespace-nowrap">
               <div>{item.nameItem}</div>
               <div>{item.datePosted}</div>
             </div>
@@ -185,21 +185,25 @@ const ItemList = () => {
   
   return (
     <>
-      <div className="flex flex-col justify-between mt-[0.5rem] text-white whitespace-nowrap px-[1rem]">
-        <div className='font-poppins ml-[2rem]'>LOST ITEMS</div>   
-         {searchBar()}
-      </div>
-      <div className="bg-[#134083] overflow-y-auto w-full h-full rounded-[2rem] flex flex-col space-y-[1rem] self-center p-[0.8rem]">
-        <div className="flex flex-row font-poppins font-bold text-white justify-between px-[0.8rem] text-[0.7rem]">
-          <p>Name of item</p>
-          <p>Date</p>
-         </div>
-        <div className="flex flex-row-reverse w-full">
-          <AddItem  />
+      
+        <div className="flex flex-col justify-between mt-[0.5rem] md:mt-[1rem] text-white whitespace-nowrap px-[1rem]">
+          <div className='font-poppins ml-[2rem] md:ml-[5rem] md:text-[2rem]'>LOST ITEMS</div>   
+          {searchBar()}
         </div>
-        {itemsFormat()}
-        {hidePagination ? null : pagination()}
-      </div>
+        <div className="bg-[#134083] overflow-y-auto w-full h-full rounded-[2rem] flex flex-col self-center p-[0.8rem]">
+          <div className="flex flex-row font-poppins font-bold text-white justify-between px-[0.8rem] text-[0.7rem] md:text-[1rem]">
+            <p>Name of item</p>
+            <p>Date</p>
+          </div>
+          <div className="flex flex-row-reverse w-full mb-[1rem] pr-[0.8rem]">
+            <AddItem  />
+          </div>
+          <div className="flex flex-col overflow-y-auto w-full h-full space-y-[1rem]">
+            {itemsFormat()}
+          </div>
+          {hidePagination ? null : pagination()}
+        </div>
+      
     </>
   );
 };

@@ -62,10 +62,10 @@ const ArchiveDataGenerator = () => {
             onChange={handleEndDateChange}
         />
 
-        <button className="mt-[0.5rem] text-[0.7rem] bg-[#F9D62B] hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white text-black font-bold rounded-full h-[1.5rem] w-[8.5rem] overflow-hidden"
+        <button className="mt-[0.5rem] text-[0.7rem] md:text-[1rem] bg-[#F9D62B] hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white text-black font-bold rounded-full h-[1.5rem] w-[8.5rem] md:h-[2.5rem] md:w-[12rem] overflow-hidden"
             onClick={requestArchiveData}
         >
-            {'Generate Archive Data'}
+            Generate Archive Data
         </button>
     </div>
   )

@@ -10,7 +10,7 @@ import Loading from "../../../../404/Loading";
 const RequestList = () => {
 
   const [list, setList] = useState([])
-
+  const [itemList, setItemList] = useState([])
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState('')
@@ -45,7 +45,6 @@ const RequestList = () => {
       setItems([res.data.reqListAndItemData[0].itemData]);
       console.log(res.data.reqListAndItemData[0].itemData)
       setList(res.data.reqListAndItemData)
-      console.log(list)
       setLoading(false);
    
     }
@@ -60,26 +59,33 @@ const RequestList = () => {
     getReqList()
   }, [])
 
-
-  const viewItem = async (elem, items) => {
+  const viewItem = async (elem) => {
     try {
-      
-      // Find the item with the matching itemId
-      const selectedItem = items.find(item => item._id === elem.itemId);
-    
-      setName(selectedItem.nameItem);
-      setDesc(selectedItem.desc);
-      setFound(selectedItem.found);
-      setImage(selectedItem.url);
+      const ItemDetails = await axiosGetReqList.post('', { itemId: elem.itemId });
+      const { data } = ItemDetails;
+      const { itemData } = data;
+  
+      // Append the new itemData to the existing itemList
+      setItemList(prevItemList => [...prevItemList, itemData]);
+  
+      // Rest of your code remains the same
+      setName(itemData.nameItem);
+      setDesc(itemData.desc);
+      setFound(itemData.found);
+      setImage(itemData.url);
       setRequestBy(elem.Email);
-      setDatePosted(selectedItem.datePosted);
-      setPostedBy(selectedItem.postedBy);
-      setSurrenderedBy(selectedItem.surrenderedBy);
-      setIndex(elem._id)
+      setDatePosted(itemData.datePosted);
+      setPostedBy(itemData.postedBy);
+      setSurrenderedBy(itemData.surrenderedBy);
+      setIndex(elem._id);
+  
+      openPopup(); 
     } catch (error) {
       console.error("Error getting items", error);
     }
   };
+  
+
   const pagination =()=>{
     const disable = `btn-disabled`
     return(
@@ -154,18 +160,18 @@ const RequestList = () => {
           <input
             type="text"
             placeholder="Search"
-            className="w-[12rem] bg-[#17394C] text-[0.9rem] p-[0.4rem] text-white rounded-full"
+            className="w-[12rem] xsm:w-[16rem] sm:w-[19rem] md:w-[25rem] md:h-[2.2rem] bg-[#17394C] text-[0.9rem] p-[0.3rem] text-white rounded-full"
             value={searchQuery}
             onChange={handleInputChange}
           />
-          <button className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-black rounded-xl h-[2rem] w-[5rem]"
+          <button className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-black rounded-xl text-[0.8rem] sm:text-[0.9rem] sm:h-[1.6rem] md:text-[1rem] md:h-[2rem] md:w-[5.5rem] h-[1.5rem] w-[4.5rem]"
             onClick={searchData}
           >
             Search
           </button>
         </div>
 
-        <div className="flex flex-row gap-[0.5rem]">
+        <div className="flex flex-row gap-[0.5rem] text-[0.9rem] md:text-[1.3rem]">
           <b>StartDate : </b>
           <input className="bg-[#0D1832] border-[#F9D62B] border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem]"
               type="date"
@@ -177,7 +183,7 @@ const RequestList = () => {
           />
         </div>
 
-        <div className="flex flex-row gap-[1rem]">
+        <div className="flex flex-row gap-[1rem] text-[0.9rem] md:text-[1.3rem]">
           <b>EndDate : </b>
           <input className="bg-[#0D1832] border-[#F9D62B] border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem]"
               type="date"
@@ -189,7 +195,7 @@ const RequestList = () => {
           />
         </div>
 
-        <button className="h-[2rem] w-[9rem] bg-[#F9D62B] text-black text-[0.9rem] rounded-xl hover:bg-[#134083] hover:text-white"
+        <button className="h-[1.5rem] w-[7rem] sm:h-[2rem] sm:w-[8rem] md:h-[2.5rem] md:w-[9rem] md:text-[1rem] bg-[#F9D62B] text-black text-[0.7rem] sm:text-[0.9rem] rounded-full hover:bg-[#134083] hover:text-white"
             onClick={searchByDate}
         >
             Search by Date
@@ -197,16 +203,16 @@ const RequestList = () => {
       </div>
     );
   }
-  
+  console.log('eme', list )
   function requestFormat() {
+
     return list.map((elem, index) => {
-      
       return(
         <div key={index}>
           <div className="flex flex-col justify-center border-b-2 border-white bg-[#17394C] w-full h-[4rem] space-y-[0.2rem] rounded-xl p-1">
-            <div className="flex flex-row justify-between items-center text-white text-[0.8rem]">
+            <div className="flex flex-row justify-between items-center text-white text-[0.8rem] md:text-[1.2rem]">
               {elem.Email}
-              <div className="text-[0.7rem] h-[2rem] w-[5rem] text-end -mr-[1.3rem]">
+              <div className="text-[0.7rem] h-[2rem] w-auto text-end -mr-[0.2rem] xsm:-mr-[3.5rem] sm:-mr-[7rem] md:-mr-[18rem] md:text-[1rem]">
                 {elem.dateRequested}
               </div>
               <div className={`${elem.haveBeenEmailed ? "bg-green-700" : "bg-red-700"} group h-[1rem] w-[1rem] rounded-full mr-[0.3rem]`}>
@@ -216,8 +222,8 @@ const RequestList = () => {
               </div>
             </div>
             <div className="items-center w-full justify-center flex flex-row space-x-[1rem]">
-              <button onClick={() => viewItem(elem, items, openPopup())} className="bg-[#F9D62B] font-poppins text-black hover:bg-[#134083] mt-[0.3rem] text-[0.7rem] hover:text-white w-[4rem] rounded-full">View</button>
-              <Approve RequestItem = {elem} index={index} list={list} Item = {items} onClick={viewItem} />
+              <button onClick={() => viewItem(elem, openPopup())} className="bg-[#F9D62B] font-poppins text-black hover:bg-[#134083] mt-[0.3rem] text-[0.7rem] md:text-[1rem] hover:text-white w-[4rem] rounded-full">View</button>
+              {/*<Approve list={list} ItemId={elem.itemId} onClick={viewItem} />*/}
               <DeleteReq reqData={elem}/>
             </div>
           </div>
@@ -238,13 +244,13 @@ const RequestList = () => {
   
   return (
     <>
-      <div className="relative z-10 flex flex-col justify-between mt-[0.5rem] text-white whitespace-nowrap px-[1rem]">
-        <div className='font-poppins ml-[2rem]'>REQUEST LIST</div>   
-         {searchBar()}
+      <div className="flex flex-col justify-between mt-[0.5rem] md:mt-[1rem] text-white whitespace-nowrap px-[1rem]">
+          <div className='font-poppins ml-[2rem] md:ml-[5rem] md:text-[2rem]'>REQUESTS LIST</div>   
+          {searchBar()}
       </div>
 
       <div className="bg-[#134083] font-poppins text-white overflow-y-auto p-[0.7rem] w-full h-full rounded-[2rem] flex flex-col">
-        <div className="flex flex-row p-[0.7rem] justify-between text-[0.7rem]">
+        <div className="flex flex-row p-[0.7rem] justify-between text-[0.7rem] md:text-[1rem]">
           <p>Requestor</p>
           <p>Date Requested</p>
         </div>
@@ -258,8 +264,8 @@ const RequestList = () => {
         
           <div className="absolute inset-0 z-50 flex flex-col space-y-[1rem] bg-[#0D1832] w-screen h-auto p-[1rem] overflow-y-auto overflow-x-hidden">
             <div className="flex flex-row justify-between">
-              <div className="flex text-white text-[0.9rem] items-center font-semibold font-poppins whitespace-normal h-auto w-auto">Requested by: {requestBy}</div>
-              <button className="absolute right-[0.7rem] w-[2rem] h-[2rem] stroke-[#F9D62B] hover:stroke-white"
+              <div className="flex text-white text-[0.9rem] items-center font-semibold font-poppins whitespace-normal h-auto w-[17rem] text-wrap">Requested by:{requestBy}</div>
+              <button className="absolute right-[0rem] w-[2rem] h-[2rem] stroke-[#F9D62B] hover:stroke-white"
                 onClick={closePopup}>
                 <svg
                     viewBox="0 0 24 24"

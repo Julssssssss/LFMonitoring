@@ -9,7 +9,7 @@ const lostView = () => {
         <div className='absolute z-0'>
           <Sidebar />
         </div>
-      <div className="flex flex-col self-center p-[1rem] h-full w-screen bg-[#0D1832] border-[#134083]">
+      <div className="flex flex-col self-center p-[1rem] md:p-[1.5rem] h-full w-screen bg-[#0D1832] border-[#134083]">
         <ItemList/>
       </div>
     </div>

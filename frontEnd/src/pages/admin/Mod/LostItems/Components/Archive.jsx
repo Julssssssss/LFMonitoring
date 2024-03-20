@@ -58,15 +58,15 @@ const Archive = ({ Info }) => {
       <div>
         <button
           onClick={openPopup}
-          className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-[0.7rem] font-bold font-poppins text-black w-[3.5rem] h-auto rounded-full"
+          className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-[0.7rem] font-bold font-poppins text-black w-[3.5rem] h-auto md:text-[1.2rem] md:w-[5rem] rounded-full"
         >
           Archive
         </button>
       </div>
 
       {showPopup && (
-        <div className="absolute z-20 -inset-1 w-full h-full flex flex-row items-center bg-black bg-opacity-50">
-          <div className="flex flex-col bg-[#134083] shadow-md w-[19rem] h-[15rem] rounded-2xl whitespace-pre space-y-[0.5rem] items-center">
+        <div className="absolute z-20 -inset-4 xsm:justify-center w-full h-full flex flex-row items-center bg-black bg-opacity-50">
+          <div className="flex flex-col bg-[#134083] shadow-md w-[19rem] h-[15rem] md:h-[25rem] md:w-[35rem] rounded-2xl whitespace-pre space-y-[0.5rem] md:space-y-[1.2rem] items-center">
           <button
               className="w-[2rem] h-[2rem] place-self-end m-[0.5rem] stroke-[#F9D62B] hover:stroke-white"
               onClick={closePopup}
@@ -97,17 +97,16 @@ const Archive = ({ Info }) => {
                 </g>
               </svg>
             </button>
-            <div className='font-poppins text-[0.7rem] space-y-[0.5rem]'>
+            <div className='font-poppins text-[0.7rem] space-y-[0.5rem] md:text-[1.5rem]'>
               <div>Name of item:       {item.nameItem}</div>
               <div>Description:           {item.desc}</div>
               <div>Found at:               {item.found}</div>
               <div>Surrendered by:    {item.surrenderedBy}</div>
               <div>Date posted:         {item.datePosted}</div>
-              
             </div>
             <button
               onClick={sendToArchive}
-              className="font-poppins bg-[#F9D62B] text-[0.7rem] text-black p-2 rounded-2xl mt-4 hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white"
+              className="font-poppins bg-[#F9D62B] text-[0.7rem] md:text-[1.5rem] text-black p-2 rounded-2xl mt-4 hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white"
             >
               Confirm Archive
             </button>

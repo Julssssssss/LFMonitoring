@@ -18,7 +18,6 @@ import AdminProfile from './pages/admin/Mod/Home/Widgets/AdminProfile'
 import Privilege from './pages/admin/Privilege/Privilege'
 
 //try
-import ArchiveDataGenerator from './pages/admin/Mod/Home/Widgets/ArchiveDataGenerator'
 import HistoryView from './pages/admin/Mod/HistoryLogs/HistoryView'
 import UnfoundItems from './pages/admin/Mod/UnfoundItems/UnfoundItems'
 
@@ -51,7 +50,7 @@ const App = () => {
             <Route exact path='/Item/:itemId' element={<ItemDetails/>}/>
             
           {/*admin/mod side */}
-            <Route exact path='/Admin/Dashboard' element={<UnfoundItems/>}/>
+            <Route exact path='/Admin/Dashboard' element={<DashView/>}/>
             <Route exact path='/Admin/LostItems' element={<LostView/>}/>
             <Route exact path='/Admin/Requests' element={<RequestsView/>}/>
             <Route exact path='/Admin/HistoryLogs' element={<HistoryView/>}/>

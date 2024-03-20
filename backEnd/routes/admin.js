@@ -309,7 +309,6 @@ router.post('/archive/UnclaimedItems/:id', verifyToken, async (req, res) => {
 //delete data to mongodb 
 router.post('/delete/:id', verifyToken, async (req, res) => {
   try {
-    
     const { id } = req.params;
     const {data} = req.body;
     const { url } = data
@@ -400,35 +399,47 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
         })
       })
     }
-    else{
-      const {currentPage} = req.body
-      console.log('hello')
-      await reqModels.find({}).lean().limit(6).skip((currentPage - 1) *5).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
-      .then(async(result)=>{
-        const itemData = await itemModels.findById(result[0].itemId).lean()
-        //console.log(itemData)
-        const reqListAndItemData = result.map((elem)=>{
-            return {
-              'id': elem._id,
-              "itemId": elem.itemId,
-              "Email":elem.Email,
-              "haveBeenEmailed": elem.haveBeenEmailed,
-              "dateRequested": dateAndTime(elem.dateRequested),
-              "itemData": itemData
-            }
-        })
+    else {
+      const { currentPage, itemId } = req.body;
 
-        res.status(200).json({
-          'reqListAndItemData': reqListAndItemData
-        })
-      })
+      if (itemId) {
+        // Check if the item has already been fetched
+        const itemData = await itemModels.findById(itemId).lean();
+
+        if (!itemData) {
+          // If the item hasn't been fetched yet, return an error
+          return res.status(404).json({ message: 'Item not found' });
+        }
+
+        // Item details found, return the item details
+        console.log('here', itemData)
+        return res.status(200).json({ itemData });
+      } else {
+        // Continue with pagination logic if itemId is not provided
+        console.log('hello');
+        const result = await reqModels.find({}).lean().limit(6).skip((currentPage - 1) * 5).sort({ 'dateRequested': -1 });
+
+        // Construct the response
+        const reqListAndItemData = await Promise.all(result.map(async (elem) => {
+          const itemData = await itemModels.findById(elem.itemId).lean();
+          return {
+            'id': elem._id,
+            "itemId": elem.itemId,
+            "Email": elem.Email,
+            "haveBeenEmailed": elem.haveBeenEmailed,
+            "dateRequested": dateAndTime(elem.dateRequested),
+            "itemData": itemData
+          };
+        }));
+
+        res.status(200).json({ 'reqListAndItemData': reqListAndItemData });
+      }
     }
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
   }
-  catch(err){
-    console.log(err)
-    res.sendStatus(500)
-  }
-})
+});
 
 //route for archiving completed transactions
 

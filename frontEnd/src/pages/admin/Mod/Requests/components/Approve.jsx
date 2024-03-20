@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import { axiosReFetchToken } from "../../../../../components/api/axios";
-import axios from 'axios'
+import axios from 'axios';
 
-
-const Approve = ({ RequestItem, Item, index, list }) => {
+const Approve = ({ RequestItem, Item, ItemId, list }) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [lists, setLists] = useState([])
+  const [lists, setLists] = useState([]);
 
-  useEffect(()=>{
-    setLists(list)
-  }, [])
+  useEffect(() => {
+    if (list) {
+      setLists(list);
+    }
+  }, [list]);
 
   const openPopup = () => {
     setShowConfirmation(true);
@@ -19,33 +19,29 @@ const Approve = ({ RequestItem, Item, index, list }) => {
     setShowConfirmation(false);
   };
 
-  const accessToken = localStorage.getItem('accessToken')
+  const accessToken = localStorage.getItem('accessToken');
 
   const selectedItem = Item.find((item) => item._id === RequestItem.itemId);
 
-  const sendToArchive = async()=>{
-    console.log('hello', list)
-    try{
-      await axios.post(`${import.meta.env.VITE_API_URL}/priv/ArchivingTrans`,
-        {Request : lists[index]}, 
-        {
-          headers:{
-            'Authorization': `Bearer ${accessToken}`
-          }
+  const sendToArchive = async () => {
+    console.log('hello', list);
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/priv/ArchivingTrans`, { Request: lists[ItemId] }, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
         }
-      )
-      .then(res=>{
-        console.log(res.data)
-        if(res.data == "success"){
-        alert("Successfully Archived!")
+      });
+      console.log(res.data);
+      if (res.data === "success") {
+        alert("Successfully Archived!");
         window.location.reload();
-        closePopup()
+        closePopup();
       }
-      })
-      
+    } catch (err) {
+      console.log(err);
     }
-    catch(err){console.log(err)}
-  }
+  };
+
 
    //403 catcher
    axios.interceptors.response.use(
@@ -125,7 +121,7 @@ const Approve = ({ RequestItem, Item, index, list }) => {
               </svg>
             </button>
           <div className="flex flex-col space-y-[3rem] justify-center items-center">
-            <div className='text-[0.7rem] space-y-[1rem] font-poppins text-white whitespace-normal'>
+            <div className='text-[0.7rem] sm:text-[0.8rem] space-y-[1rem] font-poppins text-white whitespace-normal'>
                 <div className="flex flex-col items-start justify-start space-y-[0.5rem]">
                   <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
                     <div className="w-24">Name of item:</div>
