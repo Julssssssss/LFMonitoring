@@ -17,7 +17,7 @@ const RequestList = () => {
   const [image, setImage] = useState([])
   const [subject, setSubject] = useState('')
   const [emailContent, setEmailContent] = useState('')
-  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [selectedItem, setSelectedItem] = useState('');
   const [currentPage, setCurrentPage] = useState(1)
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
@@ -69,7 +69,6 @@ const RequestList = () => {
     )
   }
 
-  
   const handleInputChange = (e) => {
     setSearchQuery(e.target.value);
   };
@@ -164,8 +163,8 @@ const RequestList = () => {
   }
   //console.log('eme', list )
   function requestFormat() {
-
     return list.map((elem, index) => {
+      
       return(
         <div key={index}>
           <div className="flex flex-col justify-center border-b-2 border-white bg-[#17394C] w-full h-[4rem] space-y-[0.2rem] rounded-xl p-1">
@@ -181,7 +180,7 @@ const RequestList = () => {
               </div>
             </div>
             <div className="items-center w-full justify-center flex flex-row space-x-[1rem]">
-              <button onClick={()=>{viewItem(elem)}} className="bg-[#F9D62B] font-poppins text-black hover:bg-[#134083] mt-[0.3rem] text-[0.7rem] md:text-[1rem] hover:text-white w-[4rem] rounded-full">View</button>
+              <button onClick={()=>{setSelectedItem(elem)}} className="bg-[#F9D62B] font-poppins text-black hover:bg-[#134083] mt-[0.3rem] text-[0.7rem] md:text-[1rem] hover:text-white w-[4rem] rounded-full">View</button>
               {/*<Approve list={list} onClick={viewItem} />*/}
               <DeleteReq reqData={elem}/>
             </div>
@@ -202,21 +201,17 @@ const RequestList = () => {
   };
 
 
-  const viewItem = (elem) => {
-    console.log(showConfirmation)
-    setShowConfirmation(true)
-      
-      console.log('hiii', elem)
-      const {Email, id, itemData} = elem
-      console.log('eher', itemData)
-      const {datePosted, desc, found, nameItem, postedby, surrenderedBy, url} = itemData
-      
+  const viewItem = () => { 
+    if(selectedItem.itemData){
+      const {Email, id, itemData} = selectedItem
+      const {datePosted, desc, found, nameItem, postedBy, surrenderedBy, url} = itemData
+      console.log(itemData)
       return(
         <div className="absolute inset-0 z-50 flex flex-col space-y-[1rem] bg-[#0D1832] w-screen h-auto p-[1rem] overflow-y-auto overflow-x-hidden">
           <div className="flex flex-row justify-between">
             <div className="flex text-white text-[0.9rem] items-center font-semibold font-poppins whitespace-normal h-auto w-[17rem] text-wrap">Requested by:{Email}</div>
             <button className="absolute right-[0rem] w-[2rem] h-[2rem] stroke-[#F9D62B] hover:stroke-white"
-              onClick={()=>{setShowConfirmation(false)}}>
+              onClick={()=>{setSelectedItem('')}}>
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -261,7 +256,7 @@ const RequestList = () => {
             </div>
             <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
               <div className="w-24">Posted by:</div>
-              <div className="w-[10rem] h-auto">{postedby}</div>
+              <div className="w-[10rem] h-auto">{postedBy}</div>
             </div>
             <div className="flex items-center space-x-[2.5rem] md:space-x-[0.5rem]">
               <div className="w-24 md:w-[7rem] xl:w-[6rem] 2xl:w-[8.5rem] 3xl:w-[10rem]">Date posted:</div>
@@ -295,7 +290,10 @@ const RequestList = () => {
         </div>
 
       )
-    
+    }
+    else{
+      //palagay naman ako ng catch dito if nadelete na yung data means d na mafetch yung data sa db
+    }
   }
 
   return (
@@ -316,7 +314,7 @@ const RequestList = () => {
         {hidePagination ? null : pagination()}
       </div>
 
-      {showConfirmation ? viewItem() : null}
+      {selectedItem ? viewItem() : null}
     </>
   );
 };
