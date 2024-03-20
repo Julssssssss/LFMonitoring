@@ -96,7 +96,7 @@ router.post('/data', verifyToken, async(req, res) => {
     else if('searchQuery' in req.body){
       const {searchQuery} = req.body
       console.log(searchQuery)
-      await itemModels.find({ 'nameItem': searchQuery}).lean().sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
+      await itemModels.find({ 'nameItem': searchQuery.toLowerCase()}).lean().sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
       .then((result) => {
         console.log(result)
         res.status(200).json({
@@ -207,7 +207,7 @@ router.post('/sendItem', verifyToken, upload.array('image'), async (req, res) =>
 
     const uploadItem = new itemModels({
       url: uploadedImages,
-      nameItem,
+      "nameItem": nameItem.toLowerCase(),
       desc,
       found,
       surrenderedBy,
