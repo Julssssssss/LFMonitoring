@@ -11,7 +11,7 @@ const Auth = () => {
         }
     }
     else{
-        return null
+        window.location.href = `${import.meta.env.VITE_CLIENT_URL}`
     }
 }
 export {Auth}

@@ -71,21 +71,60 @@ const adminOnlyToken = (req, res, next) => {
 //lost items data
 router.post('/data', verifyToken, async(req, res) => {
   if (req.user) {
-    const {currentPage} = req.body
     const { Name, Email, Picture, Role } = req.user;
     const user = {Name, Email, Role}
-    await itemModels.find({}).lean().limit(6).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
-    .then((result) => {
-      res.status(200).json({
-        items: result,
-        user: user,
-        picture: Picture,
+    if('startDate' in req.body && 'endDate' in req.body){
+      const {startDate, endDate} = req.body 
+      await itemModels.find({
+        datePosted:{
+          $gte: new Date(startDate), //gte stands for greater than
+          $lt: new Date(endDate).setUTCHours(23, 59, 59, 999) //lt stands for less than
+        }
+      }).lean().sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
+      .then((result) => {
+        res.status(200).json({
+          items: result,
+          user: user,
+          picture: Picture,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ error: 'Internal Server Error' });
       });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ error: 'Internal Server Error' });
-    });
+    }
+    else if('searchQuery' in req.body){
+      const {searchQuery} = req.body
+      console.log(searchQuery)
+      await itemModels.find({ 'nameItem': searchQuery}).lean().sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
+      .then((result) => {
+        console.log(result)
+        res.status(200).json({
+          items: result,
+          user: user,
+          picture: Picture,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+      });
+    }
+    else{
+      const {currentPage} = req.body
+      await itemModels.find({}).lean().limit(6).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
+      .then((result) => {
+        res.status(200).json({
+          items: result,
+          user: user,
+          picture: Picture,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+      });
+    }
   }
   else {
     return res.sendStatus(403);
@@ -270,10 +309,8 @@ router.post('/archive/UnclaimedItems/:id', verifyToken, async (req, res) => {
 //delete data to mongodb 
 router.post('/delete/:id', verifyToken, async (req, res) => {
   try {
-    
     const { id } = req.params;
     const {data} = req.body;
-    console.log('here', data)
     const { url } = data
     const extractUrl = (url) => {
       const match = url.match(/\/(FoundItems\/Item\d+)\.jpg$/);
@@ -305,23 +342,104 @@ router.post('/delete/:id', verifyToken, async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' }); 
   }
 });
-
+//set date to string
+const dateAndTime = (isoData)=>{
+  const Date = isoData.toISOString().split('T')[0]
+  const Time = isoData.toTimeString().split(' ')[0]
+  const dateAndTimeString = Date +" "+ Time
+  //console.log('dateAndTime', dateAndTime)
+  return dateAndTimeString
+}
 //request data
 router.post('/reqList', verifyToken, async (req, res, next)=>{
   try{
-    const {currentPage} = req.body
-    reqModels.find({}).lean().limit(5).skip((currentPage - 1) *5).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
-    .then(result=>{
-      res.status(200).json({
-        'reqList': result
+    console.log(req.body)
+    if('startDate' in req.body && 'endDate' in req.body){
+      const {startDate, endDate} = req.body
+      reqModels.find({
+        dateRequested:{
+          $gte: new Date(startDate), //gte stands for greater than
+          $lt: new Date(endDate).setUTCHours(23, 59, 59, 999) //lt stands for less than
+        }
+      }).lean().sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
+      .then(result=>{
+        const reqList = result.map(elem=>{
+          return {
+            'id': elem._id,
+            "itemId": elem.itemId,
+            "Email":elem.Email,
+            "haveBeenEmailed": elem.haveBeenEmailed,
+            "dateRequested": dateAndTime(elem.dateRequested)
+          }
+        })
+        //console.log(reqList)
+        res.status(200).json({
+          'reqList': reqList
+        })
       })
-    })
+    }
+    else if('searchQuery' in req.body){
+      let {searchQuery} = req.body
+      reqModels.find({'Email':searchQuery}).lean().sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
+      .then(result=>{
+        if(!result){res.json(`request not found`)}
+        const reqList = result.map(elem=>{
+          //itemModels.findById(elem.itemId).lean()
+          return {
+            'id': elem._id,
+            "itemId": elem.itemId,
+            "Email":elem.Email,
+            "haveBeenEmailed": elem.haveBeenEmailed,
+            "dateRequested": dateAndTime(elem.dateRequested)
+          }
+        })
+        console.log(reqList[0].itemId)
+        res.status(200).json({
+          'reqList': reqList
+        })
+      })
+    }
+    else {
+      const { currentPage, itemId } = req.body;
+
+      if (itemId) {
+        // Check if the item has already been fetched
+        const itemData = await itemModels.findById(itemId).lean();
+
+        if (!itemData) {
+          // If the item hasn't been fetched yet, return an error
+          return res.status(404).json({ message: 'Item not found' });
+        }
+
+        // Item details found, return the item details
+        console.log('here', itemData)
+        return res.status(200).json({ itemData });
+      } else {
+        // Continue with pagination logic if itemId is not provided
+        console.log('hello');
+        const result = await reqModels.find({}).lean().limit(6).skip((currentPage - 1) * 5).sort({ 'dateRequested': -1 });
+
+        // Construct the response
+        const reqListAndItemData = await Promise.all(result.map(async (elem) => {
+          const itemData = await itemModels.findById(elem.itemId).lean();
+          return {
+            'id': elem._id,
+            "itemId": elem.itemId,
+            "Email": elem.Email,
+            "haveBeenEmailed": elem.haveBeenEmailed,
+            "dateRequested": dateAndTime(elem.dateRequested),
+            "itemData": itemData
+          };
+        }));
+
+        res.status(200).json({ 'reqListAndItemData': reqListAndItemData });
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
   }
-  catch(err){
-    console.log(err)
-    res.sendStatus(500)
-  }
-})
+});
 
 //route for archiving completed transactions
 
@@ -463,8 +581,9 @@ router.post('/historyLogs', verifyToken, async(req, res, next)=>{
       $gte: new Date(startDate), //gte stands for greater than
       $lt: new Date(endDate).setUTCHours(23, 59, 59, 999), //lt stands for less than //set utchours means set time 
     },
-  }).lean()
+  }).lean().sort({'datePosted': -1})
   .then(async(result)=>{
+    if(!result) res.json(`there is no data!`)
     const type = `Logs`
     //console.log(result)
 
@@ -497,17 +616,56 @@ router.post('/archiveDataGenerate', verifyToken, async(req, res, next)=>{
       $gte: new Date(startDate), //gte stands for greater than
       $lt: new Date(endDate).setUTCHours(23, 59, 59, 999) //lt stands for less than
     }
-  }).lean()
+  }).lean().sort({'datePosted': -1})
   .then(async(result)=>{
+    if(!result) res.json(`there is no data!`)
     console.log(result)
 
     //generate logs 
-    const Activity = `Generated an archiveData ranging from ${startDate} to ${endDate}`;
+    const Activity = `Generated an archiveData for claimed items ranging from ${startDate} to ${endDate}`;
     const Details = `NA`
     writeActLogs(req.user.Email, Activity, Details)
 
     //generate PDF
     const type = `Archive`
+    const pdfData = await generatePDF(type, [result])
+
+    const fileName = `History-Logs-from-${startDate}-to-${endDate}.pdf`
+    fs.writeFileSync(fileName, pdfData)
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+    res.send(pdfData); // Send the PDF data to the frontend?
+
+    // Optionally, delete the temporary file after download
+    fs.unlinkSync(fileName);
+  })
+  .catch(err=>{
+    console.log(err)
+  })
+})
+
+router.post('/genUnfoundItems', verifyToken, async(req, res, next)=>{
+
+  const {startDate, endDate} = req.body
+  console.log(req.body)
+
+  await unclaimedItemsModels.find({
+    datePosted:{
+      $gte: new Date(startDate), //gte stands for greater than
+      $lt: new Date(endDate).setUTCHours(23, 59, 59, 999) //lt stands for less than
+    }
+  }).lean().sort({'datePosted': -1})
+  .then(async(result)=>{
+    if(!result) res.json(`there is no data!`)
+    console.log(result)
+
+    //generate logs 
+    const Activity = `Generated an archiveData for unclaimed items ranging from ${startDate} to ${endDate}`;
+    const Details = `NA`
+    writeActLogs(req.user.Email, Activity, Details)
+
+    //generate PDF
+    const type = `unclaimed items`
     const pdfData = await generatePDF(type, [result])
 
     const fileName = `History-Logs-from-${startDate}-to-${endDate}.pdf`

@@ -9,7 +9,7 @@ const Modal = ({ isOpen, children }) => {
 
   return (
     <div className="absolute inset-0 z-1 inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="z-1 bg-[#134083] shadow-md w-[18rem] h-[30rem] rounded-2xl">
+      <div className="z-1 bg-[#134083] shadow-md w-[18rem] h-[30rem] md:w-[24rem] md:h-[41rem] rounded-2xl">
         {children}
       </div>
     </div>
@@ -24,7 +24,7 @@ const AddItem = () => {
   const [surrenderedBy, setSurrenderedBy] = useState('');
   const [confirm, setConfirm] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); 
   const [imageUrl, setImageUrl] = useState([]);
   const [cooldownActive, setCooldownActive] = useState(false)
 
@@ -124,7 +124,7 @@ const AddItem = () => {
         newImageUrl.splice(index, 1);
         setImageUrl(newImageUrl);
       };
-  // send niya ung imageUrl sa ItemCarousel
+  // send the imageUrl to itemsCarousel
       return <ItemsCarousel imageUrl={imageUrl} handleDelete={handleDelete} enableDeleteButton={enableDeleteButton}/>;
     };
    
@@ -138,7 +138,6 @@ const AddItem = () => {
   if (loading) {
     return <UploadingScreen />;
   }
-//console.log('hello', imageUrl)
   return (
     <div>
       <button
@@ -151,20 +150,20 @@ const AddItem = () => {
       {confirm && (
         <Modal isOpen={confirm} onClose={() => setConfirm(false)}>
           <div className="absolute inset-0 z-20 flex place-self-center h-screen w-screen justify-center bg-black bg-opacity-50">
-            <div className="absolute z-40 text-white text-[1rem] font-poppins place-self-center text-center bg-[#134083] p-[1rem] rounded-2xl shadow-md w-[18rem] h-[30rem]">
-              <div className="flex flex-col h-[30rem] space-y-[5rem] justify-center items-center">
+            <div className="absolute z-40 text-white text-[1rem] md:text-[2.5rem] font-poppins place-self-center text-center bg-[#134083] p-[1rem] rounded-2xl shadow-md w-[18rem] h-[30rem] md:w-[24rem] md:h-[41rem]">
+              <div className="flex flex-col h-[30rem] md:h-full space-y-[5rem] justify-center items-center">
                 <div>Are you sure you want to submit this information?</div>
                 <div className="flex flex-row space-x-[2rem]">
                   <button
                     type="button"
-                    className="text-black text-[1rem] bg-[#F9D62B] w-[4rem] h-[2rem] rounded-full mr-2"
+                    className="text-black text-[1rem] bg-[#F9D62B] w-[4rem] h-[2rem] md:w-[8rem] md:h-[3rem] md:text-[1.5rem] rounded-full mr-2"
                     onClick={handleConfirmation}
                   >
                     Yes
                   </button>
                   <button
                     type="button"
-                    className="text-white text-[1rem] bg-gray-500 w-[4rem] h-[2rem] rounded-full ml-2"
+                    className="text-white text-[1rem] bg-gray-500 w-[4rem] h-[2rem] md:w-[8rem] md:h-[3rem] md:text-[1.5rem] rounded-full ml-2"
                     onClick={() => setConfirm(false)}
                   >
                     No
@@ -208,13 +207,13 @@ const AddItem = () => {
                 </g>
               </svg>
             </button>
-          <div className="h-[10rem] w-[10rem] border-[0.3rem] border-[#F9D62B] rounded-xl p-[0.1rem] flex flex-col justify-center">
+          <div className="h-[10rem] w-[10rem] md:w-[14rem] md:h-[14rem] border-[0.3rem] border-[#F9D62B] rounded-xl p-[0.1rem] flex flex-col justify-center">
             {displayPic()}
           </div>
 
           <input
             type="file"
-            className="text-white text-[0.6rem]"
+            className="text-white text-[0.6rem] md:text-[1rem]"
             accept="image/*"
             multiple
             onChange={(e) => {
@@ -260,35 +259,35 @@ const AddItem = () => {
           <div className="flex flex-col items-center space-y-[1rem] text-white">
             <input
               type="text"
-              className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem]"
+              className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.2rem] md:w-[20rem] md:h-[3rem]"
               placeholder="Name of item"
               value={nameItem}
               onChange={(e) => setName(e.target.value)}
             />
             <input
               type="text"
-              className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem]"
+              className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.2rem] md:w-[20rem] md:h-[3rem]"
               placeholder="Description"
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
             />
             <input
               type="text"
-              className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem]"
+              className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.2rem] md:w-[20rem] md:h-[3rem]"
               placeholder="Found at"
               value={found}
               onChange={(e) => setFound(e.target.value)}
             />
             <input
               type="text"
-              className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem]"
+              className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.2rem] md:w-[20rem] md:h-[3rem]"
               placeholder="Surrendered by: "
               value={surrenderedBy}
               onChange={(e) => setSurrenderedBy(e.target.value)}
             />
             <button
               type="button"
-              className="text-black text-[1rem] hover:bg-[#134083] hover:text-white bg-[#F9D62B] w-[10rem] h-[2rem] rounded-full"
+              className="text-black text-[1rem] hover:bg-[#134083] hover:text-white bg-[#F9D62B] w-[10rem] h-[2rem] rounded-full md:text-[1.4rem] md:h-[3rem]"
               onClick={checker}
             >
               ADD

@@ -54,7 +54,7 @@ const DeleteButton = ({ Info, onDelete }) => {
       <div>
         <button
           onClick={() => setConfirm(true)}
-          className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-[0.7rem] font-bold font-poppins text-black w-[3.5rem] h-auto rounded-full"
+          className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-[0.7rem] font-bold font-poppins text-black w-[3.5rem] h-auto md:text-[1.2rem] md:w-[5rem] rounded-full"
         >
           Delete
         </button>
@@ -62,20 +62,20 @@ const DeleteButton = ({ Info, onDelete }) => {
         {confirm && (
           <Modal isOpen={confirm} onClose={() => setConfirm(false)}>
             <div className="absolute inset-0 flex justify-center bg-black bg-opacity-50">
-              <div className="absolute z-50 text-white text-[1rem] font-poppins place-self-center text-center bg-[#134083] p-[1.5rem] rounded-2xl shadow-md w-[15rem] h-[25rem]">
-                <div className="flex flex-col h-[20rem] space-y-[5rem] justify-center items-center">
+              <div className="absolute z-50 text-white text-[1rem] md:text-[2.5rem] font-poppins place-self-center text-center bg-[#134083] p-[1.5rem] rounded-2xl shadow-md w-[15rem] h-[25rem] md:w-[24rem] md:h-[41rem]">
+                <div className="flex flex-col h-[20rem] md:h-full space-y-[5rem] justify-center items-center">
                   <div>Are you sure you want to remove this item?</div>
                   <div className="flex flex-row space-x-[1rem]">
                     <button
                       type="button"
-                      className="text-black text-[0.7rem] bg-[#F9D62B] hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white w-[5rem] h-[2rem] rounded-full mr-2"
+                      className="text-black text-[0.7rem] bg-[#F9D62B] hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white w-[5rem] h-[2rem] md:w-[8rem] md:h-[3rem] md:text-[1.5rem] rounded-full mr-2"
                       onClick={selectedItem}
                     >
                       Yes
                     </button>
                     <button
                       type="button"
-                      className="text-white text-[0.7rem] bg-gray-500 w-[5rem] h-[2rem] rounded-full ml-2 hover:bg-[#F9D62B] hover:text-white hover:border-[0.1rem] hover:border-white"
+                      className="text-white text-[0.7rem] bg-gray-500 w-[5rem] h-[2rem] md:w-[8rem] md:h-[3rem] md:text-[1.5rem] rounded-full ml-2 hover:bg-[#F9D62B] hover:text-white hover:border-[0.1rem] hover:border-white"
                       onClick={() => setConfirm(false)}
                     >
                       No

@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react";
 import { axiosGetReqList} from "../../../../../components/api/axios";
 import ItemsCarousel from "../../../MainComponents/ItemsCarousel";
-import { getData } from "../../../MainComponents/getData";
 import DeleteReq from "./DeleteReq";
 import SendButton from "./SendButton";
 import Approve from "./Approve";
+import Loading from "../../../../404/Loading";
+
 
 const RequestList = () => {
 
   const [list, setList] = useState([])
-
+  const [itemList, setItemList] = useState([])
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [loading, setLoading] = useState(true);
   const [items, setItems] = useState('')
   const [desc, setDesc] = useState('')
   const [name, setName] = useState('')
@@ -26,6 +27,9 @@ const RequestList = () => {
   const [index, setIndex] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [currentPage, setCurrentPage] = useState(1)
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+  const [hidePagination, setHidePagination] = useState(false)
 
   const openPopup = () => {
     setShowConfirmation(true);
@@ -38,13 +42,15 @@ const RequestList = () => {
   const getReqList = async() => {
     try{
       const res = await axiosGetReqList.post('', {'currentPage': currentPage})
-      const temp = await getData();
-      setItems(temp.items); 
-      console.log(typeof temp.items[0].datePosted)
-      setList(res.data.reqList)
+      setItems([res.data.reqListAndItemData[0].itemData]);
+      console.log(res.data.reqListAndItemData[0].itemData)
+      setList(res.data.reqListAndItemData)
+      setLoading(false);
+   
     }
     catch(err){
       console.log(err)
+      setLoading(false);
       return null
     }
   }
@@ -53,48 +59,47 @@ const RequestList = () => {
     getReqList()
   }, [])
 
-  const dateAndTime = (isoData)=>{
-    const Date = isoData.toISOString().split('T')[0]
-    const Time = isoData.toTimeString().split(' ')[0]
-    const dateAndTimeString = Date +" "+ Time
-    //console.log('dateAndTime', dateAndTime)
-    return dateAndTimeString
-  }
-
-  const viewItem = async (elem, items) => {
+  const viewItem = async (elem) => {
     try {
-      
-      // Find the item with the matching itemId
-      const selectedItem = items.find(item => item._id === elem.itemId);
-    
-      setName(selectedItem.nameItem);
-      setDesc(selectedItem.desc);
-      setFound(selectedItem.found);
-      setImage(selectedItem.url);
+      const ItemDetails = await axiosGetReqList.post('', { itemId: elem.itemId });
+      const { data } = ItemDetails;
+      const { itemData } = data;
+  
+      // Append the new itemData to the existing itemList
+      setItemList(prevItemList => [...prevItemList, itemData]);
+  
+      // Rest of your code remains the same
+      setName(itemData.nameItem);
+      setDesc(itemData.desc);
+      setFound(itemData.found);
+      setImage(itemData.url);
       setRequestBy(elem.Email);
-      setDatePosted(selectedItem.datePosted);
-      setPostedBy(selectedItem.postedBy);
-      setSurrenderedBy(selectedItem.surrenderedBy);
-      setIndex(elem._id)
-      console.log('henlo', index)
+      setDatePosted(itemData.datePosted);
+      setPostedBy(itemData.postedBy);
+      setSurrenderedBy(itemData.surrenderedBy);
+      setIndex(elem._id);
+  
+      openPopup(); 
     } catch (error) {
       console.error("Error getting items", error);
     }
   };
+  
+
   const pagination =()=>{
     const disable = `btn-disabled`
     return(
-      <div className="flex flex-row justify-center ">
-        <div className="join">
-          <button className={`join-item btn btn-lg ${currentPage === 1 ? `btn-disabled` : ''}`} 
+      <div className="flex flex-row justify-center">
+        <div className="join border-[0.1rem] border-[#F9D62B]">
+          <button className={`join-item btn btn-sm bg-[#17394C] ${currentPage === 1 ? `btn-disabled` : ''}`}
             onClick={()=>{
                 setCurrentPage(currentPage - 1)
               }}>
               «
           </button>
-          <button className="join-item btn btn-lg">{currentPage}</button>
+          <button className="join-item btn btn-sm bg-[#0D1832]">{currentPage}</button>
           <button 
-            className={`join-item btn btn-lg ${list.length < 6 ? 'btn-disabled' : ''}`}
+            className={`join-item btn btn-sm bg-[#17394C] ${list.length < 6 ? 'btn-disabled' : ''}`}
             onClick={()=>{
                 setCurrentPage(currentPage + 1)
               }}>
@@ -104,36 +109,111 @@ const RequestList = () => {
       </div>
     )
   }
+
   
   const handleInputChange = (e) => {
     setSearchQuery(e.target.value);
   };
+    //handle range of dates
+    const handleStartDateChange = (e) => {
+      setStartDate(e.target.value);
+    };
+  
+    const handleEndDateChange = (e) => {
+      setEndDate(e.target.value);
+    };
+
+  const searchData = async()=>{
+    if(searchQuery){
+      if(searchQuery.includes("@rtu.edu.ph")){
+        await axiosGetReqList.post('', {
+          'searchQuery': searchQuery
+        })
+        .then(res=>{
+          setHidePagination(true)
+          setItems(res.data.items)
+        })
+      }
+      else{
+        alert('user does not exist, please try again')
+      }
+    }
+  }
+
+  const searchByDate = async()=>{
+    if(startDate && endDate){
+      await axiosGetReqList.post('', {
+          startDate:startDate,
+          endDate:endDate,
+      })
+      .then(res=>{
+        setHidePagination(true)
+        setItems(res.data.items)
+      })
+    }
+  }
 
   function searchBar() {
     return (
-      <div>
-        <input
-          type="text"
-          placeholder="Search"
-          className=" mb-4 mt-[1rem] bg-[#17394C] p-[0.4rem] text-white rounded-full"
-          value={searchQuery}
-          onChange={handleInputChange}
-        />
-        <button className="h-[2rem] w-[3rem] mr-2">{`Search`}</button>
+      <div className="flex flex-col items-center space-y-[0.5rem] font-poppins mb-[0.5rem]">
+        <div className="flex p-[1rem] flex-row items-center justify-center space-x-[0.5rem]">
+          <input
+            type="text"
+            placeholder="Search"
+            className="w-[12rem] xsm:w-[16rem] sm:w-[19rem] md:w-[25rem] md:h-[2.2rem] bg-[#17394C] text-[0.9rem] p-[0.3rem] text-white rounded-full"
+            value={searchQuery}
+            onChange={handleInputChange}
+          />
+          <button className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-black rounded-xl text-[0.8rem] sm:text-[0.9rem] sm:h-[1.6rem] md:text-[1rem] md:h-[2rem] md:w-[5.5rem] h-[1.5rem] w-[4.5rem]"
+            onClick={searchData}
+          >
+            Search
+          </button>
+        </div>
+
+        <div className="flex flex-row gap-[0.5rem] text-[0.9rem] md:text-[1.3rem]">
+          <b>StartDate : </b>
+          <input className="bg-[#0D1832] border-[#F9D62B] border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem]"
+              type="date"
+              id="startDate"
+              min="2024-01-01"
+              max={new Date().toISOString().split('T')[0]}
+              value={startDate}
+              onChange={handleStartDateChange}
+          />
+        </div>
+
+        <div className="flex flex-row gap-[1rem] text-[0.9rem] md:text-[1.3rem]">
+          <b>EndDate : </b>
+          <input className="bg-[#0D1832] border-[#F9D62B] border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem]"
+              type="date"
+              id="endDate"
+              min="2024-01-01"
+              max={new Date().toISOString().split('T')[0]}
+              value={endDate}
+              onChange={handleEndDateChange}
+          />
+        </div>
+
+        <button className="h-[1.5rem] w-[7rem] sm:h-[2rem] sm:w-[8rem] md:h-[2.5rem] md:w-[9rem] md:text-[1rem] bg-[#F9D62B] text-black text-[0.7rem] sm:text-[0.9rem] rounded-full hover:bg-[#134083] hover:text-white"
+            onClick={searchByDate}
+        >
+            Search by Date
+        </button>
       </div>
     );
   }
-  
+  console.log('eme', list )
   function requestFormat() {
+
     return list.map((elem, index) => {
-      
       return(
         <div key={index}>
           <div className="flex flex-col justify-center border-b-2 border-white bg-[#17394C] w-full h-[4rem] space-y-[0.2rem] rounded-xl p-1">
-            <div className="flex flex-row justify-between items-center text-white text-[0.8rem]">
+            <div className="flex flex-row justify-between items-center text-white text-[0.8rem] md:text-[1.2rem]">
               {elem.Email}
-              <div className="text-[0.7rem] h-[2rem] w-[5rem] text-end -mr-[1.3rem]">
-                {`dateAndTime(elem.dateRequested)`}
+              <div className="text-[0.7rem] h-[2rem] w-auto text-end -mr-[0.2rem] xsm:-mr-[3.5rem] sm:-mr-[7rem] md:-mr-[18rem] md:text-[1rem]">
+                {elem.dateRequested}
               </div>
               <div className={`${elem.haveBeenEmailed ? "bg-green-700" : "bg-red-700"} group h-[1rem] w-[1rem] rounded-full mr-[0.3rem]`}>
                 <span className="absolute left-[31rem] p-2 scale-0 bg-gray-800 text-[2rem] text-white group-hover:scale-50">
@@ -142,8 +222,8 @@ const RequestList = () => {
               </div>
             </div>
             <div className="items-center w-full justify-center flex flex-row space-x-[1rem]">
-              <button onClick={() => viewItem(elem, items, openPopup())} className="bg-[#F9D62B] font-poppins text-black hover:bg-[#134083] mt-[0.3rem] text-[0.7rem] hover:text-white w-[4rem] rounded-full">View</button>
-              <Approve RequestItem = {elem} index={index} list={list} Item = {items} onClick={viewItem} />
+              <button onClick={() => viewItem(elem, openPopup())} className="bg-[#F9D62B] font-poppins text-black hover:bg-[#134083] mt-[0.3rem] text-[0.7rem] md:text-[1rem] hover:text-white w-[4rem] rounded-full">View</button>
+              {/*<Approve list={list} ItemId={elem.itemId} onClick={viewItem} />*/}
               <DeleteReq reqData={elem}/>
             </div>
           </div>
@@ -152,34 +232,40 @@ const RequestList = () => {
     );
   }
 
+  if (loading) {
+    return <div><Loading /></div>;
+  }
+
+
   const enableDeleteButton = false
   const displayPic = () => {
     return <ItemsCarousel item={image} enableDeleteButton={enableDeleteButton}/>
   };
-
+  
   return (
     <>
-      <div className="relative z-10 flex flex-col justify-between mt-[0.5rem] text-white whitespace-nowrap px-[1rem]">
-        <div className='font-poppins ml-[2rem]'>REQUEST LIST</div>   
-         {searchBar()}
+      <div className="flex flex-col justify-between mt-[0.5rem] md:mt-[1rem] text-white whitespace-nowrap px-[1rem]">
+          <div className='font-poppins ml-[2rem] md:ml-[5rem] md:text-[2rem]'>REQUESTS LIST</div>   
+          {searchBar()}
       </div>
 
       <div className="bg-[#134083] font-poppins text-white overflow-y-auto p-[0.7rem] w-full h-full rounded-[2rem] flex flex-col">
-        <div className="flex flex-row p-[0.7rem] justify-between text-[0.7rem]">
+        <div className="flex flex-row p-[0.7rem] justify-between text-[0.7rem] md:text-[1rem]">
           <p>Requestor</p>
           <p>Date Requested</p>
         </div>
         <div className="flex flex-col overflow-y-auto w-full h-full space-y-[1rem]">
           {requestFormat()}
         </div>
-        {pagination()}
+        {hidePagination ? null : pagination()}
       </div>
 
       {showConfirmation &&(
+        
           <div className="absolute inset-0 z-50 flex flex-col space-y-[1rem] bg-[#0D1832] w-screen h-auto p-[1rem] overflow-y-auto overflow-x-hidden">
             <div className="flex flex-row justify-between">
-              <div className="flex text-white text-[0.9rem] items-center font-semibold font-poppins whitespace-normal h-auto w-auto">Requested by: {requestBy}</div>
-              <button className="absolute right-[0.7rem] w-[2rem] h-[2rem] stroke-[#F9D62B] hover:stroke-white"
+              <div className="flex text-white text-[0.9rem] items-center font-semibold font-poppins whitespace-normal h-auto w-[17rem] text-wrap">Requested by:{requestBy}</div>
+              <button className="absolute right-[0rem] w-[2rem] h-[2rem] stroke-[#F9D62B] hover:stroke-white"
                 onClick={closePopup}>
                 <svg
                     viewBox="0 0 24 24"
@@ -206,7 +292,6 @@ const RequestList = () => {
                 </svg>
               </button>
             </div>
-
             <div className="flex flex-col text-[0.9rem] text-white items-start space-y-[0.6rem] leading-[0.9]">
               <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
                 <div className="w-24">Name of item:</div>
@@ -241,7 +326,7 @@ const RequestList = () => {
               type="text"
               id="subject"  
               placeholder="Subject" 
-              className="border-[0.2rem] border-[#F9D62B] h-[2.5rem] font-poppins rounded-xl text-white w-full text-[0.7rem] p-[0.5rem]"
+              className="border-[0.2rem] bg-white border-[#F9D62B] h-[2.5rem] font-poppins rounded-xl text-black w-full text-[0.7rem] p-[0.5rem]"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
             /> 
@@ -249,7 +334,7 @@ const RequestList = () => {
               id="letter" 
               rows={10}
               placeholder="" 
-              className="border-[0.2rem] border-[#F9D62B] w-full text-[0.7rem] text-white p-[0.5rem] rounded-xl pb-[15rem]"
+              className="border-[0.2rem] border-[#F9D62B] w-full text-[0.7rem] text-black bg-white p-[0.5rem] rounded-xl pb-[15rem]"
               value={emailContent}
               onChange={(e) => setEmailContent(e.target.value)}
             /> 

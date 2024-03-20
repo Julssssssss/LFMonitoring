@@ -7,7 +7,7 @@ const getAccessTokenAndRole = async() => {
         const { accessToken, role, TAC } = response.data;
         localStorage.setItem('accessToken', accessToken)
         localStorage.setItem('role', role)
-        return TAC
+        return {TAC, role}
     } catch (err) {
         console.error(err);
         return null

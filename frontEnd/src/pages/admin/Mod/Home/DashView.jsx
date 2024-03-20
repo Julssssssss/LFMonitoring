@@ -1,11 +1,9 @@
 import Panels from './Widgets/Panels'
-import SearchBar from './Widgets/SearchBar'
 import ProfileIcon from './Widgets/ProfileIcon'
 import Sidebar from '../../MainComponents/SideBar'
 import { getData } from "../../MainComponents/getData"
 import { useEffect, useState } from 'react';
 import Loading from "../../../404/Loading"
-
 
 const DashView = () => {
   const [user, setUser] = useState(null);
@@ -25,7 +23,6 @@ const DashView = () => {
     
   };
   
-  
   useEffect(() => {
     getItems();
   }, []);
@@ -36,22 +33,25 @@ const DashView = () => {
 
   return (
     <>
-      <div className='bg-[#17394C] w-screen h-screen'>
-        <div className='h-full bg-[#0D1832] flex flex-col space-y-[1rem]'>
-          <div className='w-full flex flex-row space-x-[0.1rem]'>
-            <Sidebar />
+      <div className='relative bg-[white] w-auto h-screen md:h-full md:w-screen'>
+        <div className='absolute z-1 h-auto w-full md:h-auto bg-[#0D1832] flex flex-col space-y-[1rem]'>
+          <div className='w-screen flex flex-row space-x-[0.1rem] md:space-x-[3rem]'>
+              <Sidebar />
             <div className='flex flex-col space-y-[1rem]'>
-              <div className='text-white mt-[1rem] flex flex-row space-x-[0.2rem] h-auto'>
-                <div className='whitespace-normal w-[10rem]'>
-                  Welcome back, <b>{Fname}</b>
+              <div className='text-white mt-[1rem] flex flex-row justify-between md:gap-[4rem] h-auto w-screen md:w-full'>
+                <div className='ml-[4rem] justify-start md:w-full whitespace-normal w-full md:text-[2rem] text-[#F9D62B] font-bold'>
+                  Welcome back, <b className='text-white'>{Fname}</b>
                 </div>
-                <div className='text-[1rem] flex items-center'>
-                  <b>
-                    {user[0].Role}
-                  </b>
-                </div>
-                <div className='flex items-center'>
-                  <ProfileIcon User={[user, pic]} />
+
+                <div className='flex flex-row space-x-[0.5rem] w-full md:w-full justify-end pr-[1rem]'>
+                  <div className='text-[1rem] md:text-[2rem] flex items-center'>
+                    <b>
+                      {user[0].Role}
+                    </b>
+                  </div>
+                  <div className='flex items-center'>
+                    <ProfileIcon User={[user, pic]} />
+                  </div>
                 </div>
               </div>
               

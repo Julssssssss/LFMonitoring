@@ -7,8 +7,8 @@ const Modal = ({ isOpen, children }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="absolute z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-[#134083] shadow-md w-[18rem] h-[30rem] rounded-2xl">
+    <div className="absolute inset-0 z-1 inset-0 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-[#134083] shadow-md w-[18rem] h-[30rem] md:w-[24rem] md:h-[41rem] rounded-2xl">
         {children}
       </div>
     </div>
@@ -148,7 +148,7 @@ const EditButton = ({ Info }) => {
       <div>
         <button
           onClick={openModal}
-          className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-[0.7rem] font-poppins font-bold text-black w-[3.5rem] h-auto rounded-full"
+          className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-[0.7rem] font-poppins font-bold text-black w-[3.5rem] md:text-[1.2rem] md:w-[5rem] h-auto rounded-full"
         >
           Edit
         </button>
@@ -156,20 +156,20 @@ const EditButton = ({ Info }) => {
         {confirm && (
           <Modal isOpen={confirm} onClose={() => setConfirm(false)}>
             <div className="absolute inset-0 flex justify-center bg-black bg-opacity-50">
-              <div className="z-30 text-white text-[2rem] place-self-center text-center bg-[#134083] p-[1.5rem] rounded-2xl shadow-md w-[30rem] h-[45rem] md:w-[25rem] md:h-[40rem] md:p-[2rem] 2xl:h-[45rem] 2xl:w-[30rem]">
-                <div className="flex flex-col h-[40rem] space-y-[10rem] justify-center items-center">
+              <div className="z-50 text-white text-[1rem] md:text-[2.5rem] font-poppins place-self-center text-center bg-[#134083] p-[1.5rem] rounded-2xl shadow-md w-[18rem] h-[30rem] md:w-[24rem] md:h-[41rem]">
+                <div className="flex flex-col h-[25rem] md:h-full space-y-[5rem] justify-center items-center">
                   <div>Ready to confirm and submit this information?</div>
-                  <div className="flex flex-row space-x-[7rem] md:space-x-[5rem]">
+                  <div className="flex flex-row space-x-[2rem]">
                     <button
                       type="button"
-                      className="text-black text-[1.5rem] bg-[#F9D62B] w-[8rem] h-[3rem] rounded-full mr-2"
+                      className="text-black text-[0.7rem] bg-[#F9D62B] w-[5rem] h-[2rem] md:w-[8rem] md:h-[3rem] md:text-[1.5rem] rounded-full mr-2"
                       onClick={saveEdit}
                     >
                       Yes
                     </button>
                     <button
                       type="button"
-                      className="text-white text-[1.5rem] bg-gray-500 w-[8rem] h-[3rem] rounded-full ml-2"
+                      className="text-white text-[0.7rem] bg-gray-500 w-[5rem] h-[2rem] md:w-[8rem] md:h-[3rem] md:text-[1.5rem] rounded-full ml-2"
                       onClick={() => setConfirm(false)}
                     >
                       No
@@ -219,7 +219,7 @@ const EditButton = ({ Info }) => {
             
             <input
             type="file"
-            className="text-white text-[0.6rem]"
+            className="text-white text-[0.6rem] md:text-[1rem]"
             accept="image/*"
             multiple
             onChange={(e) => {
@@ -264,7 +264,7 @@ const EditButton = ({ Info }) => {
             <div className="flex flex-col items-center space-y-[1rem] text-white">
               <input
                 type="text"
-                className="form-control bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] "
+                className="form-control bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.2rem] md:w-[20rem] md:h-[3rem]"
                 placeholder="Name of item"
                 value={item.nameItem}
                 onChange={(e) => setItem({ ...item, nameItem: e.target.value })
@@ -272,21 +272,21 @@ const EditButton = ({ Info }) => {
               />
               <input
                 type="text"
-                className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem]"
+                className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.2rem] md:w-[20rem] md:h-[3rem]"
                 placeholder="Description"
                 value={item.desc}
                 onChange={(e) => setItem({ ...item, desc: e.target.value })}
               />
               <input
                 type="text"
-                className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem]"
+                className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.2rem] md:w-[20rem] md:h-[3rem]"
                 placeholder="Found at"
                 value={item.found}
                 onChange={(e) => setItem({ ...item, found: e.target.value })}
               />
               <input
                 type="text"
-                className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem]"
+                className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.2rem] md:w-[20rem] md:h-[3rem]"
                 placeholder="Surredered by: "
                 value={item.surrenderedBy}
                 onChange={(e) =>
@@ -295,7 +295,7 @@ const EditButton = ({ Info }) => {
               />
               <button
                 type="button"
-                className="text-black text-[1rem] hover:bg-[#134083] hover:text-white bg-[#F9D62B] w-[10rem] h-[2rem] rounded-full"
+                className="text-black text-[1rem] hover:bg-[#134083] hover:text-white bg-[#F9D62B] w-[10rem] h-[2rem] rounded-full md:text-[1.4rem] md:h-[3rem]"
                 onClick={checker}
               >
                 SAVE
