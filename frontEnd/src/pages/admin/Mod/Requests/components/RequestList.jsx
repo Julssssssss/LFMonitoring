@@ -14,36 +14,21 @@ const RequestList = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState('')
-  const [desc, setDesc] = useState('')
-  const [name, setName] = useState('')
-  const [found, setFound] = useState('');
   const [image, setImage] = useState([])
-  const [datePosted, setDatePosted] = useState('')
-  const [postedby, setPostedBy] = useState('')
-  const [surrenderedBy, setSurrenderedBy] = useState('')
-  const [requestBy, setRequestBy] = useState('')
-  const [emailContent, setEmailContent] = useState('');
-  const [subject, setSubject] = useState('');
-  const [index, setIndex] = useState('');
+  const [subject, setSubject] = useState('')
+  const [emailContent, setEmailContent] = useState('')
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [currentPage, setCurrentPage] = useState(1)
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [hidePagination, setHidePagination] = useState(false)
 
-  const openPopup = () => {
-    setShowConfirmation(true);
-  };
 
-  const closePopup = () => {
-   setShowConfirmation(false);
-  };
   
   const getReqList = async() => {
     try{
       const res = await axiosGetReqList.post('', {'currentPage': currentPage})
-      setItems([res.data.reqListAndItemData[0].itemData]);
-      console.log(res.data.reqListAndItemData[0].itemData)
+      console.log(res.data.reqListAndItemData)
       setList(res.data.reqListAndItemData)
       setLoading(false);
    
@@ -58,32 +43,6 @@ const RequestList = () => {
   useEffect(()=>{
     getReqList()
   }, [])
-
-  const viewItem = async (elem) => {
-    try {
-      const ItemDetails = await axiosGetReqList.post('', { itemId: elem.itemId });
-      const { data } = ItemDetails;
-      const { itemData } = data;
-  
-      // Append the new itemData to the existing itemList
-      setItemList(prevItemList => [...prevItemList, itemData]);
-  
-      // Rest of your code remains the same
-      setName(itemData.nameItem);
-      setDesc(itemData.desc);
-      setFound(itemData.found);
-      setImage(itemData.url);
-      setRequestBy(elem.Email);
-      setDatePosted(itemData.datePosted);
-      setPostedBy(itemData.postedBy);
-      setSurrenderedBy(itemData.surrenderedBy);
-      setIndex(elem._id);
-  
-      openPopup(); 
-    } catch (error) {
-      console.error("Error getting items", error);
-    }
-  };
   
 
   const pagination =()=>{
@@ -203,7 +162,7 @@ const RequestList = () => {
       </div>
     );
   }
-  console.log('eme', list )
+  //console.log('eme', list )
   function requestFormat() {
 
     return list.map((elem, index) => {
@@ -222,8 +181,8 @@ const RequestList = () => {
               </div>
             </div>
             <div className="items-center w-full justify-center flex flex-row space-x-[1rem]">
-              <button onClick={() => viewItem(elem, openPopup())} className="bg-[#F9D62B] font-poppins text-black hover:bg-[#134083] mt-[0.3rem] text-[0.7rem] md:text-[1rem] hover:text-white w-[4rem] rounded-full">View</button>
-              {/*<Approve list={list} ItemId={elem.itemId} onClick={viewItem} />*/}
+              <button onClick={()=>{viewItem(elem)}} className="bg-[#F9D62B] font-poppins text-black hover:bg-[#134083] mt-[0.3rem] text-[0.7rem] md:text-[1rem] hover:text-white w-[4rem] rounded-full">View</button>
+              {/*<Approve list={list} onClick={viewItem} />*/}
               <DeleteReq reqData={elem}/>
             </div>
           </div>
@@ -236,12 +195,109 @@ const RequestList = () => {
     return <div><Loading /></div>;
   }
 
-
   const enableDeleteButton = false
-  const displayPic = () => {
-    return <ItemsCarousel item={image} enableDeleteButton={enableDeleteButton}/>
-  };
   
+  const displayPic = (url) => {
+    return <ItemsCarousel item={url} enableDeleteButton={enableDeleteButton}/>
+  };
+
+
+  const viewItem = (elem) => {
+    console.log(showConfirmation)
+    setShowConfirmation(true)
+      
+      console.log('hiii', elem)
+      const {Email, id, itemData} = elem
+      console.log('eher', itemData)
+      const {datePosted, desc, found, nameItem, postedby, surrenderedBy, url} = itemData
+      
+      return(
+        <div className="absolute inset-0 z-50 flex flex-col space-y-[1rem] bg-[#0D1832] w-screen h-auto p-[1rem] overflow-y-auto overflow-x-hidden">
+          <div className="flex flex-row justify-between">
+            <div className="flex text-white text-[0.9rem] items-center font-semibold font-poppins whitespace-normal h-auto w-[17rem] text-wrap">Requested by:{Email}</div>
+            <button className="absolute right-[0rem] w-[2rem] h-[2rem] stroke-[#F9D62B] hover:stroke-white"
+              onClick={()=>{setShowConfirmation(false)}}>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></g>
+                <g id="SVGRepo_iconCarrier">
+                  <path
+                    d="M8.00386 9.41816C7.61333 9.02763 7.61334 8.39447 8.00386 8.00395C8.39438 7.61342 9.02755 7.61342 9.41807 8.00395L12.0057 10.5916L14.5907 8.00657C14.9813 7.61605 15.6144 7.61605 16.0049 8.00657C16.3955 8.3971 16.3955 9.03026 16.0049 9.42079L13.4199 12.0058L16.0039 14.5897C16.3944 14.9803 16.3944 15.6134 16.0039 16.0039C15.6133 16.3945 14.9802 14.9802 14.5896 16.0039L12.0057 13.42L9.42097 16.0048C9.03045 16.3953 8.39728 16.3953 8.00676 16.0048C7.61624 15.6142 7.61624 14.9811 8.00676 14.5905L10.5915 12.0058L8.00386 9.41816Z"
+                    
+                  ></path>{' '}
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z"
+                    
+                ></path>{' '}
+              </g>
+              </svg>
+            </button>
+          </div>
+          <div className="flex flex-col text-[0.9rem] text-white items-start space-y-[0.6rem] leading-[0.9]">
+            <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
+              <div className="w-24">Name of item:</div>
+              <div className="w-[10rem] h-auto">{nameItem}</div>
+            </div>
+            <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
+              <div className="w-24">Description:</div>
+              <div className="w-[10rem] h-auto">{desc}</div>
+            </div>
+            <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
+              <div className="w-24">Found at:</div>
+              <div className="w-[10rem] h-auto">{found}</div>
+            </div>
+            <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
+              <div className="w-24">Surrendered by:</div>
+              <div className="w-[10rem] h-auto">{surrenderedBy}</div>
+            </div>
+            <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
+              <div className="w-24">Posted by:</div>
+              <div className="w-[10rem] h-auto">{postedby}</div>
+            </div>
+            <div className="flex items-center space-x-[2.5rem] md:space-x-[0.5rem]">
+              <div className="w-24 md:w-[7rem] xl:w-[6rem] 2xl:w-[8.5rem] 3xl:w-[10rem]">Date posted:</div>
+              <div className="w-[10rem] h-auto">{datePosted}</div>
+            </div>
+          </div>
+          <div className="relative p-2 h-full w-full border-[0.2rem] border-[#F9D62B] rounded-xl">
+            {displayPic(url)}
+          </div>
+
+          <input 
+            type="text"
+            id="subject"  
+            placeholder="Subject" 
+            className="border-[0.2rem] bg-white border-[#F9D62B] h-[2.5rem] font-poppins rounded-xl text-black w-full text-[0.7rem] p-[0.5rem]"
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+          /> 
+            <textarea 
+            id="letter" 
+            rows={10}
+            placeholder="" 
+            className="border-[0.2rem] border-[#F9D62B] w-full text-[0.7rem] text-black bg-white p-[0.5rem] rounded-xl pb-[15rem]"
+            value={emailContent}
+            onChange={(e) => setEmailContent(e.target.value)}
+          /> 
+          <div className="flex justify-center items-center">
+            <SendButton subject={subject} emailContent={emailContent} requestBy={Email} index= {id}/>
+          </div>
+
+        </div>
+
+      )
+    
+  }
+
   return (
     <>
       <div className="flex flex-col justify-between mt-[0.5rem] md:mt-[1rem] text-white whitespace-nowrap px-[1rem]">
@@ -260,91 +316,7 @@ const RequestList = () => {
         {hidePagination ? null : pagination()}
       </div>
 
-      {showConfirmation &&(
-        
-          <div className="absolute inset-0 z-50 flex flex-col space-y-[1rem] bg-[#0D1832] w-screen h-auto p-[1rem] overflow-y-auto overflow-x-hidden">
-            <div className="flex flex-row justify-between">
-              <div className="flex text-white text-[0.9rem] items-center font-semibold font-poppins whitespace-normal h-auto w-[17rem] text-wrap">Requested by:{requestBy}</div>
-              <button className="absolute right-[0rem] w-[2rem] h-[2rem] stroke-[#F9D62B] hover:stroke-white"
-                onClick={closePopup}>
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                    <g
-                      id="SVGRepo_tracerCarrier"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    ></g>
-                    <g id="SVGRepo_iconCarrier">
-                      <path
-                        d="M8.00386 9.41816C7.61333 9.02763 7.61334 8.39447 8.00386 8.00395C8.39438 7.61342 9.02755 7.61342 9.41807 8.00395L12.0057 10.5916L14.5907 8.00657C14.9813 7.61605 15.6144 7.61605 16.0049 8.00657C16.3955 8.3971 16.3955 9.03026 16.0049 9.42079L13.4199 12.0058L16.0039 14.5897C16.3944 14.9803 16.3944 15.6134 16.0039 16.0039C15.6133 16.3945 14.9802 14.9802 14.5896 16.0039L12.0057 13.42L9.42097 16.0048C9.03045 16.3953 8.39728 16.3953 8.00676 16.0048C7.61624 15.6142 7.61624 14.9811 8.00676 14.5905L10.5915 12.0058L8.00386 9.41816Z"
-                        
-                      ></path>{' '}
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z"
-                        
-                    ></path>{' '}
-                  </g>
-                </svg>
-              </button>
-            </div>
-            <div className="flex flex-col text-[0.9rem] text-white items-start space-y-[0.6rem] leading-[0.9]">
-              <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
-                <div className="w-24">Name of item:</div>
-                <div className="w-[10rem] h-auto">{name}</div>
-              </div>
-              <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
-                <div className="w-24">Description:</div>
-                <div className="w-[10rem] h-auto">{desc}</div>
-              </div>
-              <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
-                <div className="w-24">Found at:</div>
-                <div className="w-[10rem] h-auto">{found}</div>
-              </div>
-              <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
-                <div className="w-24">Surrendered by:</div>
-                <div className="w-[10rem] h-auto">{surrenderedBy}</div>
-              </div>
-              <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
-                <div className="w-24">Posted by:</div>
-                <div className="w-[10rem] h-auto">{postedby}</div>
-              </div>
-              <div className="flex items-center space-x-[2.5rem] md:space-x-[0.5rem]">
-                <div className="w-24 md:w-[7rem] xl:w-[6rem] 2xl:w-[8.5rem] 3xl:w-[10rem]">Date posted:</div>
-                <div className="w-[10rem] h-auto">{datePosted}</div>
-              </div>
-            </div>
-            <div className="relative p-2 h-full w-full border-[0.2rem] border-[#F9D62B] rounded-xl">
-              {displayPic()}
-            </div>
-
-            <input 
-              type="text"
-              id="subject"  
-              placeholder="Subject" 
-              className="border-[0.2rem] bg-white border-[#F9D62B] h-[2.5rem] font-poppins rounded-xl text-black w-full text-[0.7rem] p-[0.5rem]"
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-            /> 
-              <textarea 
-              id="letter" 
-              rows={10}
-              placeholder="" 
-              className="border-[0.2rem] border-[#F9D62B] w-full text-[0.7rem] text-black bg-white p-[0.5rem] rounded-xl pb-[15rem]"
-              value={emailContent}
-              onChange={(e) => setEmailContent(e.target.value)}
-            /> 
-            <div className="flex justify-center items-center">
-              <SendButton subject={subject} emailContent={emailContent} requestBy={requestBy} index= {index}/>
-            </div>
-
-          </div>
-
-      )}
+      {showConfirmation ? viewItem() : null}
     </>
   );
 };
