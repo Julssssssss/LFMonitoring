@@ -74,13 +74,13 @@ router.post('/data', verifyToken, async(req, res) => {
     const { Name, Email, Picture, Role } = req.user;
     const user = {Name, Email, Role}
     if('startDate' in req.body && 'endDate' in req.body){
-      const {startDate, endDate} = req.body 
+      const {startDate, endDate, currentPage} = req.body 
       await itemModels.find({
         datePosted:{
           $gte: new Date(startDate), //gte stands for greater than
           $lt: new Date(endDate).setUTCHours(23, 59, 59, 999) //lt stands for less than
         }
-      }).lean().sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
+      }).lean().limit(6).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
       .then((result) => {
         res.status(200).json({
           items: result,
@@ -94,9 +94,9 @@ router.post('/data', verifyToken, async(req, res) => {
       });
     }
     else if('searchQuery' in req.body){
-      const {searchQuery} = req.body
+      const {searchQuery, currentPage} = req.body
       console.log(searchQuery)
-      await itemModels.find({ 'nameItem': searchQuery.toLowerCase()}).lean().sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
+      await itemModels.find({ 'nameItem': searchQuery.toLowerCase()}).lean().limit(6).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
       .then((result) => {
         console.log(result)
         res.status(200).json({
