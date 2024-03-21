@@ -51,7 +51,7 @@ router.post("/data", verifyToken, async(req, res)=>{
                     }
                 }).lean().limit(6).skip((currentPage - 1) * 6).sort({'datePosted': -1}) //waiting na lang sa pagination sa frontEnd
                     .then(result=>{
-                        console.log(result)
+                        //console.log(result)
                         res.status(200).json({
                             items: result,
                             picture: Picture,
@@ -74,7 +74,7 @@ router.post("/data", verifyToken, async(req, res)=>{
             }
             else{
                 const {currentPage} = req.body
-                console.log(currentPage)
+                //console.log(currentPage)
                 itemModels.find({}).lean().limit(6).skip((currentPage - 1) * 6).sort({'datePosted': -1}) //waiting na lang sa pagination sa frontEnd
                     .then(result=>{
                         //console.log(result)

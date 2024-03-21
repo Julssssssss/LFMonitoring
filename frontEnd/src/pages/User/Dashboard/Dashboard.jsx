@@ -16,22 +16,25 @@ const Dashboard = () => {
   const [userUsedSearch, setUserUsedSearch] = useState(false)
 
   const getData = async () => {
-    setLoading(true)
     await getUserAndItem(currentPage)
     .then((result)=>{
       setData([result])
-      console.log(data)
       setLoading(false);
+      //console.log(data)
     })
   };
   //NOTE PROBLEM MO IS IF NAG SEARCH BY DATE YUNG DATA PAG PININDOT YUNG NEXT PAGE IS PAGE NA NI GETDATA 
   useEffect(() => {
+    setLoading(true)
     if(userUsedSearch){
       if(searchQuery){
         searchData()
       }
       else if(startDate && endDate){
         searchByDate()
+      }
+      else{
+        window.location.reload()
       }
     }
     else{
@@ -42,10 +45,9 @@ const Dashboard = () => {
   if (loading) {
     return <div><Loading/></div>;
   }
-
+  //console.log(userUsedSearch)
   const searchData = async()=>{
     if(searchQuery){
-      setUserUsedSearch(true)
       await axiosFetchItems.post('', {
         'searchQuery': searchQuery,
         'currentPage' : currentPage
@@ -53,13 +55,13 @@ const Dashboard = () => {
       .then(res=>{
         console.log(res.data)
         setData([res.data])
+        setLoading(false);
       })
     }
   }
 
   const searchByDate = async()=>{
     if(startDate && endDate){
-      setUserUsedSearch(true)
       await axiosFetchItems.post('', {
           'startDate':startDate,
           'endDate':endDate,
@@ -67,6 +69,7 @@ const Dashboard = () => {
       })
       .then(res=>{
         setData([res.data])
+        setLoading(false);
       })
     }
   }
@@ -118,7 +121,7 @@ const Dashboard = () => {
             onChange={(e)=>{setEndDate(e.target.value), setSearchQuery("")}}
         />
         <button className="btn h-[2rem] w-[10rem] overflow-hidden"
-            onClick={()=>{searchByDate, setCurrentPage(1)}}
+            onClick={()=>{setUserUsedSearch(true), setCurrentPage(1), searchByDate()}}
         >
             {'Search by Date'}
         </button>
@@ -146,7 +149,7 @@ const Dashboard = () => {
             onChange={(e)=>{setSearchQuery(e.target.value), setStartDate(''), setEndDate('')}}
           />
           <button className="btn"
-            onClick={()=>{searchData, setCurrentPage(1)}}>
+            onClick={()=>{setUserUsedSearch(true), setCurrentPage(1), searchData()}}>
             {'search'}
           </button>
         </div>
