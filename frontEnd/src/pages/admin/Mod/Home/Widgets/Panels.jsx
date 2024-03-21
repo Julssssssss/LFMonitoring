@@ -13,11 +13,10 @@ const Panels = ({itemData}) => {
   },[])
   const fetchArchReqLength =async()=>{
     const result = await axiosGetReqList.post()
-    setReqLength(result.data.reqList.length) 
+    setReqLength(result.data.reqListAndItemData.length)  
 
     const archLength = await axiosFetchArchLength.post()
     setArchiveLength(archLength.data)
-    console.log(archiveLength)
   }
 
   function foundItems() {

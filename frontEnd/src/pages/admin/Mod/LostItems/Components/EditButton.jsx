@@ -7,7 +7,7 @@ const Modal = ({ isOpen, children }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="absolute inset-0 z-1 inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="absolute z-1 inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-[#134083] shadow-md w-[18rem] h-[30rem] md:w-[24rem] md:h-[41rem] rounded-2xl">
         {children}
       </div>
