@@ -61,7 +61,7 @@ router.post("/data", verifyToken, async(req, res)=>{
             }
             else if('searchQuery' in req.body){
                 const {searchQuery} = req.body
-                itemModels.find({'nameItem': searchQuery}).lean().sort({'datePosted': -1}) //waiting na lang sa pagination sa frontEnd
+                itemModels.find({'nameItem': searchQuery.toLowerCase()}).lean().sort({'datePosted': -1}) //waiting na lang sa pagination sa frontEnd
                     .then(result=>{
                         res.status(200).json({
                             items: result,

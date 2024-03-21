@@ -96,7 +96,7 @@ router.post('/data', verifyToken, async(req, res) => {
     else if('searchQuery' in req.body){
       const {searchQuery} = req.body
       console.log(searchQuery)
-      await itemModels.find({ 'nameItem': searchQuery}).lean().sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
+      await itemModels.find({ 'nameItem': searchQuery.toLowerCase()}).lean().sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
       .then((result) => {
         console.log(result)
         res.status(200).json({
@@ -207,7 +207,7 @@ router.post('/sendItem', verifyToken, upload.array('image'), async (req, res) =>
 
     const uploadItem = new itemModels({
       url: uploadedImages,
-      nameItem,
+      "nameItem": nameItem.toLowerCase(),
       desc,
       found,
       surrenderedBy,
@@ -284,6 +284,7 @@ router.post('/archive/UnclaimedItems/:id', verifyToken, async (req, res) => {
     const {url, nameItem, desc, found, surrenderedBy, postedBy, datePosted, approved} = sourceItem
     
     const moveItem = new unclaimedItemsModels({
+      "_id": id,
       "url": url,
       "nameItem": nameItem,
       "found": found,
@@ -362,16 +363,27 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
           $lt: new Date(endDate).setUTCHours(23, 59, 59, 999) //lt stands for less than
         }
       }).lean().sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
-      .then(result=>{
-        const reqList = result.map(elem=>{
-          return {
-            'id': elem._id,
-            "itemId": elem.itemId,
-            "Email":elem.Email,
-            "haveBeenEmailed": elem.haveBeenEmailed,
-            "dateRequested": dateAndTime(elem.dateRequested)
-          }
-        })
+      .then(async(result)=>{
+        //console.log(itemData)
+        const reqListAndItemData = await Promise.all (result.map(async(elem)=>{
+          let itemData = await itemModels.findById(elem.itemId).lean()
+            if(!itemData){
+            itemData = await unclaimedItemsModels.findById(elem.itemId).lean()
+             if(!itemData){
+             return itemData = await transModels.findById(elem.itemId).lean()
+             }
+
+            else{return itemData}
+            }
+            return {
+              'id': elem._id,
+              "itemId": elem.itemId,
+              "Email":elem.Email,
+              "haveBeenEmailed": elem.haveBeenEmailed,
+              "dateRequested": dateAndTime(elem.dateRequested),
+              "itemData": itemData
+            }
+        }))
         //console.log(reqList)
         res.status(200).json({
           'reqList': reqList
@@ -381,32 +393,18 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
     else if('searchQuery' in req.body){
       let {searchQuery} = req.body
       reqModels.find({'Email':searchQuery}).lean().sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
-      .then(result=>{
-        if(!result){res.json(`request not found`)}
-        const reqList = result.map(elem=>{
-          //itemModels.findById(elem.itemId).lean()
-          return {
-            'id': elem._id,
-            "itemId": elem.itemId,
-            "Email":elem.Email,
-            "haveBeenEmailed": elem.haveBeenEmailed,
-            "dateRequested": dateAndTime(elem.dateRequested)
-          }
-        })
-        console.log(reqList[0].itemId)
-        res.status(200).json({
-          'reqList': reqList
-        })
-      })
-    }
-    else{
-      const {currentPage} = req.body
-      console.log('hello')
-      await reqModels.find({}).lean().limit(6).skip((currentPage - 1) *5).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
       .then(async(result)=>{
-        const itemData = await itemModels.findById(result[0].itemId).lean()
         //console.log(itemData)
-        const reqListAndItemData = result.map((elem)=>{
+        const reqListAndItemData = await Promise.all (result.map(async(elem)=>{
+          let itemData = await itemModels.findById(elem.itemId).lean()
+            if(!itemData){
+            itemData = await unclaimedItemsModels.findById(elem.itemId).lean()
+             if(!itemData){
+             return itemData = await transModels.findById(elem.itemId).lean()
+             }
+
+            else{return itemData}
+            }
             return {
               'id': elem._id,
               "itemId": elem.itemId,
@@ -415,7 +413,39 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
               "dateRequested": dateAndTime(elem.dateRequested),
               "itemData": itemData
             }
+        }))
+        
+        res.status(200).json({
+          'reqList': reqList
         })
+      })
+    }
+    else{
+      const {currentPage} = req.body
+      console.log('hello')
+      await reqModels.find({}).lean().limit(6).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
+      .then(async(result)=>{
+        //console.log(itemData)
+        const reqListAndItemData = await Promise.all (result.map(async(elem)=>{
+          let itemData = await itemModels.findById(elem.itemId).lean()
+            if(!itemData){
+            itemData = await unclaimedItemsModels.findById(elem.itemId).lean()
+             if(!itemData){
+             return itemData = await transModels.findById(elem.itemId).lean()
+             }
+
+            else{return itemData}
+            }
+            return {
+              'id': elem._id,
+              "itemId": elem.itemId,
+              "Email":elem.Email,
+              "haveBeenEmailed": elem.haveBeenEmailed,
+              "dateRequested": dateAndTime(elem.dateRequested),
+              "itemData": itemData
+            }
+        }))
+        //console.log(reqListAndItemData)
 
         res.status(200).json({
           'reqListAndItemData': reqListAndItemData
