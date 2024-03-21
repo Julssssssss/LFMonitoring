@@ -368,12 +368,19 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
         const reqListAndItemData = await Promise.all (result.map(async(elem)=>{
           let itemData = await itemModels.findById(elem.itemId).lean()
             if(!itemData){
-            itemData = await unclaimedItemsModels.findById(elem.itemId).lean()
-             if(!itemData){
-             return itemData = await transModels.findById(elem.itemId).lean()
-             }
-
-            else{return itemData}
+              itemData = await unclaimedItemsModels.findById(elem.itemId).lean()
+              if(!itemData){
+                itemData = await transModels.findById(elem.itemId).lean()
+                itemData.source = `completed transaction`
+                return itemData
+              }
+              else{
+                itemData.source = `unclaimed Items`
+                return itemData
+              }
+              }
+            else{
+              itemData.source = `item Data`
             }
             return {
               'id': elem._id,
@@ -398,12 +405,19 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
         const reqListAndItemData = await Promise.all (result.map(async(elem)=>{
           let itemData = await itemModels.findById(elem.itemId).lean()
             if(!itemData){
-            itemData = await unclaimedItemsModels.findById(elem.itemId).lean()
-             if(!itemData){
-             return itemData = await transModels.findById(elem.itemId).lean()
-             }
-
-            else{return itemData}
+              itemData = await unclaimedItemsModels.findById(elem.itemId).lean()
+              if(!itemData){
+                itemData = await transModels.findById(elem.itemId).lean()
+                itemData.source = `completed transaction`
+                return itemData
+              }
+              else{
+                itemData.source = `unclaimed Items`
+                return itemData
+              }
+              }
+            else{
+              itemData.source = `itemData`
             }
             return {
               'id': elem._id,
@@ -429,12 +443,19 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
         const reqListAndItemData = await Promise.all (result.map(async(elem)=>{
           let itemData = await itemModels.findById(elem.itemId).lean()
             if(!itemData){
-            itemData = await unclaimedItemsModels.findById(elem.itemId).lean()
-             if(!itemData){
-             return itemData = await transModels.findById(elem.itemId).lean()
-             }
-
-            else{return itemData}
+              itemData = await unclaimedItemsModels.findById(elem.itemId).lean()
+              if(!itemData){
+                itemData = await transModels.findById(elem.itemId).lean()
+                itemData.source = `completed transaction`
+                return itemData
+              }
+              else{
+                itemData.source = `unclaimed Items`
+                return itemData
+              }
+              }
+            else{
+              itemData.source = `itemData`
             }
             return {
               'id': elem._id,
