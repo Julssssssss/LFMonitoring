@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { axiosSendUpdate } from "../../../../../components/api/axios";
 import UploadingScreen from "../../../../404/UploadingScreen";
 import ItemsCarousel from "../../../MainComponents/ItemsCarousel";
@@ -21,8 +21,21 @@ const EditButton = ({ Info }) => {
   const [imageUrl, setImageUrl] = useState([]);
   const [loading, setLoading] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  const [item, setItem] = useState([]);
   const [indexToReplace, setIndexToReplace] = useState(0);
   const [cooldownActive, setCooldownActive] = useState(false)
+
+  useEffect (()=>{
+    setItem({
+      id: Info._id,
+      nameItem: Info.nameItem,
+      desc: Info.desc,
+      found: Info.found,
+      surrenderedBy: Info.surrenderedBy,
+      url: Info.url,
+      datePosted: Info.datePosted,
+    })
+  }, [Info])
 
   const showWarning = (message) => {
     alert(message);
@@ -54,26 +67,14 @@ const EditButton = ({ Info }) => {
       showWarning('An error occurred during image upload.');
     }
   };
-
-  const [item, setItem] = useState({
-    id: Info._id,
-    nameItem: Info.nameItem,
-    desc: Info.desc,
-    found: Info.found,
-    surrenderedBy: Info.surrenderedBy,
-    url: Info.url,
-    datePosted: Info.datePosted,
-  });
+   
 
   const saveEdit = async () => {
     setConfirm(false);
-    console.log('save', item.url);
   
     try {
         setLoading(true);
         const formData = new FormData();
-       
-
         formData.append('nameItem', item.nameItem);
         formData.append('desc', item.desc);
         formData.append('found', item.found);

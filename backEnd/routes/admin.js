@@ -82,6 +82,7 @@ router.post('/data', verifyToken, async(req, res) => {
         }
       }).lean().limit(6).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
       .then((result) => {
+
         res.status(200).json({
           items: result,
           user: user,
@@ -237,17 +238,19 @@ router.post('/sendItem', verifyToken, upload.array('image'), async (req, res) =>
 // update or edit data to mongodb 
 router.put('/update/data/:id', verifyToken, upload.array('image'), async (req, res) => {
   try {
+    //where new and old photos are stored
     const uploadedImages = [];
     const { id } = req.params;
     const { nameItem, desc, found, surrenderedBy, datePosted, OldPic } = req.body;
+    //where new photos are stored
     const files = req.files || [];
+    
+    // this is where it stores the OldPic whethere it is array or not 
     const oldPicArray = Array.isArray(OldPic) ? OldPic : (OldPic ? [OldPic] : []);
-
+    //checks the OldPicArray or files if it not empty and store both array in one array
     if (oldPicArray.length > 0 || files.length > 0) {
       uploadedImages.push(...oldPicArray, ...files.map(file => file.path));
-    }
-
-   // console.log('Uploaded Images:', uploadedImages);
+    } 
     const updateItem = await itemModels.findByIdAndUpdate(
       id,
       { 
@@ -266,7 +269,7 @@ router.put('/update/data/:id', verifyToken, upload.array('image'), async (req, r
     const activity = `edited an item`;
     const details = updateItem;
     writeActLogs(req.user.Email, activity, details);
-
+    // response to frontend request
     res.json(updateItem);
   } catch (error) {
     console.error('Error updating item:', error);

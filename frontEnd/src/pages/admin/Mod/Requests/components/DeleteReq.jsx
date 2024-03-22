@@ -28,7 +28,7 @@ const DeleteReq = ({reqData}) => {
   return (
     <>
     <div className="">
-        <button className="bg-[#F9D62B] font-poppins text-black text-[0.7rem] hover:bg-[#134083] hover:text-white w-[4rem] rounded-full"
+        <button className="bg-[#F9D62B] font-poppins text-black text-[0.7rem] hover:bg-[#134083] hover:text-white w-[4rem] md:text-[1rem] md:w-[5rem] md:h-[1.5rem] rounded-full"
         type='button'
         onClick={openPopup}
         >

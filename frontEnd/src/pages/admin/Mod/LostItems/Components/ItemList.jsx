@@ -8,17 +8,17 @@ import Loading from "../../../../404/Loading";
 import { axiosFetchAdminData } from "../../../../../components/api/axios";
 
 const ItemList = () => {
-  const [items, setItems] = useState([]);
+  const [item, setItem] = useState();
   const [loading, setLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1)
-
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
 
   //for searchBar
   const [searchQuery, setSearchQuery] = useState("");
   const [userUsedSearch, setUserUsedSearch] = useState(false)
+  const [filteredData, setFilteredData] = useState([]);
 
   const handleDelete = (deletedId) => {
     setFilteredData(filteredData.filter(item => item._id !== deletedId));
@@ -28,8 +28,10 @@ const ItemList = () => {
     try {
       await getData(currentPage)
       .then((temp) => {
-        setItems(temp.items); 
-        setLoading(false);
+        const {items} = temp.data;
+        setItem(items); 
+    
+        setLoading(false); 
       })
     } catch (error) {
       console.error("Error getting items", error);
@@ -44,8 +46,9 @@ const ItemList = () => {
         'currentPage' : currentPage
       })
       .then(res=>{
-        console.log(res.data)
-        setItems([res.data])
+        //console.log(res.data)
+        const {items} = res.data
+        setItem(items)
         setLoading(false);
       })
     }
@@ -59,7 +62,8 @@ const ItemList = () => {
           'currentPage': currentPage
       })
       .then(res=>{
-        setItems([res.data])
+        const {items} = res.data
+        setItem(items)
         setLoading(false);
       })
     }
@@ -113,7 +117,7 @@ const ItemList = () => {
           </button>
           <button className="join-item btn btn-sm bg-[#0D1832]">{currentPage}</button>
           <button 
-            className={`join-item btn btn-sm bg-[#17394C] ${items.length < 6 ? 'btn-disabled' : ''}`}
+            className={`join-item btn btn-sm bg-[#17394C] ${item.length < 6 ? 'btn-disabled' : ''}`}
             onClick={()=>{
                 setCurrentPage(currentPage + 1)
               }}>
@@ -173,12 +177,13 @@ const ItemList = () => {
         </button>
       </div>
     );
-  }
+  } 
 
   function itemsFormat() {
-    return items.map((item, index) => {
+    return item.map((item, index) => {
       return(
         <div key={index}>
+         {console.log('normal', item)}
           <div className="flex flex-col items-center p-1 border-b-2 border-white bg-[#17394C] w-full h-auto space-x-[0.5rem] rounded-xl">
             <div className="flex flex-row justify-between w-full text-white text-[0.8rem] md:text-[1rem] font-poppins whitespace-nowrap">
               <div>{item.nameItem}</div>
@@ -202,7 +207,7 @@ const ItemList = () => {
     <>
       
         <div className="flex flex-col justify-between mt-[0.5rem] md:mt-[1rem] text-white whitespace-nowrap px-[1rem]">
-          <div className='font-poppins ml-[2rem] md:ml-[5rem] md:text-[2rem]'>LOST ITEMS</div>   
+          <div className='font-poppins ml-[2rem] md:ml-[5rem] md:text-[2rem]'>FOUND ITEMS</div>   
           {searchBar()}
         </div>
         <div className="bg-[#134083] overflow-y-auto w-full h-full rounded-[2rem] flex flex-col self-center p-[0.8rem]">

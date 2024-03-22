@@ -21,7 +21,7 @@ const RequestList = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
-  const [hidePagination, setHidePagination] = useState(false)
+
 
 
   
@@ -44,7 +44,7 @@ const RequestList = () => {
     getReqList()
   }, [])
   
-
+  //console.log('here', list)
   const pagination =()=>{
     const disable = `btn-disabled`
     return(
@@ -88,7 +88,7 @@ const RequestList = () => {
           'searchQuery': searchQuery
         })
         .then(res=>{
-          setHidePagination(true)
+         
           setItems(res.data.items)
         })
       }
@@ -105,7 +105,7 @@ const RequestList = () => {
           endDate:endDate,
       })
       .then(res=>{
-        setHidePagination(true)
+      
         setItems(res.data.items)
       })
     }
@@ -181,7 +181,7 @@ const RequestList = () => {
             </div>
             <div className="items-center w-full justify-center flex flex-row space-x-[1rem]">
               <button onClick={()=>{setSelectedItem(elem)}} className="bg-[#F9D62B] font-poppins text-black hover:bg-[#134083] mt-[0.3rem] text-[0.7rem] md:text-[1rem] hover:text-white w-[4rem] rounded-full">View</button>
-              {/*<Approve list={list} onClick={viewItem} />*/}
+              <Approve list={elem} />
               <DeleteReq reqData={elem}/>
             </div>
           </div>
@@ -205,7 +205,7 @@ const RequestList = () => {
     if(selectedItem.itemData){
       const {Email, id, itemData} = selectedItem
       const {datePosted, desc, found, nameItem, postedBy, surrenderedBy, url} = itemData
-      console.log(itemData)
+
       return(
         <div className="absolute inset-0 z-50 flex flex-col space-y-[1rem] bg-[#0D1832] w-screen h-auto p-[1rem] overflow-y-auto overflow-x-hidden">
           <div className="flex flex-row justify-between">
@@ -237,6 +237,7 @@ const RequestList = () => {
               </svg>
             </button>
           </div>
+      
           <div className="flex flex-col text-[0.9rem] text-white items-start space-y-[0.6rem] leading-[0.9]">
             <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
               <div className="w-24">Name of item:</div>
@@ -311,7 +312,7 @@ const RequestList = () => {
         <div className="flex flex-col overflow-y-auto w-full h-full space-y-[1rem]">
           {requestFormat()}
         </div>
-        {hidePagination ? null : pagination()}
+        {pagination()}
       </div>
 
       {selectedItem ? viewItem() : null}

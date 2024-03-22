@@ -65,7 +65,7 @@ const Archive = ({ Info }) => {
       </div>
 
       {showPopup && (
-        <div className="absolute z-20 -inset-4 xsm:justify-center w-full h-full flex flex-row items-center bg-black bg-opacity-50">
+        <div className="absolute z-20 -inset-4 xsm:justify-center w-screen h-screen flex flex-row items-center bg-black bg-opacity-50">
           <div className="flex flex-col bg-[#134083] shadow-md w-[19rem] h-[15rem] md:h-[25rem] md:w-[35rem] rounded-2xl whitespace-pre space-y-[0.5rem] md:space-y-[1.2rem] items-center">
           <button
               className="w-[2rem] h-[2rem] place-self-end m-[0.5rem] stroke-[#F9D62B] hover:stroke-white"
