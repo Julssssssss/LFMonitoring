@@ -74,6 +74,19 @@ const Dashboard = () => {
     }
   }
 
+  const useSearch = ()=>{
+    if(searchQuery){
+      setUserUsedSearch(true)
+      setCurrentPage(1)
+      searchData()
+    }
+    else if(startDate && endDate){
+      setUserUsedSearch(true)
+      setCurrentPage(1)
+      searchByDate()
+    }
+  }
+
   const pagination =()=>{
     const disable = `btn-disabled`
     return(
@@ -121,7 +134,7 @@ const Dashboard = () => {
             onChange={(e)=>{setEndDate(e.target.value), setSearchQuery("")}}
         />
         <button className="btn h-[2rem] w-[10rem] overflow-hidden"
-            onClick={()=>{setUserUsedSearch(true), setCurrentPage(1), searchByDate()}}
+            onClick={()=>{useSearch()}}
         >
             {'Search by Date'}
         </button>
@@ -149,7 +162,7 @@ const Dashboard = () => {
             onChange={(e)=>{setSearchQuery(e.target.value), setStartDate(''), setEndDate('')}}
           />
           <button className="btn"
-            onClick={()=>{setUserUsedSearch(true), setCurrentPage(1), searchData()}}>
+            onClick={()=>{useSearch()}}>
             {'search'}
           </button>
         </div>
