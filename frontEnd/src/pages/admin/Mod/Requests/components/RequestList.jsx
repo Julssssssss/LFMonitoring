@@ -24,12 +24,10 @@ const RequestList = () => {
   const [userUsedSearch, setUserUsedSearch] = useState(false)
 
 
-
-  
   const getReqList = async() => {
     try{
       const res = await axiosGetReqList.post('', {'currentPage': currentPage})
-      console.log(res.data.reqListAndItemData)
+      //console.log(res.data.reqListAndItemData)
       setList(res.data.reqListAndItemData)
       setLoading(false);
    
@@ -213,7 +211,6 @@ const RequestList = () => {
   const displayPic = (url) => {
     return <ItemsCarousel item={url} enableDeleteButton={enableDeleteButton}/>
   };
-
 
   const viewItem = () => { 
     if(selectedItem.itemData){

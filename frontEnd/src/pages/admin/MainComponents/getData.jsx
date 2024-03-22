@@ -4,7 +4,7 @@ const getData = async(currentPage) => {
   try {
     
     const res = await axiosFetchAdminData.post('', {'currentPage': currentPage})
-    console.log(res)
+    //console.log(res)
     return res
 
   } catch (error) { 

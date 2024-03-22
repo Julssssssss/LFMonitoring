@@ -495,10 +495,10 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
 router.post('/ArchivingTrans', verifyToken, async(req, res, next)=>{
   try{
     const {Request} = req.body
-    const {_id, itemId, Email}= Request
-    //console.log('itemId', itemId)
+    const {id, itemId, Email}= Request
+    console.log('itemId', itemId)
     const itemDel = await itemModels.findOne({'_id': itemId})
-    //console.log(itemDel)
+    console.log('here',itemDel)
     if(itemDel === null){
       res.status(404).json({error: 'data not found'})
     }
@@ -506,7 +506,7 @@ router.post('/ArchivingTrans', verifyToken, async(req, res, next)=>{
       const {url, nameItem, desc, found, surrenderedBy, datePosted, postedBy}= itemDel
       const currentDate = new Date();
       const archData = new transModels({
-        "_id": _id,
+        "_id": id,
         "itemId": itemId,
         "itemImages": url,
         "nameItem":  nameItem,
@@ -533,7 +533,7 @@ router.post('/ArchivingTrans', verifyToken, async(req, res, next)=>{
             
           })
 
-          const requestDel = await reqModels.findByIdAndDelete({'_id': _id})
+          const requestDel = await reqModels.findByIdAndDelete({'_id': id})
           if(requestDel === null){
             res.status(404).json({error: 'data not found'})
           }
