@@ -65,6 +65,19 @@ const ItemList = () => {
     }
   }
 
+  const useSearch = ()=>{
+    if(searchQuery){
+      setUserUsedSearch(true)
+      setCurrentPage(1)
+      searchData()
+    }
+    else if(startDate && endDate){
+      setUserUsedSearch(true)
+      setCurrentPage(1)
+      searchByDate()
+    }
+  }
+
   useEffect(() => {
     setLoading(true)
     if(userUsedSearch){
@@ -123,7 +136,7 @@ const ItemList = () => {
             onChange={(e)=>{setSearchQuery(e.target.value), setStartDate(''), setEndDate('')}}
           />
           <button className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-black rounded-xl text-[0.8rem] sm:text-[0.9rem] sm:h-[1.6rem] md:text-[1rem] md:h-[2rem] md:w-[5.5rem] h-[1.5rem] w-[4.5rem]"
-            onClick={()=>{setUserUsedSearch(true), setCurrentPage(1), searchData()}}
+            onClick={()=>{useSearch()}}
           >
             Search
           </button>
@@ -154,7 +167,7 @@ const ItemList = () => {
         </div>
 
         <button className="h-[1.5rem] w-[7rem] sm:h-[2rem] sm:w-[8rem] md:h-[2.5rem] md:w-[9rem] md:text-[1rem] bg-[#F9D62B] text-black text-[0.7rem] sm:text-[0.9rem] rounded-full hover:bg-[#134083] hover:text-white"
-            onClick={()=>{setUserUsedSearch(true), setCurrentPage(1), searchByDate()}}
+            onClick={()=>{useSearch()}}
         >
             Search by Date
         </button>
