@@ -21,6 +21,7 @@ const RequestList = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
+  const [userUsedSearch, setUserUsedSearch] = useState(false)
 
 
 
@@ -35,15 +36,43 @@ const RequestList = () => {
     }
     catch(err){
       console.log(err)
-      setLoading(false);
+      setLoading(true);
       return null
     }
   }
  
   useEffect(()=>{
-    getReqList()
-  }, [])
+    setLoading(true)
+    if(userUsedSearch){
+      if(searchQuery){
+        searchData()
+      }
+      else if(startDate && endDate){
+        searchByDate()
+      }
+      else{
+        window.location.reload()
+      }
+    }
+    else{
+      getReqList()
+    }
+  }, [currentPage])
   
+
+  const useSearch = ()=>{
+    if(searchQuery){
+      setUserUsedSearch(true)
+      setCurrentPage(1)
+      searchData()
+    }
+    else if(startDate && endDate){
+      setUserUsedSearch(true)
+      setCurrentPage(1)
+      searchByDate()
+    }
+  }
+
   //console.log('here', list)
   const pagination =()=>{
     const disable = `btn-disabled`
@@ -69,44 +98,29 @@ const RequestList = () => {
     )
   }
 
-  const handleInputChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
-    //handle range of dates
-    const handleStartDateChange = (e) => {
-      setStartDate(e.target.value);
-    };
-  
-    const handleEndDateChange = (e) => {
-      setEndDate(e.target.value);
-    };
-
   const searchData = async()=>{
     if(searchQuery){
-      if(searchQuery.includes("@rtu.edu.ph")){
-        await axiosGetReqList.post('', {
-          'searchQuery': searchQuery
-        })
-        .then(res=>{
-         
-          setItems(res.data.items)
-        })
-      }
-      else{
-        alert('user does not exist, please try again')
-      }
+      await axiosGetReqList.post('', {
+        'searchQuery': searchQuery,
+        'currentPage' : currentPage
+      })
+      .then(res=>{
+        setList(res.data.reqListAndItemData)
+        setLoading(false);
+      })
     }
   }
 
   const searchByDate = async()=>{
     if(startDate && endDate){
       await axiosGetReqList.post('', {
-          startDate:startDate,
-          endDate:endDate,
+          'startDate':startDate,
+          'endDate':endDate,
+          'currentPage': currentPage
       })
       .then(res=>{
-      
-        setItems(res.data.items)
+        setList(res.data.reqListAndItemData)
+        setLoading(false);
       })
     }
   }
@@ -120,10 +134,10 @@ const RequestList = () => {
             placeholder="Search"
             className="w-[12rem] xsm:w-[16rem] sm:w-[19rem] md:w-[25rem] md:h-[2.2rem] bg-[#17394C] text-[0.9rem] p-[0.3rem] text-white rounded-full"
             value={searchQuery}
-            onChange={handleInputChange}
+            onChange={(e)=>{setSearchQuery(e.target.value), setStartDate(''), setEndDate('')}}
           />
           <button className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-black rounded-xl text-[0.8rem] sm:text-[0.9rem] sm:h-[1.6rem] md:text-[1rem] md:h-[2rem] md:w-[5.5rem] h-[1.5rem] w-[4.5rem]"
-            onClick={searchData}
+            onClick={useSearch()}
           >
             Search
           </button>
@@ -137,7 +151,7 @@ const RequestList = () => {
               min="2024-01-01"
               max={new Date().toISOString().split('T')[0]}
               value={startDate}
-              onChange={handleStartDateChange}
+              onChange={(e)=>{setStartDate(e.target.value), setSearchQuery('')}}
           />
         </div>
 
@@ -149,12 +163,12 @@ const RequestList = () => {
               min="2024-01-01"
               max={new Date().toISOString().split('T')[0]}
               value={endDate}
-              onChange={handleEndDateChange}
+              onChange={(e)=>{setEndDate(e.target.value), setSearchQuery('')}}
           />
         </div>
 
         <button className="h-[1.5rem] w-[7rem] sm:h-[2rem] sm:w-[8rem] md:h-[2.5rem] md:w-[9rem] md:text-[1rem] bg-[#F9D62B] text-black text-[0.7rem] sm:text-[0.9rem] rounded-full hover:bg-[#134083] hover:text-white"
-            onClick={searchByDate}
+            onClick={useSearch()}
         >
             Search by Date
         </button>
