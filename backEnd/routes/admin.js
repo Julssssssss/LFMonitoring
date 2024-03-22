@@ -367,59 +367,23 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
         }
       }).lean().limit(6).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
       .then(async(result)=>{
-        //console.log(itemData)
+        console.log(result)
         const reqListAndItemData = await Promise.all (result.map(async(elem)=>{
-          let itemData = await itemModels.findById(elem.itemId).lean()
+          let itemData = null
+          itemData = await itemModels.findById(elem.itemId).lean()
             if(!itemData){
               itemData = await unclaimedItemsModels.findById(elem.itemId).lean()
+              //gumagana sya
               if(!itemData){
-                itemData = await transModels.findById(elem.itemId).lean()
-                itemData.source = `completed transaction`
-                return itemData
-              }
-              else{
-                itemData.source = `unclaimed Items`
-                return itemData
-              }
-              }
-            else{
-              itemData.source = `item Data`
-            }
-            return {
-              'id': elem._id,
-              "itemId": elem.itemId,
-              "Email":elem.Email,
-              "haveBeenEmailed": elem.haveBeenEmailed,
-              "dateRequested": dateAndTime(elem.dateRequested),
-              "itemData": itemData
-            }
-        }))
-        //console.log(reqList)
-        res.status(200).json({
-          'reqList': reqList
-        })
-      })
-    }
-    else if('searchQuery' in req.body){
-      let {searchQuery, currentPage} = req.body
-      reqModels.find({'Email':searchQuery}).lean().limit(6).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
-      .then(async(result)=>{
-        //console.log(itemData)
-        const reqListAndItemData = await Promise.all (result.map(async(elem)=>{
-          let itemData = await itemModels.findById(elem.itemId).lean()
-            if(!itemData){
-              itemData = await unclaimedItemsModels.findById(elem.itemId).lean()
-              if(!itemData){
-                itemData = await transModels.findById(elem.itemId).lean()
+                itemData = await transModels.findOne({'itemId' : elem.itemId}).lean()
                 if(!itemData){
-                  return null
+                  //if dinelete yung item
+                  return itemData = `item doesnt exist`
                 }
                 itemData.source = `completed transaction`
-                return itemData
               }
               else{
                 itemData.source = `unclaimed Items`
-                return itemData
               }
               }
             else{
@@ -434,9 +398,52 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
               "itemData": itemData
             }
         }))
-        
+        //console.log(reqListAndItemData)
+
         res.status(200).json({
-          'reqList': reqList
+          'reqListAndItemData': reqListAndItemData
+        })
+      })
+    }
+    else if('searchQuery' in req.body){
+      let {searchQuery, currentPage} = req.body
+      reqModels.find({'Email':searchQuery}).lean().limit(6).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
+      .then(async(result)=>{
+        console.log(result)
+        const reqListAndItemData = await Promise.all (result.map(async(elem)=>{
+          let itemData = null
+          itemData = await itemModels.findById(elem.itemId).lean()
+            if(!itemData){
+              itemData = await unclaimedItemsModels.findById(elem.itemId).lean()
+              //gumagana sya
+              if(!itemData){
+                itemData = await transModels.findOne({'itemId' : elem.itemId}).lean()
+                if(!itemData){
+                  //if dinelete yung item
+                  return itemData = `item doesnt exist`
+                }
+                itemData.source = `completed transaction`
+              }
+              else{
+                itemData.source = `unclaimed Items`
+              }
+              }
+            else{
+              itemData.source = `itemData`
+            }
+            return {
+              'id': elem._id,
+              "itemId": elem.itemId,
+              "Email":elem.Email,
+              "haveBeenEmailed": elem.haveBeenEmailed,
+              "dateRequested": dateAndTime(elem.dateRequested),
+              "itemData": itemData
+            }
+        }))
+        //console.log(reqListAndItemData)
+
+        res.status(200).json({
+          'reqListAndItemData': reqListAndItemData
         })
       })
     }
@@ -456,7 +463,7 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
                 itemData = await transModels.findOne({'itemId' : elem.itemId}).lean()
                 if(!itemData){
                   //if dinelete yung item
-                  return `hello`
+                  return itemData = `item doesnt exist`
                 }
                 itemData.source = `completed transaction`
               }
@@ -476,7 +483,7 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
               "itemData": itemData
             }
         }))
-        console.log(reqListAndItemData)
+        //console.log(reqListAndItemData)
 
         res.status(200).json({
           'reqListAndItemData': reqListAndItemData

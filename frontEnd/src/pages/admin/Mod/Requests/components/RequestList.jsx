@@ -30,6 +30,7 @@ const RequestList = () => {
       //console.log(res.data.reqListAndItemData)
       setList(res.data.reqListAndItemData)
       setLoading(false);
+      console.log(list)
    
     }
     catch(err){
