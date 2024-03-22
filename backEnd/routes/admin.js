@@ -346,6 +346,7 @@ router.post('/delete/:id', verifyToken, async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' }); 
   }
 });
+
 //set date to string
 const dateAndTime = (isoData)=>{
   const Date = isoData.toISOString().split('T')[0]
@@ -354,6 +355,7 @@ const dateAndTime = (isoData)=>{
   //console.log('dateAndTime', dateAndTime)
   return dateAndTimeString
 }
+
 //request data
 router.post('/reqList', verifyToken, async (req, res, next)=>{
   try{
@@ -367,7 +369,7 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
         }
       }).lean().limit(6).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
       .then(async(result)=>{
-        console.log(result)
+        //console.log(result)
         const reqListAndItemData = await Promise.all (result.map(async(elem)=>{
           let itemData = null
           itemData = await itemModels.findById(elem.itemId).lean()
@@ -406,10 +408,11 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
       })
     }
     else if('searchQuery' in req.body){
-      let {searchQuery, currentPage} = req.body
+      const {searchQuery, currentPage} = req.body
+      console.log(req.body)
       reqModels.find({'Email':searchQuery}).lean().limit(6).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
       .then(async(result)=>{
-        console.log(result)
+        //console.log(result)
         const reqListAndItemData = await Promise.all (result.map(async(elem)=>{
           let itemData = null
           itemData = await itemModels.findById(elem.itemId).lean()
@@ -449,10 +452,10 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
     }
     else{
       const {currentPage} = req.body
-      console.log('hello')
+      //console.log('hello')
       await reqModels.find({}).lean().limit(6).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
       .then(async(result)=>{
-        console.log(result)
+        //console.log(result)
         const reqListAndItemData = await Promise.all (result.map(async(elem)=>{
           let itemData = null
           itemData = await itemModels.findById(elem.itemId).lean()
@@ -470,7 +473,7 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
               else{
                 itemData.source = `unclaimed Items`
               }
-              }
+            }
             else{
               itemData.source = `itemData`
             }
