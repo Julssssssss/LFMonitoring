@@ -388,16 +388,16 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
                 itemData = await transModels.findOne({'itemId' : elem.itemId}).lean()
                 if(!itemData){
                   //if dinelete yung item
-                  return itemData = `item doesnt exist`
+                  return itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
                 }
-                itemData.source = `completed transaction`
+                itemData.source = `This request has been successfully completed`
               }
               else{
-                itemData.source = `unclaimed Items`
+                itemData.source = `The items associated with this request have been archived as they remain unclaimed. Please review and advise on further action needed. Thank you!`
               }
             }
             else{
-              itemData.source = `itemData`
+              itemData.source = `This request is still pending`
             }
             return {
               'id': elem._id,
@@ -433,16 +433,18 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
                 itemData = await transModels.findOne({'itemId' : elem.itemId}).lean()
                 if(!itemData){
                   //if dinelete yung item
-                  return itemData = `item doesnt exist`
+                  return itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
+
                 }
-                itemData.source = `completed transaction`
+                itemData.source = `This request has been successfully completed`
               }
               else{
-                itemData.source = `unclaimed Items`
+                itemData.source = `The items associated with this request have been archived as they remain unclaimed. Please review and advise on further action needed. Thank you!`
+
               }
             }
             else{
-              itemData.source = `itemData`
+              itemData.source = `This request is still pending`
             }
             return {
               'id': elem._id,
@@ -478,16 +480,17 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
                 itemData = await transModels.findOne({'itemId' : elem.itemId}).lean()
                 if(!itemData){
                   //if dinelete yung item
-                  return itemData = `item doesnt exist`
+                  return itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
                 }
-                itemData.source = `completed transaction`
+                itemData.source = `This request has been successfully completed`
               }
               else{
-                itemData.source = `unclaimed Items`
+                itemData.source =`The items associated with this request have been archived as they remain unclaimed. Please review and advise on further action needed. Thank you!`
+
               }
             }
             else{
-              itemData.source = `itemData`
+              itemData.source = `This request is still pending`
             }
             return {
               'id': elem._id,
@@ -623,11 +626,11 @@ router.post('/sendEmail', verifyToken, async(req, res, next)=>{
 
 router.post('/delReq', verifyToken, async(req, res, next)=>{
   try{
-    
     const {data} = req.body
+    console.log('here po', data)
     await reqModels.findByIdAndDelete(data)
     .then((result)=>{
-      //console.log(result)
+      console.log(result)
       const Activity = `deleted the request of ${result.Email}`;
       const Details = result
       writeActLogs(req.user.Email, Activity, Details)

@@ -2,7 +2,9 @@ import { axiosDeleteReq } from "../../../../../components/api/axios";
 import { useState } from "react";
 
 const DeleteReq = ({reqData}) => {
+  const {id} = reqData
   const [showConfirmation, setShowConfirmation] = useState(false);
+  
 
   const openPopup = () => {
     setShowConfirmation(true);
@@ -11,11 +13,10 @@ const DeleteReq = ({reqData}) => {
   const closePopup = () => {
     setShowConfirmation(false);
   };
-
     
     const sendDeleteReq = async()=>{
       try{
-        await axiosDeleteReq.post(null, {'data':reqData._id})
+        await axiosDeleteReq.post('', {'data':id})
         .then(res=>{
             console.log(res)
             window.location.reload();

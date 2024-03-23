@@ -57,6 +57,10 @@ const RequestList = () => {
     }
   }, [currentPage])
 
+  const showWarning = (message) => {
+    alert(message);
+  };
+
   //console.log('here', list)
   const pagination =()=>{
     const disable = `btn-disabled`
@@ -193,7 +197,7 @@ const RequestList = () => {
               </div>
             </div>
             <div className="items-center w-full justify-center flex flex-row space-x-[1rem]">
-              <button onClick={()=>{setSelectedItem(elem)}} className="bg-[#F9D62B] font-poppins text-black hover:bg-[#134083] mt-[0.3rem] text-[0.7rem] md:text-[1rem] hover:text-white w-[4rem] rounded-full">View</button>
+              <button onClick={()=>{setSelectedItem(elem), showWarning(elem.itemData.source)}} className="bg-[#F9D62B] font-poppins text-black hover:bg-[#134083] mt-[0.3rem] text-[0.7rem] md:text-[1rem] hover:text-white w-[4rem] rounded-full">View</button>
               <Approve list={elem} />
               <DeleteReq reqData={elem}/>
             </div>
@@ -216,13 +220,15 @@ const RequestList = () => {
   const viewItem = () => { 
     if(selectedItem.itemData){
       const {Email, id, itemData} = selectedItem
-      const {datePosted, desc, found, nameItem, postedBy, surrenderedBy, url} = itemData
-
+      const {datePosted, desc, found, nameItem, postedBy, surrenderedBy, url, source} = itemData
       return(
         <div className="absolute inset-0 z-50 flex flex-col space-y-[1rem] bg-[#0D1832] w-screen h-auto p-[1rem] overflow-y-auto overflow-x-hidden">
           <div className="flex flex-row justify-between">
-            <div className="flex text-white text-[0.9rem] items-center font-semibold font-poppins whitespace-normal h-auto w-[17rem] text-wrap">Requested by:{Email}</div>
-            <button className="absolute right-[0rem] w-[2rem] h-[2rem] stroke-[#F9D62B] hover:stroke-white"
+            <div className="flex flex-col">
+              <div className="flex text-white text-[0.9rem] items-center font-semibold font-poppins whitespace-normal h-auto w-[20rem] text-wrap">NOTE: {source}</div>
+              <div className="flex text-white text-[0.9rem] items-center font-semibold font-poppins whitespace-normal h-auto w-[20rem] text-wrap">Requested by: {Email}</div>
+            </div>
+            <button className="absolute right-[1rem] w-[2rem] h-[2rem] stroke-[#F9D62B] hover:stroke-white"
               onClick={()=>{setSelectedItem('')}}>
               <svg
                 viewBox="0 0 24 24"
@@ -249,7 +255,7 @@ const RequestList = () => {
               </svg>
             </button>
           </div>
-      
+         
           <div className="flex flex-col text-[0.9rem] text-white items-start space-y-[0.6rem] leading-[0.9]">
             <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
               <div className="w-24">Name of item:</div>
