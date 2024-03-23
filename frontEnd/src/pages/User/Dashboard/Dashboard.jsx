@@ -14,15 +14,19 @@ const Dashboard = () => {
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [userUsedSearch, setUserUsedSearch] = useState(false)
+  const [hasNextPage, setHasNextPage] = useState(null)
 
   const getData = async () => {
     await getUserAndItem(currentPage)
     .then((result)=>{
       setData([result])
+      setHasNextPage(result.hasNextPage)
+      
       setLoading(false);
       //console.log(data)
     })
   };
+  //console.log(hasNextPage)
   //NOTE PROBLEM MO IS IF NAG SEARCH BY DATE YUNG DATA PAG PININDOT YUNG NEXT PAGE IS PAGE NA NI GETDATA 
   useEffect(() => {
     setLoading(true)
@@ -55,6 +59,7 @@ const Dashboard = () => {
       .then(res=>{
         console.log(res.data)
         setData([res.data])
+        setHasNextPage(res.hasNextPage)
         setLoading(false);
       })
     }
@@ -69,6 +74,7 @@ const Dashboard = () => {
       })
       .then(res=>{
         setData([res.data])
+        setHasNextPage(res.hasNextPage)
         setLoading(false);
       })
     }
@@ -100,7 +106,7 @@ const Dashboard = () => {
           </button>
           <button className="join-item btn btn-lg">{currentPage}</button>
           <button 
-            className={`join-item btn btn-lg ${data[0].items.length < 6 ? 'btn-disabled' : ''}`}
+            className={`join-item btn btn-lg ${hasNextPage ? '' : 'btn-disabled'}`}
             onClick={()=>{
                 setCurrentPage(currentPage + 1)
               }}>
