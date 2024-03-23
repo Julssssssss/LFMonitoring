@@ -49,42 +49,49 @@ router.post("/data", verifyToken, async(req, res)=>{
                         $gte: new Date(startDate), //gte stands for greater than
                         $lt: new Date(endDate).setUTCHours(23, 59, 59, 999) //lt stands for less than
                     }
-                }).lean().limit(6).skip((currentPage - 1) * 6).sort({'datePosted': -1}) //waiting na lang sa pagination sa frontEnd
-                    .then(result=>{
-                        //console.log(result)
-                        res.status(200).json({
-                            items: result,
-                            picture: Picture,
-                            user: user
-                        })
-                    }
-                ).catch(err=>{console.log(err)})
+                }).lean().limit(7).skip((currentPage - 1) * 6).sort({'datePosted': -1}) //waiting na lang sa pagination sa frontEnd
+                .then((result) => {
+                    const hasNextPage = result.length > 6;
+                    const slicedResult = result.slice(0, 6)
+                    res.status(200).json({
+                      items: slicedResult,
+                      user: user,
+                      picture: Picture,
+                      'hasNextPage': hasNextPage
+                    });
+                  })
+                .catch(err=>{console.log(err)})
             }
             else if('searchQuery' in req.body){
                 const {searchQuery, currentPage} = req.body
-                itemModels.find({'nameItem': searchQuery.toLowerCase()}).lean().limit(6).skip((currentPage - 1) * 6).sort({'datePosted': -1}) //waiting na lang sa pagination sa frontEnd
-                    .then(result=>{
-                        res.status(200).json({
-                            items: result,
-                            picture: Picture,
-                            user: user
-                        })
-                    }
-                ).catch(err=>{console.log(err)})
+                itemModels.find({'nameItem': searchQuery.toLowerCase()}).lean().limit(7).skip((currentPage - 1) * 6).sort({'datePosted': -1}) //waiting na lang sa pagination sa frontEnd
+                .then((result) => {
+                    const hasNextPage = result.length > 6;
+                    const slicedResult = result.slice(0, 6)
+                    res.status(200).json({
+                      items: slicedResult,
+                      user: user,
+                      picture: Picture,
+                      'hasNextPage': hasNextPage
+                    });
+                })
+                .catch(err=>{console.log(err)})
             }
             else{
                 const {currentPage} = req.body
                 //console.log(currentPage)
-                itemModels.find({}).lean().limit(6).skip((currentPage - 1) * 6).sort({'datePosted': -1}) //waiting na lang sa pagination sa frontEnd
-                    .then(result=>{
-                        //console.log(result)
-                        res.status(200).json({
-                            items: result,
-                            picture: Picture,
-                            user: user
-                        })
-                    }
-                ).catch(err=>{console.log(err)})
+                itemModels.find({}).lean().limit(7).skip((currentPage - 1) * 6).sort({'datePosted': -1}) //waiting na lang sa pagination sa frontEnd
+                .then((result) => {
+                    const hasNextPage = result.length > 6;
+                    const slicedResult = result.slice(0, 6)
+                    res.status(200).json({
+                      items: slicedResult,
+                      user: user,
+                      picture: Picture,
+                      'hasNextPage': hasNextPage
+                    });
+                  })
+                .catch(err=>{console.log(err)})
             }
         }
         else{return res.sendStatus(401)}

@@ -80,13 +80,15 @@ router.post('/data', verifyToken, async(req, res) => {
           $gte: new Date(startDate), //gte stands for greater than
           $lt: new Date(endDate).setUTCHours(23, 59, 59, 999) //lt stands for less than
         }
-      }).lean().limit(6).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
+      }).lean().limit(7).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
       .then((result) => {
-
+        const hasNextPage = result.length > 6;
+        const slicedResult = result.slice(0, 6)
         res.status(200).json({
-          items: result,
+          items: slicedResult,
           user: user,
           picture: Picture,
+          'hasNextPage': hasNextPage
         });
       })
       .catch((err) => {
@@ -97,13 +99,15 @@ router.post('/data', verifyToken, async(req, res) => {
     else if('searchQuery' in req.body){
       const {searchQuery, currentPage} = req.body
       console.log(searchQuery)
-      await itemModels.find({ 'nameItem': searchQuery.toLowerCase()}).lean().limit(6).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
+      await itemModels.find({ 'nameItem': searchQuery.toLowerCase()}).lean().limit(7).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
       .then((result) => {
-        console.log(result)
+        const hasNextPage = result.length > 6;
+        const slicedResult = result.slice(0, 6)
         res.status(200).json({
-          items: result,
+          items: slicedResult,
           user: user,
           picture: Picture,
+          'hasNextPage': hasNextPage
         });
       })
       .catch((err) => {
@@ -113,12 +117,15 @@ router.post('/data', verifyToken, async(req, res) => {
     }
     else{
       const {currentPage} = req.body
-      await itemModels.find({}).lean().limit(6).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
+      await itemModels.find({}).lean().limit(7).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
       .then((result) => {
+        const hasNextPage = result.length > 6;
+        const slicedResult = result.slice(0, 6)
         res.status(200).json({
-          items: result,
+          items: slicedResult,
           user: user,
           picture: Picture,
+          'hasNextPage': hasNextPage
         });
       })
       .catch((err) => {
@@ -367,10 +374,11 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
           $gte: new Date(startDate), //gte stands for greater than
           $lt: new Date(endDate).setUTCHours(23, 59, 59, 999) //lt stands for less than
         }
-      }).lean().limit(6).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
+      }).lean().limit(7).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
       .then(async(result)=>{
+        const hasNextPage = result.length > 6;
         //console.log(result)
-        const reqListAndItemData = await Promise.all (result.map(async(elem)=>{
+        const reqListAndItemData = await Promise.all (result.slice(0, 6).map(async(elem)=>{
           let itemData = null
           itemData = await itemModels.findById(elem.itemId).lean()
             if(!itemData){
@@ -387,7 +395,7 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
               else{
                 itemData.source = `unclaimed Items`
               }
-              }
+            }
             else{
               itemData.source = `itemData`
             }
@@ -403,17 +411,19 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
         //console.log(reqListAndItemData)
 
         res.status(200).json({
-          'reqListAndItemData': reqListAndItemData
+          'reqListAndItemData': reqListAndItemData,
+          'hasNextPage': hasNextPage
         })
       })
     }
     else if('searchQuery' in req.body){
       const {searchQuery, currentPage} = req.body
       console.log(req.body)
-      reqModels.find({'Email':searchQuery}).lean().limit(6).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
+      reqModels.find({'Email':searchQuery}).lean().limit(7).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
       .then(async(result)=>{
+        const hasNextPage = result.length > 6;
         //console.log(result)
-        const reqListAndItemData = await Promise.all (result.map(async(elem)=>{
+        const reqListAndItemData = await Promise.all (result.slice(0, 6).map(async(elem)=>{
           let itemData = null
           itemData = await itemModels.findById(elem.itemId).lean()
             if(!itemData){
@@ -430,7 +440,7 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
               else{
                 itemData.source = `unclaimed Items`
               }
-              }
+            }
             else{
               itemData.source = `itemData`
             }
@@ -446,17 +456,19 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
         //console.log(reqListAndItemData)
 
         res.status(200).json({
-          'reqListAndItemData': reqListAndItemData
+          'reqListAndItemData': reqListAndItemData,
+          'hasNextPage': hasNextPage
         })
       })
     }
     else{
       const {currentPage} = req.body
       //console.log('hello')
-      await reqModels.find({}).lean().limit(6).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
+      await reqModels.find({}).lean().limit(7).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
       .then(async(result)=>{
+        const hasNextPage = result.length > 6;
         //console.log(result)
-        const reqListAndItemData = await Promise.all (result.map(async(elem)=>{
+        const reqListAndItemData = await Promise.all (result.slice(0, 6).map(async(elem)=>{
           let itemData = null
           itemData = await itemModels.findById(elem.itemId).lean()
             if(!itemData){
@@ -489,7 +501,8 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
         //console.log(reqListAndItemData)
 
         res.status(200).json({
-          'reqListAndItemData': reqListAndItemData
+          'reqListAndItemData': reqListAndItemData,
+          'hasNextPage': hasNextPage
         })
       })
     }

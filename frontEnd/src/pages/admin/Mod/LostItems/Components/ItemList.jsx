@@ -14,6 +14,7 @@ const ItemList = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
+  const [hasNextPage, setHasNextPage] = useState(null)
 
   //for searchBar
   const [searchQuery, setSearchQuery] = useState("");
@@ -23,13 +24,14 @@ const ItemList = () => {
   const handleDelete = (deletedId) => {
     setFilteredData(filteredData.filter(item => item._id !== deletedId));
   };
-
+  console.log(hasNextPage)
   const getItems = async () => {
     try {
       await getData(currentPage)
       .then((temp) => {
         const {items} = temp.data;
         setItem(items); 
+        setHasNextPage(temp.data.hasNextPage)
     
         setLoading(false); 
       })
@@ -49,6 +51,7 @@ const ItemList = () => {
         //console.log(res.data)
         const {items} = res.data
         setItem(items)
+        setHasNextPage(res.data.hasNextPage)
         setLoading(false);
       })
     }
@@ -64,6 +67,7 @@ const ItemList = () => {
       .then(res=>{
         const {items} = res.data
         setItem(items)
+        setHasNextPage(res.data.hasNextPage)
         setLoading(false);
       })
     }
@@ -117,7 +121,7 @@ const ItemList = () => {
           </button>
           <button className="join-item btn btn-sm bg-[#0D1832]">{currentPage}</button>
           <button 
-            className={`join-item btn btn-sm bg-[#17394C] ${item.length < 6 ? 'btn-disabled' : ''}`}
+            className={`join-item btn btn-sm bg-[#17394C] ${hasNextPage ? '' : 'btn-disabled'}`}
             onClick={()=>{
                 setCurrentPage(currentPage + 1)
               }}>

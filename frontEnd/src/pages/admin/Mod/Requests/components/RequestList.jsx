@@ -22,15 +22,16 @@ const RequestList = () => {
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [userUsedSearch, setUserUsedSearch] = useState(false)
+  const [hasNextPage, setHasNextPage] = useState(null)
 
 
   const getReqList = async() => {
     try{
       const res = await axiosGetReqList.post('', {'currentPage': currentPage})
-      //console.log(res.data.reqListAndItemData)
+      //console.log(res.data)
+      setHasNextPage(res.data.hasNextPage)
       setList(res.data.reqListAndItemData)
       setLoading(false);
-      console.log(list)
     }
     catch(err){
       console.log(err)
@@ -38,7 +39,6 @@ const RequestList = () => {
       return null
     }
   }
- 
   useEffect(()=>{
     setLoading(true)
     if(userUsedSearch){
@@ -57,7 +57,6 @@ const RequestList = () => {
     }
   }, [currentPage])
 
-
   //console.log('here', list)
   const pagination =()=>{
     const disable = `btn-disabled`
@@ -72,7 +71,7 @@ const RequestList = () => {
           </button>
           <button className="join-item btn btn-sm bg-[#0D1832]">{currentPage}</button>
           <button 
-            className={`join-item btn btn-sm bg-[#17394C] ${list.length < 6 ? 'btn-disabled' : ''}`}
+            className={`join-item btn btn-sm bg-[#17394C] ${hasNextPage ? '' : 'btn-disabled'}`}
             onClick={()=>{
                 setCurrentPage(currentPage + 1)
               }}>
@@ -91,6 +90,7 @@ const RequestList = () => {
       })
       .then(res=>{
         setList(res.data.reqListAndItemData)
+        setHasNextPage(res.data.hasNextPage)
         setLoading(false);
       })
     }
@@ -105,6 +105,7 @@ const RequestList = () => {
       })
       .then(res=>{
         setList(res.data.reqListAndItemData)
+        setHasNextPage(res.data.hasNextPage)
         setLoading(false);
       })
     }
