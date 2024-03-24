@@ -112,7 +112,7 @@ const ItemList = () => {
     const disable = `btn-disabled`
     return(
       <div className="flex flex-row justify-center">
-        <div className="join border-[0.1rem] border-[#F9D62B]">
+        <div className="join border-[0.1rem] border-[#F9D62B] mt-[0.5rem]">
           <button className={`join-item btn btn-sm bg-[#17394C] ${currentPage === 1 ? `btn-disabled` : ''}`}
             onClick={()=>{
                 setCurrentPage(currentPage - 1)
@@ -134,16 +134,16 @@ const ItemList = () => {
 
   function searchBar() {
     return (
-      <div className="flex flex-col items-center space-y-[0.5rem] font-poppins mb-[0.5rem]">
+      <div className="flex flex-col items-center space-y-[0.8rem] font-poppins mb-[0.5rem]">
         <div className="flex p-[1rem] flex-row items-center justify-center space-x-[0.5rem]">
           <input
             type="text"
             placeholder="Search"
-            className="w-[12rem] xsm:w-[16rem] sm:w-[19rem] md:w-[25rem] md:h-[2.2rem] bg-[#17394C] text-[0.9rem] p-[0.3rem] text-white rounded-full"
+            className="w-[12rem] pl-[1rem] xsm:w-[16rem] sm:w-[19rem] md:w-[25rem] md:h-[2.2rem] bg-[#17394C] md:text-[1.1rem] text-[0.9rem] p-[0.3rem] text-white rounded-full"
             value={searchQuery}
             onChange={(e)=>{setSearchQuery(e.target.value), setStartDate(''), setEndDate('')}}
           />
-          <button className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-black rounded-xl text-[0.8rem] sm:text-[0.9rem] sm:h-[1.6rem] md:text-[1rem] md:h-[2rem] md:w-[5.5rem] h-[1.5rem] w-[4.5rem]"
+          <button className="bg-[#F9D62B] font-bold hover:bg-[#134083] hover:text-white text-black rounded-xl text-[0.8rem] sm:text-[0.9rem] sm:h-[1.6rem] md:text-[1rem] md:h-[2rem] md:w-[5.5rem] h-[1.5rem] w-[4.5rem]"
             onClick={()=>{useSearch()}}
           >
             Search
@@ -174,7 +174,7 @@ const ItemList = () => {
           />
         </div>
 
-        <button className="h-[1.5rem] w-[7rem] sm:h-[2rem] sm:w-[8rem] md:h-[2.5rem] md:w-[9rem] md:text-[1rem] bg-[#F9D62B] text-black text-[0.7rem] sm:text-[0.9rem] rounded-full hover:bg-[#134083] hover:text-white"
+        <button className="h-[1.5rem] w-[7rem] font-bold sm:h-[2rem] sm:w-[8rem] md:h-[2.5rem] md:w-[9rem] md:text-[1rem] bg-[#F9D62B] text-black text-[0.7rem] sm:text-[0.9rem] rounded-full hover:bg-[#134083] hover:text-white"
             onClick={()=>{useSearch()}}
         >
             Search by Date

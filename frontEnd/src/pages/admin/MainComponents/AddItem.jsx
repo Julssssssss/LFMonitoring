@@ -142,7 +142,7 @@ const AddItem = () => {
     <div>
       <button
         onClick={openModal}
-        className="bg-[#F9D62B] font-poppins text-black text-[0.8rem] w-[8rem] h-[2rem] rounded-xl font-bold md:py-1 hover:bg-[#134083] hover:text-white"
+        className="bg-[#F9D62B] font-poppins text-black text-[0.8rem] w-[8rem] h-[1.5rem] md:h-[2rem] md:text-[1rem] rounded-xl font-bold md:py-1 hover:bg-[#134083] hover:text-white"
       >
         ADD ITEM
       </button>

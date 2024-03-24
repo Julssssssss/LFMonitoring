@@ -66,7 +66,7 @@ const RequestList = () => {
     const disable = `btn-disabled`
     return(
       <div className="flex flex-row justify-center">
-        <div className="join border-[0.1rem] border-[#F9D62B]">
+        <div className="join border-[0.1rem] mt-[0.5rem] border-[#F9D62B]">
           <button className={`join-item btn btn-sm bg-[#17394C] ${currentPage === 1 ? `btn-disabled` : ''}`}
             onClick={()=>{
                 setCurrentPage(currentPage - 1)
@@ -178,26 +178,30 @@ const RequestList = () => {
       </div>
     );
   }
-  //console.log('eme', list )
   function requestFormat() {
     return list.map((elem, index) => {
       
       return(
         <div key={index}>
-          <div className="flex flex-col justify-center border-b-2 border-white bg-[#17394C] w-full h-[4rem] space-y-[0.2rem] rounded-xl p-1">
-            <div className="flex flex-row justify-between items-center text-white text-[0.8rem] md:text-[1.2rem]">
-              {elem.Email}
-              <div className="text-[0.7rem] h-[2rem] w-auto text-end -mr-[0.2rem] xsm:-mr-[3.5rem] sm:-mr-[7rem] md:-mr-[18rem] md:text-[1rem]">
-                {elem.dateRequested}
+          <div className="relativeflex flex-col justify-center border-b-2 border-white bg-[#17394C] w-full h-auto space-y-[0.2rem] rounded-xl p-1 md:p-[0.7rem]">
+            <div className="flex flex-row justify-between items-center text-white text-[0.8rem] md:text-[1.3rem]">
+              <div className="flex flex-row w-full justify-between">
+                <div className="flex flex-col md:flex-row md:space-x-[4rem] md:items-center">
+                  <p className="font-bold">{elem.Email}</p>
+                  <p className="text-[0.7rem] md:text-[1rem]">{elem.itemData.nameItem}</p>
+                </div>
+                <div className="text-[0.6rem] p-1 xsm:text-[0.7rem] h-[2rem] w-auto text-end md:text-[1rem]">
+                  {elem.dateRequested}
+                </div>
               </div>
-              <div className={`${elem.haveBeenEmailed ? "bg-green-700" : "bg-red-700"} group h-[1rem] w-[1rem] rounded-full mr-[0.3rem]`}>
+              <div className={`${elem.haveBeenEmailed ? "bg-green-700" : "bg-red-700"} group h-[1rem] w-[1rem] rounded-full p-[0.5rem]`}>
                 <span className="absolute left-[31rem] p-2 scale-0 bg-gray-800 text-[2rem] text-white group-hover:scale-50">
                   {elem.haveBeenEmailed ? "user Emailed" : "user haven't Emailed"}
                 </span>
               </div>
             </div>
             <div className="items-center w-full justify-center flex flex-row space-x-[1rem]">
-              <button onClick={()=>{setSelectedItem(elem), showWarning(elem.itemData.source)}} className="bg-[#F9D62B] font-poppins text-black hover:bg-[#134083] mt-[0.3rem] text-[0.7rem] md:text-[1rem] hover:text-white w-[4rem] rounded-full">View</button>
+              <button onClick={()=>{setSelectedItem(elem), showWarning(elem.itemData.source)}} className="bg-[#F9D62B] font-poppins text-black hover:bg-[#134083] mt-[0.1rem] text-[0.7rem] md:text-[1rem] md:w-[5rem] hover:text-white w-[4rem] rounded-full">View</button>
               <Approve list={elem} />
               <DeleteReq reqData={elem}/>
             </div>
@@ -222,13 +226,13 @@ const RequestList = () => {
       const {Email, id, itemData} = selectedItem
       const {datePosted, desc, found, nameItem, postedBy, surrenderedBy, url, source} = itemData
       return(
-        <div className="absolute inset-0 z-50 flex flex-col space-y-[1rem] bg-[#0D1832] w-screen h-auto p-[1rem] overflow-y-auto overflow-x-hidden">
+        <div className="absolute inset-0 z-50 text-[0.9rem] md:text-[1.2rem] flex flex-col space-y-[1rem] bg-[#0D1832] font-poppins w-screen h-auto p-[1rem] overflow-y-auto overflow-x-hidden">
           <div className="flex flex-row justify-between">
             <div className="flex flex-col">
-              <div className="flex text-white text-[0.9rem] items-center font-semibold font-poppins whitespace-normal h-auto w-[20rem] text-wrap">NOTE: {source}</div>
-              <div className="flex text-white text-[0.9rem] items-center font-semibold font-poppins whitespace-normal h-auto w-[20rem] text-wrap">Requested by: {Email}</div>
+              <div className="flex text-white items-center font-semibold font-poppins whitespace-normal h-auto w-[20rem] md:w-[30rem] text-wrap">NOTE: {source}</div>
+              <div className="flex text-white items-center font-semibold font-poppins whitespace-normal h-auto w-[20rem] md:w-[30rem] text-wrap">Requested by: {Email}</div>
             </div>
-            <button className="absolute right-[1rem] w-[2rem] h-[2rem] stroke-[#F9D62B] hover:stroke-white"
+            <button className="absolute right-0 w-[2rem] h-[2rem] md:w-[2.5rem] md:h-[2.5rem] stroke-[#F9D62B] hover:stroke-white"
               onClick={()=>{setSelectedItem('')}}>
               <svg
                 viewBox="0 0 24 24"
@@ -256,30 +260,30 @@ const RequestList = () => {
             </button>
           </div>
          
-          <div className="flex flex-col text-[0.9rem] text-white items-start space-y-[0.6rem] leading-[0.9]">
+          <div className="flex flex-col text-white items-start space-y-[0.6rem] leading-[0.9]">
             <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
-              <div className="w-24">Name of item:</div>
-              <div className="w-[10rem] h-auto">{nameItem}</div>
+              <div className="w-24 md:w-[11rem]">Name of item:</div>
+              <div className="w-[10rem] md:w-[20rem] h-auto">{nameItem}</div>
             </div>
             <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
-              <div className="w-24">Description:</div>
-              <div className="w-[10rem] h-auto">{desc}</div>
+              <div className="w-24 md:w-[11rem]">Description:</div>
+              <div className="w-[10rem] md:w-[20rem] h-auto">{desc}</div>
             </div>
             <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
-              <div className="w-24">Found at:</div>
-              <div className="w-[10rem] h-auto">{found}</div>
+              <div className="w-24 md:w-[11rem]">Found at:</div>
+              <div className="w-[10rem] md:w-[20rem] h-auto">{found}</div>
             </div>
             <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
-              <div className="w-24">Surrendered by:</div>
-              <div className="w-[10rem] h-auto">{surrenderedBy}</div>
+              <div className="w-24 md:w-[11rem]">Surrendered by:</div>
+              <div className="w-[10rem] md:w-[20rem] h-auto">{surrenderedBy}</div>
             </div>
             <div className="flex items-center space-x-[2.5rem] h-auto w-auto text-wrap">
-              <div className="w-24">Posted by:</div>
-              <div className="w-[10rem] h-auto">{postedBy}</div>
+              <div className="w-24 md:w-[11rem]">Posted by:</div>
+              <div className="w-[10rem] md:w-[20rem] h-auto">{postedBy}</div>
             </div>
-            <div className="flex items-center space-x-[2.5rem] md:space-x-[0.5rem]">
-              <div className="w-24 md:w-[7rem] xl:w-[6rem] 2xl:w-[8.5rem] 3xl:w-[10rem]">Date posted:</div>
-              <div className="w-[10rem] h-auto">{datePosted}</div>
+            <div className="flex items-center space-x-[2.5rem]">
+              <div className="w-24 md:w-[11rem] xl:w-[6rem] 2xl:w-[8.5rem] 3xl:w-[10rem]">Date posted:</div>
+              <div className="w-[10rem] md:w-[20rem] h-auto">{datePosted}</div>
             </div>
           </div>
           <div className="relative p-2 h-full w-full border-[0.2rem] border-[#F9D62B] rounded-xl">
@@ -290,15 +294,15 @@ const RequestList = () => {
             type="text"
             id="subject"  
             placeholder="Subject" 
-            className="border-[0.2rem] bg-white border-[#F9D62B] h-[2.5rem] font-poppins rounded-xl text-black w-full text-[0.7rem] p-[0.5rem]"
+            className="border-[0.2rem] bg-white border-[#F9D62B] h-[2.5rem] font-poppins rounded-xl text-black w-full text-[0.7rem] md:text-[1rem] p-[0.5rem]"
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
           /> 
             <textarea 
             id="letter" 
-            rows={10}
+            rows={4}
             placeholder="" 
-            className="border-[0.2rem] border-[#F9D62B] w-full text-[0.7rem] text-black bg-white p-[0.5rem] rounded-xl pb-[15rem]"
+            className="border-[0.2rem] border-[#F9D62B] w-full text-[0.8rem] md:text-[1rem] text-black bg-white p-[0.5rem] rounded-xl pb-[15rem]"
             value={emailContent}
             onChange={(e) => setEmailContent(e.target.value)}
           /> 
@@ -322,10 +326,13 @@ const RequestList = () => {
           {searchBar()}
       </div>
 
-      <div className="bg-[#134083] font-poppins text-white overflow-y-auto p-[0.7rem] w-full h-full rounded-[2rem] flex flex-col">
-        <div className="flex flex-row p-[0.7rem] justify-between text-[0.7rem] md:text-[1rem]">
-          <p>Requestor</p>
-          <p>Date Requested</p>
+      <div className="bg-[#134083] font-poppins text-white overflow-y-auto p-[0.5rem] w-full h-full rounded-[2rem] flex flex-col">
+        <div className="flex flex-row p-[0.7rem] justify-between text-[0.7rem] sm:text-[0.9rem] md:text-[1rem]">
+          <div className="flex flex-col md:flex-row md:items-center md:space-x-[15rem] w-full">
+            <p>Requestor</p>
+            <p>Item</p>
+          </div>
+          <p className="w-auto">Date Requested</p>
         </div>
         <div className="flex flex-col overflow-y-auto w-full h-full space-y-[1rem]">
           {requestFormat()}
