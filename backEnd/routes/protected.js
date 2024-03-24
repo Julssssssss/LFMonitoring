@@ -43,45 +43,55 @@ router.post("/data", verifyToken, async(req, res)=>{
         const user = {Name, Email}
         if(TAC){
             if('startDate' in req.body && 'endDate' in req.body){
-                const {startDate, endDate} = req.body 
+                const {startDate, endDate, currentPage} = req.body 
                 itemModels.find({
                     datePosted:{
                         $gte: new Date(startDate), //gte stands for greater than
                         $lt: new Date(endDate).setUTCHours(23, 59, 59, 999) //lt stands for less than
                     }
-                }).lean().sort({'datePosted': -1}) //waiting na lang sa pagination sa frontEnd
-                    .then(result=>{
-                        res.status(200).json({
-                            items: result,
-                            picture: Picture,
-                            user: user
-                        })
-                    }
-                ).catch(err=>{console.log(err)})
+                }).lean().limit(7).skip((currentPage - 1) * 6).sort({'datePosted': -1}) //waiting na lang sa pagination sa frontEnd
+                .then((result) => {
+                    const hasNextPage = result.length > 6;
+                    const slicedResult = result.slice(0, 6)
+                    res.status(200).json({
+                      items: slicedResult,
+                      user: user,
+                      picture: Picture,
+                      'hasNextPage': hasNextPage
+                    });
+                  })
+                .catch(err=>{console.log(err)})
             }
             else if('searchQuery' in req.body){
-                const {searchQuery} = req.body
-                itemModels.find({'nameItem': searchQuery}).lean().sort({'datePosted': -1}) //waiting na lang sa pagination sa frontEnd
-                    .then(result=>{
-                        res.status(200).json({
-                            items: result,
-                            picture: Picture,
-                            user: user
-                        })
-                    }
-                ).catch(err=>{console.log(err)})
+                const {searchQuery, currentPage} = req.body
+                itemModels.find({'nameItem': searchQuery.toLowerCase()}).lean().limit(7).skip((currentPage - 1) * 6).sort({'datePosted': -1}) //waiting na lang sa pagination sa frontEnd
+                .then((result) => {
+                    const hasNextPage = result.length > 6;
+                    const slicedResult = result.slice(0, 6)
+                    res.status(200).json({
+                      items: slicedResult,
+                      user: user,
+                      picture: Picture,
+                      'hasNextPage': hasNextPage
+                    });
+                })
+                .catch(err=>{console.log(err)})
             }
             else{
                 const {currentPage} = req.body
-                itemModels.find({}).lean().limit(6).skip((currentPage - 1) * 6).sort({'datePosted': -1}) //waiting na lang sa pagination sa frontEnd
-                    .then(result=>{
-                        res.status(200).json({
-                            items: result,
-                            picture: Picture,
-                            user: user
-                        })
-                    }
-                ).catch(err=>{console.log(err)})
+                //console.log(currentPage)
+                itemModels.find({}).lean().limit(7).skip((currentPage - 1) * 6).sort({'datePosted': -1}) //waiting na lang sa pagination sa frontEnd
+                .then((result) => {
+                    const hasNextPage = result.length > 6;
+                    const slicedResult = result.slice(0, 6)
+                    res.status(200).json({
+                      items: slicedResult,
+                      user: user,
+                      picture: Picture,
+                      'hasNextPage': hasNextPage
+                    });
+                  })
+                .catch(err=>{console.log(err)})
             }
         }
         else{return res.sendStatus(401)}

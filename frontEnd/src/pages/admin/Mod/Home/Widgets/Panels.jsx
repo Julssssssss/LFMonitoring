@@ -4,6 +4,7 @@ import ArchiveDataGenerator from "./ArchiveDataGenerator"
 
 
 const Panels = ({itemData}) => {
+  //console.log('jul', itemData)
   const [reqLength, setReqLength] = useState(null) //nandito na yung max length ng data ng request gagamitin mo n lang
   const [archiveLength, setArchiveLength] = useState(null) //nandito na din yung data ha ng length ng archives
 
@@ -13,15 +14,14 @@ const Panels = ({itemData}) => {
   },[])
   const fetchArchReqLength =async()=>{
     const result = await axiosGetReqList.post()
-    setReqLength(result.data.reqList.length) 
+    setReqLength(result.data.reqListAndItemData.length)  
 
     const archLength = await axiosFetchArchLength.post()
     setArchiveLength(archLength.data)
-    console.log(archiveLength)
   }
 
   function foundItems() {
-    return itemData.items.map((item, index) => {
+    return itemData.map((item, index) => {
       return(
         <div key={index}>
           <div className="bg-[#17394C] w-full h-[2rem] md:h-[2.5rem] rounded-xl border-b-[0.1rem] border-white">
@@ -42,7 +42,7 @@ const Panels = ({itemData}) => {
   return (
     <>
     {/*panel 1 */}
-    <div className=" flex flex-col text-[1rem] text-white font-poppins items-center space-y-[1rem] p-[1rem] h-full">
+    <div className=" flex flex-col text-[1rem] text-white font-poppins items-center space-y-[1rem] p-[1rem] md:p-[2rem] h-full">
       <div className="grid grid-cols-2 gap-[1rem] w-full text-white text-[0.8rem] md:text-[1.5rem] items-center">
         <div className="flex flex-col p-[0.5rem] bg-[#134083] border-[0.1rem] border-[#F9D62B] w-full h-full md:h-[15rem] rounded-[1rem]">
           ONLINE USERS
@@ -50,7 +50,7 @@ const Panels = ({itemData}) => {
         </div>
         <div className="flex flex-col p-[0.5rem] bg-[#134083] border-[0.1rem] border-[#F9D62B] w-full h-full md:h-[15rem] rounded-[1rem]">
           lOST ITEMS
-          <p className="flex items-center justify-center h-full p-[2rem]">{itemData.items.length}</p>
+          <p className="flex items-center justify-center h-full p-[2rem]">{itemData.length}</p>
         </div>
         <div className="bg-[#134083] p-[0.5rem] border-[0.1rem] border-[#F9D62B] w-full h-full md:h-[15rem] rounded-[1rem]">
           RESOLVED CASES

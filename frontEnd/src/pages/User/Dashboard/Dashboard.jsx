@@ -11,37 +11,56 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1)
-  const [hidePagination, setHidePagination] = useState(false)
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
+  const [userUsedSearch, setUserUsedSearch] = useState(false)
+  const [hasNextPage, setHasNextPage] = useState(null)
 
   const getData = async () => {
-    setLoading(true)
     await getUserAndItem(currentPage)
     .then((result)=>{
       setData([result])
-      console.log(data)
+      setHasNextPage(result.hasNextPage)
+      
       setLoading(false);
+      //console.log(data)
     })
   };
-  
+  //console.log(hasNextPage)
+  //NOTE PROBLEM MO IS IF NAG SEARCH BY DATE YUNG DATA PAG PININDOT YUNG NEXT PAGE IS PAGE NA NI GETDATA 
   useEffect(() => {
-    getData();
+    setLoading(true)
+    if(userUsedSearch){
+      if(searchQuery){
+        searchData()
+      }
+      else if(startDate && endDate){
+        searchByDate()
+      }
+      else{
+        window.location.reload()
+      }
+    }
+    else{
+      getData()
+    }
   }, [currentPage]);
 
   if (loading) {
     return <div><Loading/></div>;
   }
-
+  //console.log(userUsedSearch)
   const searchData = async()=>{
     if(searchQuery){
       await axiosFetchItems.post('', {
-        'searchQuery': searchQuery
+        'searchQuery': searchQuery,
+        'currentPage' : currentPage
       })
       .then(res=>{
-        setHidePagination(true)
         console.log(res.data)
         setData([res.data])
+        setHasNextPage(res.hasNextPage)
+        setLoading(false);
       })
     }
   }
@@ -49,24 +68,30 @@ const Dashboard = () => {
   const searchByDate = async()=>{
     if(startDate && endDate){
       await axiosFetchItems.post('', {
-          startDate:startDate,
-          endDate:endDate,
+          'startDate':startDate,
+          'endDate':endDate,
+          'currentPage': currentPage
       })
       .then(res=>{
-        setHidePagination(true)
         setData([res.data])
+        setHasNextPage(res.hasNextPage)
+        setLoading(false);
       })
     }
   }
 
-  //handle range of dates
-  const handleStartDateChange = (e) => {
-    setStartDate(e.target.value);
-  };
-
-  const handleEndDateChange = (e) => {
-    setEndDate(e.target.value);
-  };
+  const useSearch = ()=>{
+    if(searchQuery){
+      setUserUsedSearch(true)
+      setCurrentPage(1)
+      searchData()
+    }
+    else if(startDate && endDate){
+      setUserUsedSearch(true)
+      setCurrentPage(1)
+      searchByDate()
+    }
+  }
 
   const pagination =()=>{
     const disable = `btn-disabled`
@@ -81,7 +106,7 @@ const Dashboard = () => {
           </button>
           <button className="join-item btn btn-lg">{currentPage}</button>
           <button 
-            className={`join-item btn btn-lg ${data[0].items.length < 6 ? 'btn-disabled' : ''}`}
+            className={`join-item btn btn-lg ${hasNextPage ? '' : 'btn-disabled'}`}
             onClick={()=>{
                 setCurrentPage(currentPage + 1)
               }}>
@@ -91,10 +116,6 @@ const Dashboard = () => {
       </div>
     )
   }
-
-  const handleInputChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
 
   function searchBar() {
     return (
@@ -106,7 +127,7 @@ const Dashboard = () => {
             min="2024-01-01"
             max={new Date().toISOString().split('T')[0]}
             value={startDate}
-            onChange={handleStartDateChange}
+            onChange={(e)=>{setStartDate(e.target.value), setSearchQuery('')}}
         />
         
         <b>EndDate : </b>
@@ -116,10 +137,10 @@ const Dashboard = () => {
             min="2024-01-01"
             max={new Date().toISOString().split('T')[0]}
             value={endDate}
-            onChange={handleEndDateChange}
+            onChange={(e)=>{setEndDate(e.target.value), setSearchQuery("")}}
         />
         <button className="btn h-[2rem] w-[10rem] overflow-hidden"
-            onClick={searchByDate}
+            onClick={()=>{useSearch()}}
         >
             {'Search by Date'}
         </button>
@@ -144,10 +165,10 @@ const Dashboard = () => {
             type="text"
             className="bg-[#17394C] border-b-2 mb-[1rem]  text-white p-[1rem] w-[16rem] h-8 rounded-r-lg xsm:w-[19rem] xl:w-[22rem] 2xl:h-[3rem] 3xl:w-[30rem] 3xl:h-[3rem] 3xl:text-[1.5rem]"
             value={searchQuery}
-            onChange={handleInputChange}
+            onChange={(e)=>{setSearchQuery(e.target.value), setStartDate(''), setEndDate('')}}
           />
           <button className="btn"
-            onClick={searchData}>
+            onClick={()=>{useSearch()}}>
             {'search'}
           </button>
         </div>
@@ -193,7 +214,7 @@ const Dashboard = () => {
             {sample()}
         </div>
 
-        {hidePagination ? null : pagination()}
+        {pagination()}
 
       </div>
       <img src="https://res.cloudinary.com/dxjpbwlkh/image/upload/v1709030999/Assets/1_rqlvoq.png" alt="shape3" className="h-[11rem] w-[14rem] absolute z-10 -bottom-[0rem] -right-[3rem] xsm:h-[10rem] xsm:w-[12rem] sm:h-[9rem] sm:w-[12.5rem] lg:w-[17rem] lg:h-[15rem] 3xl:w-[25rem] 3xl:h-[20rem]" />

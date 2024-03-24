@@ -65,10 +65,10 @@ const Archive = ({ Info }) => {
       </div>
 
       {showPopup && (
-        <div className="absolute z-20 -inset-4 xsm:justify-center w-full h-full flex flex-row items-center bg-black bg-opacity-50">
-          <div className="flex flex-col bg-[#134083] shadow-md w-[19rem] h-[15rem] md:h-[25rem] md:w-[35rem] rounded-2xl whitespace-pre space-y-[0.5rem] md:space-y-[1.2rem] items-center">
+        <div className="absolute z-20 -inset-3 justify-center xsm:justify-center w-screen h-screen flex flex-row items-center bg-black bg-opacity-50">
+          <div className="flex flex-col bg-[#134083] self-center shadow-md w-full h-auto py-[1.5rem] mx-[0.5rem] xsm:mx-[1rem] sm:w-full md:w-[35rem] rounded-2xl whitespace-pre md:space-y-[1.2rem] items-center">
           <button
-              className="w-[2rem] h-[2rem] place-self-end m-[0.5rem] stroke-[#F9D62B] hover:stroke-white"
+              className="w-[2rem] h-[2rem] md:w-[2.5rem] md:h-[2.5rem] place-self-end m-[0.5rem] md:mr-[1rem] stroke-[#F9D62B] hover:stroke-white"
               onClick={closePopup}
             >
              <svg
@@ -97,16 +97,37 @@ const Archive = ({ Info }) => {
                 </g>
               </svg>
             </button>
-            <div className='font-poppins text-[0.7rem] space-y-[0.5rem] md:text-[1.5rem]'>
-              <div>Name of item:       {item.nameItem}</div>
-              <div>Description:           {item.desc}</div>
-              <div>Found at:               {item.found}</div>
-              <div>Surrendered by:    {item.surrenderedBy}</div>
-              <div>Date posted:         {item.datePosted}</div>
-            </div>
+            
+            <div className="flex flex-col space-y-[2rem] justify-center items-center">
+                <div className='text-[0.7rem] sm:text-[0.8rem] md:text-[1.5rem] space-y-[1rem] font-poppins text-white whitespace-normal'>
+                  <div className="flex flex-col items-start justify-start space-y-[0.5rem]">
+                    <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
+                      <div className="w-[6rem] sm:w-[8rem md:w-[14rem]">Name of item:</div>
+                      <div className="w-[10rem] md:w-[14rem] sm h-auto">{item.nameItem}</div>
+                    </div>
+                    <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
+                      <div className="w-[6rem] sm:w-[8rem] md:w-[14rem]">Description:</div>
+                      <div className="w-[10rem] md:w-[14rem] h-auto">{item.desc}</div>
+                    </div>
+                    <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
+                      <div className="w-[6rem] sm:w-[8rem] md:w-[14rem]">Found at:</div>
+                      <div className="w-[10rem] md:w-[14rem] h-auto">{item.found}</div>
+                    </div>
+                    <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
+                      <div className="w-[6rem] sm:w-[8rem] md:w-[14rem]">Surrendered by:</div>
+                      <div className="w-[10rem] md:w-[14rem] h-auto">{item.surrenderedBy}</div>
+                    </div>
+                    <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
+                      <div className="w-[6rem] sm:w-[8rem] md:w-[14rem]">Date posted:</div>
+                      <div className="w-[10rem] md:w-[14rem] h-auto">{item.datePosted}</div>
+                    </div>
+                </div>
+              </div>
+              </div>
+
             <button
               onClick={sendToArchive}
-              className="font-poppins bg-[#F9D62B] text-[0.7rem] md:text-[1.5rem] text-black p-2 rounded-2xl mt-4 hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white"
+              className="font-poppins bg-[#F9D62B] font-bold text-[0.7rem] md:text-[1.5rem] text-black p-2 rounded-full mt-4 hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white"
             >
               Confirm Archive
             </button>

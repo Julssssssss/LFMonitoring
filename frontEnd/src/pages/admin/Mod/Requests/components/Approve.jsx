@@ -1,32 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from 'axios';
 
-const Approve = ({ RequestItem, Item, ItemId, list }) => {
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [lists, setLists] = useState([]);
-
-  useEffect(() => {
-    if (list) {
-      setLists(list);
-    }
-  }, [list]);
-
-  const openPopup = () => {
-    setShowConfirmation(true);
-  };
-
-  const closePopup = () => {
-    setShowConfirmation(false);
-  };
-
+const Approve = ({ list }) => {
   const accessToken = localStorage.getItem('accessToken');
-
-  const selectedItem = Item.find((item) => item._id === RequestItem.itemId);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const {id, Email, itemId} = list
 
   const sendToArchive = async () => {
-    console.log('hello', list);
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/priv/ArchivingTrans`, { Request: lists[ItemId] }, {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/priv/ArchivingTrans`, { Request: { id, Email, itemId} }, {
         headers: {
           'Authorization': `Bearer ${accessToken}`
         }
@@ -35,16 +17,14 @@ const Approve = ({ RequestItem, Item, ItemId, list }) => {
       if (res.data === "success") {
         alert("Successfully Archived!");
         window.location.reload();
-        closePopup();
       }
     } catch (err) {
       console.log(err);
     }
   };
 
-
-   //403 catcher
-   axios.interceptors.response.use(
+  //403 catcher
+  axios.interceptors.response.use(
     response => response,
     error => {
       const originalRequest = error.config;
@@ -75,31 +55,24 @@ const Approve = ({ RequestItem, Item, ItemId, list }) => {
     }
   );
 
-  return (
-    <>
-      <div className="">
-        <button
-          onClick={openPopup}
-          type="button"
-          className="bg-[#F9D62B] text-black font-poppins hover:bg-[#134083] text-[0.7rem] hover:text-white w-[4rem] rounded-full text-center"
-        >
-          Approve
-        </button>
-      </div>
-
-      {showConfirmation && (
-        <div className="absolute -inset-4 z-50 flex flex-col w-full h-full justify-center items-center px-[1rem] justify-center overflow-y-auto overflow-x-hidden bg-black bg-opacity-50">
-          <div className="flex flex-col bg-[#134083] shadow-md w-full h-auto p-[1rem] rounded-2xl whitespace-pre space-y-[1rem] items-center justify-center">
-          <button
-              className="w-[2rem] h-[2rem] place-self-end m-[0.1rem] stroke-[#F9D62B] hover:stroke-white"
-              onClick={closePopup}
-            >
-             <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                
+ 
+const sample =()=>{
+  if(selectedItem.itemData){
+    const {nameItem, desc, found, surrenderedBy, datePosted} = selectedItem.itemData
+    return(
+      <div className="absolute top-0 z-50 flex flex-col items-center justify-center w-screen h-screen">
+        <div className="flex items-center justify-center w-screen h-screen bg-black bg-opacity-75">
+          <div className="flex flex-col bg-[#134083] border-[0.1rem] border-[#F9D62B] rounded-[1rem] w-full mx-[1rem] md:mx-[2rem] h-auto p-[1rem]">
+            <button
+                className="w-[2rem] h-[2rem] place-self-end m-[1rem] stroke-[#F9D62B] hover:stroke-white"
+                onClick={()=>{setSelectedItem(false)}}
               >
+              <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  
+                >
                 <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                 <g
                   id="SVGRepo_tracerCarrier"
@@ -120,43 +93,61 @@ const Approve = ({ RequestItem, Item, ItemId, list }) => {
                 </g>
               </svg>
             </button>
-          <div className="flex flex-col space-y-[3rem] justify-center items-center">
-            <div className='text-[0.7rem] sm:text-[0.8rem] space-y-[1rem] font-poppins text-white whitespace-normal'>
-                <div className="flex flex-col items-start justify-start space-y-[0.5rem]">
-                  <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
-                    <div className="w-24">Name of item:</div>
-                    <div className="w-[10rem] h-auto">{selectedItem.nameItem}</div>
-                  </div>
-                  <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
-                    <div className="w-24">Description:</div>
-                    <div className="w-[10rem] h-auto">{selectedItem.desc}</div>
-                  </div>
-                  <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
-                    <div className="w-24">Found at:</div>
-                    <div className="w-[10rem] h-auto">{selectedItem.found}</div>
-                  </div>
-                  <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
-                    <div className="w-24">Surrendered by:</div>
-                    <div className="w-[10rem] h-auto">{selectedItem.surrenderedBy}</div>
-                  </div>
-                  <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
-                    <div className="w-24">Date posted:</div>
-                    <div className="w-[10rem] h-auto">{selectedItem.datePosted}</div>
-                  </div>
-                  <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
-                    <div className="w-24">Owner:</div>
-                    <div className="w-[10rem] h-auto">{RequestItem.Email}</div>
-                  </div>
-              </div>
-            </div>
 
-            <button onClick={sendToArchive} className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white text-[0.9rem] text-black p-[0.1rem] rounded-full w-[7rem] font-poppins">
-              APPROVE
-            </button>
+              <div className="flex flex-col space-y-[2rem] justify-center items-center">
+                <div className='text-[0.7rem] sm:text-[0.9rem] xsm:text-[0.8rem] md:text-[1.5rem] space-y-[1rem] font-poppins text-white whitespace-normal'>
+                  <div className="flex flex-col items-start justify-start space-y-[0.5rem]">
+                    <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
+                      <div className="w-24 sm:w-[7rem] md:w-[16rem]">Name of item:</div>
+                      <div className="w-[10rem] md:w-[16rem] h-auto">{nameItem}</div>
+                    </div>
+                    <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
+                      <div className="w-24 sm:w-[7rem] md:w-[16rem]">Description:</div>
+                      <div className="w-[10rem] md:w-[16rem] h-auto">{desc}</div>
+                    </div>
+                    <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
+                      <div className="w-24 sm:w-[7rem] md:w-[16rem]">Found at:</div>
+                      <div className="w-[10rem] md:w-[16rem] h-auto">{found}</div>
+                    </div>
+                    <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
+                      <div className="w-24 sm:w-[7rem] md:w-[16rem]">Surrendered by:</div>
+                      <div className="w-[10rem] md:w-[16rem] h-auto">{surrenderedBy}</div>
+                    </div>
+                    <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
+                      <div className="w-24 sm:w-[7rem] md:w-[16rem]">Date posted:</div>
+                      <div className="w-[10rem] md:w-[16rem] h-auto">{datePosted}</div>
+                    </div>
+                    <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
+                      <div className="w-24 sm:w-[7rem] md:w-[16rem]">Owner:</div>
+                      <div className="w-[10rem] md:w-[16rem] h-auto">{Email}</div>
+                    </div>
+                </div>
+              </div>
+              <button onClick={sendToArchive} className="bg-[#F9D62B] font-bold hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white text-[0.9rem] text-black p-[0.1rem] md:text-[1.5rem] md:h-[3rem] md:w-[10rem] rounded-full w-[7rem] font-poppins">
+                APPROVE
+              </button>
+
+            </div>
           </div>
         </div>
       </div>
-      )}
+    )
+  }
+}
+
+  return (
+    <>
+      <div className="">
+        <button
+          onClick={()=>{setSelectedItem(list)}}
+          type="button"
+          className="bg-[#F9D62B] text-black font-poppins hover:bg-[#134083] text-[0.7rem] hover:text-white w-[4rem] md:w-[6rem] md:text-[1rem] rounded-full text-center"
+        >
+          Approve
+        </button>
+      </div>
+
+      {selectedItem ? sample() : null}
     </>
   );
 };

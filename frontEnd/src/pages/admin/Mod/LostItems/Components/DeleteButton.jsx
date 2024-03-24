@@ -34,7 +34,7 @@ const DeleteButton = ({ Info, onDelete }) => {
           onDelete(Info._id, Info.url);
           showWarning('Successfully removed.')
           setConfirm(false); 
-
+          window.location.reload();
           setCooldownActive(true)
 
             setTimeout(()=>{

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { axiosSendUpdate } from "../../../../../components/api/axios";
 import UploadingScreen from "../../../../404/UploadingScreen";
 import ItemsCarousel from "../../../MainComponents/ItemsCarousel";
@@ -7,7 +7,7 @@ const Modal = ({ isOpen, children }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="absolute inset-0 z-1 inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="absolute z-1 inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-[#134083] shadow-md w-[18rem] h-[30rem] md:w-[24rem] md:h-[41rem] rounded-2xl">
         {children}
       </div>
@@ -21,8 +21,21 @@ const EditButton = ({ Info }) => {
   const [imageUrl, setImageUrl] = useState([]);
   const [loading, setLoading] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  const [item, setItem] = useState([]);
   const [indexToReplace, setIndexToReplace] = useState(0);
   const [cooldownActive, setCooldownActive] = useState(false)
+
+  useEffect (()=>{
+    setItem({
+      id: Info._id,
+      nameItem: Info.nameItem,
+      desc: Info.desc,
+      found: Info.found,
+      surrenderedBy: Info.surrenderedBy,
+      url: Info.url,
+      datePosted: Info.datePosted,
+    })
+  }, [Info])
 
   const showWarning = (message) => {
     alert(message);
@@ -54,26 +67,14 @@ const EditButton = ({ Info }) => {
       showWarning('An error occurred during image upload.');
     }
   };
-
-  const [item, setItem] = useState({
-    id: Info._id,
-    nameItem: Info.nameItem,
-    desc: Info.desc,
-    found: Info.found,
-    surrenderedBy: Info.surrenderedBy,
-    url: Info.url,
-    datePosted: Info.datePosted,
-  });
+   
 
   const saveEdit = async () => {
     setConfirm(false);
-    console.log('save', item.url);
   
     try {
         setLoading(true);
         const formData = new FormData();
-       
-
         formData.append('nameItem', item.nameItem);
         formData.append('desc', item.desc);
         formData.append('found', item.found);
@@ -156,20 +157,20 @@ const EditButton = ({ Info }) => {
         {confirm && (
           <Modal isOpen={confirm} onClose={() => setConfirm(false)}>
             <div className="absolute inset-0 flex justify-center bg-black bg-opacity-50">
-              <div className="z-50 text-white text-[1rem] md:text-[2.5rem] font-poppins place-self-center text-center bg-[#134083] p-[1.5rem] rounded-2xl shadow-md w-[18rem] h-[30rem] md:w-[24rem] md:h-[41rem]">
+              <div className="z-50 text-white text-[1rem] md:text-[2rem] font-poppins place-self-center text-center bg-[#134083] p-[1.5rem] rounded-2xl shadow-md w-[18rem] h-[30rem] md:w-[24rem] md:h-[41rem]">
                 <div className="flex flex-col h-[25rem] md:h-full space-y-[5rem] justify-center items-center">
                   <div>Ready to confirm and submit this information?</div>
                   <div className="flex flex-row space-x-[2rem]">
                     <button
                       type="button"
-                      className="text-black text-[0.7rem] bg-[#F9D62B] w-[5rem] h-[2rem] md:w-[8rem] md:h-[3rem] md:text-[1.5rem] rounded-full mr-2"
+                      className="text-black text-[0.9rem] bg-[#F9D62B] w-[5rem] h-[2rem] md:w-[8rem] md:h-[3rem] md:text-[1.5rem] rounded-full mr-2"
                       onClick={saveEdit}
                     >
                       Yes
                     </button>
                     <button
                       type="button"
-                      className="text-white text-[0.7rem] bg-gray-500 w-[5rem] h-[2rem] md:w-[8rem] md:h-[3rem] md:text-[1.5rem] rounded-full ml-2"
+                      className="text-white text-[0.9rem] bg-gray-500 w-[5rem] h-[2rem] md:w-[8rem] md:h-[3rem] md:text-[1.5rem] rounded-full ml-2"
                       onClick={() => setConfirm(false)}
                     >
                       No
@@ -213,7 +214,7 @@ const EditButton = ({ Info }) => {
                 </g>
               </svg>
             </button>
-            <div className="h-[10rem] w-[10rem] border-[0.3rem] border-[#F9D62B] rounded-xl p-[0.1rem] flex flex-col justify-center md:w-[15rem] md:h-[15rem] 2xl:w-[17rem] 2xl:h-[17rem]">
+            <div className="h-[10rem] w-[10rem] border-[0.3rem] border-[#F9D62B] rounded-xl p-[0.1rem] flex flex-col justify-center sm:h-[10rem] sm:w-[10rem] md:w-[14rem] md:h-[14rem] 2xl:w-[17rem] 2xl:h-[17rem]">
               {displayPic()}
             </div>
             
@@ -261,46 +262,50 @@ const EditButton = ({ Info }) => {
             }}
           />
 
-            <div className="flex flex-col items-center space-y-[1rem] text-white">
+            <div className="flex flex-col font-poppins items-center space-y-[0.2rem] text-white">
+              <p className="text-[0.6rem] md:text-[0.9rem] self-start">Name of Item:</p>
               <input
                 type="text"
-                className="form-control bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.2rem] md:w-[20rem] md:h-[3rem]"
+                className="form-control pl-[0.5rem] bg-[#17394C] border-[0.2rem] border-[#F9D62B] rounded-md w-[15rem] h-[1.7rem] text-[0.7rem] md:text-[1rem] md:w-[20rem] md:h-[2.5rem]"
                 placeholder="Name of item"
                 value={item.nameItem}
                 onChange={(e) => setItem({ ...item, nameItem: e.target.value })
                 }
               />
+              <p className="text-[0.6rem] md:text-[0.9rem] self-start">Description:</p>
               <input
                 type="text"
-                className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.2rem] md:w-[20rem] md:h-[3rem]"
+                className="bg-[#17394C] pl-[0.5rem] border-[0.2rem] border-[#F9D62B] rounded-md w-[15rem] h-[1.7rem] text-[0.7rem] md:text-[1rem] md:w-[20rem] md:h-[2.5rem]"
                 placeholder="Description"
                 value={item.desc}
                 onChange={(e) => setItem({ ...item, desc: e.target.value })}
               />
+              <p className="text-[0.6rem] md:text-[0.9rem] self-start">Found at:</p>
               <input
                 type="text"
-                className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.2rem] md:w-[20rem] md:h-[3rem]"
+                className="bg-[#17394C] pl-[0.5rem] border-[0.2rem] border-[#F9D62B] rounded-md w-[15rem] h-[1.7rem] text-[0.7rem] md:text-[1rem] md:w-[20rem] md:h-[2.5rem]"
                 placeholder="Found at"
                 value={item.found}
                 onChange={(e) => setItem({ ...item, found: e.target.value })}
               />
+              <p className="text-[0.6rem] md:text-[0.9rem] self-start">Surrendered by:</p>
               <input
                 type="text"
-                className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.2rem] md:w-[20rem] md:h-[3rem]"
+                className="bg-[#17394C] pl-[0.5rem] border-[0.2rem] lead-6 border-[#F9D62B] rounded-md w-[15rem] h-[1.7rem] text-[0.7rem] md:text-[1rem] md:w-[20rem] md:h-[2.5rem]"
                 placeholder="Surredered by: "
                 value={item.surrenderedBy}
                 onChange={(e) =>
                   setItem({ ...item, surrenderedBy: e.target.value })
                 }
               />
-              <button
+            </div>
+            <button
                 type="button"
-                className="text-black text-[1rem] hover:bg-[#134083] hover:text-white bg-[#F9D62B] w-[10rem] h-[2rem] rounded-full md:text-[1.4rem] md:h-[3rem]"
+                className="text-black text-[1rem] hover:bg-[#134083] hover:text-white bg-[#F9D62B] w-[8rem] h-[1.5rem] rounded-full md:text-[1.4rem] md:h-[2.5rem]"
                 onClick={checker}
               >
                 SAVE
               </button>
-            </div>
           </form>
         </Modal>
       </div>

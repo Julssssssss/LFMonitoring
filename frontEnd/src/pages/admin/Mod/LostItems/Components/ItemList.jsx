@@ -8,30 +8,32 @@ import Loading from "../../../../404/Loading";
 import { axiosFetchAdminData } from "../../../../../components/api/axios";
 
 const ItemList = () => {
-  const [items, setItems] = useState([]);
+  const [item, setItem] = useState();
   const [loading, setLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1)
-
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
-
-  const [hidePagination, setHidePagination] = useState(false)
+  const [hasNextPage, setHasNextPage] = useState(null)
 
   //for searchBar
   const [searchQuery, setSearchQuery] = useState("");
+  const [userUsedSearch, setUserUsedSearch] = useState(false)
+  const [filteredData, setFilteredData] = useState([]);
 
   const handleDelete = (deletedId) => {
     setFilteredData(filteredData.filter(item => item._id !== deletedId));
   };
-
+  console.log(hasNextPage)
   const getItems = async () => {
     try {
-      setLoading(true)
       await getData(currentPage)
       .then((temp) => {
-        setItems(temp.items); 
-        setLoading(false);
+        const {items} = temp.data;
+        setItem(items); 
+        setHasNextPage(temp.data.hasNextPage)
+    
+        setLoading(false); 
       })
     } catch (error) {
       console.error("Error getting items", error);
@@ -39,14 +41,18 @@ const ItemList = () => {
     }
   };
 
-    const searchData = async()=>{
+  const searchData = async()=>{
     if(searchQuery){
       await axiosFetchAdminData.post('', {
-        'searchQuery': searchQuery
+        'searchQuery': searchQuery,
+        'currentPage' : currentPage
       })
       .then(res=>{
-        setHidePagination(true)
-        setItems(res.data.items)
+        //console.log(res.data)
+        const {items} = res.data
+        setItem(items)
+        setHasNextPage(res.data.hasNextPage)
+        setLoading(false);
       })
     }
   }
@@ -54,18 +60,48 @@ const ItemList = () => {
   const searchByDate = async()=>{
     if(startDate && endDate){
       await axiosFetchAdminData.post('', {
-          startDate:startDate,
-          endDate:endDate,
+          'startDate':startDate,
+          'endDate':endDate,
+          'currentPage': currentPage
       })
       .then(res=>{
-        setHidePagination(true)
-        setItems(res.data.items)
+        const {items} = res.data
+        setItem(items)
+        setHasNextPage(res.data.hasNextPage)
+        setLoading(false);
       })
     }
   }
 
+  const useSearch = ()=>{
+    if(searchQuery){
+      setUserUsedSearch(true)
+      setCurrentPage(1)
+      searchData()
+    }
+    else if(startDate && endDate){
+      setUserUsedSearch(true)
+      setCurrentPage(1)
+      searchByDate()
+    }
+  }
+
   useEffect(() => {
-    getItems();
+    setLoading(true)
+    if(userUsedSearch){
+      if(searchQuery){
+        searchData()
+      }
+      else if(startDate && endDate){
+        searchByDate()
+      }
+      else{
+        window.location.reload()
+      }
+    }
+    else{
+      getItems()
+    }
   }, [currentPage]);
 
   if (loading) {
@@ -76,7 +112,7 @@ const ItemList = () => {
     const disable = `btn-disabled`
     return(
       <div className="flex flex-row justify-center">
-        <div className="join border-[0.1rem] border-[#F9D62B]">
+        <div className="join border-[0.1rem] border-[#F9D62B] mt-[0.5rem]">
           <button className={`join-item btn btn-sm bg-[#17394C] ${currentPage === 1 ? `btn-disabled` : ''}`}
             onClick={()=>{
                 setCurrentPage(currentPage - 1)
@@ -85,7 +121,7 @@ const ItemList = () => {
           </button>
           <button className="join-item btn btn-sm bg-[#0D1832]">{currentPage}</button>
           <button 
-            className={`join-item btn btn-sm bg-[#17394C] ${items.length < 6 ? 'btn-disabled' : ''}`}
+            className={`join-item btn btn-sm bg-[#17394C] ${hasNextPage ? '' : 'btn-disabled'}`}
             onClick={()=>{
                 setCurrentPage(currentPage + 1)
               }}>
@@ -96,23 +132,19 @@ const ItemList = () => {
     )
   }
 
-  const handleInputChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
-
   function searchBar() {
     return (
-      <div className="flex flex-col items-center space-y-[0.5rem] font-poppins mb-[0.5rem]">
+      <div className="flex flex-col items-center space-y-[0.8rem] font-poppins mb-[0.5rem]">
         <div className="flex p-[1rem] flex-row items-center justify-center space-x-[0.5rem]">
           <input
             type="text"
             placeholder="Search"
-            className="w-[12rem] xsm:w-[16rem] sm:w-[19rem] md:w-[25rem] md:h-[2.2rem] bg-[#17394C] text-[0.9rem] p-[0.3rem] text-white rounded-full"
+            className="w-[12rem] pl-[1rem] xsm:w-[16rem] sm:w-[19rem] md:w-[25rem] md:h-[2.2rem] bg-[#17394C] md:text-[1.1rem] text-[0.9rem] p-[0.3rem] text-white rounded-full"
             value={searchQuery}
-            onChange={handleInputChange}
+            onChange={(e)=>{setSearchQuery(e.target.value), setStartDate(''), setEndDate('')}}
           />
-          <button className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-black rounded-xl text-[0.8rem] sm:text-[0.9rem] sm:h-[1.6rem] md:text-[1rem] md:h-[2rem] md:w-[5.5rem] h-[1.5rem] w-[4.5rem]"
-            onClick={searchData}
+          <button className="bg-[#F9D62B] font-bold hover:bg-[#134083] hover:text-white text-black rounded-xl text-[0.8rem] sm:text-[0.9rem] sm:h-[1.6rem] md:text-[1rem] md:h-[2rem] md:w-[5.5rem] h-[1.5rem] w-[4.5rem]"
+            onClick={()=>{useSearch()}}
           >
             Search
           </button>
@@ -126,7 +158,7 @@ const ItemList = () => {
               min="2024-01-01"
               max={new Date().toISOString().split('T')[0]}
               value={startDate}
-              onChange={handleStartDateChange}
+              onChange={(e)=>{setStartDate(e.target.value), setSearchQuery('')}}
           />
         </div>
 
@@ -138,30 +170,21 @@ const ItemList = () => {
               min="2024-01-01"
               max={new Date().toISOString().split('T')[0]}
               value={endDate}
-              onChange={handleEndDateChange}
+              onChange={(e)=>{setEndDate(e.target.value), setSearchQuery("")}}
           />
         </div>
 
-        <button className="h-[1.5rem] w-[7rem] sm:h-[2rem] sm:w-[8rem] md:h-[2.5rem] md:w-[9rem] md:text-[1rem] bg-[#F9D62B] text-black text-[0.7rem] sm:text-[0.9rem] rounded-full hover:bg-[#134083] hover:text-white"
-            onClick={searchByDate}
+        <button className="h-[1.5rem] w-[7rem] font-bold sm:h-[2rem] sm:w-[8rem] md:h-[2.5rem] md:w-[9rem] md:text-[1rem] bg-[#F9D62B] text-black text-[0.7rem] sm:text-[0.9rem] rounded-full hover:bg-[#134083] hover:text-white"
+            onClick={()=>{useSearch()}}
         >
             Search by Date
         </button>
       </div>
     );
-  }
-
-  //handle range of dates
-  const handleStartDateChange = (e) => {
-    setStartDate(e.target.value);
-  };
-
-  const handleEndDateChange = (e) => {
-    setEndDate(e.target.value);
-  };
+  } 
 
   function itemsFormat() {
-    return items.map((item, index) => {
+    return item.map((item, index) => {
       return(
         <div key={index}>
           <div className="flex flex-col items-center p-1 border-b-2 border-white bg-[#17394C] w-full h-auto space-x-[0.5rem] rounded-xl">
@@ -187,7 +210,7 @@ const ItemList = () => {
     <>
       
         <div className="flex flex-col justify-between mt-[0.5rem] md:mt-[1rem] text-white whitespace-nowrap px-[1rem]">
-          <div className='font-poppins ml-[2rem] md:ml-[5rem] md:text-[2rem]'>LOST ITEMS</div>   
+          <div className='font-poppins ml-[2rem] md:ml-[5rem] md:text-[2rem]'>FOUND ITEMS</div>   
           {searchBar()}
         </div>
         <div className="bg-[#134083] overflow-y-auto w-full h-full rounded-[2rem] flex flex-col self-center p-[0.8rem]">
@@ -201,7 +224,7 @@ const ItemList = () => {
           <div className="flex flex-col overflow-y-auto w-full h-full space-y-[1rem]">
             {itemsFormat()}
           </div>
-          {hidePagination ? null : pagination()}
+          {pagination()}
         </div>
       
     </>

@@ -19,7 +19,7 @@ const ImageCarousel = ({ url, currentSlide, onNext, onPrev, onClose }) => {
         &lt;
       </button>
       <div className="max-w-full max-h-full" onClick={(e) => e.stopPropagation()}>
-        <img src={url[currentSlide]} alt={`Image ${currentSlide + 1}`} className="w-[17rem] h-[17rem] object-contain" />
+        <img src={url[currentSlide]} alt={`Image ${currentSlide + 1}`} className="w-[17rem] h-[17rem] sm:w-[22rem] sm:h-[22rem] md:w-[40rem] md:h-[30rem] object-contain" />
       </div>
       <button className="bg-black pb-[0.4rem] absolute right-3 top-1/2 transform -translate-y-1/2 text-white text-2xl" onClick={handleNextClick} type="button">
         &gt;
@@ -79,13 +79,13 @@ const ItemsCarousel = ({ imageUrl, item, handleDelete, handleDeleteLink, enableD
               {images.map((url, index) => (
                 <div key={index}>
                   <button onClick={() => openCarousel(index, images)}>
-                    <img className='object-contain w-[10rem] h-[9rem] xsm:h-[11rem]' src={url} alt={`product-${index}`} />
+                    <img className='object-contain w-[10rem] h-[9rem] xsm:h-[11rem] sm:w-[12rem] sm:h-[10rem] md:h-[12rem] md:w-[12rem]' src={url} alt={`product-${index}`} />
                   </button>
                   {/* Conditionally render delete button based on enableDeleteButton */}
                   {enableDeleteButton && (
                     <button
                       type="button"
-                      className="text-white text-[1rem] bg-red-500 rounded-full absolute top-2 right-7"
+                      className="text-white text-[1rem] bg-red-500 rounded-full absolute top-2 right-1 xsm:top-4 sm:top-1"
                       onClick={() => handleDeleteClick(index, index >= imageUrl.length)}
                     >
                       X

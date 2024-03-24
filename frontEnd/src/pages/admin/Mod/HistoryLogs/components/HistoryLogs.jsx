@@ -42,12 +42,12 @@ const HistoryLogs = () => {
 
   return (
     <>
-    <div className="flex flex-col justify-between mt-[0.5rem] text-white whitespace-nowrap px-[1rem]">
-        <div className='font-poppins ml-[2rem] mb-[1rem]'>HISTORY LOGS</div>   
+    <div className="flex flex-col justify-between mt-[0.5rem] text-white whitespace-nowrap px-[1rem] md:px-[2rem]">
+        <div className='font-poppins ml-[2rem] md:ml-[3rem] mb-[1rem] md:text-[2rem]'>HISTORY LOGS</div>   
         {/*searchbar */}
         </div>
     <div className="bg-[#134083] overflow-y-auto w-full h-full rounded-[2rem] flex flex-col space-y-[1rem] self-center p-[0.8rem]">
-        <div className="text-white font-poppins h-full flex flex-col space-y-[0.5rem] justify-center items-center">
+        <div className="text-white md:text-[1.5rem] font-poppins h-full flex flex-col space-y-[0.5rem] justify-center items-center">
             <b>StartDate : </b>
             <input className="bg-[#0D1832] border-[#F9D62B] border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem]"
                 type="date"
@@ -68,7 +68,7 @@ const HistoryLogs = () => {
                 onChange={handleEndDateChange}
             />
             <br></br>
-            <button className="text-[0.8rem] font-bold rounded-full hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white h-[2.5rem] w-[10rem] overflow-hidden bg-[#F9D62B] text-black p-[0.5rem]"
+            <button className="text-[0.8rem] font-bold rounded-full hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white h-[2.5rem] w-[10rem] overflow-hidden bg-[#F9D62B] md:text-[1.5rem] md:w-auto md:h-auto text-black p-[0.5rem]"
                 onClick={requestArchiveData}
             >
                 {'Generate Logs Data'}
