@@ -10,6 +10,8 @@ import TermsAndAgreement from "./components/TermsAndAgreement"
 const LandingPage = () => {
 
   const [handleTAC, setHandleTAC] =useState(true)
+  const [Role, setRole] =useState(null)
+  const [TAC, setTAC] =useState(false)
   
 
   const redirect = async()=>{
@@ -17,18 +19,22 @@ const LandingPage = () => {
       .then((res)=>{
         if(!res){logout()}
         const {role, TAC} = res
+        setRole(Role)
+        setTAC(TAC)
         //console.log(role, TAC)
-        if(role === 'admin' || TAC === true){
-          Auth();
-        }
-        else if(role === "user" && TAC === false){
-          setHandleTAC(false)
-        }
       })
   }
   
   useEffect(()=>{
-    redirect()
+    if(Role === 'admin' || TAC === true){
+      Auth();
+    }
+    else if(Role === "user" && TAC === false){
+      setHandleTAC(false)
+    }
+    else{
+      redirect()
+    }
   },[])
 
   const logout =()=>{
