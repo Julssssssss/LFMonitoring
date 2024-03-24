@@ -50,17 +50,6 @@ mongoose.connect(`${connectionString}test`)
     .then((result)=>app.listen(port,()=> console.log(`running in port ${port}`))) //run the port in 3000
     .catch(err=>{console.log(err)})
 
-const sessionSecure=()=>{
-    if(process.env.SERVER_URL === `http://localhost:3000`){
-        return false
-    }
-    else{
-        return true
-    }
-}
-//console.log('secure: ',sessionSecure())
-//use session
-
 app.use(session({
     name: 'session',
     secret: `${process.env.SESSION_SECRET}`,
