@@ -124,7 +124,7 @@ router.get("/google", passport.authenticate("google", ["email", "profile"]))
 
 router.get("/google/callback",
     passport.authenticate("google", {
-        successRedirect: `/auth/redirectFe`,
+        successRedirect: `/auth/redirectFE`,
         failureRedirect: `/auth/login/failed`,
         session: false,
     })
