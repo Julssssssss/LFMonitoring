@@ -1,9 +1,9 @@
 
-
+// inde na ginagamit
 const Login = () => {
     const googleAuth =()=>{
         window.open(
-            `${import.meta.env.VITE_API_URL}/auth/google/callback`, "_self"
+            `${VITE_API_URL}/auth/google/callback`, "_self"
         )
     }
   return (
