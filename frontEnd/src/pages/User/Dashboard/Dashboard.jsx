@@ -175,7 +175,7 @@ const Dashboard = () => {
       
           <input
             type="text"
-            className="bg-[#17394C] border-b-2 mb-[1rem] text-white p-[1rem] w-[1rem] h-[1rem] rounded-r-lg xsm:w-[19rem] md:w-[30rem] md:my-[0.5rem] lg:my-[1rem] lg:w-[45rem] xl:w-[71rem] 2xl:h-[3rem] 3xl:w-[30rem] 3xl:h-[3rem] 3xl:text-[1.5rem]"
+            className="bg-[#17394C] border-b-2 mb-[1rem] text-white p-[1rem] w-full h-[1rem] rounded-r-lg md:w-[30rem] md:my-[0.5rem] lg:my-[1rem] 3xl:h-[3rem] 3xl:text-[1.5rem]"
             value={searchQuery}
             onChange={(e)=>{setSearchQuery(e.target.value), setStartDate(''), setEndDate('')}}
           />
