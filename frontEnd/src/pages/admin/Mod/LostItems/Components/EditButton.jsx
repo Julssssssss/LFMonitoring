@@ -8,7 +8,7 @@ const Modal = ({ isOpen, children }) => {
 
   return (
     <div className="absolute z-1 inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-[#134083] shadow-md w-[18rem] h-[30rem] md:w-[24rem] md:h-[41rem] rounded-2xl">
+      <div className="bg-[#134083] border-[0.2rem] border-[#F9D62B] shadow-md w-[18rem] h-[31rem] md:w-[24rem] md:h-[38rem] lg:h-[38rem] xl:w-[30rem] xl:h-[45.5rem] rounded-2xl">
         {children}
       </div>
     </div>
@@ -149,7 +149,7 @@ const EditButton = ({ Info }) => {
       <div>
         <button
           onClick={openModal}
-          className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-[0.7rem] font-poppins font-bold text-black w-[3.5rem] md:text-[1.2rem] md:w-[5rem] h-auto rounded-full"
+          className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-[0.7rem] font-poppins font-bold text-black w-[3.5rem] md:text-[1.2rem] md:w-[5rem] h-auto rounded-full xl:text-[1.5rem] xl:w-[7rem]"
         >
           Edit
         </button>
@@ -157,20 +157,20 @@ const EditButton = ({ Info }) => {
         {confirm && (
           <Modal isOpen={confirm} onClose={() => setConfirm(false)}>
             <div className="absolute inset-0 flex justify-center bg-black bg-opacity-50">
-              <div className="z-50 text-white text-[1rem] md:text-[2rem] font-poppins place-self-center text-center bg-[#134083] p-[1.5rem] rounded-2xl shadow-md w-[18rem] h-[30rem] md:w-[24rem] md:h-[41rem]">
+              <div className="z-50 text-white border-[0.2rem] border-[#F9D62B] text-[1rem] md:text-[2rem] xl:text-[2.2rem] font-poppins place-self-center text-center bg-[#134083] p-[1.5rem] rounded-2xl shadow-md w-[18rem] h-[30rem] md:w-[24rem] md:h-[41rem] lg:h-[38rem] xl:h-[46rem] xl:w-[30rem]">
                 <div className="flex flex-col h-[25rem] md:h-full space-y-[5rem] justify-center items-center">
                   <div>Ready to confirm and submit this information?</div>
                   <div className="flex flex-row space-x-[2rem]">
                     <button
                       type="button"
-                      className="text-black text-[0.9rem] bg-[#F9D62B] w-[5rem] h-[2rem] md:w-[8rem] md:h-[3rem] md:text-[1.5rem] rounded-full mr-2"
+                      className="text-black text-[0.9rem] xl:text-[2rem] bg-[#F9D62B] w-[5rem] h-[2rem] md:w-[8rem] md:h-[3rem] md:text-[1.5rem] rounded-full mr-2"
                       onClick={saveEdit}
                     >
                       Yes
                     </button>
                     <button
                       type="button"
-                      className="text-white text-[0.9rem] bg-gray-500 w-[5rem] h-[2rem] md:w-[8rem] md:h-[3rem] md:text-[1.5rem] rounded-full ml-2"
+                      className="text-white text-[0.9rem] xl:text-[2rem] bg-gray-500 w-[5rem] h-[2rem] md:w-[8rem] md:h-[3rem] md:text-[1.5rem] rounded-full ml-2"
                       onClick={() => setConfirm(false)}
                     >
                       No
@@ -183,9 +183,9 @@ const EditButton = ({ Info }) => {
         )}
 
         <Modal isOpen={isModalOpen} onClose={closeModal} className="relative z-0">
-          <form className="flex flex-col space-y-[0.5rem] items-center p-[0.5rem]">
+          <form className="flex flex-col space-y-[0.5rem] xl:space-y-[0.5rem] xl:p-[1rem] items-center p-[0.5rem]">
             <button
-              className="w-[2rem] h-[2rem] self-end stroke-[#F9D62B] hover:stroke-white"
+              className="w-[2rem] h-[2rem] xl:w-[3rem] xl:h-[3rem] self-end stroke-[#F9D62B] hover:stroke-white"
               onClick={closeModal}
             >
              <svg
@@ -214,13 +214,13 @@ const EditButton = ({ Info }) => {
                 </g>
               </svg>
             </button>
-            <div className="h-[10rem] w-[10rem] border-[0.3rem] border-[#F9D62B] rounded-xl p-[0.1rem] flex flex-col justify-center sm:h-[10rem] sm:w-[10rem] md:w-[14rem] md:h-[14rem] 2xl:w-[17rem] 2xl:h-[17rem]">
+            <div className="h-[10rem] w-[10rem] border-[0.3rem] border-[#F9D62B] rounded-xl p-[0.1rem] flex flex-col justify-center sm:h-[10rem] sm:w-[10rem] md:w-[12rem] md:h-[12rem] lg:w-[12rem] lg:h-[12rem] xl:w-[16rem] xl:h-[16rem]">
               {displayPic()}
             </div>
             
             <input
             type="file"
-            className="text-white text-[0.6rem] md:text-[1rem]"
+            className="text-white text-[0.6rem] md:text-[1rem] xl:text-[1.2rem]"
             accept="image/*"
             multiple
             onChange={(e) => {
@@ -263,35 +263,35 @@ const EditButton = ({ Info }) => {
           />
 
             <div className="flex flex-col font-poppins items-center space-y-[0.2rem] text-white">
-              <p className="text-[0.6rem] md:text-[0.9rem] self-start">Name of Item:</p>
+              <p className="text-[0.6rem] md:text-[0.9rem] self-start xl:text-[1.1rem]">Name of Item:</p>
               <input
                 type="text"
-                className="form-control pl-[0.5rem] bg-[#17394C] border-[0.2rem] border-[#F9D62B] rounded-md w-[15rem] h-[1.7rem] text-[0.7rem] md:text-[1rem] md:w-[20rem] md:h-[2.5rem]"
+                className="form-control p-[0.2rem] bg-[#17394C] border-[0.2rem] border-[#F9D62B] rounded-md w-[15rem] h-auto text-[0.7rem] md:text-[1rem] md:w-[20rem] xl:w-[23rem] xl:text-[1.1rem]"
                 placeholder="Name of item"
                 value={item.nameItem}
                 onChange={(e) => setItem({ ...item, nameItem: e.target.value })
                 }
               />
-              <p className="text-[0.6rem] md:text-[0.9rem] self-start">Description:</p>
+              <p className="text-[0.6rem] md:text-[0.9rem] self-start xl:text-[1.1rem]">Description:</p>
               <input
                 type="text"
-                className="bg-[#17394C] pl-[0.5rem] border-[0.2rem] border-[#F9D62B] rounded-md w-[15rem] h-[1.7rem] text-[0.7rem] md:text-[1rem] md:w-[20rem] md:h-[2.5rem]"
+                className="bg-[#17394C] p-[0.2rem] border-[0.2rem] border-[#F9D62B] rounded-md w-[15rem] h-auto text-[0.7rem] md:text-[1rem] md:w-[20rem] xl:w-[23rem] xl:text-[1.1rem]"
                 placeholder="Description"
                 value={item.desc}
                 onChange={(e) => setItem({ ...item, desc: e.target.value })}
               />
-              <p className="text-[0.6rem] md:text-[0.9rem] self-start">Found at:</p>
+              <p className="text-[0.6rem] md:text-[0.9rem] self-start xl:text-[1.1rem]">Found at:</p>
               <input
                 type="text"
-                className="bg-[#17394C] pl-[0.5rem] border-[0.2rem] border-[#F9D62B] rounded-md w-[15rem] h-[1.7rem] text-[0.7rem] md:text-[1rem] md:w-[20rem] md:h-[2.5rem]"
+                className="bg-[#17394C] p-[0.2rem] border-[0.2rem] border-[#F9D62B] rounded-md w-[15rem] h-auto text-[0.7rem] md:text-[1rem] md:w-[20rem] xl:w-[23rem] xl:text-[1.1rem]"
                 placeholder="Found at"
                 value={item.found}
                 onChange={(e) => setItem({ ...item, found: e.target.value })}
               />
-              <p className="text-[0.6rem] md:text-[0.9rem] self-start">Surrendered by:</p>
+              <p className="text-[0.6rem] md:text-[0.9rem] self-start xl:text-[1.1rem]">Surrendered by:</p>
               <input
                 type="text"
-                className="bg-[#17394C] pl-[0.5rem] border-[0.2rem] lead-6 border-[#F9D62B] rounded-md w-[15rem] h-[1.7rem] text-[0.7rem] md:text-[1rem] md:w-[20rem] md:h-[2.5rem]"
+                className="bg-[#17394C] p-[0.2rem] border-[0.2rem] lead-6 border-[#F9D62B] rounded-md w-[15rem] h-auto text-[0.7rem] md:text-[1rem] md:w-[20rem] xl:w-[23rem] xl:text-[1.1rem]"
                 placeholder="Surredered by: "
                 value={item.surrenderedBy}
                 onChange={(e) =>
@@ -301,7 +301,7 @@ const EditButton = ({ Info }) => {
             </div>
             <button
                 type="button"
-                className="text-black text-[1rem] hover:bg-[#134083] hover:text-white bg-[#F9D62B] w-[8rem] h-[1.5rem] rounded-full md:text-[1.4rem] md:h-[2.5rem]"
+                className="text-black text-[1rem] hover:bg-[#134083] hover:text-white bg-[#F9D62B] w-[8rem] h-auto rounded-full md:text-[1.4rem] xl:text-[1.5rem]"
                 onClick={checker}
               >
                 SAVE

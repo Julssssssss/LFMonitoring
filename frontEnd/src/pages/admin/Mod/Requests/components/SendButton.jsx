@@ -55,7 +55,7 @@ const SendButton = ({ subject, emailContent, requestBy, index }) => {
   return (
     <>
       <div>
-        <button onClick={checker} className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white self-center w-[10rem] h-[2rem] md:h-[3rem] md:w-[12rem] md:text-[1.5rem] border-[0.1rem] text-black text-[1rem] rounded-full">
+        <button onClick={checker} className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white self-center w-[10rem] h-[2rem] md:h-[3rem] md:w-[12rem] md:text-[1.5rem] lg:h-[2.5rem] xl:text-[2rem] xl:h-[3rem] xl:w-[15rem] border-[0.1rem] text-black text-[1rem] rounded-full">
           SEND
         </button>
 
