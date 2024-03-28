@@ -38,7 +38,7 @@ const DeleteReq = ({reqData}) => {
     </div>
     {showConfirmation && (
           <div className="fixed inset-0 flex justify-center bg-black bg-opacity-50">
-            <div className="absolute z-50 text-white text-[1rem] md:text-[2.5rem] font-poppins place-self-center text-center bg-[#134083] p-[1.5rem] rounded-2xl shadow-md w-[15rem] h-[25rem] md:w-[24rem] md:h-[41rem] lg:h-[37rem] xl:w-[26rem] xl:h-[43rem]">
+            <div className="absolute z-50 text-white text-[1rem] md:text-[2.5rem] font-poppins place-self-center text-center bg-[#134083] border-[0.2rem] border-[#F9D62B] p-[1.5rem] rounded-2xl shadow-md w-[15rem] h-[25rem] md:w-[24rem] md:h-[41rem] lg:h-[37rem] xl:w-[26rem] xl:h-[43rem]">
               <div className="flex flex-col h-[20rem] md:h-full space-y-[5rem] justify-center items-center">
                   <div>Are you sure you want to delete this request?</div>
                   <div className="flex flex-row space-x-[1rem]">

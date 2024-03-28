@@ -120,33 +120,43 @@ const Dashboard = () => {
   function searchBar() {
     return (
       <>
-        <b>StartDate : </b>
-        <input
-            type="date"
-            id="startDate"
-            min="2024-01-01"
-            max={new Date().toISOString().split('T')[0]}
-            value={startDate}
-            onChange={(e)=>{setStartDate(e.target.value), setSearchQuery('')}}
-        />
-        
-        <b>EndDate : </b>
-        <input
-            type="date"
-            id="endDate"
-            min="2024-01-01"
-            max={new Date().toISOString().split('T')[0]}
-            value={endDate}
-            onChange={(e)=>{setEndDate(e.target.value), setSearchQuery("")}}
-        />
-        <button className="btn h-[2rem] w-[10rem] overflow-hidden"
-            onClick={()=>{useSearch()}}
-        >
-            {'Search by Date'}
-        </button>
+        <div className="flex flex-col items-center mt-[0.5rem]">
+          <div className="flex flex-row my-[0.3rem]">
+            <b>StartDate : </b>
 
-        <div className="flex flex-row justify-center mt-[1rem] mb-[1rem] sm:justify-start sm:ml-[1.5rem] sm:mb-[1rem] lg:mb-[1.5rem]">
-          <div className="w-[2rem] h-[2.1rem] p-2 bg-[#17394C] rounded-l-lg border-b-2 3xl:h-[3rem] 3xl:w-[3rem] 2xl:w-[3rem] 2xl:h-[3rem]">
+            <input
+                className="h-auto w-[12rem] ml-[1rem]"
+                type="date"
+                id="startDate"
+                min="2024-01-01"
+                max={new Date().toISOString().split('T')[0]}
+                value={startDate}
+                onChange={(e)=>{setStartDate(e.target.value), setSearchQuery('')}}
+            />
+          </div>
+          
+          <div className="flex flex-row mb-[0.3rem] md:my-[0.8rem]">
+            <b>EndDate : </b>
+            <input
+                className="h-auto w-[12.5rem] ml-[1rem]"
+                type="date"
+                id="endDate"
+                min="2024-01-01"
+                max={new Date().toISOString().split('T')[0]}
+                value={endDate}
+                onChange={(e)=>{setEndDate(e.target.value), setSearchQuery("")}}
+            />
+          </div>
+
+          <button className="btn w-[7rem]"
+              onClick={()=>{useSearch()}}
+          >
+              {'Search by Date'}
+          </button>
+        </div>
+
+        <div className=" mx-[0.3rem] flex flex-row justify-center mt-[0.6rem] mb-[1rem] sm:justify-start sm:ml-[1.5rem] sm:mb-[1rem] md:mb-[2rem]">
+          <div className="w-[2rem] h-[2.1rem] p-1 bg-[#17394C] rounded-l-lg border-b-2 md:my-[0.51rem] lg:my-[1rem] lg:h-[2.11rem] 3xl:h-[3rem] 3xl:w-[3rem] 2xl:w-[3rem] 2xl:h-[3rem]">
             <svg className="3xl:w-[2rem] 3xl:h-[2rem] 2xl:w-[2rem] 2xl:h-[2rem]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
               <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
@@ -161,24 +171,27 @@ const Dashboard = () => {
               </g>
             </svg>
           </div>
+
+      
           <input
             type="text"
-            className="bg-[#17394C] border-b-2 mb-[1rem]  text-white p-[1rem] w-[16rem] h-8 rounded-r-lg xsm:w-[19rem] xl:w-[22rem] 2xl:h-[3rem] 3xl:w-[30rem] 3xl:h-[3rem] 3xl:text-[1.5rem]"
+            className="bg-[#17394C] border-b-2 mb-[1rem] text-white p-[1rem] w-[1rem] h-[1rem] rounded-r-lg xsm:w-[19rem] md:w-[30rem] md:my-[0.5rem] lg:my-[1rem] lg:w-[45rem] xl:w-[71rem] 2xl:h-[3rem] 3xl:w-[30rem] 3xl:h-[3rem] 3xl:text-[1.5rem]"
             value={searchQuery}
             onChange={(e)=>{setSearchQuery(e.target.value), setStartDate(''), setEndDate('')}}
           />
-          <button className="btn"
+          <button className="btn h-[2rem] w-[4rem] ml-[0.3rem] sm:ml-[0.5rem] md:w-[8rem] md:ml-[2rem] lg:my-[0.5rem] lg:ml-[2rem]"
             onClick={()=>{useSearch()}}>
             {'search'}
           </button>
         </div>
+   
       </>
     );
   }
   function sample() {
     return data[0].items.map((el, index) => {
       return (
-        <div key={index} className="flex flex-row mb-[3rem] rounded-lg justify-center items-center">
+        <div key={index} className="flex flex-row mb-[2rem] rounded-lg justify-center items-center">
           
           <Link to={{ pathname: `/Item/${el._id}` }} state={{ el }}>
             <div className="flex items-center rounded-l-[10rem] rounded-r-[4rem] bg-[#003985] border-b-[0.1rem] border-white hover:bg-sky-700 active:bg-[#0d1832] w-[17rem] h-[6rem] xsm:w-[20rem] xsm:h-[6.5rem] md:w-[18rem] md:h-[6rem] lg:w-[19rem] lg:h-[7rem] xl:w-[25rem] xl:h-[8rem] xl:mt-[2rem] xl:mb-[2rem] 3xl:h-[9rem] 3xl:w-[26rem]">
@@ -209,7 +222,7 @@ const Dashboard = () => {
         </div>
 
         {searchBar()}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[1rem] xl:grid-cols-[20rem]xl xl:mx-[1.5rem] 3xl:grid-cols-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-[1rem] xl:grid-cols-3 xl:grid-cols-[20rem]xl xl:mx-[1.5rem] 3xl:grid-cols-4">
           
             {sample()}
         </div>

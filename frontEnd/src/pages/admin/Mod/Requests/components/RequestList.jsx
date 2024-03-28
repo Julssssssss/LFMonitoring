@@ -230,7 +230,7 @@ const RequestList = () => {
       return(
         <>
         <div className="absolute inset-0 text-[0.9rem] md:text-[1.2rem] xl:text-[1.5rem] flex flex-col space-y-[1rem] bg-[#0D1832] font-poppins w-screen h-screen p-[1rem] overflow-y-auto overflow-x-hidden">
-          <button className="absolute right-0 w-[2rem] h-[2rem] md:w-[2.5rem] md:h-[2.5rem] xl:w-[3rem] xl:h-[3rem] xl:right-4 stroke-[#F9D62B] hover:stroke-white"
+          <button className="absolute right-[1rem] w-[2rem] h-[2rem] md:w-[2.5rem] md:h-[2.5rem] xl:w-[3rem] xl:h-[3rem] xl:right-4 stroke-[#F9D62B] hover:stroke-white"
               onClick={()=>{setSelectedItem('')}}>
               <svg
                 viewBox="0 0 24 24"
