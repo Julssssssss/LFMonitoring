@@ -1,18 +1,19 @@
 import Sidebar from "../../MainComponents/SideBar"
 import HistoryLogs from "./components/HistoryLogs"
 
-
 const HistoryView = () => {
   return (
     <>
-    <div className='relative flex flex-row h-screen w-screen bg-[#17394C] overflow-x-hidden overflow-y-hidden'>
-      <div className='absolute z-20'>
-        <Sidebar />
+    <div className='relative z-0 h-screen w-screen bg-[#17394C]'> 
+        <div className='flex flex-row lg:gap-[5rem] xl:gap-[7rem]'>
+          <div className='absolute lg:relative'>
+            <Sidebar />
+          </div>
+          <div className='flex flex-col bg-[#0D1832] lg:rounded-l-[6rem] w-full h-screen lg:h-screen p-[1rem] lg:p-[2rem] lg:pb-[2rem] xl:p-[2rem]'>
+           <HistoryLogs />
+          </div>
+        </div>
       </div>
-      <div className="absolute z-1 flex flex-col self-center p-[1rem] md:p-[2rem] h-screen w-screen bg-[#0D1832] border-[#134083]">
-        <HistoryLogs/>
-      </div>
-    </div>
     </>
   )
 }

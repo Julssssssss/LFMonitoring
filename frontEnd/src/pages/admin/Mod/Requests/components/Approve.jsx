@@ -60,11 +60,11 @@ const sample =()=>{
   if(selectedItem.itemData){
     const {nameItem, desc, found, surrenderedBy, datePosted} = selectedItem.itemData
     return(
-      <div className="absolute top-0 z-50 flex flex-col items-center justify-center w-screen h-screen">
-        <div className="flex items-center justify-center w-screen h-screen bg-black bg-opacity-75">
-          <div className="flex flex-col bg-[#134083] border-[0.1rem] border-[#F9D62B] rounded-[1rem] w-full mx-[1rem] md:mx-[2rem] h-auto p-[1rem]">
+      <div className="fixed lg:inset-0 top-0 z-70 flex flex-col items-center justify-center h-screen">
+        <div className="flex w-screen place-items-center justify-center h-screen bg-black bg-opacity-75">
+          <div className="flex flex-col bg-[#134083] border-[0.1rem] border-[#F9D62B] rounded-[1rem] w-full mx-[1rem] md:mx-[2rem] lg:mx-[7rem] xl:mx-[15rem] h-auto p-[1rem]">
             <button
-                className="w-[2rem] h-[2rem] place-self-end m-[1rem] stroke-[#F9D62B] hover:stroke-white"
+                className="w-[2rem] h-[2rem] xl:w-[3rem] xl:h-[3rem] place-self-end m-[0.5rem] stroke-[#F9D62B] hover:stroke-white"
                 onClick={()=>{setSelectedItem(false)}}
               >
               <svg
@@ -95,35 +95,35 @@ const sample =()=>{
             </button>
 
               <div className="flex flex-col space-y-[2rem] justify-center items-center">
-                <div className='text-[0.7rem] sm:text-[0.9rem] xsm:text-[0.8rem] md:text-[1.5rem] space-y-[1rem] font-poppins text-white whitespace-normal'>
+                <div className='text-[0.7rem] sm:text-[0.9rem] xsm:text-[0.8rem] md:text-[1.5rem] xl:text-[1.7rem] space-y-[1rem] font-poppins text-white whitespace-normal'>
                   <div className="flex flex-col items-start justify-start space-y-[0.5rem]">
                     <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
-                      <div className="w-24 sm:w-[7rem] md:w-[16rem]">Name of item:</div>
-                      <div className="w-[10rem] md:w-[16rem] h-auto">{nameItem}</div>
+                      <div className="w-24 sm:w-[7rem] md:w-[16rem] lg:w-[20rem] xl:w-[22rem]">Name of item:</div>
+                      <div className="w-[10rem] md:w-[16rem] h-auto lg:w-[20rem] xl:w-[22rem]">{nameItem}</div>
                     </div>
                     <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
-                      <div className="w-24 sm:w-[7rem] md:w-[16rem]">Description:</div>
-                      <div className="w-[10rem] md:w-[16rem] h-auto">{desc}</div>
+                      <div className="w-24 sm:w-[7rem] md:w-[16rem] lg:w-[20rem] xl:w-[22rem]">Description:</div>
+                      <div className="w-[10rem] md:w-[16rem] h-auto lg:w-[20rem] xl:w-[22rem]">{desc}</div>
                     </div>
                     <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
-                      <div className="w-24 sm:w-[7rem] md:w-[16rem]">Found at:</div>
-                      <div className="w-[10rem] md:w-[16rem] h-auto">{found}</div>
+                      <div className="w-24 sm:w-[7rem] md:w-[16rem] lg:w-[20rem] xl:w-[22rem]">Found at:</div>
+                      <div className="w-[10rem] md:w-[16rem] h-auto lg:w-[20rem] xl:w-[22rem]">{found}</div>
                     </div>
                     <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
-                      <div className="w-24 sm:w-[7rem] md:w-[16rem]">Surrendered by:</div>
-                      <div className="w-[10rem] md:w-[16rem] h-auto">{surrenderedBy}</div>
+                      <div className="w-24 sm:w-[7rem] md:w-[16rem] lg:w-[20rem] xl:w-[22rem]">Surrendered by:</div>
+                      <div className="w-[10rem] md:w-[16rem] h-auto lg:w-[20rem] xl:w-[22rem]">{surrenderedBy}</div>
                     </div>
                     <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
-                      <div className="w-24 sm:w-[7rem] md:w-[16rem]">Date posted:</div>
-                      <div className="w-[10rem] md:w-[16rem] h-auto">{datePosted}</div>
+                      <div className="w-24 sm:w-[7rem] md:w-[16rem] lg:w-[20rem] xl:w-[22rem]">Date posted:</div>
+                      <div className="w-[10rem] md:w-[16rem] h-auto lg:w-[20rem] xl:w-[22rem]">{datePosted}</div>
                     </div>
                     <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
-                      <div className="w-24 sm:w-[7rem] md:w-[16rem]">Owner:</div>
-                      <div className="w-[10rem] md:w-[16rem] h-auto">{Email}</div>
+                      <div className="w-24 sm:w-[7rem] md:w-[16rem] lg:w-[20rem] xl:w-[22rem]">Owner:</div>
+                      <div className="w-[10rem] md:w-[16rem] h-auto lg:w-[20rem] xl:w-[22rem]">{Email}</div>
                     </div>
                 </div>
               </div>
-              <button onClick={sendToArchive} className="bg-[#F9D62B] font-bold hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white text-[0.9rem] text-black p-[0.1rem] md:text-[1.5rem] md:h-[3rem] md:w-[10rem] rounded-full w-[7rem] font-poppins">
+              <button onClick={sendToArchive} className="bg-[#F9D62B] font-bold hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white text-[0.9rem] text-black p-[0.1rem] md:text-[1.5rem] md:h-[3rem] md:w-[10rem] lg:h-[2.2rem] lg:text-[1.2rem] rounded-full w-[7rem] font-poppins">
                 APPROVE
               </button>
 
@@ -141,7 +141,7 @@ const sample =()=>{
         <button
           onClick={()=>{setSelectedItem(list)}}
           type="button"
-          className="bg-[#F9D62B] text-black font-poppins hover:bg-[#134083] text-[0.7rem] hover:text-white w-[4rem] md:w-[6rem] md:text-[1rem] rounded-full text-center"
+          className="bg-[#F9D62B] text-black font-poppins hover:bg-[#134083] text-[0.7rem] hover:text-white w-[4rem] md:w-[6rem] xl:text-[1.2rem] xl:h-[2rem] xl:w-[7rem] md:text-[1rem] rounded-full text-center"
         >
           Approve
         </button>

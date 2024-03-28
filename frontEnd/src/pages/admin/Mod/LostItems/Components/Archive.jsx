@@ -58,17 +58,17 @@ const Archive = ({ Info }) => {
       <div>
         <button
           onClick={openPopup}
-          className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-[0.7rem] font-bold font-poppins text-black w-[3.5rem] h-auto md:text-[1.2rem] md:w-[5rem] rounded-full"
+          className="bg-[#F9D62B] hover:bg-[#134083] hover:text-white text-[0.7rem] font-bold font-poppins text-black w-[3.5rem] h-auto md:text-[1.2rem] md:w-[5rem] xl:text-[1.5rem] xl:w-[7rem] rounded-full"
         >
           Archive
         </button>
       </div>
 
       {showPopup && (
-        <div className="absolute z-20 -inset-3 justify-center xsm:justify-center w-screen h-screen flex flex-row items-center bg-black bg-opacity-50">
-          <div className="flex flex-col bg-[#134083] self-center shadow-md w-full h-auto py-[1.5rem] mx-[0.5rem] xsm:mx-[1rem] sm:w-full md:w-[35rem] rounded-2xl whitespace-pre md:space-y-[1.2rem] items-center">
+        <div className="absolute z-20 -inset-3 justify-center xsm:justify-center w-screen flex flex-row items-center bg-black bg-opacity-50">
+          <div className="flex flex-col bg-[#134083] border-[0.2rem] border-[#F9D62B] self-center shadow-md w-full h-auto py-[1.5rem] mx-[0.5rem] xsm:mx-[1rem] sm:w-full md:w-[35rem] xl:w-[50rem] rounded-2xl whitespace-pre md:space-y-[1.2rem] items-center">
           <button
-              className="w-[2rem] h-[2rem] md:w-[2.5rem] md:h-[2.5rem] place-self-end m-[0.5rem] md:mr-[1rem] stroke-[#F9D62B] hover:stroke-white"
+              className="w-[2rem] h-[2rem] xl:w-[3rem] xl:h-[3rem] md:w-[2.5rem] md:h-[2.5rem] place-self-end m-[0.5rem] md:mr-[1rem] stroke-[#F9D62B] hover:stroke-white"
               onClick={closePopup}
             >
              <svg
@@ -99,27 +99,27 @@ const Archive = ({ Info }) => {
             </button>
             
             <div className="flex flex-col space-y-[2rem] justify-center items-center">
-                <div className='text-[0.7rem] sm:text-[0.8rem] md:text-[1.5rem] space-y-[1rem] font-poppins text-white whitespace-normal'>
+                <div className='text-[0.7rem] sm:text-[0.8rem] md:text-[1.5rem] xl:text-[2rem] space-y-[1rem] font-poppins text-white whitespace-normal'>
                   <div className="flex flex-col items-start justify-start space-y-[0.5rem]">
                     <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
-                      <div className="w-[6rem] sm:w-[8rem md:w-[14rem]">Name of item:</div>
-                      <div className="w-[10rem] md:w-[14rem] sm h-auto">{item.nameItem}</div>
+                      <div className="w-[6rem] sm:w-[8rem md:w-[14rem] xl:w-[20rem]">Name of item:</div>
+                      <div className="w-[10rem] md:w-[14rem] sm h-auto xl:w-[20rem]">{item.nameItem}</div>
                     </div>
                     <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
-                      <div className="w-[6rem] sm:w-[8rem] md:w-[14rem]">Description:</div>
-                      <div className="w-[10rem] md:w-[14rem] h-auto">{item.desc}</div>
+                      <div className="w-[6rem] sm:w-[8rem] md:w-[14rem] xl:w-[20rem]">Description:</div>
+                      <div className="w-[10rem] md:w-[14rem] h-auto xl:w-[20rem]">{item.desc}</div>
                     </div>
                     <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
-                      <div className="w-[6rem] sm:w-[8rem] md:w-[14rem]">Found at:</div>
-                      <div className="w-[10rem] md:w-[14rem] h-auto">{item.found}</div>
+                      <div className="w-[6rem] sm:w-[8rem] md:w-[14rem] xl:w-[20rem]">Found at:</div>
+                      <div className="w-[10rem] md:w-[14rem] h-auto xl:w-[20rem]">{item.found}</div>
                     </div>
                     <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
-                      <div className="w-[6rem] sm:w-[8rem] md:w-[14rem]">Surrendered by:</div>
-                      <div className="w-[10rem] md:w-[14rem] h-auto">{item.surrenderedBy}</div>
+                      <div className="w-[6rem] sm:w-[8rem] md:w-[14rem] xl:w-[20rem]">Surrendered by:</div>
+                      <div className="w-[10rem] md:w-[14rem] h-auto xl:w-[20rem]">{item.surrenderedBy}</div>
                     </div>
                     <div className="flex items-center space-x-[1rem] h-auto w-auto text-wrap">
-                      <div className="w-[6rem] sm:w-[8rem] md:w-[14rem]">Date posted:</div>
-                      <div className="w-[10rem] md:w-[14rem] h-auto">{item.datePosted}</div>
+                      <div className="w-[6rem] sm:w-[8rem] md:w-[14rem] xl:w-[20rem]">Date posted:</div>
+                      <div className="w-[10rem] md:w-[14rem] h-auto xl:w-[20rem]">{item.datePosted}</div>
                     </div>
                 </div>
               </div>
@@ -127,7 +127,7 @@ const Archive = ({ Info }) => {
 
             <button
               onClick={sendToArchive}
-              className="font-poppins bg-[#F9D62B] font-bold text-[0.7rem] md:text-[1.5rem] text-black p-2 rounded-full mt-4 hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white"
+              className="font-poppins bg-[#F9D62B] font-bold text-[0.7rem] md:text-[1.5rem] xl:text-[1.9rem] text-black p-2 rounded-full mt-4 hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white"
             >
               Confirm Archive
             </button>

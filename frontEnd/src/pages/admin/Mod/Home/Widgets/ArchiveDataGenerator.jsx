@@ -41,28 +41,31 @@ const ArchiveDataGenerator = () => {
 
 
   return (
-    <div className="flex flex-col justify-center items-center">
-        <b>StartDate : </b>
-        <input className="bg-[#0D1832] border-white border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem]"
-            type="date"
-            id="startDate"
-            min="2024-01-01"
-            max={new Date().toISOString().split('T')[0]}
-            value={startDate}
-            onChange={handleStartDateChange}
-        />
-        
-        <b>EndDate : </b>
-        <input className="bg-[#0D1832] border-white border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem]"
-            type="date"
-            id="endDate"
-            min="2024-01-01"
-            max={new Date().toISOString().split('T')[0]}
-            value={endDate}
-            onChange={handleEndDateChange}
-        />
+    <div className="flex flex-col space-y-[0.5rem] md:space-y-[0.8rem] md:text-[1.3rem] justify-center items-center md:space-y-[0.5rem] lg:w-auto lg:space-y-[1rem] lg:text-[1.5rem]">
+        <div className="flex flex-row lg:flex-col w-full gap-[0.5rem]">
+            <b>StartDate : </b>
+            <input className="bg-[#0D1832] border-white border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem]"
+                type="date"
+                id="startDate"
+                min="2024-01-01"
+                max={new Date().toISOString().split('T')[0]}
+                value={startDate}
+                onChange={handleStartDateChange}
+            />
+        </div>
+        <div className="flex flex-row lg:flex-col w-full gap-[1rem]">
+            <b>EndDate : </b>
+            <input className="bg-[#0D1832] border-white border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem]"
+                type="date"
+                id="endDate"
+                min="2024-01-01"
+                max={new Date().toISOString().split('T')[0]}
+                value={endDate}
+                onChange={handleEndDateChange}
+            />
+        </div>
 
-        <button className="mt-[0.5rem] text-[0.7rem] md:text-[1rem] bg-[#F9D62B] hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white text-black font-bold rounded-full h-[1.5rem] w-[8.5rem] md:h-[2.5rem] md:w-[12rem] overflow-hidden"
+        <button className="mt-[0.5rem] text-[0.7rem] sm:text-[0.9rem] md:text-[1rem] bg-[#F9D62B] hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white text-black font-bold rounded-full h-[1.5rem] w-auto p-[0.2rem] md:h-[2.5rem] lg:h-auto lg:w-[15rem] xl:text-[1.5rem] xl:w-[20rem] overflow-hidden"
             onClick={requestArchiveData}
         >
             Generate Archive Data
