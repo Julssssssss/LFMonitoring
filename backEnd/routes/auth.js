@@ -44,7 +44,7 @@ router.post('/refreshToken', async(req, res)=>{
         }
         const {_id, Name, Email, Role, TAC, Picture}=user
         const data = {_id, Name, Email,TAC, Role, Picture}
-        const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET,) //{expiresIn: '600s'})
+        const accessToken = jwt.sign(data, process.env.JWT_ACCESS_SECRET, {expiresIn: '600s'})
         console.log('success')
         res.json({ accessToken: accessToken})
     })
@@ -74,11 +74,11 @@ router.post("/login/success", async(req, res)=>{
         .then(async(result)=>{
             const {_id, Name, Email, Picture, Role, TAC} = result;
             const userData = {_id, Name, Email, Picture, Role, TAC}
-            const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_SECRET,) //{expiresIn: '900'})
-            const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET,) //{expiresIn: '960s'}) //15 minutes
+            const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_SECRET, {expiresIn: '900'})
+            const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET, {expiresIn: '960s'}) //15 minutes
             await addRefreshTokenToDB(Email, refreshToken)
             // Set cookie with refresh token
-            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true,sameSite: 'None' });
+            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true, sameSite: 'None' });
             req.session.userId = null
 
             //send logs in db if mod or admin
@@ -125,10 +125,11 @@ router.get("/google", passport.authenticate("google", ["email", "profile"]))
 router.get("/google/callback",
     passport.authenticate("google", {
         successRedirect: `${process.env.CLIENT_URL}`,
-        failureRedirect: `/login/failed`,
+        failureRedirect: `/auth/login/failed`,
         session: false,
     })
 )
+
 router.get("/google", passport.authenticate("google"))
 
 router.get("/logout", async(req, res)=>{

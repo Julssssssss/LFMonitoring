@@ -15,9 +15,8 @@ const LandingPage = () => {
   const redirect = async()=>{
     await getAccessTokenAndRole()
       .then((res)=>{
-        if(!res){logout()}
+        //if(!res){logout()}
         const {role, TAC} = res
-        //console.log(role, TAC)
         if(role === 'admin' || TAC === true){
           Auth();
         }
