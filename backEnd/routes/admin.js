@@ -452,7 +452,7 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
     else if('searchQuery' in req.body){
       const {searchQuery, currentPage} = req.body
       console.log(req.body)
-      reqModels.find({'Email':searchQuery}).lean().limit(7).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
+      reqModels.find({'nameItem':searchQuery.toLowerCase()}).lean().limit(7).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
       .then(async(result)=>{
         const hasNextPage = result.length > 6;
         //console.log(result)
