@@ -187,8 +187,8 @@ const ItemList = () => {
     return item.map((item, index) => {
       return(
         <div key={index}>
-          <div className="flex flex-col items-center p-1 border-b-2 border-white bg-[#17394C] w-full h-auto space-x-[0.5rem] lg:p-[0.5rem] rounded-xl">
-            <div className="flex flex-row justify-between w-full text-white text-[0.8rem] md:text-[1rem] lg:text-[1.3rem] xl:text-[1.5rem] font-poppins whitespace-nowrap">
+          <div className="flex flex-col items-center border-b-2 border-white bg-[#17394C] w-full h-auto space-x-[0.5rem] p-[0.6rem] rounded-xl">
+            <div className="flex flex-row justify-between w-full text-white text-[0.8rem] md:text-[1rem] lg:text-[1.2rem] xl:text-[1.5rem] font-poppins whitespace-nowrap">
               <div>{item.nameItem}</div>
               <div>{item.datePosted}</div>
             </div>
@@ -205,15 +205,14 @@ const ItemList = () => {
     });
   }
   
-  
+  //console.log('here', item)
   return (
     <>
-      
         <div className="flex flex-col lg:mt-0 justify-between mt-[0.5rem] md:mt-[1rem] text-white whitespace-nowrap px-[1rem]">
           <div className='font-poppins ml-[2rem] md:ml-[5rem] md:text-[2rem] lg:ml-0 lg:mt-[1rem] xl:text-[3rem]'>FOUND ITEMS</div>   
           {searchBar()}
         </div>
-        <div className="bg-[#134083] overflow-y-auto w-full h-full rounded-[2rem] flex flex-col self-center p-[0.8rem]">
+        <div className="bg-[#134083] overflow-y-auto w-full h-full rounded-[1.5rem] flex flex-col self-center p-[0.8rem]">
           <div className="flex flex-row font-poppins font-bold text-white justify-between px-[0.8rem] text-[0.7rem] md:text-[1rem] xl:text-[1.5rem]">
             <p>Name of item</p>
             <p>Date</p>
@@ -221,7 +220,7 @@ const ItemList = () => {
           <div className="flex flex-row-reverse w-full mb-[1rem] pr-[0.8rem]">
             <AddItem  />
           </div>
-          <div className="flex flex-col overflow-y-auto w-full h-full space-y-[1rem]">
+          <div className="flex flex-col p-[0.1rem] lg:px-[1rem] overflow-y-auto w-full h-full space-y-[1rem]">
             {itemsFormat()}
           </div>
           {pagination()}

@@ -59,7 +59,7 @@ const UnfoundItems = () => {
                 onChange={handleEndDateChange}
             />
             <br></br>
-            <button className="text-[0.8rem] font-bold rounded-full hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white h-[2rem] w-[12rem] overflow-hidden bg-[#F9D62B] md:text-[1.5rem] md:w-auto md:h-auto lg:text-[1rem] lg:w-[15rem] text-black p-[0.5rem]"
+            <button className="text-[0.8rem] font-bold rounded-full hover:bg-[#134083] hover:text-white hover:border-[0.1rem] border-[0.1rem] hover:border-white h-[2rem] w-[12rem] overflow-hidden bg-[#F9D62B] md:text-[1.5rem] md:w-auto md:h-auto lg:text-[1rem] lg:w-[15rem] text-black p-[0.5rem]"
                 onClick={handleUnfoundItemsGeneration}
             >
                 {'Generate Unclaimed Items'}

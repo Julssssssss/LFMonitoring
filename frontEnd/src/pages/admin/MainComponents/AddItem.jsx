@@ -71,18 +71,20 @@ const AddItem = () => {
       setConfirm(false);
       try {
         setLoading(true)
-    
+        console.log('hello', files)
         const formData = new FormData();
         formData.append('nameItem', nameItem);
         formData.append('desc', desc);
         formData.append('found', found);
         formData.append('surrenderedBy', surrenderedBy);
     
-        for (const file of files) {
-          formData.append('image', file);
+        if (files && files.length > 0) {
+          for (const file of files) {
+            formData.append('image', file);
+          }
         }
-        
-        await axiosSendItem.post('', formData, {
+
+        await axiosSendItem.put(' ', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -219,11 +221,11 @@ const AddItem = () => {
             onChange={(e) => {
               const selectedFiles = e.target.files;
 
-              if (selectedFiles.length > 2) {
+          { /*   if (selectedFiles.length > 2) {
                 alert('Please add or upload no more than 2 images.');
                 return;
               }
-
+            */ }
               const newImageUrls = [];
               const newFiles = [];
 
@@ -259,28 +261,28 @@ const AddItem = () => {
           <div className="flex flex-col items-center space-y-[1rem] text-white">
             <input
               type="text"
-              className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.1rem] md:w-[20rem] md:h-auto xl:text-[1.5rem] xl:w-[23rem]"
+              className="bg-[#17394C] border-[0.2rem] p-[0.1rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.1rem] md:w-[20rem] md:h-auto xl:text-[1.5rem] xl:w-[23rem]"
               placeholder="Name of item"
               value={nameItem}
               onChange={(e) => setName(e.target.value)}
             />
             <input
               type="text"
-              className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.1rem] md:w-[20rem] md:h-auto xl:text-[1.5rem] xl:w-[23rem]"
+              className="bg-[#17394C] border-[0.2rem] p-[0.1rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.1rem] md:w-[20rem] md:h-auto xl:text-[1.5rem] xl:w-[23rem]"
               placeholder="Description"
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
             />
             <input
               type="text"
-              className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.1rem] md:w-[20rem] md:h-auto xl:text-[1.5rem] xl:w-[23rem]"
+              className="bg-[#17394C] border-[0.2rem] p-[0.1rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.1rem] md:w-[20rem] md:h-auto xl:text-[1.5rem] xl:w-[23rem]"
               placeholder="Found at"
               value={found}
               onChange={(e) => setFound(e.target.value)}
             />
             <input
               type="text"
-              className="bg-[#17394C] border-[0.3rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.1rem] md:w-[20rem] md:h-auto xl:text-[1.5rem] xl:w-[23rem]"
+              className="bg-[#17394C] border-[0.2rem] p-[0.1rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.1rem] md:w-[20rem] md:h-auto xl:text-[1.5rem] xl:w-[23rem]"
               placeholder="Surrendered by: "
               value={surrenderedBy}
               onChange={(e) => setSurrenderedBy(e.target.value)}

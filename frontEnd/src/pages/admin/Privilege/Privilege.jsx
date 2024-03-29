@@ -138,7 +138,7 @@ const Privilege = () => {
           </div>   
         </div>
         <div className="self-center h-full w-screen px-[1rem] md:px-[2rem] lg:px-[0rem] lg:w-full">
-          <div className="flex flex-col items-center h-full w-full rounded-[2rem] bg-[#134083]">
+          <div className="flex flex-col items-center h-full w-full rounded-[1.5rem] bg-[#134083] px-[1rem]">
             <div className='flex flex-row space-x-[1.5rem] items-center top-[8rem] relative'>
               <div className="relative Z-0">
                 <div className=' flex flex-row space-x-[0.5rem] items-center'>
@@ -156,7 +156,7 @@ const Privilege = () => {
                   </button>
                 </div>
                 {isOpen && (
-                  <div className="flex flex-col mt-[2rem] space-y-[1rem] p-[1rem] text-[1.5rem] drop-shadow-2xl text-white rounded-xl shadow-md bg-[#17394C] w-[16.8rem] sm:w-[21.6rem] md:w-[28rem] xl:w-[40rem] px-[1rem] h-auto">
+                  <div className="flex flex-col mt-[2rem] space-y-[1rem] p-[1rem] text-[1.5rem] drop-shadow-2xl text-white rounded-xl shadow-md bg-[#17394C] w-[16rem] xsm:w-[17rem] sm:w-[21.6rem] md:w-[28rem] xl:w-[40rem] px-[1rem] h-auto">
                     <div className='flex flex-row justify-between text-[0.7rem] sm:text-[1.1rem] md:text-[1.5rem] xl:text-[1.8rem]'>
                       {userData ? (
                         <>

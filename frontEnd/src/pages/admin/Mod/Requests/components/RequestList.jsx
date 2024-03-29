@@ -10,11 +10,8 @@ import Loading from "../../../../404/Loading";
 const RequestList = () => {
 
   const [list, setList] = useState([])
-  const [itemList, setItemList] = useState([])
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
-  const [items, setItems] = useState('')
-  const [image, setImage] = useState([])
   const [subject, setSubject] = useState('')
   const [emailContent, setEmailContent] = useState('')
   const [selectedItem, setSelectedItem] = useState('');
@@ -186,7 +183,7 @@ const RequestList = () => {
       return(
         <div key={index}>
           <div className="relativeflex flex-col justify-center border-b-2 border-white bg-[#17394C] w-full h-auto space-y-[0.2rem] rounded-xl p-1 md:p-[0.7rem]">
-            <div className="flex flex-row justify-between items-center text-white text-[0.8rem] md:text-[1.3rem] lg:text-[0.8rem] xl:text-[1.1rem]">
+            <div className="flex flex-row justify-between items-center text-white text-[0.8rem] md:text-[1.3rem] lg:text-[0.8rem] xl:text-[1.1rem] 2xl:text-[1.5rem]">
               <div className="flex flex-row w-full justify-between">
                 <div className="flex flex-col md:flex-row md:space-x-[4rem] md:items-center">
                   <p className="font-bold">{elem.Email}</p>
@@ -330,7 +327,7 @@ const RequestList = () => {
           {searchBar()}
       </div>
 
-      <div className="absolte z-1 bg-[#134083] font-poppins text-white overflow-y-auto pt-0 p-[0.3rem] w-full h-full rounded-[2rem] flex flex-col">
+      <div className="absolte z-1 bg-[#134083] font-poppins text-white overflow-y-auto pt-0 p-[0.3rem] w-full h-full rounded-[1.5rem] flex flex-col 2xl:px-[2rem]">
         <div className="flex flex-row p-[0.7rem] justify-between text-[0.7rem] sm:text-[0.9rem] md:text-[1rem] xl:text-[1.5rem]">
           <div className="flex flex-col md:flex-row md:items-center md:space-x-[15rem] w-full">
             <p>Requestor</p>
@@ -338,7 +335,7 @@ const RequestList = () => {
           </div>
           <p className="w-auto">Date Requested</p>
         </div>
-        <div className="flex flex-col overflow-y-auto w-full h-full space-y-[1rem]">
+        <div className="flex flex-col px-[0.5rem] overflow-y-auto w-full h-full space-y-[1rem]">
           {requestFormat()}
         </div>
         {pagination()}

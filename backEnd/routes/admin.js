@@ -68,6 +68,15 @@ const adminOnlyToken = (req, res, next) => {
   });
 };
 
+//set date to string
+const dateAndTime = (isoData)=>{
+  const Date = isoData.toISOString().split('T')[0]
+  const Time = isoData.toTimeString().split(' ')[0]
+  const dateAndTimeString = Date +" "+ Time
+  //console.log('dateAndTime', dateAndTime)
+  return dateAndTimeString
+}
+
 //lost items data
 router.post('/data', verifyToken, async(req, res) => {
   if (req.user) {
@@ -80,7 +89,7 @@ router.post('/data', verifyToken, async(req, res) => {
           $gte: new Date(startDate), //gte stands for greater than
           $lt: new Date(endDate).setUTCHours(23, 59, 59, 999) //lt stands for less than
         }
-      }).lean().limit(7).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
+      }).lean().limit(7).skip((currentPage - 1)* 6).sort({'datePosted': -1})
       .then((result) => {
         const hasNextPage = result.length > 6;
         const slicedResult = result.slice(0, 6)
@@ -200,13 +209,14 @@ router.post('/setRoles', adminOnlyToken, async(req, res, next) => {
 
 
 // for add item button 
-router.post('/sendItem', verifyToken, upload.array('image'), async (req, res) => {
+router.put('/sendItem', verifyToken, upload.array('image'), async (req, res) => {
   try {
     const data = req.user
     
     const { Email } = data;
     console.log('here', Email)
     const { nameItem, desc, found, surrenderedBy, datePosted } = req.body;
+    console.log('here', req.body);
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ error: 'No files were uploaded.' });
     }
@@ -241,6 +251,7 @@ router.post('/sendItem', verifyToken, upload.array('image'), async (req, res) =>
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 // update or edit data to mongodb 
 router.put('/update/data/:id', verifyToken, upload.array('image'), async (req, res) => {
@@ -354,14 +365,6 @@ router.post('/delete/:id', verifyToken, async (req, res) => {
   }
 });
 
-//set date to string
-const dateAndTime = (isoData)=>{
-  const Date = isoData.toISOString().split('T')[0]
-  const Time = isoData.toTimeString().split(' ')[0]
-  const dateAndTimeString = Date +" "+ Time
-  //console.log('dateAndTime', dateAndTime)
-  return dateAndTimeString
-}
 
 //request data
 router.post('/reqList', verifyToken, async (req, res, next)=>{
