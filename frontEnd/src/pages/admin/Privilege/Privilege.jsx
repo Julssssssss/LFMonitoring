@@ -175,15 +175,15 @@ const Privilege = () => {
                     </div>
                     {userData && (
                       <div className='flex flex-row space-x-[1rem] justify-center font-poppins text-black font-bold text-[0.6rem] sm:text-[0.8rem] md:text-[1rem] xl:text-[1.5rem] items-center'>
-                        <button className='bg-[#F9D62B] rounded-full w-[11rem] h-[1.5rem] md:h-[2rem] xl:h-[3rem]'
+                        <button className='bg-[#F9D62B] hover:bg-[#134083] hover:text-white hover:border-white border-[0.1rem] rounded-full w-[11rem] h-[1.5rem] md:h-[2rem] xl:h-[3rem]'
                           onClick={() => {setRole(0);}}>
                           User
                         </button>
-                        <button className='bg-[#F9D62B] rounded-full w-[11rem] h-[1.5rem] md:h-[2rem] xl:h-[3rem]'
+                        <button className='bg-[#F9D62B] hover:bg-[#134083] hover:text-white hover:border-white border-[0.1rem] rounded-full w-[11rem] h-[1.5rem] md:h-[2rem] xl:h-[3rem]'
                           onClick={() => {setRole(1);}}>
                           Moderator
                         </button>
-                        <button className='bg-[#F9D62B] rounded-full w-[11rem] h-[1.5rem] md:h-[2rem] xl:h-[3rem]'
+                        <button className='bg-[#F9D62B] hover:bg-[#134083] hover:text-white hover:border-white border-[0.1rem] rounded-full w-[11rem] h-[1.5rem] md:h-[2rem] xl:h-[3rem]'
                           onClick={() => {setRole(2);}}>
                           Administrator
                         </button>

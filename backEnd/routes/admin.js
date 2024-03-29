@@ -17,6 +17,15 @@ const multer = require('multer');
 
 const nodemailer = require("nodemailer");
 
+//set date to string
+const dateAndTime = (isoData)=>{
+  const Date = isoData.toISOString().split('T')[0]
+  const Time = isoData.toTimeString().split(' ')[0]
+  const dateAndTimeString = Date +" "+ Time
+  //console.log('dateAndTime', dateAndTime)
+  return dateAndTimeString
+}
+
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
@@ -68,15 +77,6 @@ const adminOnlyToken = (req, res, next) => {
   });
 };
 
-//set date to string
-const dateAndTime = (isoData)=>{
-  const Date = isoData.toISOString().split('T')[0]
-  const Time = isoData.toTimeString().split(' ')[0]
-  const dateAndTimeString = Date +" "+ Time
-  //console.log('dateAndTime', dateAndTime)
-  return dateAndTimeString
-}
-
 //lost items data
 router.post('/data', verifyToken, async(req, res) => {
   if (req.user) {
@@ -92,7 +92,18 @@ router.post('/data', verifyToken, async(req, res) => {
       }).lean().limit(7).skip((currentPage - 1)* 6).sort({'datePosted': -1})
       .then((result) => {
         const hasNextPage = result.length > 6;
-        const slicedResult = result.slice(0, 6)
+        const slicedResult = result.slice(0, 6).map(elem=>{
+          return{
+            '_id': elem._id,
+            'datePosted': dateAndTime(elem.datePosted),
+            'desc': elem.desc,
+            'found': elem.found,
+            'nameItem': elem.nameItem,
+            'postedBy': elem.postedBy,
+            'surrenderedBy': elem.surrenderedBy,
+            'url': [elem.url]
+          }
+        })
         res.status(200).json({
           items: slicedResult,
           user: user,
@@ -111,7 +122,18 @@ router.post('/data', verifyToken, async(req, res) => {
       await itemModels.find({ 'nameItem': searchQuery.toLowerCase()}).lean().limit(7).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
       .then((result) => {
         const hasNextPage = result.length > 6;
-        const slicedResult = result.slice(0, 6)
+        const slicedResult = result.slice(0, 6).map(elem=>{
+          return{
+            '_id': elem._id,
+            'datePosted': dateAndTime(elem.datePosted),
+            'desc': elem.desc,
+            'found': elem.found,
+            'nameItem': elem.nameItem,
+            'postedBy': elem.postedBy,
+            'surrenderedBy': elem.surrenderedBy,
+            'url': [elem.url]
+          }
+        })
         res.status(200).json({
           items: slicedResult,
           user: user,
@@ -129,7 +151,18 @@ router.post('/data', verifyToken, async(req, res) => {
       await itemModels.find({}).lean().limit(7).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
       .then((result) => {
         const hasNextPage = result.length > 6;
-        const slicedResult = result.slice(0, 6)
+        const slicedResult = result.slice(0, 6).map(elem=>{
+          return{
+            '_id': elem._id,
+            'datePosted': dateAndTime(elem.datePosted),
+            'desc': elem.desc,
+            'found': elem.found,
+            'nameItem': elem.nameItem,
+            'postedBy': elem.postedBy,
+            'surrenderedBy': elem.surrenderedBy,
+            'url': [elem.url]
+          }
+        })
         res.status(200).json({
           items: slicedResult,
           user: user,
@@ -365,7 +398,6 @@ router.post('/delete/:id', verifyToken, async (req, res) => {
   }
 });
 
-
 //request data
 router.post('/reqList', verifyToken, async (req, res, next)=>{
   try{
@@ -422,7 +454,7 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
     else if('searchQuery' in req.body){
       const {searchQuery, currentPage} = req.body
       console.log(req.body)
-      reqModels.find({'Email':searchQuery}).lean().limit(7).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
+      reqModels.find({'nameItem':searchQuery.toLowerCase()}).lean().limit(7).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
       .then(async(result)=>{
         const hasNextPage = result.length > 6;
         //console.log(result)
