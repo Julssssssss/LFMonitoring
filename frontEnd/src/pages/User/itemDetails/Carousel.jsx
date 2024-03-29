@@ -5,7 +5,7 @@ const ImageCarousel = ({ url, currentSlide, onNext, onPrev, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center" onClick={onClose}>
       <button
-        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white text-2xl"
+        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white text-2xl lg:text-[7rem]"
         onClick={(e) => {
           e.stopPropagation();
           onPrev();
@@ -17,11 +17,11 @@ const ImageCarousel = ({ url, currentSlide, onNext, onPrev, onClose }) => {
         <img
           src={url[currentSlide]}
           alt={`Image ${currentSlide + 1}`}
-          className="w-[20rem] h-[25rem] object-scale-down"
+          className="w-[15rem] h-[20rem] xsm:w-[17rem] xsm:h-[22rem] sm:w-[19rem] sm:h-[25rem] md:w-[28rem] md:h-[35rem] lg:w-[35rem] lg:h-[45rem] xl:w-[45rem] xl:h-[55rem] 2xl:w-[55rem] 2xl:h-[70rem]"
         />
       </div>
       <button
-        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white text-2xl"
+        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white text-2xl lg:text-[7rem]"
         onClick={(e) => {
           e.stopPropagation();
           onNext();
@@ -36,7 +36,7 @@ const ImageCarousel = ({ url, currentSlide, onNext, onPrev, onClose }) => {
 const DisplayImage = ({ url, onClick }) => {
   return (
     <div onClick={onClick} className="cursor-pointer">
-      <img src={url} alt="Item" className="hover:opacity-75 w-[12rem] h-[12rem] xsm:w-[13rem] xsm:h-[13rem] md:h-[14.5rem] md:w-[14.5rem] lg:h-[16rem] lg:h-[16rem] xl:w-[19rem] xl:h-[19rem] 3xl:h-[28rem] 3xl:w-[28rem] bg-[white] border-[1rem] border-[#17394C] object-contain rounded-2xl" />
+      <img src={url} alt="Item" className="hover:opacity-75 w-[12rem] h-[12rem] xsm:w-[15rem] xsm:h-[15rem] md:h-[14.5rem] md:w-[14.5rem] lg:h-[16rem] lg:h-[16rem] xl:w-[19rem] xl:h-[19rem] 3xl:h-[28rem] 3xl:w-[28rem] bg-[white] border-[1rem] border-[#17394C] object-contain rounded-2xl" />
     </div>
   );
 };

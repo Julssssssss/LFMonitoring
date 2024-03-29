@@ -17,6 +17,15 @@ const multer = require('multer');
 
 const nodemailer = require("nodemailer");
 
+//set date to string
+const dateAndTime = (isoData)=>{
+  const Date = isoData.toISOString().split('T')[0]
+  const Time = isoData.toTimeString().split(' ')[0]
+  const dateAndTimeString = Date +" "+ Time
+  //console.log('dateAndTime', dateAndTime)
+  return dateAndTimeString
+}
+
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
@@ -80,10 +89,21 @@ router.post('/data', verifyToken, async(req, res) => {
           $gte: new Date(startDate), //gte stands for greater than
           $lt: new Date(endDate).setUTCHours(23, 59, 59, 999) //lt stands for less than
         }
-      }).lean().limit(7).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
+      }).lean().limit(7).skip((currentPage - 1)* 6).sort({'datePosted': -1})
       .then((result) => {
         const hasNextPage = result.length > 6;
-        const slicedResult = result.slice(0, 6)
+        const slicedResult = result.slice(0, 6).map(elem=>{
+          return{
+            '_id': elem._id,
+            'datePosted': dateAndTime(elem.datePosted),
+            'desc': elem.desc,
+            'found': elem.found,
+            'nameItem': elem.nameItem,
+            'postedBy': elem.postedBy,
+            'surrenderedBy': elem.surrenderedBy,
+            'url': [elem.url]
+          }
+        })
         res.status(200).json({
           items: slicedResult,
           user: user,
@@ -102,7 +122,18 @@ router.post('/data', verifyToken, async(req, res) => {
       await itemModels.find({ 'nameItem': searchQuery.toLowerCase()}).lean().limit(7).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
       .then((result) => {
         const hasNextPage = result.length > 6;
-        const slicedResult = result.slice(0, 6)
+        const slicedResult = result.slice(0, 6).map(elem=>{
+          return{
+            '_id': elem._id,
+            'datePosted': dateAndTime(elem.datePosted),
+            'desc': elem.desc,
+            'found': elem.found,
+            'nameItem': elem.nameItem,
+            'postedBy': elem.postedBy,
+            'surrenderedBy': elem.surrenderedBy,
+            'url': [elem.url]
+          }
+        })
         res.status(200).json({
           items: slicedResult,
           user: user,
@@ -120,7 +151,18 @@ router.post('/data', verifyToken, async(req, res) => {
       await itemModels.find({}).lean().limit(7).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
       .then((result) => {
         const hasNextPage = result.length > 6;
-        const slicedResult = result.slice(0, 6)
+        const slicedResult = result.slice(0, 6).map(elem=>{
+          return{
+            '_id': elem._id,
+            'datePosted': dateAndTime(elem.datePosted),
+            'desc': elem.desc,
+            'found': elem.found,
+            'nameItem': elem.nameItem,
+            'postedBy': elem.postedBy,
+            'surrenderedBy': elem.surrenderedBy,
+            'url': [elem.url]
+          }
+        })
         res.status(200).json({
           items: slicedResult,
           user: user,
@@ -200,13 +242,14 @@ router.post('/setRoles', adminOnlyToken, async(req, res, next) => {
 
 
 // for add item button 
-router.post('/sendItem', verifyToken, upload.array('image'), async (req, res) => {
+router.put('/sendItem', verifyToken, upload.array('image'), async (req, res) => {
   try {
     const data = req.user
     
     const { Email } = data;
     console.log('here', Email)
     const { nameItem, desc, found, surrenderedBy, datePosted } = req.body;
+    console.log('here', req.body);
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ error: 'No files were uploaded.' });
     }
@@ -241,6 +284,7 @@ router.post('/sendItem', verifyToken, upload.array('image'), async (req, res) =>
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 // update or edit data to mongodb 
 router.put('/update/data/:id', verifyToken, upload.array('image'), async (req, res) => {
@@ -354,15 +398,6 @@ router.post('/delete/:id', verifyToken, async (req, res) => {
   }
 });
 
-//set date to string
-const dateAndTime = (isoData)=>{
-  const Date = isoData.toISOString().split('T')[0]
-  const Time = isoData.toTimeString().split(' ')[0]
-  const dateAndTimeString = Date +" "+ Time
-  //console.log('dateAndTime', dateAndTime)
-  return dateAndTimeString
-}
-
 //request data
 router.post('/reqList', verifyToken, async (req, res, next)=>{
   try{
@@ -419,7 +454,7 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
     else if('searchQuery' in req.body){
       const {searchQuery, currentPage} = req.body
       console.log(req.body)
-      reqModels.find({'Email':searchQuery}).lean().limit(7).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
+      reqModels.find({'nameItem':searchQuery.toLowerCase()}).lean().limit(7).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
       .then(async(result)=>{
         const hasNextPage = result.length > 6;
         //console.log(result)

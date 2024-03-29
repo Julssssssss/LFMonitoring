@@ -25,7 +25,7 @@ const AdminProfile = () => {
               </button>
             </Link>
           </div>
-          <div className="bg-[#0d1832] font-poppins md:text-[1.5rem] h-auto flex flex-col items-center 3xl:h-screen">
+          <div className="bg-[#0d1832] font-poppins md:text-[1.5rem] h-full flex flex-col items-center">
             {/* USER IMAGE */}
             <img className='rounded-full border-8 mt-10 w-[10rem] h-[10rem] border-yellow-400 xsm:w-[11rem] xsm:h-[11rem] lg:h-[12rem] lg:w-[12rem] xl:w-[12.5rem] xl:h-[12.5rem] 2xl:w-[15rem] 2xl:h-[15rem]' src={userPic}></img>
             {/* USER DATA */}

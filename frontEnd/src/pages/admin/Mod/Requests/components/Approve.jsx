@@ -60,7 +60,7 @@ const sample =()=>{
   if(selectedItem.itemData){
     const {nameItem, desc, found, surrenderedBy, datePosted} = selectedItem.itemData
     return(
-      <div className="fixed lg:inset-0 top-0 z-70 flex flex-col items-center justify-center h-screen">
+      <div className="fixed -left-[1rem] lg:inset-0 top-0 z-70 flex flex-col items-center justify-center h-screen">
         <div className="flex w-screen place-items-center justify-center h-screen bg-black bg-opacity-75">
           <div className="flex flex-col bg-[#134083] border-[0.1rem] border-[#F9D62B] rounded-[1rem] w-full mx-[1rem] md:mx-[2rem] lg:mx-[7rem] xl:mx-[15rem] h-auto p-[1rem]">
             <button

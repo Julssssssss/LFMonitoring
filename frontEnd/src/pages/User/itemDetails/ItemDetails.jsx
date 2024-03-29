@@ -10,7 +10,6 @@ const ItemDetails = () => {
   const location = useLocation()
   const data = location.state.el
   //for modal
-  const [userClicked, setuserClicked] = useState(false);
   const [cooldownActive, setCooldownActive] = useState(false)
   
   const handleYesAction = () => {
@@ -95,9 +94,9 @@ const ItemDetails = () => {
         </Link>
       </div>
 
-        <div className="flex flex-col 2xl:h-screen 3xl:h-screen items-center justify-center xl:space-y-[2rem] 3xl:space-y-[3.5rem]">
+        <div className="flex flex-col xl:h-screen items-center justify-center xl:space-y-[2rem]">
           {/* IMG */}
-          <div className="flex flex-col items-center mt-[1rem] justify-center sm:flex-row sm: sm:space-x-[2rem] xl:space-x-[2.5rem]">
+          <div className="flex flex-col items-center justify-center mt-[1rem] justify-center md:flex-row md:space-x-[2rem] xl:space-x-[2.5rem]">
             <Carousel />
             {/* DIV FOR CONTAINER OF CONTENTS */}
             <div className=" whitespace-nowrap text-center p-[1.2rem] flex flex-col items-center justify-center bg-[#17394c] h-auto w-[19rem] xsm:w-[21rem] md:w-[22rem] md:h-auto lg:w-[25rem] lg:text-[1.4rem] xl:w-[25rem] xl:text-[1.3rem] 2xl:w-[30rem] 3xl:w-[34rem] 3xl:text-[2rem] mt-[3rem] mb-[4rem] rounded-lg text-white">
@@ -115,9 +114,7 @@ const ItemDetails = () => {
               {/* request button */}
             
              
-            
-            <img src="https://res.cloudinary.com/dxjpbwlkh/image/upload/v1709214386/Assets/Polygon_11_qhnrk7.png" alt="triangle1" className="absolute top-[6rem] -left-[2.5rem] h-[5rem] w-[5rem] sm:h-[6rem] sm:w-[6.5rem] xl:h-[8rem] xl:w-[8rem] 3xl:h-[12rem] 3xl:w-[12rem]"/>
-            
+                        
           
           </div>
           <Confirmation onYesAction={handleYesAction}/>
