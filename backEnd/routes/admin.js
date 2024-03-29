@@ -17,6 +17,15 @@ const multer = require('multer');
 
 const nodemailer = require("nodemailer");
 
+//set date to string
+const dateAndTime = (isoData)=>{
+  const Date = isoData.toISOString().split('T')[0]
+  const Time = isoData.toTimeString().split(' ')[0]
+  const dateAndTimeString = Date +" "+ Time
+  //console.log('dateAndTime', dateAndTime)
+  return dateAndTimeString
+}
+
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
@@ -83,7 +92,18 @@ router.post('/data', verifyToken, async(req, res) => {
       }).lean().limit(7).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
       .then((result) => {
         const hasNextPage = result.length > 6;
-        const slicedResult = result.slice(0, 6)
+        const slicedResult = result.slice(0, 6).map(elem=>{
+          return{
+            '_id': elem._id,
+            'datePosted': dateAndTime(elem.datePosted),
+            'desc': elem.desc,
+            'found': elem.found,
+            'nameItem': elem.nameItem,
+            'postedBy': elem.postedBy,
+            'surrenderedBy': elem.surrenderedBy,
+            'url': [elem.url]
+          }
+        })
         res.status(200).json({
           items: slicedResult,
           user: user,
@@ -102,7 +122,18 @@ router.post('/data', verifyToken, async(req, res) => {
       await itemModels.find({ 'nameItem': searchQuery.toLowerCase()}).lean().limit(7).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
       .then((result) => {
         const hasNextPage = result.length > 6;
-        const slicedResult = result.slice(0, 6)
+        const slicedResult = result.slice(0, 6).map(elem=>{
+          return{
+            '_id': elem._id,
+            'datePosted': dateAndTime(elem.datePosted),
+            'desc': elem.desc,
+            'found': elem.found,
+            'nameItem': elem.nameItem,
+            'postedBy': elem.postedBy,
+            'surrenderedBy': elem.surrenderedBy,
+            'url': [elem.url]
+          }
+        })
         res.status(200).json({
           items: slicedResult,
           user: user,
@@ -120,7 +151,18 @@ router.post('/data', verifyToken, async(req, res) => {
       await itemModels.find({}).lean().limit(7).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
       .then((result) => {
         const hasNextPage = result.length > 6;
-        const slicedResult = result.slice(0, 6)
+        const slicedResult = result.slice(0, 6).map(elem=>{
+          return{
+            '_id': elem._id,
+            'datePosted': dateAndTime(elem.datePosted),
+            'desc': elem.desc,
+            'found': elem.found,
+            'nameItem': elem.nameItem,
+            'postedBy': elem.postedBy,
+            'surrenderedBy': elem.surrenderedBy,
+            'url': [elem.url]
+          }
+        })
         res.status(200).json({
           items: slicedResult,
           user: user,
@@ -353,15 +395,6 @@ router.post('/delete/:id', verifyToken, async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' }); 
   }
 });
-
-//set date to string
-const dateAndTime = (isoData)=>{
-  const Date = isoData.toISOString().split('T')[0]
-  const Time = isoData.toTimeString().split(' ')[0]
-  const dateAndTimeString = Date +" "+ Time
-  //console.log('dateAndTime', dateAndTime)
-  return dateAndTimeString
-}
 
 //request data
 router.post('/reqList', verifyToken, async (req, res, next)=>{
