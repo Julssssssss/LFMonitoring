@@ -2,7 +2,7 @@ import { useState } from "react";
 import { axiosSendEmail } from "../../../../../components/api/axios";
 import LoadingDots from "../../../../404/LoadingDots";
 
-const SendButton = ({ subject, emailContent, requestBy, index }) => {
+const SendButton = ({ subject, emailContent, requestBy, index, nameItem }) => {
   const [showPopup, setShowPopup] = useState(false);
  // const [loading, setLoading] = useState(true); 
 
@@ -38,10 +38,14 @@ const SendButton = ({ subject, emailContent, requestBy, index }) => {
 
   const checker = () => {
     try {
+      console.log('here', nameItem)
       if (subject.trim() === '' || emailContent.trim() === '' || requestBy.trim() === '') {
         alert('Please fill out all required fields.');
-      } else {
-        openPopup(); 
+        if(nameItem){
+          openPopup(); 
+        }
+      }else {
+        alert("The requested item no longer exists in the system.")
       }
     } catch (error) {
       console.log(error);

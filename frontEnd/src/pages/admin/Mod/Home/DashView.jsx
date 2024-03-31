@@ -40,7 +40,7 @@ const DashView = () => {
           <div className='absolute z-10 lg:relative'>
             <Sidebar />
           </div>
-          <div className='flex flex-col space-y-[1rem] bg-[#0D1832] lg:rounded-l-[6rem] w-full h-auto p-[1rem]'>
+          <div className='flex flex-col space-y-[1rem] bg-[#0D1832] lg:rounded-l-[6rem] w-full h-full p-[1rem]'>
             {/*for 1st part*/}
             <div className='flex flex-row items-center justify-center lg:justify-between space-x-[4rem] xsm:space-x-[7rem] sm:space-x-[10rem] sm:text-[1.2rem] md:space-x-[25rem] md:text-[1.5rem] lg:pt-[1rem] lg:pl-[1rem] xl:text-[2rem] 2xl:text-[3rem]'>
               <div className='gap-[0.5rem] w-[5rem] ml-[3rem] md:ml-[5rem] lg:m-0 flex flex-row text-[#F9D62B] font-bold'>
@@ -54,7 +54,7 @@ const DashView = () => {
               </div>
             </div>
             <p className='font-poppins text-white text-[0.8rem] sm:text-[0.9rem] md:text-[1.2rem] xl:text-[1.5rem] 2xl:text-[2rem]'>
-              <b>Notice:</b> Use the "Generate Archive Items" function to retrieve a list of items archived within a specified time frame.
+              <b>Notice:</b> Generate logs by selecting start and end dates.
             </p>
             <Panels itemData = {itemData}/>            
           </div>

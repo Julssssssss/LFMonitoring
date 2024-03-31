@@ -5,7 +5,7 @@ const LpCont2 = () => {
     
   return (
     <>
-      <div className="relative flex flex-col text-white overflow-hidden w-screen h-auto pb-[3rem] sm:pb-[7rem] md:pb-[10rem] lg:pb-[16rem] xl:pb-[23rem] 2xl:pb-[24rem] 3xl:pb-[21rem]">
+      <div className="relative flex flex-col text-white overflow-hidden w-screen h-auto pb-[3rem] sm:pb-[2rem] md:pb-[10rem] lg:pb-[16rem] xl:pb-[23rem] 2xl:pb-[30rem]">
         <div className="relative w-screen flex flex-col space-y-[0.5rem] items-center mt-[4rem] sm:mt-[3rem] text-white font-poppins text-center sm:mt-[5rem] md:mt-[5.5rem] lg:mt-[8rem] lg:-left-[4rem] lg:flex-row lg:mx-[3rem] xl:mt-[14rem] 2xl:mt-[20rem]">
           <div className="z-10 absolute lg:left-0 2xl:left-[5.5rem]">
             <div className="bg-[#17394C] w-[13rem] h-[13rem] rounded-full blur-xl md:w-[20rem] md:h-[24rem] lg:w-[30rem] lg:h-[30rem] xl:w-[33rem] lg:h-[33rem] 2xl:w-[35rem] 2xl:h-[40rem]"/>

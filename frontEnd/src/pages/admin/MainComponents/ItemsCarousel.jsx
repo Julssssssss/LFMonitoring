@@ -27,8 +27,10 @@ const ImageCarousel = ({ url, currentSlide, onNext, onPrev, onClose }) => {
     </div>
   );
 };
-
+// item was the existing image of the said item
+// imageUrl was the new image that would be uploaded sooner the use uploads it to the db
 const ItemsCarousel = ({ imageUrl, item, handleDelete, handleDeleteLink, enableDeleteButton }) => {
+
   const [carouselOpen, setCarouselOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -63,10 +65,13 @@ const ItemsCarousel = ({ imageUrl, item, handleDelete, handleDeleteLink, enableD
 
   // Combine imageUrl and item into a single array
   const images = imageUrl ? [...imageUrl] : [];
+
+
   if (item && Array.isArray(item)) {
     images.push(...item);
   }
 
+  console.log('henlo', images)
   return (
     <>
       {images.length > 0 && (

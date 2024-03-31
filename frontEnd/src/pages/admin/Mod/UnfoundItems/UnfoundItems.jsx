@@ -38,35 +38,37 @@ const UnfoundItems = () => {
       setEndDate(e.target.value);
     };
   return (
-    <div className="text-white md:text-[1.5rem] xl:text-[1.9rem] font-poppins h-auto w-full px-[5rem] flex flex-col justify-center items-center">
-            <b className="text-start w-full">StartDate : </b>
-            <input className="bg-[#0D1832] border-[#F9D62B] border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem]"
-                type="date"
-                id="startDate"
-                min="2024-01-01"
-                max={new Date().toISOString().split('T')[0]}
-                value={startDate}
-                onChange={handleStartDateChange}
-            />
-            <br></br>
-            <b className="text-start w-full">EndDate : </b>
-            <input className="bg-[#0D1832] border-[#F9D62B] border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem]"
-                type="date"
-                id="endDate"
-                min="2024-01-01"
-                max={new Date().toISOString().split('T')[0]}
-                value={endDate}
-                onChange={handleEndDateChange}
-            />
-            <br></br>
-            <button className="text-[0.8rem] font-bold rounded-full hover:bg-[#134083] hover:text-white hover:border-[0.1rem] border-[0.1rem] hover:border-white h-[2rem] w-[12rem] overflow-hidden bg-[#F9D62B] md:text-[1.5rem] md:w-auto md:h-auto lg:text-[1rem] lg:w-[15rem] text-black p-[0.5rem]"
+        <div className="flex flex-col space-y-[0.7rem] md:space-y-[0.8rem] md:text-[1.5rem] justify-center items-center md:space-y-[0.5rem] lg:w-auto lg:space-y-[0.7rem] lg:text-[1.3rem] xl:text-[1.6rem] xl:space-y-[1.2rem] 2xl:text-[2.2rem] 2xl:space-y-[2rem]">
+            <div className="flex flex-col items-center lg:flex-col w-full gap-[0.5rem] lg:gap-0">
+                <b>StartDate : </b>
+                <input className="bg-[#0D1832] w-full border-white border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem] 2xl:w-[30rem]"
+                    type="date"
+                    id="startDate"
+                    min="2024-01-01"
+                    max={new Date().toISOString().split('T')[0]}
+                    value={startDate}
+                    onChange={handleStartDateChange}
+                />
+            </div>
+            <div className="flex flex-col items-center lg:flex-col w-full gap-[0.5rem] lg:gap-0">
+                <b>EndDate : </b>
+                <input className="bg-[#0D1832] w-full border-white border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem]"
+                    type="date"
+                    id="endDate"
+                    min="2024-01-01"
+                    max={new Date().toISOString().split('T')[0]}
+                    value={endDate}
+                    onChange={handleEndDateChange}
+                />
+            </div>
+
+            <button className="mt-[0.5rem] text-[0.5rem] sm:text-[0.7rem] md:text-[1.4rem] bg-[#F9D62B] hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white text-black font-bold rounded-full h-[1.5rem] w-full p-[0.2rem] md:h-[3rem] lg:h-auto lg:text-[1rem] lg:w-[15rem] xl:text-[1.4rem] xl:p-[0.4rem] xl:w-[20rem] 2xl:text-[2rem] 2xl:w-full overflow-hidden"
                 onClick={handleUnfoundItemsGeneration}
             >
-                {'Generate Unclaimed Items'}
+                Generate Unclaimed Items
             </button>
-          
-        </div>
-  )
-}
+    </div>
+    )
+    }
 
 export default UnfoundItems

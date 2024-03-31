@@ -245,11 +245,11 @@ router.post('/setRoles', adminOnlyToken, async(req, res, next) => {
 router.put('/sendItem', verifyToken, upload.array('image'), async (req, res) => {
   try {
     const data = req.user
-    
+    console.log()
     const { Email } = data;
     console.log('here', Email)
-    const { nameItem, desc, found, surrenderedBy, datePosted } = req.body;
-    console.log('here', req.body);
+    const { nameItem, desc, found, surrenderedBy} = req.body;
+    console.log('sendItem', req.files);
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ error: 'No files were uploaded.' });
     }
@@ -292,10 +292,12 @@ router.put('/update/data/:id', verifyToken, upload.array('image'), async (req, r
     //where new and old photos are stored
     const uploadedImages = [];
     const { id } = req.params;
-    const { nameItem, desc, found, surrenderedBy, datePosted, OldPic } = req.body;
+    const { nameItem, desc, found, surrenderedBy, datePosted, OldPic, image } = req.body;
+    console.log('edit', req.files)
     //where new photos are stored
     const files = req.files || [];
-    
+    console.log('here', req.files)
+    console.log('images', image)
     // this is where it stores the OldPic whethere it is array or not 
     const oldPicArray = Array.isArray(OldPic) ? OldPic : (OldPic ? [OldPic] : []);
     //checks the OldPicArray or files if it not empty and store both array in one array
@@ -367,12 +369,12 @@ router.post('/delete/:id', verifyToken, async (req, res) => {
     const { id } = req.params;
     const {data} = req.body;
     const { url } = data
+    console.log('here', url[0])
     const extractUrl = (url) => {
-      const match = url.match(/\/(FoundItems\/Item\d+)\.jpg$/);
+      const match = url[0].match(/\/(FoundItems\/Item\d+)\.jpg$/);
       return match ? match[1] : null;
     };
     const publicIds = url.map(extractUrl);
-
     const deletionResults = await Promise.all(publicIds.map(async (publicId) => {
       const cloudinaryResponse = await cloudinary.uploader.destroy(publicId);
       return { publicId, result: cloudinaryResponse.result };
@@ -423,7 +425,8 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
                 itemData = await transModels.findOne({'itemId' : elem.itemId}).lean()
                 if(!itemData){
                   //if dinelete yung item
-                  return itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
+                  itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
+                  itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
                 }
                 itemData.source = `This request has been successfully completed`
               }
@@ -443,7 +446,7 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
               "itemData": itemData
             }
         }))
-        //console.log(reqListAndItemData)
+        //console.log('here1',reqListAndItemData)
 
         res.status(200).json({
           'reqListAndItemData': reqListAndItemData,
@@ -468,7 +471,8 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
                 itemData = await transModels.findOne({'itemId' : elem.itemId}).lean()
                 if(!itemData){
                   //if dinelete yung item
-                  return itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
+                  itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
+                  itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
 
                 }
                 itemData.source = `This request has been successfully completed`
@@ -500,7 +504,8 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
     }
     else{
       const {currentPage} = req.body
-      //console.log('hello')
+      console.log('hello')
+      console.log(currentPage)
       await reqModels.find({}).lean().limit(7).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
       .then(async(result)=>{
         const hasNextPage = result.length > 6;
@@ -515,13 +520,13 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
                 itemData = await transModels.findOne({'itemId' : elem.itemId}).lean()
                 if(!itemData){
                   //if dinelete yung item
-                  return itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
-                }
-                itemData.source = `This request has been successfully completed`
-              }
-              else{
+                  itemData= {'mema': 'null'}
+                  itemData.source =`The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
+                  }else{
+                  itemData.source = `This request has been successfully completed`
+                  }
+              }else{
                 itemData.source =`The items associated with this request have been archived as they remain unclaimed. Please review and advise on further action needed. Thank you!`
-
               }
             }
             else{
@@ -536,7 +541,7 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
               "itemData": itemData
             }
         }))
-        //console.log(reqListAndItemData)
+        console.log(reqListAndItemData)
 
         res.status(200).json({
           'reqListAndItemData': reqListAndItemData,

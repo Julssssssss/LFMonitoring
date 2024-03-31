@@ -41,7 +41,8 @@ const Privilege = () => {
         }
       );
       setUserData(response.data);
-      setTempRole(response.data.Role);
+      //const Role = tempRole.toUpperCase() 
+      setTempRole(response.data.Role.toUpperCase()); 
     } catch(error) {
       console.log(error);
     } finally {
@@ -125,6 +126,7 @@ const Privilege = () => {
       console.log(err);
     }
   };
+  
 
   return (
     <div className='flex flex-row h-screen w-screen bg-[#17394C] lg:space-x-[5rem] xl:space-x-[7rem] overflow-x-hidden overflow-y-hidden'>
@@ -161,7 +163,9 @@ const Privilege = () => {
                       {userData ? (
                         <>
                           <div>{userData.Email}</div>
-                          <div>{tempRole}</div>
+                          <div className='bg-[#716426] px-[0.2rem] px-[1rem] rounded-[0.5rem]'>
+                            {tempRole}
+                          </div>
                         </>
                       ) : (
                         loading ? (

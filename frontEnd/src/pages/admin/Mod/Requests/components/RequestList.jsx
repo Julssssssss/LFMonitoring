@@ -20,6 +20,7 @@ const RequestList = () => {
   const [endDate, setEndDate] = useState('')
   const [userUsedSearch, setUserUsedSearch] = useState(false)
   const [hasNextPage, setHasNextPage] = useState(null)
+  const [reqItem, setReqItem] =useState('')
 
 
   const getReqList = async() => {
@@ -176,10 +177,10 @@ const RequestList = () => {
     );
   } 
 
-
+ 
   function requestFormat() {
     return list.map((elem, index) => {
-      
+      console.log('hii', list)
       return(
         <div key={index}>
           <div className="relativeflex flex-col justify-center border-b-2 border-white bg-[#17394C] w-full h-auto space-y-[0.2rem] rounded-xl p-1 md:p-[0.7rem]">
@@ -308,13 +309,14 @@ const RequestList = () => {
             
           </div>
           <div className="flex justify-center items-center">
-              <SendButton subject={subject} emailContent={emailContent} requestBy={Email} index= {id}/>
+              <SendButton subject={subject} emailContent={emailContent} nameItem={nameItem} requestBy={Email} index= {id}/>
           </div>
         </div>
         </>
       )
     }
     else{
+
       //palagay naman ako ng catch dito if nadelete na yung data means d na mafetch yung data sa db
     }
     
