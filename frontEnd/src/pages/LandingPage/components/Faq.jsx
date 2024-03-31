@@ -21,7 +21,7 @@ const Faq = () => {
     return Questions.map((el, index) => {
       return (
         <div className="overflow-hidden" key={index}>
-          <button  onClick={() => toggleDropdown(index)} className="bg-[#134083] rounded-full flex flex-row justify-between p-[0.2rem] px-[1rem] items-center relative z-20 sm:w-full md:p-[0.6rem] lg:w-[52rem] lg:py-[0.4rem] lg:px-[1rem] xl:p-[1.2rem] xl:ml-[1.5rem] xl:w-[65rem] 2xl:w-[75rem] 2xl:ml-[2rem] 3xl:w-[80rem]">
+          <button  onClick={() => toggleDropdown(index)} className="bg-[#134083] rounded-full flex flex-row justify-between p-[0.2rem] px-[1rem] items-center relative z-20 sm:w-full md:p-[0.6rem] lg:w-[52rem] lg:py-[0.4rem] lg:px-[1rem] xl:p-[1.2rem] xl:ml-[1.5rem] xl:w-[65rem] 2xl:w-[85rem] 2xl:ml-[2rem] 3xl:w-[80rem]">
             <div className="text-[0.7rem] text-justify sm:text-[0.9rem] md:text-[1.2rem] lg:text-[1.5rem] xl:text-[1.7rem] 2xl:text-[1.9rem]">{el.label}</div>
             <button
               onClick={() => toggleDropdown(index)}

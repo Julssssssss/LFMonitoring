@@ -426,6 +426,7 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
                 if(!itemData){
                   //if dinelete yung item
                   itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
+                  itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
                 }
                 itemData.source = `This request has been successfully completed`
               }
@@ -445,7 +446,7 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
               "itemData": itemData
             }
         }))
-        //console.log(reqListAndItemData)
+        //console.log('here1',reqListAndItemData)
 
         res.status(200).json({
           'reqListAndItemData': reqListAndItemData,
@@ -470,6 +471,7 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
                 itemData = await transModels.findOne({'itemId' : elem.itemId}).lean()
                 if(!itemData){
                   //if dinelete yung item
+                  itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
                   itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
 
                 }
@@ -518,16 +520,13 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
                 itemData = await transModels.findOne({'itemId' : elem.itemId}).lean()
                 if(!itemData){
                   //if dinelete yung item
-                  itemData = `mema`
-                  itemData.source = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
-                }
-                else{
+                  itemData= {'mema': 'null'}
+                  itemData.source =`The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
+                  }else{
                   itemData.source = `This request has been successfully completed`
-                }
-              }
-              else{
+                  }
+              }else{
                 itemData.source =`The items associated with this request have been archived as they remain unclaimed. Please review and advise on further action needed. Thank you!`
-
               }
             }
             else{
@@ -542,7 +541,7 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
               "itemData": itemData
             }
         }))
-        //console.log(reqListAndItemData)
+        console.log(reqListAndItemData)
 
         res.status(200).json({
           'reqListAndItemData': reqListAndItemData,
