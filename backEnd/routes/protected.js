@@ -10,8 +10,10 @@ const UserModel = require('../Models/userModels')
 const verifyToken = (req, res, next) => {
     const authHeader = req.headers['authorization']
     const token = authHeader.split(' ')[1]
+    //console.log(token)
     if(token === 'null' ) {return res.sendStatus(401)}
     jwt.verify(token, process.env.JWT_ACCESS_SECRET, (err, user)=>{
+        //console.log(err)
         if(err) return res.sendStatus(403)
         if(user.Role != 'user') return res.sendStatus(401)
         req.user= user
@@ -20,8 +22,10 @@ const verifyToken = (req, res, next) => {
 };
 
 router.put("/TACagreement", verifyToken, async(req, res)=>{
+    //console.log('hello')
     try{
         const {_id} = req.user
+        console.log('hello')
         const result = await UserModel.findByIdAndUpdate({ '_id': _id }, {$set:{TAC:true}})
         if(!result){
             res.sendStatus(500)

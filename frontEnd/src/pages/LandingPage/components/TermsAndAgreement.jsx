@@ -7,7 +7,9 @@ const TermsAndAgreement = ({closeTAC}) => {
   const accessToken = localStorage.getItem('accessToken');
 
   const handleAcceptTAC = async () => {
+    //console.log(`clicked`)
     try{
+      console.log(`clicked`)
       await axios.put(
         `${import.meta.env.VITE_API_URL}/prot/TACagreement`,
         null,
@@ -18,7 +20,7 @@ const TermsAndAgreement = ({closeTAC}) => {
         }
       )
       .then(res=>{
-        console.log(res)
+        //console.log(res)
         Auth()
         //window.location.reload();
       })
