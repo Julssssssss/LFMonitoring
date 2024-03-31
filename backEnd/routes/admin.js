@@ -425,7 +425,7 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
                 itemData = await transModels.findOne({'itemId' : elem.itemId}).lean()
                 if(!itemData){
                   //if dinelete yung item
-                  return itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
+                  itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
                 }
                 itemData.source = `This request has been successfully completed`
               }
@@ -470,7 +470,7 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
                 itemData = await transModels.findOne({'itemId' : elem.itemId}).lean()
                 if(!itemData){
                   //if dinelete yung item
-                  return itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
+                  itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
 
                 }
                 itemData.source = `This request has been successfully completed`
@@ -502,7 +502,8 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
     }
     else{
       const {currentPage} = req.body
-      //console.log('hello')
+      console.log('hello')
+      console.log(currentPage)
       await reqModels.find({}).lean().limit(7).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
       .then(async(result)=>{
         const hasNextPage = result.length > 6;
@@ -517,9 +518,12 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
                 itemData = await transModels.findOne({'itemId' : elem.itemId}).lean()
                 if(!itemData){
                   //if dinelete yung item
-                  return itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
+                  itemData = `mema`
+                  itemData.source = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
                 }
-                itemData.source = `This request has been successfully completed`
+                else{
+                  itemData.source = `This request has been successfully completed`
+                }
               }
               else{
                 itemData.source =`The items associated with this request have been archived as they remain unclaimed. Please review and advise on further action needed. Thank you!`
