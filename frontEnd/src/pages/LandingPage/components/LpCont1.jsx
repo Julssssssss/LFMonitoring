@@ -25,7 +25,7 @@ const LpCont1 = () => {
                 <div className="absolute right-0 top-[0.1rem] bg-[#17394C] w-[6rem] h-[6rem] rounded-full blur-xl md:w-[9rem] md:h-[11rem] md:top-[13rem] md:right-[12rem] lg:w-[11rem] lg:h-[11rem] lg:top-[18rem] lg:right-[16rem] xl:w-[12rem] xl:h-[12rem] xl:right-[22rem] xl:top-[25rem] 2xl:top-[35rem] 2xl:right-[29rem]"/>
             </div>
             {/* get started na button */}
-            <div className="flex flex-col items-center mt-[2rem] md:mt-[7rem] lg:mt-[8rem]">
+            <div className="flex flex-col items-center mt-[2rem] xsm:mt-[4rem] sm:mt-[5rem] md:mt-[7rem] lg:mt-[8rem]">
                 <SignIn />
             </div>
         </div>

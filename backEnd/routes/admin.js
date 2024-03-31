@@ -245,11 +245,11 @@ router.post('/setRoles', adminOnlyToken, async(req, res, next) => {
 router.put('/sendItem', verifyToken, upload.array('image'), async (req, res) => {
   try {
     const data = req.user
-    
+    console.log()
     const { Email } = data;
     console.log('here', Email)
-    const { nameItem, desc, found, surrenderedBy, datePosted } = req.body;
-    console.log('here', req.body);
+    const { nameItem, desc, found, surrenderedBy} = req.body;
+    console.log('sendItem', req.files);
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ error: 'No files were uploaded.' });
     }
@@ -292,10 +292,12 @@ router.put('/update/data/:id', verifyToken, upload.array('image'), async (req, r
     //where new and old photos are stored
     const uploadedImages = [];
     const { id } = req.params;
-    const { nameItem, desc, found, surrenderedBy, datePosted, OldPic } = req.body;
+    const { nameItem, desc, found, surrenderedBy, datePosted, OldPic, image } = req.body;
+    console.log('edit', req.files)
     //where new photos are stored
     const files = req.files || [];
-    
+    console.log('here', req.files)
+    console.log('images', image)
     // this is where it stores the OldPic whethere it is array or not 
     const oldPicArray = Array.isArray(OldPic) ? OldPic : (OldPic ? [OldPic] : []);
     //checks the OldPicArray or files if it not empty and store both array in one array
@@ -367,12 +369,12 @@ router.post('/delete/:id', verifyToken, async (req, res) => {
     const { id } = req.params;
     const {data} = req.body;
     const { url } = data
+    console.log('here', url[0])
     const extractUrl = (url) => {
-      const match = url.match(/\/(FoundItems\/Item\d+)\.jpg$/);
+      const match = url[0].match(/\/(FoundItems\/Item\d+)\.jpg$/);
       return match ? match[1] : null;
     };
     const publicIds = url.map(extractUrl);
-
     const deletionResults = await Promise.all(publicIds.map(async (publicId) => {
       const cloudinaryResponse = await cloudinary.uploader.destroy(publicId);
       return { publicId, result: cloudinaryResponse.result };

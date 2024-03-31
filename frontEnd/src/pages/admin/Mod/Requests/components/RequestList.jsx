@@ -182,6 +182,7 @@ const RequestList = () => {
       
       return(
         <div key={index}>
+          {console.log('hii', elem)}
           <div className="relativeflex flex-col justify-center border-b-2 border-white bg-[#17394C] w-full h-auto space-y-[0.2rem] rounded-xl p-1 md:p-[0.7rem]">
             <div className="flex flex-row justify-between items-center text-white text-[0.8rem] md:text-[1.3rem] lg:text-[0.8rem] xl:text-[1.1rem] 2xl:text-[1.5rem]">
               <div className="flex flex-row w-full justify-between">

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
 import { axiosSendUpdate } from "../../../../../components/api/axios";
 import UploadingScreen from "../../../../404/UploadingScreen";
 import ItemsCarousel from "../../../MainComponents/ItemsCarousel";
@@ -24,6 +24,7 @@ const EditButton = ({ Info }) => {
   const [item, setItem] = useState([]);
   const [indexToReplace, setIndexToReplace] = useState(0);
   const [cooldownActive, setCooldownActive] = useState(false)
+  
 
   useEffect (()=>{
     setItem({
@@ -32,10 +33,14 @@ const EditButton = ({ Info }) => {
       desc: Info.desc,
       found: Info.found,
       surrenderedBy: Info.surrenderedBy,
-      url: Info.url,
+      url: Info.url[0],
       datePosted: Info.datePosted,
     })
   }, [Info])
+
+
+ // console.log('Info', Info)
+ // console.log('item', item.url)
 
   const showWarning = (message) => {
     alert(message);
@@ -43,7 +48,7 @@ const EditButton = ({ Info }) => {
 
   const uploadSuccess = () => {
     alert('Update Complete');
-    window.location.reload();
+    //window.location.reload();
   };
 
   const checker = async () => {
@@ -82,17 +87,15 @@ const EditButton = ({ Info }) => {
 
         for (const oldFile of item.url) {
             formData.append('OldPic', oldFile);
-        }
+        }  
+        //console.log('files', files.length)
 
-        if (files.length > 0) {
-           
-            for (const file of files) {
-                formData.append('image', file);
-            }
-        } else {
-            console.log('No new images uploaded.');
-            
+        if(files.length > 0){
+        for (const file of files) {
+            formData.append('image', file);
         }
+       }
+      
         await axiosSendUpdate.put(`${item.id}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -142,7 +145,14 @@ const EditButton = ({ Info }) => {
   };
 
   const openModal = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setItem({ ...item, nameItem: Info.nameItem, desc: Info.desc, 
+      found: Info.found, surrenderedBy: Info.surrenderedBy, url:Info.url[0]})
+    setImageUrl([])
+  }
+  
 
   return (
     <>

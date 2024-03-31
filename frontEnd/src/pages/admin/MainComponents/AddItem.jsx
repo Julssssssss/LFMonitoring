@@ -40,7 +40,7 @@ const AddItem = () => {
   };
 
   const uploadSuccess = () => {
-    alert('Uploaded');
+    alert('Successfully uploaded');
     window.location.reload();
   };
 
@@ -77,14 +77,12 @@ const AddItem = () => {
         formData.append('desc', desc);
         formData.append('found', found);
         formData.append('surrenderedBy', surrenderedBy);
-    
-        if (files && files.length > 0) {
+
           for (const file of files) {
             formData.append('image', file);
           }
-        }
-
-        await axiosSendItem.put(' ', formData, {
+          
+        await axiosSendItem.put('', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -97,7 +95,6 @@ const AddItem = () => {
           setCooldownActive(true)
 
             setTimeout(()=>{
-              //console.log('hi')
               setCooldownActive(false)
             }, 5000)
 
@@ -133,7 +130,12 @@ const AddItem = () => {
   const openModal = () => setModalOpen(true);
   const closeModal = () => {
     setModalOpen(false);
-    window.location.reload();
+    setName('')
+    setDesc('')
+    setFound('')
+    setSurrenderedBy('')
+    setImageUrl('')
+    setFiles([])
     
   };
 
