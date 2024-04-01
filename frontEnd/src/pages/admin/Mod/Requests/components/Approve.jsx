@@ -58,13 +58,13 @@ const Approve = ({ list }) => {
  
 const sample =()=>{
   if(selectedItem.itemData){
-    const {nameItem, desc, found, surrenderedBy, datePosted} = selectedItem.itemData
+    const {nameItem, desc, found, surrenderedBy, datePosted, haveBeenEmailed} = selectedItem.itemData
     return(
       <div className="fixed -left-[1rem] lg:inset-0 top-0 z-70 flex flex-col items-center justify-center h-screen">
         <div className="flex w-screen place-items-center justify-center h-screen bg-black bg-opacity-75">
           <div className="flex flex-col bg-[#134083] border-[0.1rem] border-[#F9D62B] rounded-[1rem] w-full mx-[1rem] md:mx-[2rem] lg:mx-[7rem] xl:mx-[15rem] h-auto p-[1rem]">
             <button
-                className="w-[2rem] h-[2rem] xl:w-[3rem] xl:h-[3rem] place-self-end m-[0.5rem] stroke-[#F9D62B] hover:stroke-white"
+                className={`w-[2rem] h-[2rem] xl:w-[3rem] xl:h-[3rem] place-self-end m-[0.5rem] stroke-[#F9D62B] hover:stroke-white`}
                 onClick={()=>{setSelectedItem(false)}}
               >
               <svg
@@ -123,7 +123,7 @@ const sample =()=>{
                     </div>
                 </div>
               </div>
-              <button onClick={sendToArchive} className="bg-[#F9D62B] font-bold hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white text-[0.9rem] text-black p-[0.1rem] md:text-[1.5rem] md:h-[3rem] md:w-[10rem] lg:h-[2.2rem] lg:text-[1.2rem] rounded-full w-[7rem] font-poppins">
+              <button onClick={sendToArchive} className={`bg-[#F9D62B] font-bold hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white text-[0.9rem] text-black p-[0.1rem] md:text-[1.5rem] md:h-[3rem] md:w-[10rem] lg:h-[2.2rem] lg:text-[1.2rem] rounded-full w-[7rem] font-poppins`}>
                 APPROVE
               </button>
 
@@ -139,9 +139,9 @@ const sample =()=>{
     <>
       <div className="">
         <button
-          onClick={()=>{setSelectedItem(list)}}
+          onClick={()=>{list.haveBeenEmailed ? setSelectedItem(list): null}}
           type="button"
-          className="bg-[#F9D62B] text-black font-poppins hover:bg-[#134083] text-[0.7rem] hover:text-white w-[4rem] md:w-[6rem] xl:text-[1.2rem] xl:h-[2rem] xl:w-[7rem] md:text-[1rem] rounded-full text-center"
+          className={`${list.haveBeenEmailed ?  null : `bg-[#836d04]`} bg-[#F9D62B] text-black font-poppins hover:bg-[#134083] text-[0.7rem] hover:text-white w-[4rem] md:w-[6rem] xl:text-[1.2rem] xl:h-[2rem] xl:w-[7rem] md:text-[1rem] rounded-full text-center`}
         >
           Approve
         </button>

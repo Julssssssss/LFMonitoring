@@ -201,7 +201,7 @@ const RequestList = () => {
               </div>
             </div>
             <div className="items-center w-full justify-center flex flex-row space-x-[1rem]">
-              <button onClick={()=>{setSelectedItem(elem), showWarning(elem.itemData.source)}} className="bg-[#F9D62B] font-poppins text-black hover:bg-[#134083] mt-[0.1rem] text-[0.7rem] md:text-[1rem] md:w-[5rem] xl:text-[1.3rem] xl:w-[7rem] hover:text-white w-[4rem] rounded-full">View</button>
+              <button onClick={()=>{setSelectedItem(elem), showWarning(elem.itemData.source)}} className= {`bg-[#F9D62B] font-poppins text-black hover:bg-[#134083] mt-[0.1rem] text-[0.7rem] md:text-[1rem] md:w-[5rem] xl:text-[1.3rem] xl:w-[7rem] hover:text-white w-[4rem] rounded-full`}>View</button>
               <Approve list={elem} />
               <DeleteReq reqData={elem}/>
             </div>
