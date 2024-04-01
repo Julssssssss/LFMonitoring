@@ -63,7 +63,7 @@ app.use(session({
     }),
     cookie: {
         //sameSite: "None",
-        //httpOnly: true,
+       // httpOnly: true,
         //secure: true, // true mo to if prod na
         maxAge: 60*60*1000
     }
