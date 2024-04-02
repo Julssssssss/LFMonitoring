@@ -215,9 +215,10 @@ const AddItem = () => {
             {displayPic()}
           </div>
 
+          
           <input
             type="file"
-            className="text-white text-[0.6rem] md:text-[1rem] xl:text-[1.2rem]"
+            className="text-white text-[0.6rem] md:text-[1rem] xl:text-[1.2rem] w-full px-[3rem]"
             accept="image/*"
             multiple
             onChange={(e) => {
@@ -258,7 +259,7 @@ const AddItem = () => {
               }
             }}
           />
-
+        
 
           <div className="flex flex-col items-center space-y-[1rem] text-white">
             <input

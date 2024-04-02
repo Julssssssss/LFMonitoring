@@ -38,19 +38,20 @@ const SendButton = ({ subject, emailContent, requestBy, index, nameItem }) => {
 
   const checker = () => {
     try {
-      console.log('here', nameItem)
+      console.log('here', nameItem);
       if (subject.trim() === '' || emailContent.trim() === '' || requestBy.trim() === '') {
         alert('Please fill out all required fields.');
-        if(nameItem){
-          openPopup(); 
+        }else if(nameItem === 'Deleted'){
+          alert("The requested item no longer exists in the system.");
+        }else{
+          openPopup()
         }
-      }else {
-        alert("The requested item no longer exists in the system.")
-      }
+      
     } catch (error) {
       console.log(error);
     }
   };
+  
 
 
 
