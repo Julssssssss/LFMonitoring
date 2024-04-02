@@ -5,7 +5,9 @@ const DeleteReq = ({reqData}) => {
   const {id} = reqData
   const [showConfirmation, setShowConfirmation] = useState(false);
   
-
+  const showAlert =(message)=>{
+    alert(message)
+  }
   const openPopup = () => {
     setShowConfirmation(true);
   };
@@ -20,6 +22,7 @@ const DeleteReq = ({reqData}) => {
         .then(res=>{
             console.log(res)
             window.location.reload();
+            showAlert('Successfully deleted the request')
         })
         .catch(err=>{console.log(err)})
       }

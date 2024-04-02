@@ -472,7 +472,6 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
                 if(!itemData){
                   //if dinelete yung item
                   itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
-                  itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
 
                 }
                 itemData.source = `This request has been successfully completed`
@@ -520,7 +519,7 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
                 itemData = await transModels.findOne({'itemId' : elem.itemId}).lean()
                 if(!itemData){
                   //if dinelete yung item
-                  itemData= {'mema': 'null'}
+                  itemData= {'nameItem': 'Deleted'}
                   itemData.source =`The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
                   }else{
                   itemData.source = `This request has been successfully completed`

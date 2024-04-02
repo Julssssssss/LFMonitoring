@@ -135,11 +135,15 @@ const sample =()=>{
   }
 }
 
+  const showWarning =(message) =>{
+    alert(message)
+  }
+
   return (
     <>
       <div className="">
         <button
-          onClick={()=>{list.haveBeenEmailed ? setSelectedItem(list): null}}
+          onClick={()=>{list.haveBeenEmailed ? setSelectedItem(list): showWarning(' The requested item has not yet been emailed.')}}
           type="button"
           className={`${list.haveBeenEmailed ?  null : `bg-[#836d04]`} bg-[#F9D62B] text-black font-poppins hover:bg-[#134083] text-[0.7rem] hover:text-white w-[4rem] md:w-[6rem] xl:text-[1.2rem] xl:h-[2rem] xl:w-[7rem] md:text-[1rem] rounded-full text-center`}
         >

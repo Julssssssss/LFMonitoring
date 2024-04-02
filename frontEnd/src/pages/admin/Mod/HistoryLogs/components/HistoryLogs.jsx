@@ -1,7 +1,5 @@
 import { useState } from "react"
 import { axiosGetLogs } from "../../../../../components/api/axios"
-import UnfoundItems from "../../UnfoundItems/UnfoundItems"
-
 
 
 const HistoryLogs = () => {
@@ -47,7 +45,6 @@ const HistoryLogs = () => {
     <div className="flex flex-col justify-between mt-[0.5rem] text-white whitespace-nowrap px-[1rem] md:px-[2rem] lg:px-0 lg:mr-[1rem]">
         <div className='font-poppins flex flex-col ml-[2rem] md:ml-[3rem] mb-[1rem] md:text-[2rem] lg:ml-0 xl:text-[3rem]'>
             <p>HISTORY LOGS</p>
-            <p>and UNCLAIMED ITEMS</p>
             
         </div>   
         <div className="text-start font-poppins mb-[0.5rem] text-white h-auto text-[0.7rem] md:text-[0.9rem] lg:text-[1rem] xl:text-[1.2rem] 2xl:text-[1.4rem]">
@@ -58,7 +55,7 @@ const HistoryLogs = () => {
     </div>
     <div className="bg-[#134083] space-y-[0.9rem] font-poppins overflow-y-visible lg:overflow-hidden w-full h-full lg:space-y-0 lg:h-full lg:space-x-[1.5rem] rounded-[2rem] flex flex-col lg:flex-row justify-center items-center lg:p-0 p-[0.8rem]">
         <div className="text-white md:text-[1.5rem] xl:text-[1.9rem] font-poppins h-auto w-full px-[5rem] flex flex-col items-center">
-            <b className="text-start w-full">StartDate : </b>
+            <b className="text-center w-full">StartDate : </b>
             <input className="bg-[#0D1832] border-[#F9D62B] border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem]"
                 type="date"
                 id="startDate"
@@ -68,7 +65,7 @@ const HistoryLogs = () => {
                 onChange={handleStartDateChange}
             />
             <br></br>
-            <b className="text-start w-full">EndDate : </b>
+            <b className="text-center w-full">EndDate : </b>
             <input className="bg-[#0D1832] border-[#F9D62B] border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem]"
                 type="date"
                 id="endDate"
@@ -83,10 +80,8 @@ const HistoryLogs = () => {
             >
                 {'Generate Logs Data'}
             </button>
+        </div>    
         </div>
-        <div className="w-full h-[0.3rem] lg:h-full lg:w-[0.4rem] bg-[#F9D62B] rounded-full m-[0.5rem]"></div>
-        <UnfoundItems />
-    </div>
     </>
   )
 }
