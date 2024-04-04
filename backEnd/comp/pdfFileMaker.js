@@ -20,27 +20,30 @@ const fixObjectFormat = (objData)=>{
             const {updatedItem, oldItemData} = objData
             //console.log(updatedItem)
             const {_id, url, nameItem, desc, found, surrenderedBy, postedBy, datePosted} = updatedItem
-            console.log(nameItem)
+            //console.log(nameItem)
             const objToString = (
-                `UPDATED: \n Id: ${_id} \n Image Path: ${url} \n Id: ${_id} \n Name Item: ${nameItem} \n Description: ${desc} \n Found By: ${found} \n Surrendered by: ${surrenderedBy} \n Posted By: ${postedBy} \n Date Posted : ${datePosted} \n\n OLD: \n ${oldItemData}`
+                `UPDATED : \n Id : ${_id} \n Image Path : ${url} \n Name Item : ${nameItem} \n Description : ${desc} \n Found By : ${found} \n Surrendered by : ${surrenderedBy} \n Posted By : ${postedBy} \n Date Posted : ${datePosted} \n\n OLD : \n ${oldItemData}`
             )
             return objToString
         }
         else if ('to' in objData){ //for sending Email
-            console.log('sended Email', objData)
+            //console.log('sended Email', objData)
             //delete objData.__v
-            //const objToString = JSON.stringify(objData).replace(/,/g, '\n').replace(/["\[\]{}]/g, '').replace(/:/g, ' : ')
-            return objData
+            const objToString = JSON.stringify(objData).replace(/,/g, '\n').replace(/["\[\]{}]/g, '').replace(/:/g, ' : ')
+            return objToString
         }
         else if('Email' in objData){ //for request
             delete objData.__v
-            const objToString = JSON.stringify(objData).replace(/,/g, '\n').replace(/["\[\]{}]/g, '').replace(/:/g, ' : ')
-            return objData
+            const {_id, itemId, nameItem, Email, haveBeenEmailed, dateRequested} = objData
+            const objToString = (
+                `Id : ${_id} \n Item ID : ${itemId} \n Name Item : ${nameItem} \n Email : ${Email} \n have Been Emailed : ${haveBeenEmailed} \n Date Requested : ${dateRequested}`
+            )
+            return objToString
         }
         else if('nameItem' in objData){ //for items
             const {_id, url, nameItem, desc, found, surrenderedBy, postedBy, datePosted} = objData
             const objToString = (
-                `Id: ${_id} \n Image Path: ${url} \n Id: ${_id} \n Name Item: ${nameItem} \n Description: ${desc} \n Found By: ${found} \n Surrendered by: ${surrenderedBy} \n Posted By: ${postedBy} \n Date Posted : ${datePosted}`
+                `Id : ${_id} \n Image Path : ${url} \n Name Item : ${nameItem} \n Description : ${desc} \n Found By : ${found} \n Surrendered by : ${surrenderedBy} \n Posted By : ${postedBy} \n Date Posted : ${datePosted}`
             )
             return objToString
         }
