@@ -317,11 +317,12 @@ router.put('/update/data/:id', verifyToken, upload.array('image'), async (req, r
       { new: true }
     );
 
-    console.log('Updated Item:', updateItem);
+    //console.log('Updated Item:', updateItem);
 
     const activity = `edited an item`;
     const details = updateItem;
-    writeActLogs(req.user.Email, activity, details);
+    //NOTEEEEEEE!!!!!!!!!!! BASAHIN MOTONG COMMENT DITO MAAM SIR
+    writeActLogs(req.user.Email, activity, details); //dito mo ipasa yung old Data ganto dpat itchura nya => writeActLogs(req.user.Email, activity, details, oldData)
     // response to frontend request
     res.json(updateItem);
   } catch (error) {
