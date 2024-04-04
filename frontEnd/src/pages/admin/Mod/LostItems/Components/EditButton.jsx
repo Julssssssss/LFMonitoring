@@ -80,10 +80,11 @@ const EditButton = ({ Info }) => {
     try {
         setLoading(true);
         const formData = new FormData();
-        formData.append('nameItem', item.nameItem);
-        formData.append('desc', item.desc);
-        formData.append('found', item.found);
-        formData.append('surrenderedBy', item.surrenderedBy);
+        formData.append('nameItem', item.nameItem.trim());
+        formData.append('desc', item.desc.trim());
+        formData.append('found', item.found.trim());
+        formData.append('surrenderedBy', item.surrenderedBy.trim());
+
 
         for (const oldFile of item.url) {
             formData.append('OldPic', oldFile);
