@@ -47,14 +47,12 @@ const HistoryLogs = () => {
             <p>HISTORY LOGS</p>
             
         </div>   
-        <div className="text-start font-poppins mb-[0.5rem] text-white h-auto text-[0.7rem] md:text-[0.9rem] lg:text-[1rem] xl:text-[1.2rem] 2xl:text-[1.4rem]">
-            <p className="w-full whitespace-normal"><b>Note: </b>Please be informed that you can generate logs, including generate logs and unclaimed items, by selecting a start and end date
-            , that will be automatically download a file containing the requested logs.</p>
-        </div>
-        {/*searchbar */}
     </div>
-    <div className="bg-[#134083] space-y-[0.9rem] font-poppins overflow-y-visible lg:overflow-hidden w-full h-full lg:space-y-0 lg:h-full lg:space-x-[1.5rem] rounded-[2rem] flex flex-col lg:flex-row justify-center items-center lg:p-0 p-[0.8rem]">
-        <div className="text-white md:text-[1.5rem] xl:text-[1.9rem] font-poppins h-auto w-full px-[5rem] flex flex-col items-center">
+    <div className="bg-[#134083] space-y-[3rem] sm:space-y-[4rem] md:space-y-[5rem] font-poppins overflow-y-visible lg:overflow-hidden w-full h-full lg:space-y-[4rem] lg:h-full lg:space-x-[1.5rem] rounded-[2rem] flex flex-col items-center lg:p-[1rem] p-[0.8rem]">
+        <div className="text-start font-poppins mb-[0.5rem] text-white h-auto text-[0.7rem] md:text-[0.9rem] lg:text-[1rem] xl:text-[1.2rem] 2xl:text-[1.4rem]">
+            <p className="w-full whitespace-normal"><b>Note: </b>This section is dedicated for generating logs, which includes history logs and activity logs of user within the administrator side.</p>
+        </div>
+        <div className="text-white md:text-[1.5rem] xl:text-[1.9rem] font-poppins h-auto w-auto p-[1rem] xl:p-[2rem] md: bg-[#17394C] border-[0.2rem] rounded-[1rem] border-[#F9D62B] flex flex-col items-center">
             <b className="text-center w-full">StartDate : </b>
             <input className="bg-[#0D1832] border-[#F9D62B] border-[0.1rem] hover:bg-[#F9D62B] hover:text-black hover:border-black rounded-full px-[0.2rem]"
                 type="date"

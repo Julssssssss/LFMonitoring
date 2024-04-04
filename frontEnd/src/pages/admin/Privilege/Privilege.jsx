@@ -111,7 +111,7 @@ const Privilege = () => {
             }
           }
         ).then(response => {
-          console.log(response.data);
+          //console.log(response.data);
           alert('the privilege of the user has been successfully changed');
           setCooldownActive(true);
           setTimeout(() => {
@@ -133,14 +133,18 @@ const Privilege = () => {
       <div className='absolute z-10 lg:relative'>
         <Sidebar />
       </div>
-      <div className="flex flex-col self-center p-[1rem] md:p-[2rem] lg:rounded-l-[6rem] h-full w-screen bg-[#0D1832] border-[#134083]">
-        <div className="flex flex-col justify-between mt-[0.5rem] mb-[1rem] text-white whitespace-nowrap px-[1rem] lg:px-0">
-          <div className='font-poppins ml-[2rem] md:ml-[5rem] md:text-[2rem] lg:ml-0 xl:text-[3rem]'>
+      <div className="flex flex-col self-center p-[1rem] md:p-[1.5rem] lg:rounded-l-[6rem] h-full w-screen bg-[#0D1832] border-[#134083]">
+        <div className="flex flex-col justify-between mt-[0.5rem] text-white whitespace-nowrap px-[1rem] lg:px-0">
+          <div className='font-poppins ml-[2rem] md:ml-[5rem] lg:mb-[1rem] md:text-[2rem] lg:ml-0 xl:text-[3rem]'>
             AUTHORIZATION
           </div>   
         </div>
-        <div className="self-center h-full w-screen px-[1rem] md:px-[2rem] lg:px-[0rem] lg:w-full">
-          <div className="flex flex-col items-center h-full w-full rounded-[1.5rem] bg-[#134083] px-[1rem]">
+        <div className="self-center h-full w-screen px-[1rem] md:px-[1rem] md:py-[0.5rem] lg:px-0 lg:w-full">
+          <div className="flex flex-col items-center h-full w-full rounded-[2rem] bg-[#134083] px-[0rem]">
+            <div className="text-start font-poppins 2xl:w-full m-[1rem] 2xl:px-[2rem] text-white h-auto text-[0.7rem] md:text-[0.9rem] lg:text-[1rem] xl:text-[1.2rem] 2xl:text-[1.4rem]">
+              <p className="w-full whitespace-normal"><b>Note: </b>This section is dedicated for changing user roles. Please ensure you have necessary permissions before making any changes.  
+              </p>
+            </div>
             <div className='flex flex-row space-x-[1.5rem] items-center top-[8rem] relative'>
               <div className="relative Z-0">
                 <div className=' flex flex-row space-x-[0.5rem] items-center'>

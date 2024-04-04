@@ -20,8 +20,7 @@ const RequestList = () => {
   const [endDate, setEndDate] = useState('')
   const [userUsedSearch, setUserUsedSearch] = useState(false)
   const [hasNextPage, setHasNextPage] = useState(null)
-  const [reqItem, setReqItem] =useState('')
-
+  const [images, setImages] = useState()
 
   const getReqList = async() => {
     try{
@@ -180,17 +179,16 @@ const RequestList = () => {
  
   function requestFormat() {
     return list.map((elem, index) => {
-      console.log('hii', list)
       return(
         <div key={index}>
           <div className="relativeflex flex-col justify-center border-b-2 border-white bg-[#17394C] w-full h-auto space-y-[0.2rem] rounded-xl p-1 md:p-[0.7rem]">
             <div className="flex flex-row justify-between items-center text-white text-[0.8rem] md:text-[1.3rem] lg:text-[0.8rem] xl:text-[1.1rem] 2xl:text-[1.5rem]">
               <div className="flex flex-row w-full justify-between">
-                <div className="flex flex-col md:w-full md:items-center md:flex-row md:justify-between">
+                <div className="flex flex-col md:flex-row md:space-x-[4rem] md:items-center">
                   <p className="font-bold">{elem.Email}</p>
                   <p className="text-[0.7rem] md:text-[1rem] xl:text-[1.3rem]">{elem.itemData.nameItem}</p>
                 </div>
-                <div className="text-[0.6rem] p-1 xsm:text-[0.7rem] xl:text-[1.2rem] h-[2rem] w-auto text-end md:text-[1rem] md:ml-[38%] xl:ml-[35%] 2xl:ml-[45%]">
+                <div className="text-[0.6rem] p-1 xsm:text-[0.7rem] xl:text-[1.2rem] h-[2rem] w-auto text-end md:text-[1rem]">
                   {elem.dateRequested}
                 </div>
               </div>
@@ -200,7 +198,7 @@ const RequestList = () => {
                 </span>
               </div>
             </div>
-            <div className="items-center w-full justify-center flex flex-row space-x-[1rem]">
+            <div className="items-center w-full font-bold justify-center flex flex-row space-x-[1rem]">
               <button onClick={()=>{setSelectedItem(elem), showWarning(elem.itemData.source)}} className= {`bg-[#F9D62B] font-poppins text-black hover:bg-[#134083] mt-[0.1rem] text-[0.7rem] md:text-[1rem] md:w-[5rem] xl:text-[1.3rem] xl:w-[7rem] hover:text-white w-[4rem] rounded-full`}>View</button>
               <Approve list={elem} />
               <DeleteReq reqData={elem}/>
@@ -217,14 +215,13 @@ const RequestList = () => {
 
   const enableDeleteButton = false
   
-  const textReset= ()=>{
-    setSubject('')
-    setEmailContent('')
-  }
-
   const displayPic = (url) => {
-    return <ItemsCarousel item={url} enableDeleteButton={enableDeleteButton}/>
-  };
+    const notFound = ['https://res.cloudinary.com/dxjpbwlkh/image/upload/v1712150052/Assets/Frame_161_z3zgg6.png']
+    const pictures = url || notFound  
+    return (
+      <ItemsCarousel item={pictures} enableDeleteButton={enableDeleteButton}/>
+    )
+  }
 
   const viewItem = () => { 
     if(selectedItem.itemData){
@@ -234,7 +231,7 @@ const RequestList = () => {
         <>
         <div className="absolute inset-0 text-[0.9rem] md:text-[1.2rem] xl:text-[1.5rem] flex flex-col space-y-[1rem] bg-[#0D1832] font-poppins w-screen h-screen p-[1rem] overflow-y-auto overflow-x-hidden">
           <button className="absolute right-[1rem] w-[2rem] h-[2rem] md:w-[2.5rem] md:h-[2.5rem] xl:w-[3rem] xl:h-[3rem] xl:right-4 stroke-[#F9D62B] hover:stroke-white"
-              onClick={()=>{setSelectedItem(''), textReset()}}>
+              onClick={()=>{setSelectedItem('')}}>
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -288,7 +285,7 @@ const RequestList = () => {
                   <div className="w-[10rem] md:w-[20rem] h-auto">{datePosted}</div>
                 </div>
               </div>
-              <div className="relative p-2 xl:py-[5rem] h-full items-center justify-center flex w-full border-[0.2rem] border-[#F9D62B] rounded-xl">
+              <div className="relative p-2 xl:py-[5rem] h-auto w-full border-[0.2rem] border-[#F9D62B] rounded-xl">
                 {displayPic(url)}
               </div>
             </div>
@@ -298,7 +295,7 @@ const RequestList = () => {
                 type="text"
                 id="subject"  
                 placeholder="Subject" 
-                className="border-[0.2rem] bg-[#134083] border-[#F9D62B] h-[2.5rem] font-poppins rounded-xl text-white w-full text-[0.7rem] md:text-[1rem] xl:text-[1.2rem] xl:p-[1.4rem] p-[0.5rem]"
+                className="border-[0.2rem] bg-white border-[#F9D62B] h-[2.5rem] font-poppins rounded-xl text-black w-full text-[0.7rem] md:text-[1rem] xl:text-[1.2rem] xl:p-[1.4rem] p-[0.5rem]"
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
               /> 
@@ -306,7 +303,7 @@ const RequestList = () => {
                 id="letter" 
                 rows={4}
                 placeholder="" 
-                className="border-[0.2rem] border-[#F9D62B] w-full lg:h-full text-[0.8rem] md:text-[1rem] text-white bg-[#134083] p-[0.5rem] xl:text-[1.3rem] xl:p-[1.4rem] rounded-xl pb-[15rem]"
+                className="border-[0.2rem] border-[#F9D62B] w-full lg:h-full text-[0.8rem] md:text-[1rem] text-black bg-white p-[0.5rem] xl:text-[1.3rem] xl:p-[1.4rem] rounded-xl pb-[15rem]"
                 value={emailContent}
                 onChange={(e) => setEmailContent(e.target.value)}
               /> 
@@ -322,7 +319,6 @@ const RequestList = () => {
     }
     else{
 
-      //palagay naman ako ng catch dito if nadelete na yung data means d na mafetch yung data sa db
     }
     
   }
@@ -336,7 +332,7 @@ const RequestList = () => {
 
       <div className="absolte z-1 bg-[#134083] font-poppins text-white overflow-y-auto pt-0 p-[0.3rem] w-full h-full rounded-[1.5rem] flex flex-col 2xl:px-[2rem]">
         <div className="flex flex-row p-[0.7rem] justify-between text-[0.7rem] sm:text-[0.9rem] md:text-[1rem] xl:text-[1.5rem]">
-          <div className="flex flex-col md:flex-row md:items-center md:space-x-[43%] 2xl:space-x-[45%] w-full">
+          <div className="flex flex-col md:flex-row md:items-center md:space-x-[15rem] w-full">
             <p>Requestor</p>
             <p>Item</p>
           </div>

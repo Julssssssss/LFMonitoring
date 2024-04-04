@@ -24,7 +24,7 @@ const ItemList = () => {
   const handleDelete = (deletedId) => {
     setFilteredData(filteredData.filter(item => item._id !== deletedId));
   };
-  console.log(hasNextPage)
+  //console.log(hasNextPage)
   const getItems = async () => {
     try {
       await getData(currentPage)
