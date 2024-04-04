@@ -304,7 +304,7 @@ router.put('/update/data/:id', verifyToken, upload.array('image'), async (req, r
     if (oldPicArray.length > 0 || files.length > 0) {
       uploadedImages.push(...oldPicArray, ...files.map(file => file.path));
     } 
-    const updateItem = await itemModels.findByIdAndUpdate(
+    const updatedItem = await itemModels.findByIdAndUpdate(
       id,
       { 
         url: uploadedImages,
@@ -320,11 +320,11 @@ router.put('/update/data/:id', verifyToken, upload.array('image'), async (req, r
     //console.log('Updated Item:', updateItem);
 
     const activity = `edited an item`;
-    const details = updateItem;
+    let details = {updatedItem, oldItemData: `mema`};
+    console.log(details)
     //NOTEEEEEEE!!!!!!!!!!! BASAHIN MOTONG COMMENT DITO MAAM SIR
-    writeActLogs(req.user.Email, activity, details); //dito mo ipasa yung old Data ganto dpat itchura nya => writeActLogs(req.user.Email, activity, details, oldData)
-    // response to frontend request
-    res.json(updateItem);
+    writeActLogs(req.user.Email, activity, details); //pasok mo n lang sa loob ng details yung data
+    res.json(updatedItem);
   } catch (error) {
     console.error('Error updating item:', error);
     res.status(500).json({ error: error.message });

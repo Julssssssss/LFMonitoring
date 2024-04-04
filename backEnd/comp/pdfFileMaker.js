@@ -10,12 +10,47 @@ const dateAndTime = (isoData)=>{
 }
 
 const fixObjectFormat = (objData)=>{
+    console.log(objData)
     if(objData === 'NA'){
         return `NA`
     }
     else{
-       const stringObj = JSON.stringify(objData).split(',').join('\n')
-       return stringObj
+        //console.log(objData)
+        if('updatedItem' in objData && 'oldItemData' in objData){ //for edited Items
+            const {updatedItem, oldItemData} = objData
+            //console.log(updatedItem)
+            const {_id, url, nameItem, desc, found, surrenderedBy, postedBy, datePosted} = updatedItem
+            console.log(nameItem)
+            const objToString = (
+                `UPDATED: \n Id: ${_id} \n Image Path: ${url} \n Id: ${_id} \n Name Item: ${nameItem} \n Description: ${desc} \n Found By: ${found} \n Surrendered by: ${surrenderedBy} \n Posted By: ${postedBy} \n Date Posted : ${datePosted} \n\n OLD: \n ${oldItemData}`
+            )
+            return objToString
+        }
+        else if ('to' in objData){ //for sending Email
+            console.log('sended Email', objData)
+            //delete objData.__v
+            //const objToString = JSON.stringify(objData).replace(/,/g, '\n').replace(/["\[\]{}]/g, '').replace(/:/g, ' : ')
+            return objData
+        }
+        else if('Email' in objData){ //for request
+            delete objData.__v
+            const objToString = JSON.stringify(objData).replace(/,/g, '\n').replace(/["\[\]{}]/g, '').replace(/:/g, ' : ')
+            return objData
+        }
+        else if('nameItem' in objData){ //for items
+            const {_id, url, nameItem, desc, found, surrenderedBy, postedBy, datePosted} = objData
+            const objToString = (
+                `Id: ${_id} \n Image Path: ${url} \n Id: ${_id} \n Name Item: ${nameItem} \n Description: ${desc} \n Found By: ${found} \n Surrendered by: ${surrenderedBy} \n Posted By: ${postedBy} \n Date Posted : ${datePosted}`
+            )
+            return objToString
+        }
+        else{
+            //delete objData.__v
+            //const objToString = JSON.stringify(objData).replace(/,/g, '\n').replace(/["\[\]{}]/g, '').replace(/:/g, ' : ')
+            
+            const objToString = JSON.stringify(objData).replace(/,/g, '\n').replace(/["\[\]{}]/g, '')
+            return objToString
+        }
     }
 }
 
@@ -40,7 +75,7 @@ const makePdf = async(Type, Data)=>{
             })
 
             //console.log(tableData)
-            const header = [['_id', 'Email', 'Activity', 'Details', 'Date']]
+            const header = [['Id', 'Email', 'Activity', 'Details', 'Date']]
 
             format = {
                 head: header, 
@@ -61,7 +96,7 @@ const makePdf = async(Type, Data)=>{
         }
         else if(Type === 'Archive'){  ////ARCHIVE MYYYYY NNNN
             doc.text('Archive Datas', 400, 30, {align: 'center'})
-            const header = [['_id', 'Item Id', 'Item Images', 'Name of Items', 'Desccriptions', 'Found at', 'Surrendered By', 'Posted By', 'Date Posted', 'Claimed By', 'Date Approved']]
+            const header = [['Id', 'Item Id', 'Item Images', 'Name of Items', 'Desccriptions', 'Found at', 'Surrendered By', 'Posted By', 'Date Posted', 'Claimed By', 'Date Approved']]
             const tableData = Data[0].map(elem => {
                 return [
                     elem._id.toString(),
@@ -116,7 +151,7 @@ const makePdf = async(Type, Data)=>{
             })
 
             //console.log(tableData)
-            const header = [['_id', 'Images', 'Item Name', 'Found at', 'Surredered By', 'Posted By', 'Date Posted']]
+            const header = [['Id', 'Images', 'Item Name', 'Found at', 'Surredered By', 'Posted By', 'Date Posted']]
 
             format = {
                 head: header, 
