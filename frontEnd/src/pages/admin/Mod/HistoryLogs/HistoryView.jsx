@@ -9,7 +9,7 @@ const HistoryView = () => {
           <div className='absolute lg:relative'>
             <Sidebar />
           </div>
-          <div className='flex flex-col bg-[#0D1832] lg:rounded-l-[6rem] w-full h-screen lg:h-screen p-[1rem] lg:p-[2rem] lg:pb-[2rem] xl:p-[2rem]'>
+          <div className='flex flex-col bg-[#0D1832] lg:rounded-l-[6rem] w-full h-screen lg:h-screen p-[1rem] lg:p-[1.5rem] lg:pb-[2rem] xl:p-[2rem]'>
            <HistoryLogs />
           </div>
         </div>

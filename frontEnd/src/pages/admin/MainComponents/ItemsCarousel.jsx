@@ -84,13 +84,13 @@ const ItemsCarousel = ({ imageUrl, item, handleDelete, handleDeleteLink, enableD
               {images.map((url, index) => (
                 <div key={index}>
                   <button onClick={() => openCarousel(index, images)}>
-                    <img className='object-contain hover:opacity-75 w-[10rem] h-[9rem] xsm:h-[11rem] sm:w-[12rem] sm:h-[10rem] md:h-[11rem] md:w-[11rem] lg:w-[11rem] lg:h-[11rem]' src={url} alt={`product-${index}`} />
+                    <img className='object-contain w-[10rem] h-[9rem] xsm:h-[11rem] sm:w-[12rem] sm:h-[10rem] md:h-[11rem] md:w-[11rem] lg:w-[11rem] lg:h-[11rem]' src={url} alt={`product-${index}`} />
                   </button>
                   {/* Conditionally render delete button based on enableDeleteButton */}
                   {enableDeleteButton && (
                     <button
                       type="button"
-                      className="text-white text-[1rem] px-[0.3rem] rounded-full bg-black hover:bg-[#F9D62B] hover:text-black absolute top-2 right-[18%] xsm:top-4 sm:top-1"
+                      className="text-white text-[1rem] absolute top-2 right-[2rem] rounded-sm bg-black hover:bg-[#F9D62B] hover:text-black text-center h-[1.5rem] w-[1.5rem] xsm:top-4 sm:top-1"
                       onClick={() => handleDeleteClick(index, index >= imageUrl.length)}
                     >
                       X

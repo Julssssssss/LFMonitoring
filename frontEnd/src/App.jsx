@@ -17,7 +17,6 @@ import AdminProfile from './pages/admin/Mod/Home/Widgets/AdminProfile'
 
 import Privilege from './pages/admin/Privilege/Privilege'
 
-//try
 import HistoryView from './pages/admin/Mod/HistoryLogs/HistoryView'
 
 
