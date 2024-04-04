@@ -123,7 +123,7 @@ const sample =()=>{
                     </div>
                 </div>
               </div>
-              <button onClick={sendToArchive} className={`bg-[#F9D62B] font-bold hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white text-[0.9rem] text-black p-[0.1rem] md:text-[1.5rem] md:h-[3rem] md:w-[10rem] lg:h-[2.2rem] lg:text-[1.2rem] rounded-full w-[7rem] font-poppins`}>
+              <button onClick={()=>{checkParams()}} className={`bg-[#F9D62B] font-bold hover:bg-[#134083] hover:text-white hover:border-[0.1rem] hover:border-white text-[0.9rem] text-black p-[0.1rem] md:text-[1.5rem] md:h-[3rem] md:w-[10rem] lg:h-[2.2rem] lg:text-[1.2rem] rounded-full w-[7rem] font-poppins`}>
                 APPROVE
               </button>
 
@@ -137,6 +137,15 @@ const sample =()=>{
 
   const showWarning =(message) =>{
     alert(message)
+  }
+
+  const checkParams = ()=>{
+    if(list.itemData.source === `This request has been successfully completed`){
+      showWarning(' The requested item had already been successfully completed by another request.')
+    }
+    else{
+      sendToArchive()
+    }
   }
 
   return (
