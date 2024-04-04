@@ -4,7 +4,7 @@ const writeActLogs = async(Email, Activity, Details)=>{
     const actLogs = new actLogsModel({
         Email: Email,
         Activity: Activity,
-        Details:Details
+        Details: Details
     })
     await actLogs.save()
     .then(res=>{
