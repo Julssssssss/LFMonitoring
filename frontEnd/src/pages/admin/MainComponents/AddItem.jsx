@@ -73,10 +73,10 @@ const AddItem = () => {
         setLoading(true)
         console.log('hello', files)
         const formData = new FormData();
-        formData.append('nameItem', nameItem);
-        formData.append('desc', desc);
-        formData.append('found', found);
-        formData.append('surrenderedBy', surrenderedBy);
+        formData.append('nameItem', nameItem.trim());
+        formData.append('desc', desc.trim());
+        formData.append('found', found.trim());
+        formData.append('surrenderedBy', surrenderedBy.trim());
 
           for (const file of files) {
             formData.append('image', file);
