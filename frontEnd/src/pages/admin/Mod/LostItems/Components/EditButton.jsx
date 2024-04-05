@@ -38,10 +38,6 @@ const EditButton = ({ Info }) => {
     })
   }, [Info])
 
-
- // console.log('Info', Info)
- // console.log('item', item.url)
-
   const showWarning = (message) => {
     alert(message);
   };
@@ -78,12 +74,15 @@ const EditButton = ({ Info }) => {
     setConfirm(false);
   
     try {
+        console.log('here', Info)
+        console.log(Array.isArray(Info));
         setLoading(true);
         const formData = new FormData();
         formData.append('nameItem', item.nameItem.trim());
         formData.append('desc', item.desc.trim());
         formData.append('found', item.found.trim());
         formData.append('surrenderedBy', item.surrenderedBy.trim());
+        formData.append('OldData', JSON.stringify(Info));
 
 
         for (const oldFile of item.url) {
