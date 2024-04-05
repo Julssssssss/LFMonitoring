@@ -18,13 +18,23 @@ const fixObjectFormat = (objData)=>{
         //console.log(objData)
         if('updatedItem' in objData && 'oldItemData' in objData){ //for edited Items
             const {updatedItem, oldItemData} = objData
-            //console.log(updatedItem)
-            const {_id, url, nameItem, desc, found, surrenderedBy, postedBy, datePosted} = updatedItem
+            //console.log(oldItemData)
             //console.log(nameItem)
-            const objToString = (
-                `UPDATED : \n Id : ${_id} \n Image Path : ${url} \n Name Item : ${nameItem} \n Description : ${desc} \n Found By : ${found} \n Surrendered by : ${surrenderedBy} \n Posted By : ${postedBy} \n Date Posted : ${datePosted} \n\n OLD : \n ${oldItemData}`
-            )
-            return objToString
+            const updObjToString = ()=>{
+                const {_id, url, nameItem, desc, found, surrenderedBy, postedBy, datePosted} = updatedItem
+                return (
+                    `UPDATED : \nId : ${_id} \nImage Path : ${url} \nName Item : ${nameItem} \nDescription : ${desc} \nFound By : ${found} \nSurrendered by : ${surrenderedBy} \nPosted By : ${postedBy} \nDate Posted : ${datePosted} \n\n`
+                )
+            }
+            const oldObjToString =()=>{ 
+                const {_id, url, nameItem, desc, found, surrenderedBy, postedBy, datePosted} = oldItemData
+                return (
+                    `OLD : \nId : ${_id} \nImage Path : ${url} \nName Item : ${nameItem} \nDescription : ${desc} \nFound By : ${found} \nSurrendered by : ${surrenderedBy} \nPosted By : ${postedBy} \nDate Posted : ${datePosted} \n\n`
+                )
+            }
+            const combString  = updObjToString() + oldObjToString()
+            //console.log(combString)
+            return combString
         }
         else if ('to' in objData){ //for sending Email
             //console.log('sended Email', objData)
@@ -36,14 +46,14 @@ const fixObjectFormat = (objData)=>{
             delete objData.__v
             const {_id, itemId, nameItem, Email, haveBeenEmailed, dateRequested} = objData
             const objToString = (
-                `Id : ${_id} \n Item ID : ${itemId} \n Name Item : ${nameItem} \n Email : ${Email} \n have Been Emailed : ${haveBeenEmailed} \n Date Requested : ${dateRequested}`
+                `Id : ${_id} \nItem ID : ${itemId} \nName Item : ${nameItem} \nEmail : ${Email} \nhave Been Emailed : ${haveBeenEmailed} \nDate Requested : ${dateRequested}`
             )
             return objToString
         }
         else if('nameItem' in objData){ //for items
             const {_id, url, nameItem, desc, found, surrenderedBy, postedBy, datePosted} = objData
             const objToString = (
-                `Id : ${_id} \n Image Path : ${url} \n Name Item : ${nameItem} \n Description : ${desc} \n Found By : ${found} \n Surrendered by : ${surrenderedBy} \n Posted By : ${postedBy} \n Date Posted : ${datePosted}`
+                `Id : ${_id} \nImage Path : ${url} \nName Item : ${nameItem} \nDescription : ${desc} \nFound By : ${found} \nSurrendered by : ${surrenderedBy} \nPosted By : ${postedBy} \nDate Posted : ${datePosted}`
             )
             return objToString
         }
@@ -89,11 +99,11 @@ const makePdf = async(Type, Data)=>{
                     right: 35
                 },
                 columnStyles: {
-                    0: {cellWidth: 60},
-                    1: {cellWidth: 60},
-                    2: {cellWidth: 120},
+                    0: {cellWidth: 80},
+                    1: {cellWidth: 80},
+                    2: {cellWidth: 160},
                     //3: {cellWidth: 50},
-                    4: {cellWidth: 60}
+                    4: {cellWidth: 80}
                 }
             }
         }
