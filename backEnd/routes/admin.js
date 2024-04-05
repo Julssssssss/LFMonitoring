@@ -292,19 +292,32 @@ router.put('/update/data/:id', verifyToken, upload.array('image'), async (req, r
     //where new and old photos are stored
     const uploadedImages = [];
     const { id } = req.params;
-    const { nameItem, desc, found, surrenderedBy, datePosted, OldPic, image } = req.body;
-    console.log('edit', req.files)
+    const { nameItem, desc, found, surrenderedBy, datePosted, OldPic, image, OldData } = req.body;
+    //console.log('hi', OldData)
+    
+    const OldDatas = JSON.parse(OldData);
+
+    const oldItemData = {
+      '_id': OldDatas._id,
+      'url': OldDatas.url[0],
+      'nameItem': OldDatas.nameItem,
+      'desc': OldDatas.desc,
+      'found': OldDatas.found,
+      'surrenderedBy': OldDatas.surrenderedBy,
+      'postedBy': OldDatas.postedBy,
+      'datePosted': OldDatas.datePosted,
+    };
+   
+    //console.log('here', OldInfo)
     //where new photos are stored
     const files = req.files || [];
-    console.log('here', req.files)
-    console.log('images', image)
     // this is where it stores the OldPic whethere it is array or not 
     const oldPicArray = Array.isArray(OldPic) ? OldPic : (OldPic ? [OldPic] : []);
     //checks the OldPicArray or files if it not empty and store both array in one array
     if (oldPicArray.length > 0 || files.length > 0) {
       uploadedImages.push(...oldPicArray, ...files.map(file => file.path));
     } 
-    const updateItem = await itemModels.findByIdAndUpdate(
+    const updatedItem = await itemModels.findByIdAndUpdate(
       id,
       { 
         url: uploadedImages,
@@ -317,13 +330,14 @@ router.put('/update/data/:id', verifyToken, upload.array('image'), async (req, r
       { new: true }
     );
 
-    console.log('Updated Item:', updateItem);
+    //console.log('Updated Item:', updateItem);
 
     const activity = `edited an item`;
-    const details = updateItem;
-    writeActLogs(req.user.Email, activity, details);
-    // response to frontend request
-    res.json(updateItem);
+    let details = {updatedItem, oldItemData};
+    console.log(details)
+    //NOTEEEEEEE!!!!!!!!!!! BASAHIN MOTONG COMMENT DITO MAAM SIR
+    writeActLogs(req.user.Email, activity, details); //pasok mo n lang sa loob ng details yung data
+    res.json(updatedItem);
   } catch (error) {
     console.error('Error updating item:', error);
     res.status(500).json({ error: error.message });

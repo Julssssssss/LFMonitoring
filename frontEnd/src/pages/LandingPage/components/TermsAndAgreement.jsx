@@ -41,7 +41,7 @@ const TermsAndAgreement = ({closeTAC}) => {
           </div>
 
           <div className='w-full text-center text-[1rem] font-poppins font-bold xl:text-[1.5rem] 2xl:text-[2rem]'>
-            Terms and Condition 
+            Terms and Conditions
           </div>
           <div className='w-full overflow-auto overscroll-contain text-justify h-[20rem] mb-[1rem] text-[0.8rem] font-poppins font-thin px-[0.9rem] xl:text-[1.1rem] xl:h-[30rem] 2xl:text-[1.7rem] 2xl:h-[36rem]'>
             <div className="p-[0.2rem]">
