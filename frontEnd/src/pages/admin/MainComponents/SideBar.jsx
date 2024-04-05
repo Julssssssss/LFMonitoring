@@ -52,7 +52,7 @@ const Sidebar = () => {
                     {buttonsFormat()}
                 </div>
                 {/*still working on manual user*/}
-                {/*<Link to={'/admin/HlpDocs'} className="absolute bottom-[4.5rem] lg:bottom-[3rem] flex items-center justify-center border-b-[0.1rem] border-white rounded-xl w-[7rem] h-[2.5rem] xsm:w-[9rem] md:w-[12rem] md:h-[3.5rem] lg:w-0">
+                <Link to={'/Admin/UserManual'} className="absolute bottom-[4.5rem] lg:bottom-[3rem] flex items-center justify-center border-b-[0.1rem] border-white rounded-xl w-[7rem] h-[2.5rem] xsm:w-[9rem] md:w-[12rem] md:h-[3.5rem] lg:w-0">
                     <div data-tip='USER MANUAL' className="tooltip before:w-[7.5rem] before:bg-[#134083] before:text-white before:font-bold font-poppins before:content-[attr(data-tip)]">
                         <button className='relative flex space-x-[2rem] text-white items-center stroke-white hover:stroke-[#F9D62B] text-[0.6rem] xsm:text-[0.7rem] md:text-[1rem] md:w-[12rem] md:h-[3.5rem] lg:w-0 lg:justify-center font-bold justify-start'>
                             <svg className="absolute z-10 w-[1.5rem] h-[1.5rem] md:w-[2.5rem] md:h-[2.9rem] xl:w-[3.8rem] xl:h-[4rem]" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" strokeWidth="2"></path> <path d="M10.5 8.67709C10.8665 8.26188 11.4027 8 12 8C13.1046 8 14 8.89543 14 10C14 10.9337 13.3601 11.718 12.4949 11.9383C12.2273 12.0064 12 12.2239 12 12.5V12.5V13" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> <path d="M12 16H12.01" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>
@@ -61,7 +61,7 @@ const Sidebar = () => {
                             </div>
                         </button>
                     </div>
-  </Link>*/}
+  </Link>
            
         </ul>
         </div>
