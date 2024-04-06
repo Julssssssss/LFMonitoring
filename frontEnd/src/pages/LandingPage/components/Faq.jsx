@@ -25,7 +25,7 @@ const Faq = () => {
             <div className="text-[0.7rem] text-justify sm:text-[0.9rem] md:text-[1.2rem] lg:text-[1.5rem] xl:text-[1.7rem] 2xl:text-[1.9rem]">{el.label}</div>
             <div
               onClick={() => toggleDropdown(index)}
-              className="w-[1rem] hover:fill-[#F9D62B] fill-white h-[1rem] flex items-center justify-center lg:w-[1.5rem] lg:h-[1.5rem]"
+              className="w-[1rem] hover:fill-[#F9D62B] fill-white h-[1rem] flex items-center justify-center lg:w-[1.5rem] lg:h-[1.5rem] transition duration-300 ease-in-out"
             >
                   {
                     isOpen[index]
@@ -35,7 +35,7 @@ const Faq = () => {
             </div>
           </button>
           {isOpen[index] && (
-            <div className="relative z-20 p-2 text-justify text-[0.7rem] border border-[#F9D62B] rounded shadow-md mt-2 sm:text-[0.9rem] sm:w-full md:text-[1.2rem] lg:text-[1.5rem] lg:w-[52rem] xl:text-[1.6rem] xl:w-[65rem] xl:ml-[1.5rem] 2xl:text-[1.9rem] 2xl:w-[75rem] 2xl:ml-[2rem] 3xl:w-[80rem]">
+            <div className="relative z-20 p-2 text-justify text-[0.7rem] border border-[#F9D62B] transition delay-150 duration-300 ease-in-out rounded shadow-md mt-2 sm:text-[0.9rem] sm:w-full md:text-[1.2rem] lg:text-[1.5rem] lg:w-[52rem] xl:text-[1.6rem] xl:w-[65rem] xl:ml-[1.5rem] 2xl:text-[1.9rem] 2xl:w-[75rem] 2xl:ml-[2rem] 3xl:w-[80rem]">
               {el.contents}
             </div>
           )}
