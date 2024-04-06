@@ -228,7 +228,7 @@ const RequestList = () => {
         <>
         <div className="absolute inset-0 text-[0.9rem] md:text-[1.2rem] xl:text-[1.5rem] flex flex-col space-y-[1rem] bg-[#0D1832] font-poppins w-screen h-screen p-[1rem] overflow-y-auto overflow-x-hidden">
           <button className="absolute right-[1rem] w-[2rem] h-[2rem] md:w-[2.5rem] md:h-[2.5rem] xl:w-[3rem] xl:h-[3rem] xl:right-4 stroke-[#F9D62B] hover:stroke-white"
-              onClick={()=>{setSelectedItem('')}}>
+              onClick={()=>{setSelectedItem(''), setEmailContent(''), setSubject('')}}>
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -292,7 +292,7 @@ const RequestList = () => {
                 type="text"
                 id="subject"  
                 placeholder="Subject" 
-                className="border-[0.2rem] bg-[#134083] border-[#F9D62B] h-[2.5rem] font-poppins rounded-xl text-black w-full text-[0.7rem] md:text-[1rem] xl:text-[1.2rem] xl:p-[1.4rem] p-[0.5rem]"
+                className="border-[0.2rem] bg-[#134083] border-[#F9D62B] h-[2.5rem] font-poppins rounded-xl text-white w-full text-[0.7rem] md:text-[1rem] xl:text-[1.2rem] xl:p-[1.4rem] p-[0.5rem]"
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
               /> 
@@ -300,7 +300,7 @@ const RequestList = () => {
                 id="letter" 
                 rows={4}
                 placeholder="" 
-                className="border-[0.2rem] border-[#F9D62B] w-full lg:h-full text-[0.8rem] md:text-[1rem] text-black bg-[#134083] p-[0.5rem] xl:text-[1.3rem] xl:p-[1.4rem] rounded-xl pb-[15rem]"
+                className="border-[0.2rem] border-[#F9D62B] w-full lg:h-full text-[0.8rem] md:text-[1rem] text-white bg-[#134083] p-[0.5rem] xl:text-[1.3rem] xl:p-[1.4rem] rounded-xl pb-[15rem]"
                 value={emailContent}
                 onChange={(e) => setEmailContent(e.target.value)}
               /> 

@@ -35,9 +35,6 @@ const AddItem = () => {
   const forPic = () => {
     alert('Please attach at least one image.');
   };
-  const forPic1 = () => {
-    alert('Please add or upload no more than 2 images.');
-  };
 
   const uploadSuccess = () => {
     alert('Successfully uploaded');
@@ -53,10 +50,8 @@ const AddItem = () => {
         surrenderedBy.trim() === ''
       ) {
         return showWarning('Please fill out all required fields.');
-      } else if (!files || !files.length > 1) {
+      } else if (!files || !files.length > 0) {
         return forPic();
-      } else if (files.length > 2){
-        return forPic1();
       }else {
         setConfirm(true);
       }
@@ -71,7 +66,7 @@ const AddItem = () => {
       setConfirm(false);
       try {
         setLoading(true)
-        console.log('hello', files)
+        //console.log('hello', files)
         const formData = new FormData();
         formData.append('nameItem', nameItem.trim());
         formData.append('desc', desc.trim());
