@@ -107,8 +107,8 @@ const UserManual = () => {
           {/*History Logs */}
           <div className="border-[0.2rem] border-[#F9D62B] w-full h-full rounded-[1rem] p-[0.2rem] hover:opacity-50">
             <p><b>History logs:</b> Here you can generate the history of all the activity logs in a specific date.</p>
-            <img className="w-auto h-auto cursor-pointer" src="https://res.cloudinary.com/dxjpbwlkh/image/upload/v1712416756/UserManual/Group_25_rrhzih.png" alt="History Logs"
-              onClick={() =>toggleZoom("https://res.cloudinary.com/dxjpbwlkh/image/upload/v1712416756/UserManual/Group_25_rrhzih.png")
+            <img className="w-auto h-auto cursor-pointer" src="https://res.cloudinary.com/dxjpbwlkh/image/upload/v1712442852/UserManual/Group_25_ivvhcc.png" alt="History Logs"
+              onClick={() =>toggleZoom("https://res.cloudinary.com/dxjpbwlkh/image/upload/v1712442852/UserManual/Group_25_ivvhcc.png")
               }
             />
           </div>
