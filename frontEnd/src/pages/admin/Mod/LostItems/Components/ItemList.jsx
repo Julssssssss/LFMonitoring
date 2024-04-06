@@ -44,7 +44,7 @@ const ItemList = () => {
   const searchData = async()=>{
     if(searchQuery){
       await axiosFetchAdminData.post('', {
-        'searchQuery': searchQuery,
+        'searchQuery': searchQuery.trim(),
         'currentPage' : currentPage
       })
       .then(res=>{

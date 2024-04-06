@@ -12,7 +12,7 @@ import ItemDetails from './pages/User/itemDetails/ItemDetails'
 import DashView from './pages/admin/Mod/Home/DashView'
 import LostView from './pages/admin/Mod/LostItems/LostView'
 import RequestsView from './pages/admin/Mod/Requests/RequestsView'
-import HlpDocumentation from './pages/admin/Mod/HlpDocumentation/HlpDocumentation'
+import UserManual from './pages/admin/Mod/UserManual/UserManual'
 import AdminProfile from './pages/admin/Mod/Home/Widgets/AdminProfile'
 
 import Privilege from './pages/admin/Privilege/Privilege'
@@ -33,9 +33,7 @@ const App = () => {
 
       {/* eto yung red pang debug to*/}
      
-      <style>
-        {`*{outline: solid red}`}
-      </style>
+     
 
       <div>
         <Routes>
@@ -53,8 +51,8 @@ const App = () => {
             <Route exact path='/Admin/Requests' element={<RequestsView/>}/>
             <Route exact path='/Admin/HistoryLogs' element={<HistoryView/>}/>
             <Route exact path='/Admin/AdminProfile' element={<AdminProfile/>}/>
-
             <Route exact path='/Admin/Privilege' element={<Privilege/>}/>
+            <Route exact path='/Admin/UserManual' element={<UserManual/>}/>
 
           {/* 404 page  catch all  palitan to in the future hopefully ng 404 page tlga */}
           <Route path='/401' element={<Page401/>}/>
