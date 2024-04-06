@@ -86,7 +86,7 @@ const RequestList = () => {
   const searchData = async()=>{
     if(searchQuery){
       await axiosGetReqList.post('', {
-        'searchQuery': searchQuery,
+        'searchQuery': searchQuery.trim(),
         'currentPage' : currentPage
       })
       .then(res=>{
