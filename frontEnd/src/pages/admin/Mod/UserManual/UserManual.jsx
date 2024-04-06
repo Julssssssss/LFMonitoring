@@ -73,13 +73,6 @@ const UserManual = () => {
               }
             />
           </div>
-          {/*Profile section */}
-          <div className="border-[0.2rem] border-[#F9D62B] w-full h-full lg:items-center lg:flex rounded-[1rem] p-[0.2rem] hover:opacity-50">
-            <img className="w-auto h-auto cursor-pointer" src="https://res.cloudinary.com/dxjpbwlkh/image/upload/v1712336158/UserManual/Group_20_ffn5nu.png" alt="Profile"
-              onClick={() =>toggleZoom("https://res.cloudinary.com/dxjpbwlkh/image/upload/v1712336158/UserManual/Group_20_ffn5nu.png")
-              }
-            />
-          </div>
           {/*Found items */}
           <div className="border-[0.2rem] border-[#F9D62B] w-full h-full rounded-[1rem] p-[0.2rem] hover:opacity-50">
             <p><b>Found Items:</b> Here is where you can manipulate the different items that is currently presented in the user side and you can also search a specific item or when its created.</p>
