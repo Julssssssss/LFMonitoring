@@ -68,7 +68,7 @@ const ArchiveDataGenerator = () => {
         <button className="mt-[0.5rem] text-[0.5rem] sm:text-[0.7rem] md:text-[1.4rem] bg-[#F9D62B] hover:bg-[#134083] hover:text-white border-[0.1rem] hover:border-white text-black font-bold rounded-full h-auto w-full md:h-[3rem] lg:h-auto lg:text-[1rem] lg:w-[15rem] xl:text-[1.5rem] xl:w-[20rem] 2xl:text-[2rem] 2xl:w-full overflow-hidden"
             onClick={requestArchiveData}
         >
-            Generate Completed Transactions
+            Generate Completed Transactions Data
         </button>
     </div>
   )

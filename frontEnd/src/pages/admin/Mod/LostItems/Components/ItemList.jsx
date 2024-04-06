@@ -75,6 +75,7 @@ const ItemList = () => {
 
   const useSearch = ()=>{
     if(searchQuery){
+      setSearchQuery(searchQuery.trim())
       setUserUsedSearch(true)
       setCurrentPage(1)
       searchData()
