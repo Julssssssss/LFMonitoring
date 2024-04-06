@@ -53,7 +53,7 @@ const Dashboard = () => {
   const searchData = async()=>{
     if(searchQuery){
       await axiosFetchItems.post('', {
-        'searchQuery': searchQuery,
+        'searchQuery': searchQuery.trim(),
         'currentPage' : currentPage
       })
       .then(res=>{
@@ -73,7 +73,7 @@ const Dashboard = () => {
           'currentPage': currentPage
       })
       .then(res=>{
-        console.log(res.data)
+        //console.log(res.data)
         setData([res.data])
         setHasNextPage(res.data.hasNextPage)
         setLoading(false);
