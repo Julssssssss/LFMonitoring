@@ -32,7 +32,6 @@ const App = () => {
     <>
 
       {/* eto yung red pang debug to*/}
-      
      
 
       <div>
