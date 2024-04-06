@@ -53,7 +53,7 @@ const Dashboard = () => {
   const searchData = async()=>{
     if(searchQuery){
       await axiosFetchItems.post('', {
-        'searchQuery': searchQuery.trim(),
+        'searchQuery': searchQuery,
         'currentPage' : currentPage
       })
       .then(res=>{
@@ -82,6 +82,7 @@ const Dashboard = () => {
 
   const useSearch = ()=>{
     if(searchQuery){
+      setSearchQuery(searchQuery.trim())
       setUserUsedSearch(true)
       setCurrentPage(1)
       searchData()
@@ -193,9 +194,9 @@ const Dashboard = () => {
 
   return (
     <>
-    <div className="relative z-0 flex flex-col space-y-[1rem] bg-[#0d1832] w-auto p-[1rem] pb-[0.8rem] min-h-screen font-poppins overflow-x-hidden lg:space-y-[1rem]">
-      <div className="z-50 bg-[#002855] lg:px-[2rem] lg:space-y-[2rem] bg-opacity-50 rounded-[1rem] md:h-auto w-full flex flex-col">
-        <div className="flex flex-row space-x-[2.8rem] lg:space-x-[4.5rem] pt-[1rem] px-[1rem] lg:space-x-[3rem] lg:px-0 lg:pt-[1.5rem] xl:space-x-[4rem]">
+    <div className="relative z-0 flex flex-col space-y-[1rem] bg-[#0d1832] w-auto p-[1rem] pb-[0.8rem] h-auto font-poppins overflow-x-hidden lg:space-y-[1rem]">
+      <div className="z-50 bg-[#002855] h-full lg:px-[2rem] lg:space-y-[2rem] bg-opacity-50 rounded-[1rem] md:h-auto w-full flex flex-col">
+        <div className="flex flex-row space-x-[1rem] lg:space-x-[2rem] pt-[1rem] px-[0rem] lg:px-0 lg:pt-[1.5rem]">
           <ProfilePic User={data} />
           <div className="flex p-[0.5rem] whitespace-nowrap w-full xl:p-[1.2rem]">
             <div className="text-white text-lg lg:text-[1.5rem] xl:text-[2rem]"> Hi, {Fname}</div>
@@ -213,8 +214,7 @@ const Dashboard = () => {
       <img src="https://res.cloudinary.com/dxjpbwlkh/image/upload/v1709030999/Assets/1_rqlvoq.png" alt="shape3" className="h-[11rem] w-[14rem] absolute z-10 -bottom-[0rem] -right-[3rem] xsm:h-[10rem] xsm:w-[12rem] sm:h-[9rem] sm:w-[12.5rem] lg:w-[17rem] lg:h-[15rem] 3xl:w-[25rem] 3xl:h-[20rem]" />
       <img src="https://res.cloudinary.com/dxjpbwlkh/image/upload/v1709031100/Assets/Group_4_d8iknv.png" alt="shape1" className="h-[10rem] w-[10.5rem] absolute z-10 -top-[3rem] -right-[1rem] opacity-50 sm:h-[12rem] sm:w-[12.5rem] md:h-[13rem] md:w-[13.5rem] lg:w-[17rem] lg:h-[17rem] lg:right-[5rem] lg:-top-[5.5rem] xl:h-[24rem] xl:w-[25rem] xl:-top-[7rem] xl:right-[10rem] 3xl:w-[28rem] 3xl:h-[27rem]" />
       <img src="https://res.cloudinary.com/dxjpbwlkh/image/upload/v1709031100/Assets/Group_3_umxc26.png" alt="shape2" className="h-[10rem] w-[10rem] absolute z-10 -top-[1.5rem] -left-[5rem] opacity-50 xsm:h-[11rem] xsm:w-[10rem] xsm:-top-[1.7rem] sm:h-[12.8rem] sm:w-[11rem] sm:-left-[6.2rem] sm:-top-[2.1rem] xl:h-[16rem] xl:w-[13rem] xl:-left-[7rem] 3xl:w-[15rem] 3xl:h-[20rem] 3xl:-top-[3rem] 3xl:-left-[8rem]"/>
-      
-      <div className="flex flex-col items-center justify-center z-30 w-full h-[4rem] lg:h-[5rem] lg:space-y-[0.4rem] rounded-xl bg-[#134083] bg-opacity-75 self-center ">
+      <div className=" flex flex-col items-center justify-center z-30 w-full h-[4rem] lg:h-[5rem] lg:space-y-[0.4rem] rounded-xl bg-[#134083] bg-opacity-75 self-center ">
         <div className="flex flex-row space-x-[0.2rem] lg:space-x-[0.4rem]">
           <a href="https://forms.gle/aMBmxaiFjtGpM5WX9" target="_blank" className="text-white font-poppins text-[0.8rem] lg:text-[1rem] underline decoration-solid hover:text-[#F9D62B]">Share your feedback with us<b>!</b></a>
           <img src="https://res.cloudinary.com/dxjpbwlkh/image/upload/v1709966651/Assets/SVGRepo_iconCarrier_sepk7o.png" alt="rtu logo" className="h-[1.3rem] w-[1.7rem] ml-[1rem] mr-[0.5rem] 2xl:h-[1.8rem] 2xl:w-[2.1rem] 3xl:h-[2rem] 3xl:w-[2.5rem]"/>
@@ -225,7 +225,6 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
-    
     </>
   );
 };
