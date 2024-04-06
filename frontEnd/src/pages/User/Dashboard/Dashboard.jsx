@@ -15,7 +15,6 @@ const Dashboard = () => {
   const [endDate, setEndDate] = useState('')
   const [userUsedSearch, setUserUsedSearch] = useState(false)
   const [hasNextPage, setHasNextPage] = useState(null)
-  const [retried, setRetried] = useState(false)
 
   const getData = async () => {
     await getUserAndItem(currentPage)
@@ -66,12 +65,6 @@ const Dashboard = () => {
     }
   }
 
-  const retryFetch = ()=>{
-    if(!retried){
-      setRetried(true)
-    }
-  }
-
   const searchByDate = async()=>{
     if(startDate && endDate){
       await axiosFetchItems.post('', {
@@ -80,10 +73,7 @@ const Dashboard = () => {
           'currentPage': currentPage
       })
       .then(res=>{
-        if(res.data === null){
-          return retryFetch()
-        }
-        console.log(res.data)
+        //console.log(res.data)
         setData([res.data])
         setHasNextPage(res.data.hasNextPage)
         setLoading(false);
