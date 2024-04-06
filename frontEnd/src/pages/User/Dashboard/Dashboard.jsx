@@ -73,8 +73,9 @@ const Dashboard = () => {
           'currentPage': currentPage
       })
       .then(res=>{
+        console.log(res.data)
         setData([res.data])
-        setHasNextPage(res.hasNextPage)
+        setHasNextPage(res.data.hasNextPage)
         setLoading(false);
       })
     }
@@ -96,6 +97,7 @@ const Dashboard = () => {
 
   const pagination =()=>{
     const disable = `btn-disabled`
+    //console.log(hasNextPage)
     return(
       <div className="flex flex-row justify-center">
         <div className="join border-[0.1rem] border-[#F9D62B] mt-[0.5rem] lg:text-md">
