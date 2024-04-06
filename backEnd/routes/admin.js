@@ -213,7 +213,7 @@ router.post('/userData', adminOnlyToken, async(req, res)=>{
       )
     }
     else{
-      res.sendStatus(200)
+      res.status(200).json("NA")
     }
   }
   else{

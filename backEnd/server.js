@@ -44,8 +44,6 @@ app.use(bodyParser.json());
 
 app.use(cookieParser())
 
-app.enable('trust proxy', 1)
-
 mongoose.connect(`${connectionString}test`)
     .then((result)=>app.listen(port,()=> console.log(`running in port ${port}`))) //run the port in 3000
     .catch(err=>{console.log(err)})
