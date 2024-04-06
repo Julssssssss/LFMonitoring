@@ -292,7 +292,7 @@ const RequestList = () => {
                 type="text"
                 id="subject"  
                 placeholder="Subject" 
-                className="border-[0.2rem] bg-white border-[#F9D62B] h-[2.5rem] font-poppins rounded-xl text-black w-full text-[0.7rem] md:text-[1rem] xl:text-[1.2rem] xl:p-[1.4rem] p-[0.5rem]"
+                className="border-[0.2rem] bg-[#134083] border-[#F9D62B] h-[2.5rem] font-poppins rounded-xl text-black w-full text-[0.7rem] md:text-[1rem] xl:text-[1.2rem] xl:p-[1.4rem] p-[0.5rem]"
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
               /> 
@@ -300,7 +300,7 @@ const RequestList = () => {
                 id="letter" 
                 rows={4}
                 placeholder="" 
-                className="border-[0.2rem] border-[#F9D62B] w-full lg:h-full text-[0.8rem] md:text-[1rem] text-black bg-white p-[0.5rem] xl:text-[1.3rem] xl:p-[1.4rem] rounded-xl pb-[15rem]"
+                className="border-[0.2rem] border-[#F9D62B] w-full lg:h-full text-[0.8rem] md:text-[1rem] text-black bg-[#134083] p-[0.5rem] xl:text-[1.3rem] xl:p-[1.4rem] rounded-xl pb-[15rem]"
                 value={emailContent}
                 onChange={(e) => setEmailContent(e.target.value)}
               /> 
