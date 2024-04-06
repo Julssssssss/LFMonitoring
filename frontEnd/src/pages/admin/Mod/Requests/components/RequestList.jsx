@@ -192,10 +192,7 @@ const RequestList = () => {
                   {elem.dateRequested}
                 </div>
               </div>
-              <div className={`${elem.haveBeenEmailed ? "bg-green-700" : "bg-red-700"} group h-[1rem] w-[1rem] rounded-full p-[0.5rem]`}>
-                <span className="absolute left-[31rem] lg:-right-[4rem] text-center p-2 scale-0 bg-gray-800 text-[2rem] text-white group-hover:scale-50">
-                  {elem.haveBeenEmailed ? "User Emailed" : "User haven't Emailed"}
-                </span>
+              <div className={`${elem.haveBeenEmailed ? "bg-green-700" : "bg-red-700"} group h-[1rem] w-[1rem] rounded-full p-[0.5rem] tooltip tooltip-left before:bg-[#134083] before:text-white before:font-bold`} data-tip={elem.haveBeenEmailed ? "User Emailed" : "User haven't Emailed"}>
               </div>
             </div>
             <div className="items-center w-full font-bold justify-center flex flex-row space-x-[1rem]">

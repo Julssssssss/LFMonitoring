@@ -13,7 +13,7 @@ import DashView from './pages/admin/Mod/Home/DashView'
 import LostView from './pages/admin/Mod/LostItems/LostView'
 import RequestsView from './pages/admin/Mod/Requests/RequestsView'
 import UserManual from './pages/admin/Mod/UserManual/UserManual'
-import AdminProfile from './pages/admin/Mod/Home/Widgets/AdminProfile'
+
 
 import Privilege from './pages/admin/Privilege/Privilege'
 
@@ -50,7 +50,6 @@ const App = () => {
             <Route exact path='/Admin/LostItems' element={<LostView/>}/>
             <Route exact path='/Admin/Requests' element={<RequestsView/>}/>
             <Route exact path='/Admin/HistoryLogs' element={<HistoryView/>}/>
-            <Route exact path='/Admin/AdminProfile' element={<AdminProfile/>}/>
             <Route exact path='/Admin/Privilege' element={<Privilege/>}/>
             <Route exact path='/Admin/UserManual' element={<UserManual/>}/>
 
