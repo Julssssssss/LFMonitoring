@@ -32,7 +32,7 @@ const fixObjectFormat = (objData)=>{
                     `OLD : \nId : ${_id} \nImage Path : ${url} \nName Item : ${nameItem} \nDescription : ${desc} \nFound By : ${found} \nSurrendered by : ${surrenderedBy} \nPosted By : ${postedBy} \nDate Posted : ${datePosted} \n\n`
                 )
             }
-            const combString  = updObjToString() + oldObjToString()
+            const combString  = oldObjToString() + updObjToString()
             //console.log(combString)
             return combString
         }

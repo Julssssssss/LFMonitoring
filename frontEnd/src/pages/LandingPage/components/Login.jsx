@@ -1,6 +1,7 @@
 
 // inde na ginagamit
 const Login = () => {
+  
     const googleAuth =()=>{
         window.open(
             `${VITE_API_URL}/auth/google/callback`, "_self"
