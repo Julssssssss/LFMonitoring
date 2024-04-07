@@ -19,6 +19,12 @@ const Dashboard = () => {
   const getData = async () => {
     await getUserAndItem(currentPage)
     .then((result)=>{
+      //console.log(result.data.items)
+      /*
+      if(!result.data.items){
+        alert("Error: No items found.")
+        return ;
+      }*/
       setData([result])
       setHasNextPage(result.hasNextPage)
       
@@ -83,10 +89,15 @@ const Dashboard = () => {
 
   const useSearch = ()=>{
     if(searchQuery){
-      setSearchQuery(searchQuery.trim())
-      setUserUsedSearch(true)
-      setCurrentPage(1)
-      searchData()
+      if(searchQuery  === "0"){
+        return alert("Please enter a valid Data.")
+      }
+      else{
+        setSearchQuery(searchQuery.trim())
+        setUserUsedSearch(true)
+        setCurrentPage(1)
+        searchData()
+      }
     }
     else if(startDate && endDate){
       setUserUsedSearch(true)
