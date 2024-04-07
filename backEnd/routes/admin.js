@@ -20,7 +20,11 @@ const nodemailer = require("nodemailer");
 //set date to string
 const dateAndTime = (isoData)=>{
   const Date = isoData.toISOString().split('T')[0]
-  const Time = isoData.toTimeString().split(' ')[0]
+  const Time = isoData.toLocaleTimeString('en-PH', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  })
   const dateAndTimeString = Date +" "+ Time
   //console.log('dateAndTime', dateAndTime)
   return dateAndTimeString
@@ -357,6 +361,7 @@ router.post('/archive/UnclaimedItems/:id', verifyToken, async (req, res) => {
       "_id": id,
       "url": url,
       "nameItem": nameItem,
+      "desc": desc,
       "found": found,
       "surrenderedBy":surrenderedBy,
       "postedBy":postedBy,
