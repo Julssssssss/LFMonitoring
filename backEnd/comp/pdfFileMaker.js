@@ -2,13 +2,13 @@ const {jsPDF} = require('jspdf')
 require('jspdf-autotable');
 
 const dateAndTime = (isoData)=>{
-    const Date = isoData.toISOString().split('T')[0]
-    const Time = isoData.toLocaleTimeString('en-PH', {
+    const formattedDate = isoData.toISOString().split('T')[0]
+    const formattedTime = isoData.toLocaleTimeString('en-PH', {
         hour: '2-digit',
         minute: '2-digit',
         hour12: true
     })
-    const dateAndTime = Date +" "+ Time
+    const dateAndTime = formattedDate +" "+ formattedTime
     //console.log('dateAndTime', dateAndTime)
     return dateAndTime
 }
