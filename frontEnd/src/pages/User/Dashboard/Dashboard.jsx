@@ -111,7 +111,7 @@ const Dashboard = () => {
     //console.log(hasNextPage)
     return(
       <div className="flex flex-row justify-center">
-        <div className="join border-[0.1rem] border-[#F9D62B] mt-[0.5rem] lg:text-md">
+        <div className="join border-[0.1rem] border-[#F9D62B] mt-[0.5rem] lg:text-md mb-[1rem]">
           <button className={`join-item btn btn-sm bg-[#17394C] ${currentPage === 1 ? `btn-disabled` : ''}`}
             onClick={()=>{
                 setCurrentPage(currentPage - 1)
