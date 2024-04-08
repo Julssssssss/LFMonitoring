@@ -63,7 +63,7 @@ const RequestList = () => {
     const disable = `btn-disabled`
     return(
       <div className="flex flex-row justify-center">
-        <div className="join border-[0.1rem] mt-[0.5rem] border-[#F9D62B]">
+        <div className="join border-[0.1rem] my-[0.9rem] border-[#F9D62B]">
           <button className={`join-item btn btn-sm bg-[#17394C] ${currentPage === 1 ? `btn-disabled` : ''}`}
             onClick={()=>{
                 setCurrentPage(currentPage - 1)

@@ -1,17 +1,19 @@
 const {jsPDF} = require('jspdf')
 require('jspdf-autotable');
 
+//set date to string
 const dateAndTime = (isoData)=>{
-    const formattedDate = isoData.toISOString().split('T')[0]
-    const formattedTime = isoData.toLocaleTimeString('en-PH', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
+    const UTCTime = isoData.getTime() //get timestamp into miliseconds
+    const manilaDate = new Date(UTCTime + (8 * 60) * 60 * 1000) // 8 * 60 = minutes 
+    const formattedDate = manilaDate.toISOString().split('T')[0]
+    const formattedTime = manilaDate.toLocaleTimeString('en-PH', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
     })
-    const dateAndTime = formattedDate +" "+ formattedTime
-    //console.log('dateAndTime', dateAndTime)
-    return dateAndTime
-}
+    const dateAndTimeString = formattedDate +" "+ formattedTime
+    return dateAndTimeString
+  }
 
 const fixObjectFormat = (objData)=>{
     console.log(objData)
