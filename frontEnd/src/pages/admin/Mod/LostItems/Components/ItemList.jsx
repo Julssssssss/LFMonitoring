@@ -75,6 +75,7 @@ const ItemList = () => {
 
   const useSearch = ()=>{
     if(searchQuery){
+      setSearchQuery(searchQuery.trim())
       setUserUsedSearch(true)
       setCurrentPage(1)
       searchData()
@@ -112,7 +113,7 @@ const ItemList = () => {
     const disable = `btn-disabled`
     return(
       <div className="flex flex-row justify-center">
-        <div className="join border-[0.1rem] border-[#F9D62B] mt-[0.5rem] lg:text-md">
+        <div className="join border-[0.1rem] border-[#F9D62B] mt-[1rem] lg:text-md">
           <button className={`join-item btn btn-sm bg-[#17394C] ${currentPage === 1 ? `btn-disabled` : ''}`}
             onClick={()=>{
                 setCurrentPage(currentPage - 1)

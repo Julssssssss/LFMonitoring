@@ -1,13 +1,19 @@
 const {jsPDF} = require('jspdf')
 require('jspdf-autotable');
 
+//set date to string
 const dateAndTime = (isoData)=>{
-    const Date = isoData.toISOString().split('T')[0]
-    const Time = isoData.toTimeString().split(' ')[0]
-    const dateAndTime = Date +" "+ Time
-    //console.log('dateAndTime', dateAndTime)
-    return dateAndTime
-}
+    const UTCTime = isoData.getTime() //get timestamp into miliseconds
+    const manilaDate = new Date(UTCTime + (8 * 60) * 60 * 1000) // 8 * 60 = minutes 
+    const formattedDate = manilaDate.toISOString().split('T')[0]
+    const formattedTime = manilaDate.toLocaleTimeString('en-PH', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    })
+    const dateAndTimeString = formattedDate +" "+ formattedTime
+    return dateAndTimeString
+  }
 
 const fixObjectFormat = (objData)=>{
     console.log(objData)
@@ -21,18 +27,18 @@ const fixObjectFormat = (objData)=>{
             //console.log(oldItemData)
             //console.log(nameItem)
             const updObjToString = ()=>{
-                const {_id, url, nameItem, desc, found, surrenderedBy, postedBy, datePosted} = updatedItem
+                const {_id, nameItem, desc, found, surrenderedBy, postedBy, datePosted} = updatedItem
                 return (
-                    `UPDATED : \nId : ${_id} \nImage Path : ${url} \nName Item : ${nameItem} \nDescription : ${desc} \nFound By : ${found} \nSurrendered by : ${surrenderedBy} \nPosted By : ${postedBy} \nDate Posted : ${datePosted} \n\n`
+                    `UPDATED : \nId : ${_id} \nName Item : ${nameItem} \nDescription : ${desc} \nFound By : ${found} \nSurrendered by : ${surrenderedBy} \nPosted By : ${postedBy} \nDate Posted : ${datePosted} \n\n`
                 )
             }
             const oldObjToString =()=>{ 
-                const {_id, url, nameItem, desc, found, surrenderedBy, postedBy, datePosted} = oldItemData
+                const {_id, nameItem, desc, found, surrenderedBy, postedBy, datePosted} = oldItemData
                 return (
-                    `OLD : \nId : ${_id} \nImage Path : ${url} \nName Item : ${nameItem} \nDescription : ${desc} \nFound By : ${found} \nSurrendered by : ${surrenderedBy} \nPosted By : ${postedBy} \nDate Posted : ${datePosted} \n\n`
+                    `OLD : \nId : ${_id} \nName Item : ${nameItem} \nDescription : ${desc} \nFound By : ${found} \nSurrendered by : ${surrenderedBy} \nPosted By : ${postedBy} \nDate Posted : ${datePosted} \n\n`
                 )
             }
-            const combString  = updObjToString() + oldObjToString()
+            const combString  = oldObjToString() + updObjToString()
             //console.log(combString)
             return combString
         }
@@ -109,12 +115,11 @@ const makePdf = async(Type, Data)=>{
         }
         else if(Type === 'Archive'){  ////ARCHIVE MYYYYY NNNN
             doc.text('Archive Datas', 400, 30, {align: 'center'})
-            const header = [['Id', 'Item Id', 'Item Images', 'Name of Items', 'Desccriptions', 'Found at', 'Surrendered By', 'Posted By', 'Date Posted', 'Claimed By', 'Date Approved']]
+            const header = [['Id', 'Item Id', 'Name of Items', 'Desccriptions', 'Found at', 'Surrendered By', 'Posted By', 'Date Posted', 'Claimed By', 'Date Approved']]
             const tableData = Data[0].map(elem => {
                 return [
                     elem._id.toString(),
                     elem.itemId,
-                    elem.itemImages,
                     elem.nameItem,
                     elem.desc,
                     elem.found,
@@ -137,15 +142,14 @@ const makePdf = async(Type, Data)=>{
                 columnStyles: {
                     0: {cellWidth: 65},
                     1: {cellWidth: 65},
-                    //2: {cellWidth: 90},
-                    3: {cellWidth: 70},
+                    2: {cellWidth: 80},
+                    //3: {cellWidth: 70},
                     4: {cellWidth: 80},
                     5: {cellWidth: 80},
                     6: {cellWidth: 70},
                     7: {cellWidth: 65},
                     8: {cellWidth: 60},
-                    9: {cellWidth: 65},
-                    10: {cellWidth: 60}
+                    9: {cellWidth: 60},
                 }
             }
         }
@@ -154,7 +158,7 @@ const makePdf = async(Type, Data)=>{
             const tableData = Data[0].map(elem => {
                 return [
                     elem._id.toString(),
-                    fixObjectFormat(elem.url),
+                    elem.desc,
                     elem.nameItem,
                     elem.found, 
                     elem.surrenderedBy,
@@ -164,7 +168,7 @@ const makePdf = async(Type, Data)=>{
             })
 
             //console.log(tableData)
-            const header = [['Id', 'Images', 'Item Name', 'Found at', 'Surredered By', 'Posted By', 'Date Posted']]
+            const header = [['Id', 'Description of Item', 'Item Name', 'Found at', 'Surredered By', 'Posted By', 'Date Posted']]
 
             format = {
                 head: header, 
@@ -175,12 +179,12 @@ const makePdf = async(Type, Data)=>{
                     right: 35
                 },
                 columnStyles: {
-                    0: {cellWidth: 60},
+                    0: {cellWidth: 90},
                     //1: {cellWidth: 120},
-                    2: {cellWidth: 60},
-                    3: {cellWidth: 60},
-                    4: {cellWidth: 60},
-                    5: {cellWidth: 60},
+                    2: {cellWidth: 120},
+                    3: {cellWidth: 120},
+                    4: {cellWidth: 120},
+                    5: {cellWidth: 120},
                     6: {cellWidth: 60},
                 }
             }

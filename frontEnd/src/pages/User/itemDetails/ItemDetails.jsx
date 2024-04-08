@@ -11,7 +11,7 @@ const ItemDetails = () => {
   const data = location.state.el
   //for modal
   const [cooldownActive, setCooldownActive] = useState(false)
-  
+  const [userClicked, setuserClicked] = useState(false)
   const handleYesAction = () => {
     setuserClicked(true); // Set the userClicked state to true
     if(!cooldownActive){

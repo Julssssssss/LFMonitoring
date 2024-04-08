@@ -44,8 +44,6 @@ app.use(bodyParser.json());
 
 app.use(cookieParser())
 
-app.enable('trust proxy', 1)
-
 mongoose.connect(`${connectionString}test`)
     .then((result)=>app.listen(port,()=> console.log(`running in port ${port}`))) //run the port in 3000
     .catch(err=>{console.log(err)})
@@ -63,7 +61,7 @@ app.use(session({
     }),
     cookie: {
         //sameSite: "None",
-       // httpOnly: true,
+        //httpOnly: true,
         //secure: true, // true mo to if prod na
         maxAge: 60*60*1000
     }

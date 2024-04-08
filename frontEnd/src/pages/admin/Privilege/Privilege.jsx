@@ -12,11 +12,13 @@ const Privilege = () => {
   const [cooldownActive, setCooldownActive] = useState(false);
 
   const dropResult = () => {
-    if(!isOpen)
-    {
+    if(!isOpen){
       setUserData(null);
       if(searchQuery){
-        findUser();
+        if(searchQuery.includes("@rtu.edu.ph")){
+          //console.log(`this just works bruh`)
+          findUser();
+        }
       }
     }
     setIsOpen(true);
@@ -40,9 +42,11 @@ const Privilege = () => {
           }
         }
       );
-      setUserData(response.data);
-      //const Role = tempRole.toUpperCase() 
-      setTempRole(response.data.Role.toUpperCase()); 
+      if(response.data !== "NA"){
+        setUserData(response.data);
+        //const Role = tempRole.toUpperCase() 
+        setTempRole(response.data.Role.toUpperCase()); 
+      }
     } catch(error) {
       console.log(error);
     } finally {

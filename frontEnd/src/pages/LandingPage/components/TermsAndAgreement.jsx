@@ -65,7 +65,7 @@ const TermsAndAgreement = ({closeTAC}) => {
                 By using the Lost and Found Monitoring Solution System, you acknowledge that you have read, understood, and agree to these Terms and Conditions.
             </div>
           </div>
-          <button onClick={handleAcceptTAC} className='bg-[#003985] h-[2rem] w-[7rem] rounded-md font-poppins mb-[1rem]'>Accept</button>
+          <button onClick={handleAcceptTAC} className='bg-[#003985] hover:bg-[#F9D62B] hover:text-black h-[2rem] text-white w-[7rem] rounded-md font-poppins mb-[1rem]'>Accept</button>
         </div>
       </div>
     </div>

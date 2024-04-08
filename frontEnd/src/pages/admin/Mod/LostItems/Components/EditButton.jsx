@@ -44,7 +44,7 @@ const EditButton = ({ Info }) => {
 
   const uploadSuccess = () => {
     alert('Update Complete');
-    //window.location.reload();
+    window.location.reload();
   };
 
   const checker = async () => {
@@ -74,8 +74,8 @@ const EditButton = ({ Info }) => {
     setConfirm(false);
   
     try {
-        console.log('here', Info)
-        console.log(Array.isArray(Info));
+        //console.log('here', Info)
+        //console.log(Array.isArray(Info));
         setLoading(true);
         const formData = new FormData();
         formData.append('nameItem', item.nameItem.trim());

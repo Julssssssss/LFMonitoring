@@ -14,7 +14,7 @@ const ProfileIcon = ({ User }) => {
         <div
           tabIndex={0}
           style={{ backgroundImage: `url(${User[1]})` }}
-          className='btn m-1 bg-contain hover:opacity-75 cursor-pointer rounded-full border-[0.1rem] border-white bg-center w-[2.5rem] h-[2.5rem] md:w-[4rem] md:h-[4rem] 2xl:w-[5.5rem] 2xl:h-[5.5rem] z-20'
+          className='btn m-1 bg-contain hover:opacity-75 cursor-pointer rounded-full border-[0.1rem] border-white bg-center w-[3rem] h-[2.5rem] md:w-[4rem] md:h-[4rem] 2xl:w-[5.5rem] 2xl:h-[5.5rem] z-20'
         ></div>
         <ul
           tabIndex={0}
