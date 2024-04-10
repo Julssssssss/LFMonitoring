@@ -17,12 +17,21 @@ const multer = require('multer');
 
 const nodemailer = require("nodemailer");
 
+const isInteger = (str) => {
+  return /^\d+$/.test(str);
+}
+
 //set date to string
 const dateAndTime = (isoData)=>{
-  const Date = isoData.toISOString().split('T')[0]
-  const Time = isoData.toTimeString().split(' ')[0]
-  const dateAndTimeString = Date +" "+ Time
-  //console.log('dateAndTime', dateAndTime)
+  const UTCTime = isoData.getTime() //get timestamp into miliseconds
+  const manilaDate = new Date(UTCTime + (8 * 60) * 60 * 1000) // 8 * 60 = minutes 
+  const formattedDate = manilaDate.toISOString().split('T')[0]
+  const formattedTime = manilaDate.toLocaleTimeString('en-PH', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  })
+  const dateAndTimeString = formattedDate +" "+ formattedTime
   return dateAndTimeString
 }
 
@@ -118,33 +127,65 @@ router.post('/data', verifyToken, async(req, res) => {
     }
     else if('searchQuery' in req.body){
       const {searchQuery, currentPage} = req.body
-      console.log(searchQuery)
-      await itemModels.find({ 'nameItem': searchQuery.toLowerCase()}).lean().limit(7).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
-      .then((result) => {
-        const hasNextPage = result.length > 6;
-        const slicedResult = result.slice(0, 6).map(elem=>{
-          return{
-            '_id': elem._id,
-            'datePosted': dateAndTime(elem.datePosted),
-            'desc': elem.desc,
-            'found': elem.found,
-            'nameItem': elem.nameItem,
-            'postedBy': elem.postedBy,
-            'surrenderedBy': elem.surrenderedBy,
-            'url': [elem.url]
-          }
+
+      if(isInteger(searchQuery)){
+        const intVal = Number(searchQuery)
+        await itemModels.findOne({}).lean().skip(intVal - 1).limit(1) //dinuga ko lang tlga to dko alam pano mag search by query if it works nigga it works
+        .then((result) => {
+          //console.log(result)
+          const hasNextPage = false
+          const slicedResult = [result].map(elem=>{
+            return{
+              '_id': elem._id,
+              'datePosted': dateAndTime(elem.datePosted),
+              'desc': elem.desc,
+              'found': elem.found,
+              'nameItem': elem.nameItem,
+              'postedBy': elem.postedBy,
+              'surrenderedBy': elem.surrenderedBy,
+              'url': [elem.url]
+            }
+          })
+          res.status(200).json({
+            items: slicedResult,
+            user: user,
+            picture: Picture,
+            'hasNextPage': hasNextPage
+          });
         })
-        res.status(200).json({
-          items: slicedResult,
-          user: user,
-          picture: Picture,
-          'hasNextPage': hasNextPage
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json({ error: 'Internal Server Error' });
         });
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json({ error: 'Internal Server Error' });
-      });
+      }
+      else{
+        await itemModels.find({ 'nameItem': searchQuery.toLowerCase()}).lean().limit(7).skip((currentPage - 1)* 6).sort({'datePosted': -1}) //ok na pagination waiting for frontEnd
+        .then((result) => {
+          const hasNextPage = result.length > 6;
+          const slicedResult = result.slice(0, 6).map(elem=>{
+            return{
+              '_id': elem._id,
+              'datePosted': dateAndTime(elem.datePosted),
+              'desc': elem.desc,
+              'found': elem.found,
+              'nameItem': elem.nameItem,
+              'postedBy': elem.postedBy,
+              'surrenderedBy': elem.surrenderedBy,
+              'url': [elem.url]
+            }
+          })
+          res.status(200).json({
+            items: slicedResult,
+            user: user,
+            picture: Picture,
+            'hasNextPage': hasNextPage
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json({ error: 'Internal Server Error' });
+        });
+      }
     }
     else{
       const {currentPage} = req.body
@@ -357,6 +398,7 @@ router.post('/archive/UnclaimedItems/:id', verifyToken, async (req, res) => {
       "_id": id,
       "url": url,
       "nameItem": nameItem,
+      "desc": desc,
       "found": found,
       "surrenderedBy":surrenderedBy,
       "postedBy":postedBy,
@@ -470,50 +512,97 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
     }
     else if('searchQuery' in req.body){
       const {searchQuery, currentPage} = req.body
-      console.log(req.body)
-      reqModels.find({'nameItem':searchQuery.toLowerCase()}).lean().limit(7).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
-      .then(async(result)=>{
-        const hasNextPage = result.length > 6;
-        //console.log(result)
-        const reqListAndItemData = await Promise.all (result.slice(0, 6).map(async(elem)=>{
-          let itemData = null
-          itemData = await itemModels.findById(elem.itemId).lean()
-            if(!itemData){
-              itemData = await unclaimedItemsModels.findById(elem.itemId).lean()
-              //gumagana sya
+      //console.log(req.body)
+      if(isInteger(searchQuery)){
+        const intVal = Number(searchQuery)
+        await reqModels.findOne({}).lean().skip(intVal - 1).limit(1)
+        .then(async(result)=>{
+          //console.log(result)
+          const reqListAndItemData = await Promise.all ([result].map(async(elem)=>{
+            let itemData = null
+            itemData = await itemModels.findById(elem.itemId).lean()
               if(!itemData){
-                itemData = await transModels.findOne({'itemId' : elem.itemId}).lean()
+                itemData = await unclaimedItemsModels.findById(elem.itemId).lean()
+                //gumagana sya
                 if(!itemData){
-                  //if dinelete yung item
-                  itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
+                  itemData = await transModels.findOne({'itemId' : elem.itemId}).lean()
+                  if(!itemData){
+                    //if dinelete yung item
+                    itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
+
+                  }
+                  itemData.source = `This request has been successfully completed`
+                }
+                else{
+                  itemData.source = `The items associated with this request have been archived as they remain unclaimed. Please review and advise on further action needed. Thank you!`
 
                 }
-                itemData.source = `This request has been successfully completed`
               }
               else{
-                itemData.source = `The items associated with this request have been archived as they remain unclaimed. Please review and advise on further action needed. Thank you!`
-
+                itemData.source = `This request is still pending`
               }
-            }
-            else{
-              itemData.source = `This request is still pending`
-            }
-            return {
-              'id': elem._id,
-              "itemId": elem.itemId,
-              "Email":elem.Email,
-              "haveBeenEmailed": elem.haveBeenEmailed,
-              "dateRequested": dateAndTime(elem.dateRequested),
-              "itemData": itemData
-            }
-        }))
-        //console.log(reqListAndItemData)
+              return {
+                'id': elem._id,
+                "itemId": elem.itemId,
+                "Email":elem.Email,
+                "haveBeenEmailed": elem.haveBeenEmailed,
+                "dateRequested": dateAndTime(elem.dateRequested),
+                "itemData": itemData
+              }
+          }))
+          console.log(reqListAndItemData)
 
-        res.status(200).json({
-          'reqListAndItemData': reqListAndItemData,
-          'hasNextPage': hasNextPage
+          res.status(200).json({
+            'reqListAndItemData': reqListAndItemData,
+            'hasNextPage': false
+          })
         })
-      })
+      }
+      else{
+        reqModels.find({'nameItem':searchQuery.toLowerCase()}).lean().limit(7).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
+        .then(async(result)=>{
+          const hasNextPage = result.length > 6;
+          //console.log(result)
+          const reqListAndItemData = await Promise.all (result.slice(0, 6).map(async(elem)=>{
+            let itemData = null
+            itemData = await itemModels.findById(elem.itemId).lean()
+              if(!itemData){
+                itemData = await unclaimedItemsModels.findById(elem.itemId).lean()
+                //gumagana sya
+                if(!itemData){
+                  itemData = await transModels.findOne({'itemId' : elem.itemId}).lean()
+                  if(!itemData){
+                    //if dinelete yung item
+                    itemData = `The item associated with this request has been deleted or doesn't exist. Please take note and advise if further action is required. Thank you!`
+
+                  }
+                  itemData.source = `This request has been successfully completed`
+                }
+                else{
+                  itemData.source = `The items associated with this request have been archived as they remain unclaimed. Please review and advise on further action needed. Thank you!`
+
+                }
+              }
+              else{
+                itemData.source = `This request is still pending`
+              }
+              return {
+                'id': elem._id,
+                "itemId": elem.itemId,
+                "Email":elem.Email,
+                "haveBeenEmailed": elem.haveBeenEmailed,
+                "dateRequested": dateAndTime(elem.dateRequested),
+                "itemData": itemData
+              }
+          }))
+          //console.log(reqListAndItemData)
+
+          res.status(200).json({
+            'reqListAndItemData': reqListAndItemData,
+            'hasNextPage': hasNextPage
+          })
+        })
+      }
     }
     else{
       const {currentPage} = req.body

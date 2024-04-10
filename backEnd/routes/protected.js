@@ -6,6 +6,10 @@ const itemModels = require('../Models/itemModels')
 const reqModel = require("../Models/requestModels")
 const UserModel = require('../Models/userModels')
 
+const isInteger = (str) => {
+    return /^\d+$/.test(str);
+}
+
 //to verify token 
 const verifyToken = (req, res, next) => {
     const authHeader = req.headers['authorization']
@@ -40,7 +44,7 @@ router.put("/TACagreement", verifyToken, async(req, res)=>{
 
 //papalitan to ng post mmya pero get muna kasi tinetest placement ng data
 router.post("/data", verifyToken, async(req, res)=>{
-        console.log(req.body)
+        //console.log(req.body)
         const {_id, Name, Email, Picture} = req.user
         const {TAC} = await UserModel.findById( _id).select('TAC -_id').lean()
         //console.log(TAC)
@@ -68,18 +72,34 @@ router.post("/data", verifyToken, async(req, res)=>{
             }
             else if('searchQuery' in req.body){
                 const {searchQuery, currentPage} = req.body
-                itemModels.find({'nameItem': searchQuery.toLowerCase()}).lean().limit(7).skip((currentPage - 1) * 6).sort({'datePosted': -1}) //waiting na lang sa pagination sa frontEnd
-                .then((result) => {
-                    const hasNextPage = result.length > 6;
-                    const slicedResult = result.slice(0, 6)
-                    res.status(200).json({
-                      items: slicedResult,
-                      user: user,
-                      picture: Picture,
-                      'hasNextPage': hasNextPage
-                    });
-                })
-                .catch(err=>{console.log(err)})
+
+                if(isInteger(searchQuery)){
+                    const intVal = Number(searchQuery)
+                    await itemModels.findOne({}).lean().skip(intVal - 1).limit(1)
+                    .then((result) => {
+                        res.status(200).json({
+                        items: [result],
+                        user: user,
+                        picture: Picture,
+                        'hasNextPage': false
+                        });
+                    })
+                    .catch(err=>{console.log('here', err)})
+                }
+                else{
+                    itemModels.find({'nameItem': searchQuery.toLowerCase()}).lean().limit(7).skip((currentPage - 1) * 6).sort({'datePosted': -1}) //waiting na lang sa pagination sa frontEnd
+                    .then((result) => {
+                        const hasNextPage = result.length > 6;
+                        const slicedResult = result.slice(0, 6)
+                        res.status(200).json({
+                        items: slicedResult,
+                        user: user,
+                        picture: Picture,
+                        'hasNextPage': hasNextPage
+                        });
+                    })
+                    .catch(err=>{console.log(err)})
+                }
             }
             else{
                 const {currentPage} = req.body
