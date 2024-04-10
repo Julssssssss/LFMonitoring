@@ -28,9 +28,7 @@ const App = () => {
     <>
 
       {/* eto yung red pang debug to*/}
-      <style>
-        {`*{outline: solid red}`}
-      </style>
+     
 
       <div>
         <Routes>
