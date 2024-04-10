@@ -120,7 +120,7 @@ axiosReFetchToken.interceptors.response.use(
             {  
                 if (error.response.status === 403) {
                     logout()
-                    window.location.href = `${import.meta.env.VITE_CLIENT_URL}`;
+                    window.location.href = `${import.meta.env.VITE_CLIENT_URL}/403`;
                     
                     return Promise.resolve(); // Returning a resolved promise to stop further processing
                 }

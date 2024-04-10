@@ -2,6 +2,7 @@ import { useState, useEffect} from "react";
 import { axiosSendUpdate } from "../../../../../components/api/axios";
 import UploadingScreen from "../../../../404/UploadingScreen";
 import ItemsCarousel from "../../../MainComponents/ItemsCarousel";
+import { useForm } from 'react-hook-form';
 
 const Modal = ({ isOpen, children }) => {
   if (!isOpen) return null;
@@ -24,6 +25,7 @@ const EditButton = ({ Info }) => {
   const [item, setItem] = useState([]);
   const [indexToReplace, setIndexToReplace] = useState(0);
   const [cooldownActive, setCooldownActive] = useState(false)
+  const { register, handleSubmit, formState: { errors } } = useForm();
   
 
   useEffect (()=>{
@@ -39,7 +41,7 @@ const EditButton = ({ Info }) => {
   }, [Info])
 
   const showWarning = (message) => {
-    alert(message);
+    alert('Kindly complete the'+ message + ' field');
   };
 
   const uploadSuccess = () => {
@@ -47,18 +49,10 @@ const EditButton = ({ Info }) => {
     window.location.reload();
   };
 
-  const checker = async () => {
+  const onSubmit = async () => {
     try {
       const totalImages = item.url.length + files.length;
-
-      if (
-        item.nameItem.trim() === '' ||
-        item.desc.trim() === '' ||
-        item.found.trim() === '' ||
-        item.surrenderedBy.trim() === ''
-      ) {
-        return showWarning('Please fill out all required fields.');
-      } else if (totalImages < 1) {
+       if (totalImages < 1) {
         return showWarning('Please attach at least one image.');
       } else {
         setConfirm(true);
@@ -74,8 +68,6 @@ const EditButton = ({ Info }) => {
     setConfirm(false);
   
     try {
-        //console.log('here', Info)
-        //console.log(Array.isArray(Info));
         setLoading(true);
         const formData = new FormData();
         formData.append('nameItem', item.nameItem.trim());
@@ -193,7 +185,7 @@ const EditButton = ({ Info }) => {
         )}
 
         <Modal isOpen={isModalOpen} onClose={closeModal} className="relative z-0">
-          <form className="flex flex-col space-y-[0.5rem] xl:space-y-[0.5rem] xl:p-[1rem] items-center p-[0.5rem]">
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-[0.5rem] xl:space-y-[0.5rem] xl:p-[1rem] items-center p-[0.5rem]">
             <button
               className="w-[2rem] h-[2rem] xl:w-[3rem] xl:h-[3rem] self-end stroke-[#F9D62B] hover:stroke-white"
               onClick={closeModal}
@@ -275,6 +267,7 @@ const EditButton = ({ Info }) => {
             <div className="flex flex-col font-poppins items-center space-y-[0.2rem] text-white">
               <p className="text-[0.6rem] md:text-[0.9rem] self-start xl:text-[1.1rem]">Name of Item:</p>
               <input
+                required
                 type="text"
                 className="form-control p-[0.2rem] bg-[#17394C] border-[0.2rem] border-[#F9D62B] rounded-md w-[15rem] h-auto text-[0.7rem] md:text-[1rem] md:w-[20rem] xl:w-[23rem] xl:text-[1.1rem]"
                 placeholder="Name of item"
@@ -284,6 +277,7 @@ const EditButton = ({ Info }) => {
               />
               <p className="text-[0.6rem] md:text-[0.9rem] self-start xl:text-[1.1rem]">Description:</p>
               <input
+                required
                 type="text"
                 className="bg-[#17394C] p-[0.2rem] border-[0.2rem] border-[#F9D62B] rounded-md w-[15rem] h-auto text-[0.7rem] md:text-[1rem] md:w-[20rem] xl:w-[23rem] xl:text-[1.1rem]"
                 placeholder="Description"
@@ -292,6 +286,7 @@ const EditButton = ({ Info }) => {
               />
               <p className="text-[0.6rem] md:text-[0.9rem] self-start xl:text-[1.1rem]">Found at:</p>
               <input
+                required
                 type="text"
                 className="bg-[#17394C] p-[0.2rem] border-[0.2rem] border-[#F9D62B] rounded-md w-[15rem] h-auto text-[0.7rem] md:text-[1rem] md:w-[20rem] xl:w-[23rem] xl:text-[1.1rem]"
                 placeholder="Found at"
@@ -300,6 +295,7 @@ const EditButton = ({ Info }) => {
               />
               <p className="text-[0.6rem] md:text-[0.9rem] self-start xl:text-[1.1rem]">Surrendered by:</p>
               <input
+                required
                 type="text"
                 className="bg-[#17394C] p-[0.2rem] border-[0.2rem] lead-6 border-[#F9D62B] rounded-md w-[15rem] h-auto text-[0.7rem] md:text-[1rem] md:w-[20rem] xl:w-[23rem] xl:text-[1.1rem]"
                 placeholder="Surredered by: "
@@ -310,9 +306,8 @@ const EditButton = ({ Info }) => {
               />
             </div>
             <button
-                type="button"
+                type="submit"
                 className="text-black text-[1rem] hover:bg-[#134083] hover:text-white bg-[#F9D62B] w-[8rem] h-auto rounded-full md:text-[1.4rem] xl:text-[1.5rem]"
-                onClick={checker}
               >
                 SAVE
               </button>

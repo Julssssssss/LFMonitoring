@@ -47,7 +47,7 @@ const Sidebar = () => {
     <div className="drawer-side">
         <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
         <ul className=" space-y-[1rem] menu p-2 w-[50%] border-r-[0.2rem] border-[#134083] rounded-r-[6rem] md:rounded-r-[10rem] lg:rounded-r-[6rem] h-screen bg-[#0D1832] flex flex-col items-center pt-[2rem] lg:w-[8rem] xl:w-[10rem]">
-            <img className="w-[4rem] h-[4rem] md:w-[6rem] md:h-[6rem] lg:w-[5rem] lg:h-[5rem] xl:w-[7rem] xl:h-[7rem]" src={'https://iieecsc.files.wordpress.com/2021/09/rizal_technological_university-1.png'} />
+            <img className="w-[4rem] h-[4rem] md:w-[6rem] md:h-[6rem] lg:w-[5rem] lg:h-[5rem] xl:w-[7rem] xl:h-[7rem]" src='https://res.cloudinary.com/dxjpbwlkh/image/upload/v1709912489/Assets/rtu_logo_5_yz5e6k.png'/>
                 <div className="flex flex-col space-y-[0.5rem] md:space-y-[1rem] xl:space-y-[1.5rem]">
                     {buttonsFormat()}
                 </div>

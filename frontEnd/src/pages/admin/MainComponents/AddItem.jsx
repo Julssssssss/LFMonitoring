@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { axiosSendItem } from '../../../components/api/axios';
 import UploadingScreen from '../../404/UploadingScreen';
 import ItemsCarousel from './ItemsCarousel';
+import { useForm } from 'react-hook-form';
 
 
 const Modal = ({ isOpen, children }) => {
@@ -27,6 +28,7 @@ const AddItem = () => {
   const [loading, setLoading] = useState(false); 
   const [imageUrl, setImageUrl] = useState([]);
   const [cooldownActive, setCooldownActive] = useState(false)
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
   const showWarning = (message) => {
     alert(message);
@@ -41,24 +43,8 @@ const AddItem = () => {
     window.location.reload();
   };
 
-  const checker = async () => {
-    try {
-      if (
-        nameItem.trim() === '' ||
-        desc.trim() === '' ||
-        found.trim() === '' ||
-        surrenderedBy.trim() === ''
-      ) {
-        return showWarning('Please fill out all required fields.');
-      } else if (!files || !files.length > 0) {
-        return forPic();
-      }else {
-        setConfirm(true);
-      }
-    } catch (error) {
-      console.error('Error during upload:', error);
-      showWarning('An error occurred during image upload.');
-    }
+  const onSubmit = async () => {
+    setConfirm(true);
   };
 
   const handleConfirmation = async () => {
@@ -175,7 +161,7 @@ const AddItem = () => {
       )}
 
       <Modal isOpen={isModalOpen} onClose={closeModal} className= "relative z-0">
-        <form className="flex flex-col space-y-[0.5rem] xl:space-y-[1rem] font-poppins items-center p-[0.5rem]">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-[0.5rem] xl:space-y-[1rem] font-poppins items-center p-[0.5rem]">
         <button
               className="self-end w-[2rem] h-[2rem] xl:w-[3rem] xl:h-[3rem] stroke-[#F9D62B] hover:stroke-white"
               onClick={closeModal}
@@ -212,6 +198,7 @@ const AddItem = () => {
 
           
           <input
+            required
             type="file"
             className="text-white text-[0.6rem] md:text-[1rem] xl:text-[1.2rem] w-full px-[3rem]"
             accept="image/*"
@@ -258,6 +245,7 @@ const AddItem = () => {
 
           <div className="flex flex-col items-center space-y-[1rem] text-white">
             <input
+              required
               type="text"
               className="bg-[#17394C] border-[0.2rem] p-[0.1rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.1rem] md:w-[20rem] md:h-auto xl:text-[1.5rem] xl:w-[23rem]"
               placeholder="Name of item"
@@ -265,6 +253,7 @@ const AddItem = () => {
               onChange={(e) => setName(e.target.value)}
             />
             <input
+              required
               type="text"
               className="bg-[#17394C] border-[0.2rem] p-[0.1rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.1rem] md:w-[20rem] md:h-auto xl:text-[1.5rem] xl:w-[23rem]"
               placeholder="Description"
@@ -272,6 +261,7 @@ const AddItem = () => {
               onChange={(e) => setDesc(e.target.value)}
             />
             <input
+              required
               type="text"
               className="bg-[#17394C] border-[0.2rem] p-[0.1rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.1rem] md:w-[20rem] md:h-auto xl:text-[1.5rem] xl:w-[23rem]"
               placeholder="Found at"
@@ -279,6 +269,7 @@ const AddItem = () => {
               onChange={(e) => setFound(e.target.value)}
             />
             <input
+              required
               type="text"
               className="bg-[#17394C] border-[0.2rem] p-[0.1rem] border-[#F9D62B] rounded-md w-[15rem] h-[2rem] text-[0.7rem] md:text-[1.1rem] md:w-[20rem] md:h-auto xl:text-[1.5rem] xl:w-[23rem]"
               placeholder="Surrendered by: "
@@ -286,9 +277,8 @@ const AddItem = () => {
               onChange={(e) => setSurrenderedBy(e.target.value)}
             />
             <button
-              type="button"
+              type="submit"
               className="text-black text-[1rem] hover:bg-[#134083] hover:text-white bg-[#F9D62B] w-[10rem] h-[2rem] rounded-full md:text-[1.4rem] md:h-[2.5rem] xl:text-[1.5rem] font-bold"
-              onClick={checker}
             >
               ADD
             </button>

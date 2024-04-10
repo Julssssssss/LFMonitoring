@@ -1,6 +1,7 @@
 import {Route, Routes} from 'react-router-dom'
 import Page404 from './pages/404/Page404'
 import Page401 from './pages/404/Page401'
+import Page403 from './pages/404/Page403'
 //test
 
 //user
@@ -13,13 +14,8 @@ import DashView from './pages/admin/Mod/Home/DashView'
 import LostView from './pages/admin/Mod/LostItems/LostView'
 import RequestsView from './pages/admin/Mod/Requests/RequestsView'
 import UserManual from './pages/admin/Mod/UserManual/UserManual'
-
-
 import Privilege from './pages/admin/Privilege/Privilege'
-
 import HistoryView from './pages/admin/Mod/HistoryLogs/HistoryView'
-
-
 
 
 const App = () => {
@@ -32,7 +28,9 @@ const App = () => {
     <>
 
       {/* eto yung red pang debug to*/}
-     
+      <style>
+        {`*{outline: solid red}`}
+      </style>
 
       <div>
         <Routes>
@@ -55,6 +53,7 @@ const App = () => {
           {/* 404 page  catch all  palitan to in the future hopefully ng 404 page tlga */}
           <Route path='/401' element={<Page401/>}/>
           <Route path='*' element={<Page404/>}/>
+          <Route path='/403' element={<Page403/>}/>
         </Routes>
       </div>
    </>

@@ -245,6 +245,7 @@ router.post('/userData', adminOnlyToken, async(req, res)=>{
 
     const result = await userModels.findOne({'Email': Email})
     if (result){
+      console.log('here', result)
       const {Email, Role} = result
       res.status(200).json(
         {
@@ -288,9 +289,7 @@ router.put('/sendItem', verifyToken, upload.array('image'), async (req, res) => 
     const data = req.user
     console.log()
     const { Email } = data;
-    console.log('here', Email)
     const { nameItem, desc, found, surrenderedBy} = req.body;
-    console.log('sendItem', req.files);
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ error: 'No files were uploaded.' });
     }
