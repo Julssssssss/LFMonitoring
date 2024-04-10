@@ -41,6 +41,7 @@ app.use(cors(corsOptions))
 
 app.use(bodyParser.json());
 //app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+//what d hellllllll
 
 app.use(cookieParser())
 
@@ -60,9 +61,9 @@ app.use(session({
         autoRemove: true
     }),
     cookie: {
-        //sameSite: "None",
-        //httpOnly: true,
-        //secure: true, // true mo to if prod na
+        sameSite: "None",
+        httpOnly: true,
+        secure: true, // true mo to if prod na
         maxAge: 60*60*1000
     }
 }))    
