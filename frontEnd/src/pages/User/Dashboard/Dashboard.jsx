@@ -19,15 +19,9 @@ const Dashboard = () => {
   const getData = async () => {
     await getUserAndItem(currentPage)
     .then((result)=>{
-      //console.log(result.data.items)
-      /*
-      if(!result.data.items){
-        alert("Error: No items found.")
-        return ;
-      }*/
+      //console.log('here',result.items)
       setData([result])
       setHasNextPage(result.hasNextPage)
-      
       setLoading(false);
       //console.log(data)
     })
@@ -63,10 +57,14 @@ const Dashboard = () => {
         'currentPage' : currentPage
       })
       .then(res=>{
-        console.log(res.data)
+        //console.log('hello',res.data)
+        if(res.data.items[0] === null){
+          return  alert("Error: No items found.")
+        }else{
         setData([res.data])
         setHasNextPage(res.hasNextPage)
         setLoading(false);
+        }
       })
     }
   }
