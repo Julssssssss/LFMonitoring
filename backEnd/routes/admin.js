@@ -133,6 +133,9 @@ router.post('/data', verifyToken, async(req, res) => {
         await itemModels.findOne({}).lean().skip(intVal - 1).limit(1) //dinuga ko lang tlga to dko alam pano mag search by query if it works nigga it works
         .then((result) => {
           //console.log(result)
+          if(!result || result === null){
+            res.status(200).send(result);
+          }else{
           const hasNextPage = false
           const slicedResult = [result].map(elem=>{
             return{
@@ -152,7 +155,7 @@ router.post('/data', verifyToken, async(req, res) => {
             picture: Picture,
             'hasNextPage': hasNextPage
           });
-        })
+        }})
         .catch((err) => {
           console.log(err);
           res.status(500).json({ error: 'Internal Server Error' });
@@ -516,9 +519,13 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
         const intVal = Number(searchQuery)
         await reqModels.findOne({}).lean().skip(intVal - 1).limit(1)
         .then(async(result)=>{
-          //console.log(result)
+          //console.log('here',result)
+          if(!result || result === null){
+            res.status(200).send(result);
+          }else{
           const reqListAndItemData = await Promise.all ([result].map(async(elem)=>{
             let itemData = null
+            
             itemData = await itemModels.findById(elem.itemId).lean()
               if(!itemData){
                 itemData = await unclaimedItemsModels.findById(elem.itemId).lean()
@@ -540,6 +547,7 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
               else{
                 itemData.source = `This request is still pending`
               }
+            
               return {
                 'id': elem._id,
                 "itemId": elem.itemId,
@@ -548,14 +556,15 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
                 "dateRequested": dateAndTime(elem.dateRequested),
                 "itemData": itemData
               }
+            
           }))
-          console.log(reqListAndItemData)
+          //console.log(reqListAndItemData)
 
           res.status(200).json({
             'reqListAndItemData': reqListAndItemData,
             'hasNextPage': false
           })
-        })
+        }}) 
       }
       else{
         reqModels.find({'nameItem':searchQuery.toLowerCase()}).lean().limit(7).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
@@ -605,7 +614,6 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
     }
     else{
       const {currentPage} = req.body
-      console.log('hello')
       console.log(currentPage)
       await reqModels.find({}).lean().limit(7).skip((currentPage - 1) *6).sort({'dateRequested': -1}) //may pagination na waiting na lang sa frontEnd
       .then(async(result)=>{
@@ -642,7 +650,7 @@ router.post('/reqList', verifyToken, async (req, res, next)=>{
               "itemData": itemData
             }
         }))
-        console.log(reqListAndItemData)
+        //console.log(reqListAndItemData)
 
         res.status(200).json({
           'reqListAndItemData': reqListAndItemData,
@@ -663,9 +671,9 @@ router.post('/ArchivingTrans', verifyToken, async(req, res, next)=>{
   try{
     const {Request} = req.body
     const {id, itemId, Email}= Request
-    console.log('itemId', itemId)
+    //console.log('itemId', itemId)
     const itemDel = await itemModels.findOne({'_id': itemId})
-    console.log('here',itemDel)
+    //console.log('here',itemDel)
     if(itemDel === null){
       res.status(404).json({error: 'data not found'})
     }
@@ -688,14 +696,14 @@ router.post('/ArchivingTrans', verifyToken, async(req, res, next)=>{
 
       await archData.save() 
       .then(async(result)=>{
-            console.log(result)
+            //console.log(result)
             const Activity = `Approved a transaction`
             const Details = result   
             writeActLogs(req.user.Email, Activity, Details)
           
           await itemModels.findByIdAndDelete({'_id': itemId})
           .then(res=>{
-            console.log(res)
+            //console.log(res)
             console.log('successFully deleted the item')
             
           })
@@ -738,7 +746,7 @@ const transporter = nodemailer.createTransport({
 router.post('/sendEmail', verifyToken, async(req, res, next)=>{
   try{
     const {id, to, subject, text} = req.body;
-    console.log(req.body)
+    //console.log(req.body)
 
     const Activity = `Emailed to  ${to}`;
     const Details = {
@@ -768,7 +776,7 @@ router.post('/sendEmail', verifyToken, async(req, res, next)=>{
 router.post('/delReq', verifyToken, async(req, res, next)=>{
   try{
     const {data} = req.body
-    console.log('here po', data)
+    //console.log('here po', data)
     await reqModels.findByIdAndDelete(data)
     .then((result)=>{
       console.log(result)
@@ -835,7 +843,7 @@ router.post('/archiveDataGenerate', verifyToken, async(req, res, next)=>{
   }).lean().sort({'datePosted': -1})
   .then(async(result)=>{
     if(!result) res.json(`there is no data!`)
-    console.log(result)
+    //console.log(result)
 
     //generate logs 
     const Activity = `Generated an archiveData for claimed items ranging from ${startDate} to ${endDate}`;
@@ -863,7 +871,7 @@ router.post('/archiveDataGenerate', verifyToken, async(req, res, next)=>{
 router.post('/genUnfoundItems', verifyToken, async(req, res, next)=>{
 
   const {startDate, endDate} = req.body
-  console.log(req.body)
+  //console.log(req.body)
 
   await unclaimedItemsModels.find({
     datePosted:{
@@ -873,7 +881,7 @@ router.post('/genUnfoundItems', verifyToken, async(req, res, next)=>{
   }).lean().sort({'datePosted': -1})
   .then(async(result)=>{
     if(!result) res.json(`there is no data!`)
-    console.log(result)
+    //console.log(result)
 
     //generate logs 
     const Activity = `Generated an archiveData for unclaimed items ranging from ${startDate} to ${endDate}`;

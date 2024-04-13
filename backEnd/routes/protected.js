@@ -72,7 +72,6 @@ router.post("/data", verifyToken, async(req, res)=>{
             }
             else if('searchQuery' in req.body){
                 const {searchQuery, currentPage} = req.body
-
                 if(isInteger(searchQuery)){
                     const intVal = Number(searchQuery)
                     await itemModels.findOne({}).lean().skip(intVal - 1).limit(1)

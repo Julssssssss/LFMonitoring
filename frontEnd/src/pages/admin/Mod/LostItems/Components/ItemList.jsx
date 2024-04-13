@@ -48,11 +48,16 @@ const ItemList = () => {
         'currentPage' : currentPage
       })
       .then(res=>{
-        //console.log(res.data)
+        //console.log('hello', res.data)
+        if(!res.data  || res.data === ''){
+          return  alert("Error: No items found.")
+        }else{
         const {items} = res.data
         setItem(items)
         setHasNextPage(res.data.hasNextPage)
         setLoading(false);
+        } 
+        
       })
     }
   }
