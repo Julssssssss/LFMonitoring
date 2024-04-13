@@ -90,9 +90,15 @@ const RequestList = () => {
         'currentPage' : currentPage
       })
       .then(res=>{
-        setList(res.data.reqListAndItemData)
-        setHasNextPage(res.data.hasNextPage)
-        setLoading(false);
+        //console.log('hello', res.data)
+        if(!res.data  || res.data === ''){
+          return  alert("Error: No items found.")
+        }else{
+          setList(res.data.reqListAndItemData)
+          setHasNextPage(res.data.hasNextPage)
+          setLoading(false);
+        } 
+        
       })
     }
   }
@@ -114,10 +120,15 @@ const RequestList = () => {
 
   const useSearch = ()=>{
     if(searchQuery){
-      setSearchQuery(searchQuery.trim())
-      setUserUsedSearch(true)
-      setCurrentPage(1)
-      searchData()
+      if(searchQuery  === "0"){
+        return alert("Please enter a valid Data.")
+      }
+      else{
+        setSearchQuery(searchQuery.trim())
+        setUserUsedSearch(true)
+        setCurrentPage(1)
+        searchData()
+      }
     }
     else if(startDate && endDate){
       setUserUsedSearch(true)

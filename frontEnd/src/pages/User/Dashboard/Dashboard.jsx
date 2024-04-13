@@ -57,7 +57,7 @@ const Dashboard = () => {
         'currentPage' : currentPage
       })
       .then(res=>{
-        //console.log('hello',res.data)
+        console.log('hello',res.data)
         if(res.data.items[0] === null){
           return  alert("Error: No items found.")
         }else{
