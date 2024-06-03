@@ -1,4 +1,4 @@
-* LOST AND FOUND MONITORING SOLUTION  *
+## LOST AND FOUND MONITORING SOLUTION  
 (Lost and Found Monitoring Solution Utilizing a Web-Based System at 
 Rizal Technological University)
 
